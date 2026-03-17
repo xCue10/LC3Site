@@ -24,6 +24,7 @@ interface Member {
   majors: string[];
   focusArea: string;
   status: string;
+  avatarUrl: string;
   skills: string[];
   projects: string[];
   github: string;
@@ -91,7 +92,7 @@ const emptyProject: Omit<Project, 'id'> = {
 };
 
 const emptyMember: Omit<Member, 'id'> = {
-  name: '', role: '', memberType: 'member', majors: [], focusArea: '', status: '', skills: [], projects: [], github: '', linkedin: '', twitter: '',
+  name: '', role: '', memberType: 'member', majors: [], focusArea: '', status: '', avatarUrl: '', skills: [], projects: [], github: '', linkedin: '', twitter: '',
 };
 
 const emptyEvent: Omit<Event, 'id'> = {
@@ -236,6 +237,7 @@ function MemberModal({
             { name: 'name', label: 'Full Name', placeholder: 'Alex Johnson' },
             { name: 'focusArea', label: 'Focus Area', placeholder: 'Web Development' },
             { name: 'status', label: 'Status', placeholder: 'Open to Opportunities · Interning at Microsoft · Graduating May 2026' },
+            { name: 'avatarUrl', label: 'Photo URL', placeholder: 'https://example.com/photo.jpg (optional)' },
           ].map(({ name, label, placeholder }) => (
             <div key={name}>
               <label className="block text-sm font-medium text-slate-300 mb-1.5">{label}</label>
@@ -325,13 +327,17 @@ function MemberModal({
 
 // ─── Event Form Modal ────────────────────────────────────────────────────────
 function EventModal({
+  event,
   onSave,
   onClose,
 }: {
+  event: Event | null;
   onSave: (data: Omit<Event, 'id'>) => Promise<void>;
   onClose: () => void;
 }) {
-  const [form, setForm] = useState<Omit<Event, 'id'>>({ ...emptyEvent });
+  const [form, setForm] = useState<Omit<Event, 'id'>>(
+    event ? { ...event } : { ...emptyEvent }
+  );
   const [saving, setSaving] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -349,7 +355,7 @@ function EventModal({
     <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={onClose}>
       <div className="bg-[#0d1424] border border-[#1e2d45] rounded-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
         <div className="flex items-center justify-between p-6 border-b border-[#1e2d45]">
-          <h2 className="text-white font-semibold text-lg">Add Event</h2>
+          <h2 className="text-white font-semibold text-lg">{event ? 'Edit Event' : 'Add Event'}</h2>
           <button onClick={onClose} className="text-slate-500 hover:text-white transition-colors">
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -398,7 +404,7 @@ function EventModal({
               Cancel
             </button>
             <button type="submit" disabled={saving} className="flex-1 py-2.5 bg-gradient-to-r from-blue-600 to-violet-600 text-white rounded-xl hover:opacity-90 transition-opacity text-sm font-semibold disabled:opacity-50">
-              {saving ? 'Saving...' : 'Add Event'}
+              {saving ? 'Saving...' : event ? 'Save Changes' : 'Add Event'}
             </button>
           </div>
         </form>
@@ -575,7 +581,7 @@ function Dashboard() {
   const unreadPartners = partners.filter((p) => new Date(p.submittedAt).getTime() > lastSeenPartners).length;
 
   const [memberModal, setMemberModal] = useState<{ open: boolean; member: Member | null }>({ open: false, member: null });
-  const [eventModal, setEventModal] = useState(false);
+  const [eventModal, setEventModal] = useState<{ open: boolean; event: Event | null }>({ open: false, event: null });
   const [projectModal, setProjectModal] = useState<{ open: boolean; project: Project | null }>({ open: false, project: null });
   const [deleteConfirm, setDeleteConfirm] = useState<{ type: 'member' | 'event' | 'project'; id: string } | null>(null);
 
@@ -621,8 +627,12 @@ function Dashboard() {
 
   // Event CRUD
   const saveEvent = async (data: Omit<Event, 'id'>) => {
-    await fetch('/api/events', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
-    setEventModal(false);
+    if (eventModal.event) {
+      await fetch(`/api/events/${eventModal.event.id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+    } else {
+      await fetch('/api/events', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+    }
+    setEventModal({ open: false, event: null });
     fetchData();
   };
 
@@ -824,7 +834,7 @@ function Dashboard() {
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-lg font-semibold text-white">All Events</h2>
                 <button
-                  onClick={() => setEventModal(true)}
+                  onClick={() => setEventModal({ open: true, event: null })}
                   className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-violet-600 text-white text-sm font-medium rounded-xl hover:opacity-90 transition-opacity"
                 >
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -857,6 +867,15 @@ function Dashboard() {
                         </div>
                         <div className="text-slate-500 text-sm truncate">{ev.location}</div>
                       </div>
+                      <button
+                        onClick={() => setEventModal({ open: true, event: ev })}
+                        className="p-2 text-slate-400 hover:text-blue-400 hover:bg-blue-500/10 rounded-lg transition-all flex-shrink-0"
+                        title="Edit"
+                      >
+                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                        </svg>
+                      </button>
                       <button
                         onClick={() => setDeleteConfirm({ type: 'event', id: ev.id })}
                         className="p-2 text-slate-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-all flex-shrink-0"
@@ -1313,8 +1332,8 @@ function Dashboard() {
       )}
 
       {/* Event Modal */}
-      {eventModal && (
-        <EventModal onSave={saveEvent} onClose={() => setEventModal(false)} />
+      {eventModal.open && (
+        <EventModal event={eventModal.event} onSave={saveEvent} onClose={() => setEventModal({ open: false, event: null })} />
       )}
 
       {/* Project Modal */}

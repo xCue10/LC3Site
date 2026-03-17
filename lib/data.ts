@@ -40,6 +40,7 @@ export interface Member {
   majors: string[];
   focusArea: string;
   status: string;
+  avatarUrl: string;
   skills: string[];
   projects: string[];
   github: string;

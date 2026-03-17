@@ -136,29 +136,42 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Mission Statement */}
+      {/* About */}
       <section className="py-20 max-w-6xl mx-auto px-4 sm:px-6">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div>
-            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">Our Mission</h2>
+            <p className="text-violet-400 text-sm font-medium mb-2">Who we are</p>
+            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">About LC3</h2>
             <p className="text-slate-300 leading-relaxed mb-4">
-              LC3 - Lowcode Cloud Club exists to bridge the gap between classroom theory and real-world application. We provide
-              students with hands-on experience, mentorship from industry professionals, and a collaborative community
-              to grow in.
+              LC3 — Lowcode Cloud Club — is a student-run tech organization focused on low-code platforms, cloud technologies,
+              and modern software development. We partner with tools like Microsoft Power Platform and Azure to give members
+              hands-on experience that directly translates to industry skills.
             </p>
             <p className="text-slate-300 leading-relaxed mb-6">
-              Whether you&apos;re a curious beginner or an experienced developer, there&apos;s a place for you here.
-              We believe the best way to learn is by building — together.
+              Whether you&apos;re building your first app or already working in tech, LC3 is a place to grow.
+              We believe the best way to learn is by shipping real things — together.
             </p>
-            <Link
-              href="/events"
-              className="inline-flex items-center gap-2 text-violet-400 hover:text-violet-300 font-medium transition-colors"
-            >
-              See upcoming events
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </Link>
+            <div className="flex flex-wrap gap-3">
+              <Link
+                href="/members"
+                className="inline-flex items-center gap-2 text-violet-400 hover:text-violet-300 font-medium transition-colors text-sm"
+              >
+                Meet the team
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </Link>
+              <span className="text-slate-700">·</span>
+              <Link
+                href="/events"
+                className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 font-medium transition-colors text-sm"
+              >
+                See upcoming events
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </Link>
+            </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4">

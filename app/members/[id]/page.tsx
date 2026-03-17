@@ -83,9 +83,17 @@ export default async function MemberProfilePage({ params }: { params: Promise<{ 
         <div className="p-8">
           {/* Header */}
           <div className="flex items-start gap-6 mb-8">
-            <div className={`w-20 h-20 rounded-2xl bg-gradient-to-br ${gradient} flex items-center justify-center text-white font-bold text-2xl shadow-lg flex-shrink-0`}>
-              {getInitials(member.name)}
-            </div>
+            {member.avatarUrl ? (
+              <img
+                src={member.avatarUrl}
+                alt={member.name}
+                className="w-20 h-20 rounded-2xl object-cover shadow-lg flex-shrink-0"
+              />
+            ) : (
+              <div className={`w-20 h-20 rounded-2xl bg-gradient-to-br ${gradient} flex items-center justify-center text-white font-bold text-2xl shadow-lg flex-shrink-0`}>
+                {getInitials(member.name)}
+              </div>
+            )}
             <div className="min-w-0 flex-1">
               <h1 className="text-3xl font-bold text-white mb-2">{member.name}</h1>
               <div className="flex flex-wrap items-center gap-2">
