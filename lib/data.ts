@@ -1,13 +1,14 @@
 import fs from 'fs';
 import path from 'path';
 
-const dataDir = path.join(process.cwd(), 'data');
+const dataDir = process.env.DATA_DIR ?? path.join(process.cwd(), 'data');
+if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true });
 
-export function readJSON<T>(filename: string): T {
+export function readJSON<T>(filename: string, defaultValue: T = [] as unknown as T): T {
   const filePath = path.join(dataDir, filename);
   if (!fs.existsSync(filePath)) {
-    fs.writeFileSync(filePath, '[]', 'utf-8');
-    return [] as unknown as T;
+    fs.writeFileSync(filePath, JSON.stringify(defaultValue, null, 2), 'utf-8');
+    return defaultValue;
   }
   const raw = fs.readFileSync(filePath, 'utf-8');
   return JSON.parse(raw) as T;

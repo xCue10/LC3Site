@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { readJSON, writeJSON, Stats } from '@/lib/data';
 
 export async function GET() {
-  const stats = readJSON<Stats>('stats.json');
+  const stats = readJSON<Stats>('stats.json', { activeMembers: '0', eventsHosted: '0', projectsBuilt: '0', yearsActive: '0' });
   return NextResponse.json(stats);
 }
 
