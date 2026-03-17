@@ -914,8 +914,23 @@ function Dashboard() {
                           <div className="text-white font-medium">{p.companyName}</div>
                           <div className="text-slate-500 text-sm">{p.contactName} · {p.email}</div>
                         </div>
-                        <div className="text-slate-600 text-xs flex-shrink-0">
-                          {new Date(p.submittedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                        <div className="flex items-center gap-3">
+                          <div className="text-slate-600 text-xs">
+                            {new Date(p.submittedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                          </div>
+                          <button
+                            onClick={async () => {
+                              if (!confirm(`Delete inquiry from ${p.companyName}?`)) return;
+                              await fetch(`/api/hire/${p.id}`, { method: 'DELETE' });
+                              fetchData();
+                            }}
+                            className="flex items-center justify-center w-7 h-7 rounded-lg text-slate-500 hover:text-red-400 hover:bg-red-500/10 transition-all"
+                            title="Delete"
+                          >
+                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                          </button>
                         </div>
                       </div>
                       <div className="flex gap-2 mb-3">
@@ -1031,8 +1046,23 @@ function Dashboard() {
                           <div className="text-white font-medium">{c.name}</div>
                           <div className="text-slate-500 text-sm">{c.email} · {c.major}</div>
                         </div>
-                        <div className="text-slate-600 text-xs flex-shrink-0">
-                          {new Date(c.submittedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                        <div className="flex items-center gap-3">
+                          <div className="text-slate-600 text-xs">
+                            {new Date(c.submittedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                          </div>
+                          <button
+                            onClick={async () => {
+                              if (!confirm(`Delete submission from ${c.name}?`)) return;
+                              await fetch(`/api/contact/${c.id}`, { method: 'DELETE' });
+                              fetchData();
+                            }}
+                            className="flex items-center justify-center w-7 h-7 rounded-lg text-slate-500 hover:text-red-400 hover:bg-red-500/10 transition-all"
+                            title="Delete"
+                          >
+                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                          </button>
                         </div>
                       </div>
                       <p className="text-slate-400 text-sm leading-relaxed bg-[#13131f] rounded-lg p-3">{c.reason}</p>
