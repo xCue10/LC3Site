@@ -1,10 +1,10 @@
 @import "tailwindcss";
 
 :root {
-  --background: #080d18;
-  --surface: #0d1424;
-  --card: #111a2e;
-  --border: #1e2d45;
+  --background: #0a1020;
+  --surface: #0f1a2e;
+  --card: #152030;
+  --border: #253650;
   --foreground: #f1f5f9;
   --muted: #94a3b8;
   --accent-blue: #3b82f6;
@@ -47,9 +47,9 @@ body {
   background: var(--background);
 }
 ::-webkit-scrollbar-thumb {
-  background: #1e2d45;
+  background: #253650;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #2a3f5e;
+  background: #2e4268;
 }
