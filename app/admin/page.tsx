@@ -12,6 +12,8 @@ interface Stats {
 interface Member {
   id: string;
   name: string;
+  role: string;
+  memberType: 'advisor' | 'officer' | 'member';
   major: string;
   focusArea: string;
   projects: string[];
@@ -63,7 +65,7 @@ const emptyProject: Omit<Project, 'id'> = {
 };
 
 const emptyMember: Omit<Member, 'id'> = {
-  name: '', major: '', focusArea: '', projects: [], github: '', linkedin: '', twitter: '',
+  name: '', role: '', memberType: 'member', major: '', focusArea: '', projects: [], github: '', linkedin: '', twitter: '',
 };
 
 const emptyEvent: Omit<Event, 'id'> = {
@@ -141,7 +143,7 @@ function MemberModal({
   const [projectsStr, setProjectsStr] = useState((member?.projects ?? []).join(', '));
   const [saving, setSaving] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setForm((p) => ({ ...p, [e.target.name]: e.target.value }));
   };
 
@@ -165,6 +167,38 @@ function MemberModal({
         </div>
 
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
+          {/* Member Type */}
+          <div>
+            <label className="block text-sm font-medium text-slate-300 mb-1.5">Member Type</label>
+            <select
+              name="memberType"
+              value={form.memberType}
+              onChange={handleChange}
+              className="w-full bg-[#13131f] border border-[#1e1e2e] text-white rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+            >
+              <option value="member">Member</option>
+              <option value="officer">Club Officer</option>
+              <option value="advisor">Club Advisor</option>
+            </select>
+          </div>
+
+          {/* Role (shown for officers and advisors) */}
+          {(form.memberType === 'officer' || form.memberType === 'advisor') && (
+            <div>
+              <label className="block text-sm font-medium text-slate-300 mb-1.5">
+                Role <span className="text-slate-500 font-normal">(e.g. President, Faculty Advisor)</span>
+              </label>
+              <input
+                name="role"
+                type="text"
+                value={form.role}
+                onChange={handleChange}
+                placeholder={form.memberType === 'advisor' ? 'Faculty Advisor' : 'President'}
+                className="w-full bg-[#13131f] border border-[#1e1e2e] text-white placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+              />
+            </div>
+          )}
+
           {[
             { name: 'name', label: 'Full Name', placeholder: 'Alex Johnson' },
             { name: 'major', label: 'Major', placeholder: 'Computer Science' },
@@ -585,8 +619,16 @@ function Dashboard() {
                         {m.name.split(' ').map((n) => n[0]).join('').slice(0, 2).toUpperCase()}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <div className="text-white font-medium">{m.name}</div>
-                        <div className="text-slate-500 text-sm truncate">{m.major} · {m.focusArea}</div>
+                        <div className="flex items-center gap-2">
+                          <span className="text-white font-medium">{m.name}</span>
+                          {m.memberType === 'advisor' && (
+                            <span className="text-xs bg-amber-500/10 border border-amber-500/20 text-amber-400 px-2 py-0.5 rounded-full flex-shrink-0">Advisor</span>
+                          )}
+                          {m.memberType === 'officer' && (
+                            <span className="text-xs bg-violet-500/10 border border-violet-500/20 text-violet-400 px-2 py-0.5 rounded-full flex-shrink-0">{m.role || 'Officer'}</span>
+                          )}
+                        </div>
+                        <div className="text-slate-500 text-sm truncate">{m.major}{m.focusArea ? ` · ${m.focusArea}` : ''}</div>
                       </div>
                       <div className="hidden md:flex flex-wrap gap-1.5 max-w-xs">
                         {m.projects.map((p) => (

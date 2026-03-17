@@ -27,12 +27,7 @@ function TwitterIcon() {
 }
 
 function getInitials(name: string) {
-  return name
-    .split(' ')
-    .map((n) => n[0])
-    .join('')
-    .toUpperCase()
-    .slice(0, 2);
+  return name.split(' ').map((n) => n[0]).join('').toUpperCase().slice(0, 2);
 }
 
 const avatarGradients = [
@@ -44,109 +39,226 @@ const avatarGradients = [
   'from-blue-600 to-violet-600',
 ];
 
+function SocialLinks({ member }: { member: Member }) {
+  const hasSocials = member.github || member.linkedin || member.twitter;
+  return (
+    <div className="flex items-center gap-2 pt-4 border-t border-[#1e1e2e]">
+      {member.github && (
+        <a href={member.github} target="_blank" rel="noopener noreferrer"
+          className="flex items-center justify-center w-8 h-8 rounded-lg bg-white/5 text-slate-400 hover:text-white hover:bg-white/10 transition-all" aria-label="GitHub">
+          <GithubIcon />
+        </a>
+      )}
+      {member.linkedin && (
+        <a href={member.linkedin} target="_blank" rel="noopener noreferrer"
+          className="flex items-center justify-center w-8 h-8 rounded-lg bg-white/5 text-slate-400 hover:text-blue-400 hover:bg-blue-500/10 transition-all" aria-label="LinkedIn">
+          <LinkedInIcon />
+        </a>
+      )}
+      {member.twitter && (
+        <a href={member.twitter} target="_blank" rel="noopener noreferrer"
+          className="flex items-center justify-center w-8 h-8 rounded-lg bg-white/5 text-slate-400 hover:text-sky-400 hover:bg-sky-500/10 transition-all" aria-label="Twitter / X">
+          <TwitterIcon />
+        </a>
+      )}
+      {!hasSocials && <span className="text-slate-600 text-xs">No socials listed</span>}
+    </div>
+  );
+}
+
+function MemberCard({ member, index }: { member: Member; index: number }) {
+  return (
+    <div className="bg-[#0f0f1a] border border-[#1e1e2e] rounded-2xl p-6 hover:border-violet-500/30 transition-all hover:-translate-y-0.5 flex flex-col">
+      <div className="flex items-center gap-4 mb-4">
+        <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${avatarGradients[index % avatarGradients.length]} flex items-center justify-center text-white font-bold text-lg shadow-lg flex-shrink-0`}>
+          {getInitials(member.name)}
+        </div>
+        <div className="min-w-0">
+          <h3 className="text-white font-semibold truncate">{member.name}</h3>
+          <p className="text-slate-500 text-sm truncate">{member.major}</p>
+        </div>
+      </div>
+
+      {member.focusArea && (
+        <div className="mb-4">
+          <span className="inline-flex items-center gap-1.5 bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs px-3 py-1 rounded-full">
+            <span className="w-1.5 h-1.5 bg-blue-400 rounded-full" />
+            {member.focusArea}
+          </span>
+        </div>
+      )}
+
+      {member.projects.length > 0 && (
+        <div className="mb-5 flex-1">
+          <p className="text-slate-500 text-xs font-medium uppercase tracking-wider mb-2">Projects</p>
+          <div className="flex flex-wrap gap-1.5">
+            {member.projects.map((project) => (
+              <span key={project} className="text-xs bg-white/5 border border-white/8 text-slate-400 px-2.5 py-1 rounded-md">
+                {project}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <SocialLinks member={member} />
+    </div>
+  );
+}
+
+function AdvisorCard({ member, index }: { member: Member; index: number }) {
+  return (
+    <div className="bg-[#0f0f1a] border border-amber-500/20 rounded-2xl p-6 hover:border-amber-500/40 transition-all flex flex-col">
+      <div className="flex items-center gap-4 mb-4">
+        <div className={`w-16 h-16 rounded-xl bg-gradient-to-br ${avatarGradients[index % avatarGradients.length]} flex items-center justify-center text-white font-bold text-xl shadow-lg flex-shrink-0`}>
+          {getInitials(member.name)}
+        </div>
+        <div className="min-w-0">
+          <h3 className="text-white font-semibold text-lg truncate">{member.name}</h3>
+          {member.role && (
+            <span className="inline-block mt-1 text-xs font-medium bg-amber-500/10 border border-amber-500/20 text-amber-400 px-2.5 py-0.5 rounded-full">
+              {member.role}
+            </span>
+          )}
+          {member.major && <p className="text-slate-500 text-sm mt-1 truncate">{member.major}</p>}
+        </div>
+      </div>
+
+      {member.focusArea && (
+        <div className="mb-4">
+          <span className="inline-flex items-center gap-1.5 bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs px-3 py-1 rounded-full">
+            <span className="w-1.5 h-1.5 bg-blue-400 rounded-full" />
+            {member.focusArea}
+          </span>
+        </div>
+      )}
+
+      <SocialLinks member={member} />
+    </div>
+  );
+}
+
+function OfficerCard({ member, index }: { member: Member; index: number }) {
+  return (
+    <div className="bg-[#0f0f1a] border border-violet-500/20 rounded-2xl p-6 hover:border-violet-500/40 transition-all flex flex-col">
+      <div className="flex items-center gap-4 mb-4">
+        <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${avatarGradients[index % avatarGradients.length]} flex items-center justify-center text-white font-bold text-lg shadow-lg flex-shrink-0`}>
+          {getInitials(member.name)}
+        </div>
+        <div className="min-w-0">
+          <h3 className="text-white font-semibold truncate">{member.name}</h3>
+          {member.role && (
+            <span className="inline-block mt-1 text-xs font-medium bg-violet-500/10 border border-violet-500/20 text-violet-400 px-2.5 py-0.5 rounded-full">
+              {member.role}
+            </span>
+          )}
+          {member.major && <p className="text-slate-500 text-sm mt-1 truncate">{member.major}</p>}
+        </div>
+      </div>
+
+      {member.focusArea && (
+        <div className="mb-4">
+          <span className="inline-flex items-center gap-1.5 bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs px-3 py-1 rounded-full">
+            <span className="w-1.5 h-1.5 bg-blue-400 rounded-full" />
+            {member.focusArea}
+          </span>
+        </div>
+      )}
+
+      {member.projects.length > 0 && (
+        <div className="mb-5 flex-1">
+          <p className="text-slate-500 text-xs font-medium uppercase tracking-wider mb-2">Projects</p>
+          <div className="flex flex-wrap gap-1.5">
+            {member.projects.map((project) => (
+              <span key={project} className="text-xs bg-white/5 border border-white/8 text-slate-400 px-2.5 py-1 rounded-md">
+                {project}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <SocialLinks member={member} />
+    </div>
+  );
+}
+
 export default function MembersPage() {
   const members = readJSON<Member[]>('members.json');
+
+  const advisors = members.filter((m) => m.memberType === 'advisor');
+  const officers = members.filter((m) => m.memberType === 'officer');
+  const regulars = members.filter((m) => m.memberType === 'member' || !m.memberType);
+
+  const isEmpty = members.length === 0;
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-16">
       {/* Header */}
-      <div className="text-center mb-14">
+      <div className="text-center mb-16">
         <p className="text-violet-400 text-sm font-medium mb-2">The people behind the code</p>
         <h1 className="text-4xl sm:text-5xl font-bold text-white mb-4">Meet Our Members</h1>
         <p className="text-slate-400 max-w-xl mx-auto">
-          A diverse group of students from across the university, united by a passion for technology and building
-          things that matter.
+          A diverse group of students and advisors united by a passion for technology and building things that matter.
         </p>
       </div>
 
-      {members.length === 0 ? (
+      {isEmpty ? (
         <div className="text-center py-20 text-slate-500">No members yet. Check back soon!</div>
       ) : (
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {members.map((member, index) => (
-            <div
-              key={member.id}
-              className="bg-[#0f0f1a] border border-[#1e1e2e] rounded-2xl p-6 hover:border-violet-500/30 transition-all hover:-translate-y-0.5 flex flex-col"
-            >
-              {/* Avatar */}
-              <div className="flex items-center gap-4 mb-4">
-                <div
-                  className={`w-14 h-14 rounded-xl bg-gradient-to-br ${avatarGradients[index % avatarGradients.length]} flex items-center justify-center text-white font-bold text-lg shadow-lg flex-shrink-0`}
-                >
-                  {getInitials(member.name)}
-                </div>
-                <div className="min-w-0">
-                  <h3 className="text-white font-semibold truncate">{member.name}</h3>
-                  <p className="text-slate-500 text-sm truncate">{member.major}</p>
-                </div>
-              </div>
+        <div className="space-y-16">
 
-              {/* Focus area badge */}
-              <div className="mb-4">
-                <span className="inline-flex items-center gap-1.5 bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs px-3 py-1 rounded-full">
-                  <span className="w-1.5 h-1.5 bg-blue-400 rounded-full" />
-                  {member.focusArea}
-                </span>
-              </div>
-
-              {/* Projects */}
-              {member.projects.length > 0 && (
-                <div className="mb-5 flex-1">
-                  <p className="text-slate-500 text-xs font-medium uppercase tracking-wider mb-2">Projects</p>
-                  <div className="flex flex-wrap gap-1.5">
-                    {member.projects.map((project) => (
-                      <span
-                        key={project}
-                        className="text-xs bg-white/5 border border-white/8 text-slate-400 px-2.5 py-1 rounded-md"
-                      >
-                        {project}
-                      </span>
-                    ))}
-                  </div>
+          {/* Advisors */}
+          {advisors.length > 0 && (
+            <section>
+              <div className="flex items-center gap-3 mb-6">
+                <div className="h-px flex-1 bg-[#1e1e2e]" />
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-amber-400" />
+                  <h2 className="text-white font-semibold text-lg">Club Advisors</h2>
                 </div>
-              )}
-
-              {/* Social links */}
-              <div className="flex items-center gap-2 pt-4 border-t border-[#1e1e2e]">
-                {member.github && (
-                  <a
-                    href={member.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-center w-8 h-8 rounded-lg bg-white/5 text-slate-400 hover:text-white hover:bg-white/10 transition-all"
-                    aria-label="GitHub"
-                  >
-                    <GithubIcon />
-                  </a>
-                )}
-                {member.linkedin && (
-                  <a
-                    href={member.linkedin}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-center w-8 h-8 rounded-lg bg-white/5 text-slate-400 hover:text-blue-400 hover:bg-blue-500/10 transition-all"
-                    aria-label="LinkedIn"
-                  >
-                    <LinkedInIcon />
-                  </a>
-                )}
-                {member.twitter && (
-                  <a
-                    href={member.twitter}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-center w-8 h-8 rounded-lg bg-white/5 text-slate-400 hover:text-sky-400 hover:bg-sky-500/10 transition-all"
-                    aria-label="Twitter / X"
-                  >
-                    <TwitterIcon />
-                  </a>
-                )}
-                {!member.github && !member.linkedin && !member.twitter && (
-                  <span className="text-slate-600 text-xs">No socials listed</span>
-                )}
+                <div className="h-px flex-1 bg-[#1e1e2e]" />
               </div>
-            </div>
-          ))}
+              <div className="grid sm:grid-cols-2 gap-6 max-w-2xl mx-auto">
+                {advisors.map((m, i) => <AdvisorCard key={m.id} member={m} index={i} />)}
+              </div>
+            </section>
+          )}
+
+          {/* Officers */}
+          {officers.length > 0 && (
+            <section>
+              <div className="flex items-center gap-3 mb-6">
+                <div className="h-px flex-1 bg-[#1e1e2e]" />
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-violet-400" />
+                  <h2 className="text-white font-semibold text-lg">Club Officers</h2>
+                </div>
+                <div className="h-px flex-1 bg-[#1e1e2e]" />
+              </div>
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {officers.map((m, i) => <OfficerCard key={m.id} member={m} index={i} />)}
+              </div>
+            </section>
+          )}
+
+          {/* Regular Members */}
+          {regulars.length > 0 && (
+            <section>
+              <div className="flex items-center gap-3 mb-6">
+                <div className="h-px flex-1 bg-[#1e1e2e]" />
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-blue-400" />
+                  <h2 className="text-white font-semibold text-lg">Members</h2>
+                </div>
+                <div className="h-px flex-1 bg-[#1e1e2e]" />
+              </div>
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {regulars.map((m, i) => <MemberCard key={m.id} member={m} index={i} />)}
+              </div>
+            </section>
+          )}
+
         </div>
       )}
     </div>

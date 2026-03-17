@@ -12,6 +12,8 @@ export async function POST(req: NextRequest) {
   const newMember: Member = {
     id: Date.now().toString(),
     name: body.name || '',
+    role: body.role || '',
+    memberType: body.memberType || 'member',
     major: body.major || '',
     focusArea: body.focusArea || '',
     projects: Array.isArray(body.projects) ? body.projects : (body.projects || '').split(',').map((p: string) => p.trim()).filter(Boolean),

@@ -11,6 +11,8 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
   members[index] = {
     ...members[index],
     name: body.name ?? members[index].name,
+    role: body.role ?? members[index].role,
+    memberType: body.memberType ?? members[index].memberType,
     major: body.major ?? members[index].major,
     focusArea: body.focusArea ?? members[index].focusArea,
     projects: Array.isArray(body.projects)

@@ -22,6 +22,8 @@ export function writeJSON<T>(filename: string, data: T): void {
 export interface Member {
   id: string;
   name: string;
+  role: string;
+  memberType: 'advisor' | 'officer' | 'member';
   major: string;
   focusArea: string;
   projects: string[];
