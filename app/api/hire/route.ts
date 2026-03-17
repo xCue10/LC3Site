@@ -43,6 +43,32 @@ export async function POST(req: NextRequest) {
     }
   }
 
+  if (process.env.DISCORD_PROJECT_WEBHOOK_URL) {
+    try {
+      await fetch(process.env.DISCORD_PROJECT_WEBHOOK_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          embeds: [{
+            title: '🤝 New Partner Inquiry',
+            color: 0x3b82f6,
+            fields: [
+              { name: 'Company', value: newInquiry.companyName, inline: true },
+              { name: 'Contact', value: newInquiry.contactName, inline: true },
+              { name: 'Email', value: newInquiry.email, inline: true },
+              { name: 'Project Type', value: newInquiry.projectType, inline: true },
+              { name: 'Timeline', value: newInquiry.timeline, inline: true },
+              { name: 'Description', value: newInquiry.description },
+            ],
+            timestamp: new Date().toISOString(),
+          }],
+        }),
+      });
+    } catch (err) {
+      console.error('Discord notification failed:', err);
+    }
+  }
+
   return NextResponse.json({ success: true }, { status: 201 });
 }
 

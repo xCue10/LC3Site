@@ -41,6 +41,30 @@ export async function POST(req: NextRequest) {
     }
   }
 
+  if (process.env.DISCORD_MEMBER_WEBHOOK_URL) {
+    try {
+      await fetch(process.env.DISCORD_MEMBER_WEBHOOK_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          embeds: [{
+            title: '📥 New Join Request',
+            color: 0x7c3aed,
+            fields: [
+              { name: 'Name', value: newContact.name, inline: true },
+              { name: 'Email', value: newContact.email, inline: true },
+              { name: 'Major', value: newContact.major, inline: true },
+              { name: 'Message', value: newContact.reason },
+            ],
+            timestamp: new Date().toISOString(),
+          }],
+        }),
+      });
+    } catch (err) {
+      console.error('Discord notification failed:', err);
+    }
+  }
+
   return NextResponse.json({ success: true }, { status: 201 });
 }
 
