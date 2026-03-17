@@ -9,7 +9,7 @@ export function middleware(request: NextRequest) {
   }
 
   if (pathname.startsWith('/admin')) {
-    const adminPassword = process.env.ADMIN_PASSWORD;
+    const adminPassword = process.env.NEXT_PUBLIC_ADMIN_PASSWORD;
     if (adminPassword) {
       const token = request.cookies.get('lc3-admin')?.value;
       if (token !== adminPassword) {
