@@ -783,7 +783,37 @@ function Dashboard() {
           {/* Contacts Tab */}
           {tab === 'contacts' && (
             <div>
-              <h2 className="text-lg font-semibold text-white mb-4">Contact Submissions</h2>
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-lg font-semibold text-white">Contact Submissions</h2>
+                {contacts.length > 0 && (
+                  <button
+                    onClick={() => {
+                      const headers = ['Name', 'Email', 'Major', 'Message', 'Submitted'];
+                      const rows = contacts.map((c) => [
+                        c.name,
+                        c.email,
+                        c.major,
+                        `"${c.reason.replace(/"/g, '""')}"`,
+                        new Date(c.submittedAt).toLocaleString(),
+                      ]);
+                      const csv = [headers, ...rows].map((r) => r.join(',')).join('\n');
+                      const blob = new Blob([csv], { type: 'text/csv' });
+                      const url = URL.createObjectURL(blob);
+                      const a = document.createElement('a');
+                      a.href = url;
+                      a.download = `lc3-contacts-${new Date().toISOString().slice(0, 10)}.csv`;
+                      a.click();
+                      URL.revokeObjectURL(url);
+                    }}
+                    className="flex items-center gap-2 px-4 py-2 bg-[#0f0f1a] border border-[#1e1e2e] text-slate-300 text-sm font-medium rounded-xl hover:border-violet-500/40 hover:text-white transition-all"
+                  >
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                    </svg>
+                    Export CSV
+                  </button>
+                )}
+              </div>
               {contacts.length === 0 ? (
                 <div className="text-center py-16 text-slate-500 border border-[#1e1e2e] rounded-2xl">No submissions yet.</div>
               ) : (
