@@ -85,3 +85,14 @@ export interface Project {
   gradient: string;
   github: string;
 }
+
+export interface PartnerInquiry {
+  id: string;
+  companyName: string;
+  contactName: string;
+  email: string;
+  projectType: string;
+  description: string;
+  timeline: string;
+  submittedAt: string;
+}

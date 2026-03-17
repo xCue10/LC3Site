@@ -47,6 +47,17 @@ interface Contact {
   submittedAt: string;
 }
 
+interface PartnerInquiry {
+  id: string;
+  companyName: string;
+  contactName: string;
+  email: string;
+  projectType: string;
+  description: string;
+  timeline: string;
+  submittedAt: string;
+}
+
 interface Project {
   id: string;
   name: string;
@@ -468,10 +479,11 @@ function ProjectModal({
 
 // ─── Dashboard ───────────────────────────────────────────────────────────────
 function Dashboard() {
-  const [tab, setTab] = useState<'members' | 'events' | 'contacts' | 'projects' | 'stats' | 'settings'>('members');
+  const [tab, setTab] = useState<'members' | 'events' | 'contacts' | 'partners' | 'projects' | 'stats' | 'settings'>('members');
   const [members, setMembers] = useState<Member[]>([]);
   const [events, setEvents] = useState<Event[]>([]);
   const [contacts, setContacts] = useState<Contact[]>([]);
+  const [partners, setPartners] = useState<PartnerInquiry[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
   const [stats, setStats] = useState<Stats>({ activeMembers: '', eventsHosted: '', projectsBuilt: '', yearsActive: '' });
   const [siteSettings, setSiteSettings] = useState<SiteSettings>({ recruitingBanner: '', meetingDay: '', meetingTime: '', meetingLocation: '' });
@@ -484,10 +496,11 @@ function Dashboard() {
 
   const fetchData = useCallback(async () => {
     setLoading(true);
-    const [m, e, c, p, s, st] = await Promise.all([
+    const [m, e, c, pt, p, s, st] = await Promise.all([
       fetch('/api/members').then((r) => r.json()),
       fetch('/api/events').then((r) => r.json()),
       fetch('/api/contact').then((r) => r.json()),
+      fetch('/api/hire').then((r) => r.json()),
       fetch('/api/projects').then((r) => r.json()),
       fetch('/api/stats').then((r) => r.json()),
       fetch('/api/settings').then((r) => r.json()),
@@ -495,6 +508,7 @@ function Dashboard() {
     setMembers(m);
     setEvents(e);
     setContacts(c);
+    setPartners(pt);
     setProjects(p);
     setStats(s);
     setSiteSettings(st);
@@ -555,6 +569,7 @@ function Dashboard() {
     { id: 'events' as const, label: 'Events', count: events.length },
     { id: 'projects' as const, label: 'Projects', count: projects.length },
     { id: 'contacts' as const, label: 'Contacts', count: contacts.length },
+    { id: 'partners' as const, label: 'Partners', count: partners.length },
     { id: 'stats' as const, label: 'Stats', count: null },
     { id: 'settings' as const, label: 'Settings', count: null },
   ];
@@ -830,6 +845,69 @@ function Dashboard() {
                   Save Stats
                 </button>
               </div>
+            </div>
+          )}
+
+          {/* Partners Tab */}
+          {tab === 'partners' && (
+            <div>
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-lg font-semibold text-white">Partner Inquiries</h2>
+                {partners.length > 0 && (
+                  <button
+                    onClick={() => {
+                      const headers = ['Company', 'Contact', 'Email', 'Project Type', 'Timeline', 'Description', 'Submitted'];
+                      const rows = partners.map((p) => [
+                        p.companyName,
+                        p.contactName,
+                        p.email,
+                        p.projectType,
+                        p.timeline,
+                        `"${p.description.replace(/"/g, '""')}"`,
+                        new Date(p.submittedAt).toLocaleString(),
+                      ]);
+                      const csv = [headers, ...rows].map((r) => r.join(',')).join('\n');
+                      const blob = new Blob([csv], { type: 'text/csv' });
+                      const url = URL.createObjectURL(blob);
+                      const a = document.createElement('a');
+                      a.href = url;
+                      a.download = `lc3-partners-${new Date().toISOString().slice(0, 10)}.csv`;
+                      a.click();
+                      URL.revokeObjectURL(url);
+                    }}
+                    className="flex items-center gap-2 px-4 py-2 bg-[#0f0f1a] border border-[#1e1e2e] text-slate-300 text-sm font-medium rounded-xl hover:border-violet-500/40 hover:text-white transition-all"
+                  >
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                    </svg>
+                    Export CSV
+                  </button>
+                )}
+              </div>
+              {partners.length === 0 ? (
+                <div className="text-center py-16 text-slate-500 border border-[#1e1e2e] rounded-2xl">No inquiries yet.</div>
+              ) : (
+                <div className="space-y-3">
+                  {partners.map((p) => (
+                    <div key={p.id} className="bg-[#0f0f1a] border border-[#1e1e2e] rounded-xl p-5">
+                      <div className="flex items-start justify-between gap-4 mb-3">
+                        <div>
+                          <div className="text-white font-medium">{p.companyName}</div>
+                          <div className="text-slate-500 text-sm">{p.contactName} · {p.email}</div>
+                        </div>
+                        <div className="text-slate-600 text-xs flex-shrink-0">
+                          {new Date(p.submittedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                        </div>
+                      </div>
+                      <div className="flex gap-2 mb-3">
+                        <span className="text-xs bg-blue-500/10 border border-blue-500/20 text-blue-400 px-2.5 py-1 rounded-full">{p.projectType}</span>
+                        <span className="text-xs bg-white/5 border border-white/10 text-slate-400 px-2.5 py-1 rounded-full">{p.timeline}</span>
+                      </div>
+                      <p className="text-slate-400 text-sm leading-relaxed bg-[#13131f] rounded-lg p-3">{p.description}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           )}
 
