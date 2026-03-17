@@ -9,6 +9,13 @@ interface Stats {
   yearsActive: string;
 }
 
+interface SiteSettings {
+  recruitingBanner: string;
+  meetingDay: string;
+  meetingTime: string;
+  meetingLocation: string;
+}
+
 interface Member {
   id: string;
   name: string;
@@ -461,12 +468,13 @@ function ProjectModal({
 
 // ─── Dashboard ───────────────────────────────────────────────────────────────
 function Dashboard() {
-  const [tab, setTab] = useState<'members' | 'events' | 'contacts' | 'projects' | 'stats'>('members');
+  const [tab, setTab] = useState<'members' | 'events' | 'contacts' | 'projects' | 'stats' | 'settings'>('members');
   const [members, setMembers] = useState<Member[]>([]);
   const [events, setEvents] = useState<Event[]>([]);
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
   const [stats, setStats] = useState<Stats>({ activeMembers: '', eventsHosted: '', projectsBuilt: '', yearsActive: '' });
+  const [siteSettings, setSiteSettings] = useState<SiteSettings>({ recruitingBanner: '', meetingDay: '', meetingTime: '', meetingLocation: '' });
   const [loading, setLoading] = useState(true);
 
   const [memberModal, setMemberModal] = useState<{ open: boolean; member: Member | null }>({ open: false, member: null });
@@ -476,18 +484,20 @@ function Dashboard() {
 
   const fetchData = useCallback(async () => {
     setLoading(true);
-    const [m, e, c, p, s] = await Promise.all([
+    const [m, e, c, p, s, st] = await Promise.all([
       fetch('/api/members').then((r) => r.json()),
       fetch('/api/events').then((r) => r.json()),
       fetch('/api/contact').then((r) => r.json()),
       fetch('/api/projects').then((r) => r.json()),
       fetch('/api/stats').then((r) => r.json()),
+      fetch('/api/settings').then((r) => r.json()),
     ]);
     setMembers(m);
     setEvents(e);
     setContacts(c);
     setProjects(p);
     setStats(s);
+    setSiteSettings(st);
     setLoading(false);
   }, []);
 
@@ -546,6 +556,7 @@ function Dashboard() {
     { id: 'projects' as const, label: 'Projects', count: projects.length },
     { id: 'contacts' as const, label: 'Contacts', count: contacts.length },
     { id: 'stats' as const, label: 'Stats', count: null },
+    { id: 'settings' as const, label: 'Settings', count: null },
   ];
 
   return (
@@ -817,6 +828,62 @@ function Dashboard() {
                   className="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-violet-600 text-white text-sm font-semibold rounded-xl hover:opacity-90 transition-opacity"
                 >
                   Save Stats
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Settings Tab */}
+          {tab === 'settings' && (
+            <div>
+              <div className="mb-4">
+                <h2 className="text-lg font-semibold text-white">Site Settings</h2>
+                <p className="text-slate-500 text-sm mt-1">Control site-wide content like the recruiting banner and meeting details.</p>
+              </div>
+              <div className="bg-[#0f0f1a] border border-[#1e1e2e] rounded-2xl p-6 space-y-5">
+                <div>
+                  <label className="block text-sm font-medium text-slate-300 mb-1.5">
+                    Recruiting Banner <span className="text-slate-500 font-normal">(leave blank to hide)</span>
+                  </label>
+                  <input
+                    type="text"
+                    value={siteSettings.recruitingBanner}
+                    onChange={(e) => setSiteSettings((s) => ({ ...s, recruitingBanner: e.target.value }))}
+                    placeholder="Now recruiting for Spring 2026"
+                    className="w-full bg-[#13131f] border border-[#1e1e2e] text-white placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                  />
+                </div>
+
+                <div>
+                  <p className="text-xs text-slate-500 font-medium uppercase tracking-wider mb-3">Weekly Meeting Info</p>
+                  <div className="grid sm:grid-cols-3 gap-4">
+                    {[
+                      { key: 'meetingDay' as const, label: 'Day', placeholder: 'Thursday' },
+                      { key: 'meetingTime' as const, label: 'Time', placeholder: '6:00 PM' },
+                      { key: 'meetingLocation' as const, label: 'Location', placeholder: 'Engineering Building, Room 101' },
+                    ].map(({ key, label, placeholder }) => (
+                      <div key={key}>
+                        <label className="block text-sm font-medium text-slate-400 mb-1.5">{label}</label>
+                        <input
+                          type="text"
+                          value={siteSettings[key]}
+                          onChange={(e) => setSiteSettings((s) => ({ ...s, [key]: e.target.value }))}
+                          placeholder={placeholder}
+                          className="w-full bg-[#13131f] border border-[#1e1e2e] text-white placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <button
+                  onClick={async () => {
+                    await fetch('/api/settings', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(siteSettings) });
+                    fetchData();
+                  }}
+                  className="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-violet-600 text-white text-sm font-semibold rounded-xl hover:opacity-90 transition-opacity"
+                >
+                  Save Settings
                 </button>
               </div>
             </div>

@@ -50,6 +50,13 @@ export interface Contact {
   submittedAt: string;
 }
 
+export interface SiteSettings {
+  recruitingBanner: string;
+  meetingDay: string;
+  meetingTime: string;
+  meetingLocation: string;
+}
+
 export interface Stats {
   activeMembers: string;
   eventsHosted: string;

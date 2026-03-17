@@ -198,9 +198,15 @@ export default function MembersPage() {
       <div className="text-center mb-16">
         <p className="text-violet-400 text-sm font-medium mb-2">The people behind the code</p>
         <h1 className="text-4xl sm:text-5xl font-bold text-white mb-4">Meet Our Members</h1>
-        <p className="text-slate-400 max-w-xl mx-auto">
+        <p className="text-slate-400 max-w-xl mx-auto mb-4">
           A diverse group of students and advisors united by a passion for technology and building things that matter.
         </p>
+        {members.length > 0 && (
+          <div className="inline-flex items-center gap-2 bg-white/5 border border-white/10 text-slate-400 text-sm px-4 py-1.5 rounded-full">
+            <span className="w-1.5 h-1.5 bg-violet-400 rounded-full" />
+            {members.length} member{members.length !== 1 ? 's' : ''} total
+          </div>
+        )}
       </div>
 
       {isEmpty ? (

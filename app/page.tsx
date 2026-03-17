@@ -1,14 +1,53 @@
 import Link from 'next/link';
-import { readJSON, Member, Event, Project, Stats } from '@/lib/data';
+import { readJSON, Event, Project, Stats, SiteSettings } from '@/lib/data';
 
 export const dynamic = 'force-dynamic';
 
 export default function HomePage() {
-  const members = readJSON<Member[]>('members.json');
   const events = readJSON<Event[]>('events.json');
   const featuredProjects = readJSON<Project[]>('projects.json');
-  const stats = readJSON<Stats>('stats.json');
+  const stats = readJSON<Stats>('stats.json', { activeMembers: '0', eventsHosted: '0', projectsBuilt: '0', yearsActive: '0' });
+  const settings = readJSON<SiteSettings>('settings.json', { recruitingBanner: '', meetingDay: '', meetingTime: '', meetingLocation: '' });
   const upcomingEvents = events.filter((e) => e.type === 'upcoming').slice(0, 2);
+
+  const missionItems = [
+    {
+      title: 'Build Projects',
+      desc: 'Work on real-world software that matters',
+      icon: (
+        <svg className="w-5 h-5 text-violet-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+        </svg>
+      ),
+    },
+    {
+      title: 'Learn Skills',
+      desc: 'Workshops, talks, and hands-on practice',
+      icon: (
+        <svg className="w-5 h-5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+        </svg>
+      ),
+    },
+    {
+      title: 'Network',
+      desc: 'Connect with peers and industry mentors',
+      icon: (
+        <svg className="w-5 h-5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+      ),
+    },
+    {
+      title: 'Compete',
+      desc: 'Hackathons and CTF competitions',
+      icon: (
+        <svg className="w-5 h-5 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+        </svg>
+      ),
+    },
+  ];
 
   return (
     <div>
@@ -20,10 +59,12 @@ export default function HomePage() {
         </div>
 
         <div className="max-w-6xl mx-auto px-4 sm:px-6 text-center">
-          <div className="inline-flex items-center gap-2 bg-violet-500/10 border border-violet-500/20 text-violet-400 text-sm px-4 py-1.5 rounded-full mb-6">
-            <span className="w-2 h-2 bg-violet-400 rounded-full animate-pulse" />
-            Now recruiting for Spring 2026
-          </div>
+          {settings.recruitingBanner && (
+            <div className="inline-flex items-center gap-2 bg-violet-500/10 border border-violet-500/20 text-violet-400 text-sm px-4 py-1.5 rounded-full mb-6">
+              <span className="w-2 h-2 bg-violet-400 rounded-full animate-pulse" />
+              {settings.recruitingBanner}
+            </div>
+          )}
 
           <h1 className="text-5xl sm:text-7xl font-bold text-white mb-6 tracking-tight">
             Welcome to{' '}
@@ -65,7 +106,7 @@ export default function HomePage() {
           ].map(({ value, label }) => (
             <div key={label}>
               <div className="text-3xl font-bold bg-gradient-to-r from-blue-400 to-violet-400 bg-clip-text text-transparent">
-                {value}
+                {value || '—'}
               </div>
               <div className="text-slate-500 text-sm mt-1">{label}</div>
             </div>
@@ -99,17 +140,14 @@ export default function HomePage() {
           </div>
 
           <div className="grid grid-cols-2 gap-4">
-            {[
-              { icon: '🚀', title: 'Build Projects', desc: 'Work on real-world software that matters' },
-              { icon: '🧠', title: 'Learn Skills', desc: 'Workshops, talks, and hands-on practice' },
-              { icon: '🤝', title: 'Network', desc: 'Connect with peers and industry mentors' },
-              { icon: '🏆', title: 'Compete', desc: 'Hackathons and CTF competitions' },
-            ].map(({ icon, title, desc }) => (
+            {missionItems.map(({ icon, title, desc }) => (
               <div
                 key={title}
                 className="bg-[#0f0f1a] border border-[#1e1e2e] rounded-xl p-5 hover:border-violet-500/30 transition-colors"
               >
-                <div className="text-2xl mb-2">{icon}</div>
+                <div className="w-9 h-9 rounded-lg bg-white/5 flex items-center justify-center mb-3">
+                  {icon}
+                </div>
                 <div className="text-white font-medium text-sm mb-1">{title}</div>
                 <div className="text-slate-500 text-xs leading-relaxed">{desc}</div>
               </div>
@@ -144,21 +182,14 @@ export default function HomePage() {
                     <p className="text-slate-400 text-sm leading-relaxed mb-4">{project.description}</p>
                     <div className="flex flex-wrap gap-2">
                       {project.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="text-xs bg-white/5 border border-white/10 text-slate-400 px-2.5 py-1 rounded-md"
-                        >
+                        <span key={tag} className="text-xs bg-white/5 border border-white/10 text-slate-400 px-2.5 py-1 rounded-md">
                           {tag}
                         </span>
                       ))}
                     </div>
                     {project.github && (
-                      <a
-                        href={project.github}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 mt-4 text-xs text-slate-500 hover:text-white transition-colors"
-                      >
+                      <a href={project.github} target="_blank" rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 mt-4 text-xs text-slate-500 hover:text-white transition-colors">
                         <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
                           <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.385-1.335-1.755-1.335-1.755-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12" />
                         </svg>
@@ -188,10 +219,7 @@ export default function HomePage() {
 
           <div className="grid md:grid-cols-2 gap-6">
             {upcomingEvents.map((event) => (
-              <div
-                key={event.id}
-                className="bg-[#0f0f1a] border border-[#1e1e2e] rounded-2xl p-6 hover:border-blue-500/30 transition-all"
-              >
+              <div key={event.id} className="bg-[#0f0f1a] border border-[#1e1e2e] rounded-2xl p-6 hover:border-blue-500/30 transition-all">
                 <div className="flex items-start gap-4">
                   <div className="flex-shrink-0 text-center bg-blue-500/10 border border-blue-500/20 rounded-xl px-3 py-2 min-w-[52px]">
                     <div className="text-blue-400 text-xs font-medium">
