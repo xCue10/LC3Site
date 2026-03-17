@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export default function Footer() {
   return (
-    <footer className="border-t border-[#1e1e2e] bg-[#0f0f1a] mt-auto">
+    <footer className="border-t border-[#1e2d45] bg-[#0d1424] mt-auto">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
@@ -49,7 +49,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-[#1e1e2e] mt-8 pt-6 text-center text-slate-500 text-sm">
+        <div className="border-t border-[#1e2d45] mt-8 pt-6 text-center text-slate-500 text-sm">
           © {new Date().getFullYear()} LC3 - Lowcode Cloud Club. All rights reserved.
         </div>
       </div>

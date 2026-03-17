@@ -121,7 +121,7 @@ export default function ContactForm({ settings }: { settings: SiteSettings }) {
           <div className="space-y-4">
             {infoItems(settings).map(({ icon, title, desc }) => (
               <div key={title} className="flex items-start gap-4">
-                <div className="w-10 h-10 bg-[#0f0f1a] border border-[#1e1e2e] rounded-xl flex items-center justify-center flex-shrink-0">
+                <div className="w-10 h-10 bg-[#0d1424] border border-[#1e2d45] rounded-xl flex items-center justify-center flex-shrink-0">
                   {icon}
                 </div>
                 <div>
@@ -134,7 +134,7 @@ export default function ContactForm({ settings }: { settings: SiteSettings }) {
         </div>
 
         {/* Right: Form */}
-        <div className="bg-[#0f0f1a] border border-[#1e1e2e] rounded-2xl p-8">
+        <div className="bg-[#0d1424] border border-[#1e2d45] rounded-2xl p-8">
           <h2 className="text-xl font-semibold text-white mb-6">Interest Form</h2>
 
           <form onSubmit={handleSubmit} className="space-y-5">
@@ -144,7 +144,7 @@ export default function ContactForm({ settings }: { settings: SiteSettings }) {
               </label>
               <input id="name" name="name" type="text" required value={form.name} onChange={handleChange}
                 placeholder="Your full name"
-                className="w-full bg-[#13131f] border border-[#1e1e2e] text-white placeholder:text-slate-600 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-violet-500/50 focus:ring-1 focus:ring-violet-500/30 transition-all" />
+                className="w-full bg-[#111a2e] border border-[#1e2d45] text-white placeholder:text-slate-600 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-violet-500/50 focus:ring-1 focus:ring-violet-500/30 transition-all" />
             </div>
 
             <div>
@@ -153,7 +153,7 @@ export default function ContactForm({ settings }: { settings: SiteSettings }) {
               </label>
               <input id="email" name="email" type="email" required value={form.email} onChange={handleChange}
                 placeholder="you@university.edu"
-                className="w-full bg-[#13131f] border border-[#1e1e2e] text-white placeholder:text-slate-600 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-violet-500/50 focus:ring-1 focus:ring-violet-500/30 transition-all" />
+                className="w-full bg-[#111a2e] border border-[#1e2d45] text-white placeholder:text-slate-600 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-violet-500/50 focus:ring-1 focus:ring-violet-500/30 transition-all" />
             </div>
 
             <div>
@@ -161,9 +161,9 @@ export default function ContactForm({ settings }: { settings: SiteSettings }) {
                 Major <span className="text-violet-400">*</span>
               </label>
               <select id="major" name="major" required value={form.major} onChange={handleChange}
-                className="w-full bg-[#13131f] border border-[#1e1e2e] text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-violet-500/50 focus:ring-1 focus:ring-violet-500/30 transition-all appearance-none cursor-pointer">
+                className="w-full bg-[#111a2e] border border-[#1e2d45] text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-violet-500/50 focus:ring-1 focus:ring-violet-500/30 transition-all appearance-none cursor-pointer">
                 <option value="">Select your major...</option>
-                {majors.map((m) => <option key={m} value={m} className="bg-[#13131f]">{m}</option>)}
+                {majors.map((m) => <option key={m} value={m} className="bg-[#111a2e]">{m}</option>)}
               </select>
             </div>
 
@@ -173,7 +173,7 @@ export default function ContactForm({ settings }: { settings: SiteSettings }) {
               </label>
               <textarea id="reason" name="reason" required rows={4} value={form.reason} onChange={handleChange}
                 placeholder="Tell us about yourself, your interests, and what you hope to get out of LC3..."
-                className="w-full bg-[#13131f] border border-[#1e1e2e] text-white placeholder:text-slate-600 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-violet-500/50 focus:ring-1 focus:ring-violet-500/30 transition-all resize-none" />
+                className="w-full bg-[#111a2e] border border-[#1e2d45] text-white placeholder:text-slate-600 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-violet-500/50 focus:ring-1 focus:ring-violet-500/30 transition-all resize-none" />
             </div>
 
             {error && (

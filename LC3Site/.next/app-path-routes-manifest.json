@@ -1,0 +1,15 @@
+{
+  "/_global-error/page": "/_global-error",
+  "/_not-found/page": "/_not-found",
+  "/admin/page": "/admin",
+  "/api/contact/route": "/api/contact",
+  "/api/events/[id]/route": "/api/events/[id]",
+  "/api/events/route": "/api/events",
+  "/api/members/[id]/route": "/api/members/[id]",
+  "/api/members/route": "/api/members",
+  "/contact/page": "/contact",
+  "/events/page": "/events",
+  "/favicon.ico/route": "/favicon.ico",
+  "/members/page": "/members",
+  "/page": "/"
+}

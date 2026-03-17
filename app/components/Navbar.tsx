@@ -17,7 +17,8 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-[#1e1e2e] bg-[#08080f]/80 backdrop-blur-md">
+    <header className="sticky top-0 z-50 border-b border-[#1e2d45] bg-[#080d18]/85 backdrop-blur-xl">
+      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-violet-500/30 to-transparent" />
       <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 group" onClick={() => setMenuOpen(false)}>
@@ -64,7 +65,7 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       {menuOpen && (
-        <div className="sm:hidden border-t border-[#1e1e2e] bg-[#08080f]/95 backdrop-blur-md px-4 py-3 flex flex-col gap-1">
+        <div className="sm:hidden border-t border-[#1e2d45] bg-[#080d18]/95 backdrop-blur-md px-4 py-3 flex flex-col gap-1">
           {links.map(({ href, label }) => {
             const isActive = pathname === href;
             return (

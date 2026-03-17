@@ -52,7 +52,7 @@ export default function EventsPage() {
         </div>
 
         {upcoming.length === 0 ? (
-          <div className="bg-[#0f0f1a] border border-[#1e1e2e] rounded-2xl p-10 text-center text-slate-500">
+          <div className="bg-[#0d1424] border border-[#1e2d45] rounded-2xl p-10 text-center text-slate-500">
             No upcoming events scheduled. Check back soon!
           </div>
         ) : (
@@ -60,7 +60,7 @@ export default function EventsPage() {
             {upcoming.map((event) => (
               <div
                 key={event.id}
-                className="bg-[#0f0f1a] border border-[#1e1e2e] rounded-2xl p-6 hover:border-blue-500/30 transition-all group"
+                className="bg-[#0d1424] border border-[#1e2d45] rounded-2xl p-6 hover:border-blue-500/30 transition-all group"
               >
                 <div className="flex flex-col sm:flex-row sm:items-start gap-4">
                   {/* Date block */}
@@ -116,7 +116,7 @@ export default function EventsPage() {
         </div>
 
         {past.length === 0 ? (
-          <div className="bg-[#0f0f1a] border border-[#1e1e2e] rounded-2xl p-10 text-center text-slate-500">
+          <div className="bg-[#0d1424] border border-[#1e2d45] rounded-2xl p-10 text-center text-slate-500">
             No past events recorded yet.
           </div>
         ) : (
@@ -124,7 +124,7 @@ export default function EventsPage() {
             {past.map((event) => (
               <div
                 key={event.id}
-                className="bg-[#0f0f1a] border border-[#1e1e2e] rounded-2xl p-6 opacity-80 hover:opacity-100 transition-all group"
+                className="bg-[#0d1424] border border-[#1e2d45] rounded-2xl p-6 opacity-80 hover:opacity-100 transition-all group"
               >
                 <div className="flex flex-col sm:flex-row sm:items-start gap-4">
                   {/* Date block */}

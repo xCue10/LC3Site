@@ -134,7 +134,7 @@ export default function HireForm() {
               },
             ].map(({ icon, title, desc }) => (
               <div key={title} className="flex items-start gap-4">
-                <div className="w-10 h-10 bg-[#0f0f1a] border border-[#1e1e2e] rounded-xl flex items-center justify-center flex-shrink-0">
+                <div className="w-10 h-10 bg-[#0d1424] border border-[#1e2d45] rounded-xl flex items-center justify-center flex-shrink-0">
                   {icon}
                 </div>
                 <div>
@@ -147,7 +147,7 @@ export default function HireForm() {
         </div>
 
         {/* Right: Form */}
-        <div className="bg-[#0f0f1a] border border-[#1e1e2e] rounded-2xl p-8">
+        <div className="bg-[#0d1424] border border-[#1e2d45] rounded-2xl p-8">
           <h2 className="text-xl font-semibold text-white mb-6">Project Inquiry</h2>
 
           <form onSubmit={handleSubmit} className="space-y-5">
@@ -160,7 +160,7 @@ export default function HireForm() {
                   id="companyName" name="companyName" type="text" required
                   value={form.companyName} onChange={handleChange}
                   placeholder="Acme Corp"
-                  className="w-full bg-[#13131f] border border-[#1e1e2e] text-white placeholder:text-slate-600 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-violet-500/50 focus:ring-1 focus:ring-violet-500/30 transition-all"
+                  className="w-full bg-[#111a2e] border border-[#1e2d45] text-white placeholder:text-slate-600 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-violet-500/50 focus:ring-1 focus:ring-violet-500/30 transition-all"
                 />
               </div>
               <div>
@@ -171,7 +171,7 @@ export default function HireForm() {
                   id="contactName" name="contactName" type="text" required
                   value={form.contactName} onChange={handleChange}
                   placeholder="Jane Smith"
-                  className="w-full bg-[#13131f] border border-[#1e1e2e] text-white placeholder:text-slate-600 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-violet-500/50 focus:ring-1 focus:ring-violet-500/30 transition-all"
+                  className="w-full bg-[#111a2e] border border-[#1e2d45] text-white placeholder:text-slate-600 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-violet-500/50 focus:ring-1 focus:ring-violet-500/30 transition-all"
                 />
               </div>
             </div>
@@ -184,7 +184,7 @@ export default function HireForm() {
                 id="email" name="email" type="email" required
                 value={form.email} onChange={handleChange}
                 placeholder="jane@company.com"
-                className="w-full bg-[#13131f] border border-[#1e1e2e] text-white placeholder:text-slate-600 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-violet-500/50 focus:ring-1 focus:ring-violet-500/30 transition-all"
+                className="w-full bg-[#111a2e] border border-[#1e2d45] text-white placeholder:text-slate-600 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-violet-500/50 focus:ring-1 focus:ring-violet-500/30 transition-all"
               />
             </div>
 
@@ -196,10 +196,10 @@ export default function HireForm() {
                 <select
                   id="projectType" name="projectType" required
                   value={form.projectType} onChange={handleChange}
-                  className="w-full bg-[#13131f] border border-[#1e1e2e] text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-violet-500/50 focus:ring-1 focus:ring-violet-500/30 transition-all appearance-none cursor-pointer"
+                  className="w-full bg-[#111a2e] border border-[#1e2d45] text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-violet-500/50 focus:ring-1 focus:ring-violet-500/30 transition-all appearance-none cursor-pointer"
                 >
                   <option value="">Select type...</option>
-                  {projectTypes.map((t) => <option key={t} value={t} className="bg-[#13131f]">{t}</option>)}
+                  {projectTypes.map((t) => <option key={t} value={t} className="bg-[#111a2e]">{t}</option>)}
                 </select>
               </div>
               <div>
@@ -209,10 +209,10 @@ export default function HireForm() {
                 <select
                   id="timeline" name="timeline" required
                   value={form.timeline} onChange={handleChange}
-                  className="w-full bg-[#13131f] border border-[#1e1e2e] text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-violet-500/50 focus:ring-1 focus:ring-violet-500/30 transition-all appearance-none cursor-pointer"
+                  className="w-full bg-[#111a2e] border border-[#1e2d45] text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-violet-500/50 focus:ring-1 focus:ring-violet-500/30 transition-all appearance-none cursor-pointer"
                 >
                   <option value="">Select timeline...</option>
-                  {timelines.map((t) => <option key={t} value={t} className="bg-[#13131f]">{t}</option>)}
+                  {timelines.map((t) => <option key={t} value={t} className="bg-[#111a2e]">{t}</option>)}
                 </select>
               </div>
             </div>
@@ -225,7 +225,7 @@ export default function HireForm() {
                 id="description" name="description" required rows={5}
                 value={form.description} onChange={handleChange}
                 placeholder="Describe what you need built, the problem it solves, and any technical requirements or constraints..."
-                className="w-full bg-[#13131f] border border-[#1e1e2e] text-white placeholder:text-slate-600 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-violet-500/50 focus:ring-1 focus:ring-violet-500/30 transition-all resize-none"
+                className="w-full bg-[#111a2e] border border-[#1e2d45] text-white placeholder:text-slate-600 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-violet-500/50 focus:ring-1 focus:ring-violet-500/30 transition-all resize-none"
               />
             </div>
 

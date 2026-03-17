@@ -52,15 +52,18 @@ export default function HomePage() {
   return (
     <div>
       {/* Hero */}
-      <section className="relative overflow-hidden py-24 sm:py-32">
-        <div className="absolute inset-0 -z-10">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-violet-600/10 rounded-full blur-3xl" />
-          <div className="absolute top-1/4 left-1/4 w-[300px] h-[300px] bg-blue-600/10 rounded-full blur-3xl" />
+      <section className="relative overflow-hidden py-28 sm:py-36">
+        {/* Background glows */}
+        <div className="absolute inset-0 -z-10 overflow-hidden">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[2px] bg-gradient-to-r from-transparent via-violet-500/40 to-transparent" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-violet-600/15 rounded-full blur-3xl" />
+          <div className="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-blue-600/15 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 right-1/4 w-[300px] h-[300px] bg-cyan-600/10 rounded-full blur-3xl" />
         </div>
 
         <div className="max-w-6xl mx-auto px-4 sm:px-6 text-center">
           {settings.recruitingBanner && (
-            <div className="inline-flex items-center gap-2 bg-violet-500/10 border border-violet-500/20 text-violet-400 text-sm px-4 py-1.5 rounded-full mb-6">
+            <div className="inline-flex items-center gap-2 bg-violet-500/10 border border-violet-500/25 text-violet-300 text-sm px-4 py-1.5 rounded-full mb-8">
               <span className="w-2 h-2 bg-violet-400 rounded-full animate-pulse" />
               {settings.recruitingBanner}
             </div>
@@ -68,12 +71,12 @@ export default function HomePage() {
 
           <h1 className="text-5xl sm:text-7xl font-bold text-white mb-6 tracking-tight">
             Welcome to{' '}
-            <span className="bg-gradient-to-r from-blue-400 to-violet-500 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-violet-500 bg-clip-text text-transparent">
               LC3
             </span>
           </h1>
 
-          <p className="text-slate-400 text-lg sm:text-xl max-w-2xl mx-auto leading-relaxed mb-10">
+          <p className="text-slate-300 text-lg sm:text-xl max-w-2xl mx-auto leading-relaxed mb-10">
             We are a community of passionate students building real projects, learning from each other, and launching
             careers in tech — one hackathon at a time.
           </p>
@@ -81,13 +84,13 @@ export default function HomePage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/contact"
-              className="px-8 py-3.5 bg-gradient-to-r from-blue-600 to-violet-600 text-white font-semibold rounded-xl hover:opacity-90 transition-all shadow-lg shadow-violet-500/25 hover:shadow-violet-500/40"
+              className="px-8 py-3.5 bg-gradient-to-r from-blue-600 to-violet-600 text-white font-semibold rounded-xl hover:from-blue-500 hover:to-violet-500 transition-all shadow-lg shadow-violet-500/30 hover:shadow-violet-500/50 hover:-translate-y-0.5"
             >
               Join the Club
             </Link>
             <Link
               href="/members"
-              className="px-8 py-3.5 bg-white/5 border border-white/10 text-white font-semibold rounded-xl hover:bg-white/10 transition-all"
+              className="px-8 py-3.5 bg-white/5 border border-white/15 text-white font-semibold rounded-xl hover:bg-white/10 hover:border-white/25 transition-all hover:-translate-y-0.5"
             >
               Meet the Team
             </Link>
@@ -96,7 +99,7 @@ export default function HomePage() {
       </section>
 
       {/* Stats */}
-      <section className="border-y border-[#1e1e2e] bg-[#0f0f1a]">
+      <section className="border-y border-[#1e2d45] bg-[#0d1424]">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
           {[
             { value: stats.activeMembers, label: 'Active Members' },
@@ -119,12 +122,12 @@ export default function HomePage() {
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div>
             <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">Our Mission</h2>
-            <p className="text-slate-400 leading-relaxed mb-4">
+            <p className="text-slate-300 leading-relaxed mb-4">
               LC3 - Lowcode Cloud Club exists to bridge the gap between classroom theory and real-world application. We provide
               students with hands-on experience, mentorship from industry professionals, and a collaborative community
               to grow in.
             </p>
-            <p className="text-slate-400 leading-relaxed mb-6">
+            <p className="text-slate-300 leading-relaxed mb-6">
               Whether you&apos;re a curious beginner or an experienced developer, there&apos;s a place for you here.
               We believe the best way to learn is by building — together.
             </p>
@@ -143,7 +146,7 @@ export default function HomePage() {
             {missionItems.map(({ icon, title, desc }) => (
               <div
                 key={title}
-                className="bg-[#0f0f1a] border border-[#1e1e2e] rounded-xl p-5 hover:border-violet-500/30 transition-colors"
+                className="bg-[#0d1424] border border-[#1e2d45] rounded-xl p-5 hover:border-violet-500/30 transition-colors"
               >
                 <div className="w-9 h-9 rounded-lg bg-white/5 flex items-center justify-center mb-3">
                   {icon}
@@ -158,7 +161,7 @@ export default function HomePage() {
 
       {/* Featured Projects */}
       {featuredProjects.length > 0 && (
-        <section className="py-20 bg-[#0f0f1a] border-t border-[#1e1e2e]">
+        <section className="py-20 bg-[#0d1424] border-t border-[#1e2d45]">
           <div className="max-w-6xl mx-auto px-4 sm:px-6">
             <div className="flex items-end justify-between mb-10">
               <div>
@@ -174,7 +177,7 @@ export default function HomePage() {
               {featuredProjects.map((project) => (
                 <div
                   key={project.id}
-                  className="bg-[#13131f] border border-[#1e1e2e] rounded-2xl overflow-hidden hover:border-violet-500/30 transition-all hover:-translate-y-0.5"
+                  className="bg-[#111a2e] border border-[#1e2d45] rounded-2xl overflow-hidden hover:border-violet-500/30 transition-all hover:-translate-y-0.5"
                 >
                   <div className={`h-1.5 bg-gradient-to-r ${project.gradient}`} />
                   <div className="p-6">
@@ -219,7 +222,7 @@ export default function HomePage() {
 
           <div className="grid md:grid-cols-2 gap-6">
             {upcomingEvents.map((event) => (
-              <div key={event.id} className="bg-[#0f0f1a] border border-[#1e1e2e] rounded-2xl p-6 hover:border-blue-500/30 transition-all">
+              <div key={event.id} className="bg-[#0d1424] border border-[#1e2d45] rounded-2xl p-6 hover:border-blue-500/30 transition-all">
                 <div className="flex items-start gap-4">
                   <div className="flex-shrink-0 text-center bg-blue-500/10 border border-blue-500/20 rounded-xl px-3 py-2 min-w-[52px]">
                     <div className="text-blue-400 text-xs font-medium">
@@ -248,10 +251,10 @@ export default function HomePage() {
       )}
 
       {/* CTA */}
-      <section className="py-20 border-t border-[#1e1e2e]">
+      <section className="py-20 border-t border-[#1e2d45]">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
           <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">Ready to join?</h2>
-          <p className="text-slate-400 mb-8">
+          <p className="text-slate-300 mb-8">
             Fill out our quick interest form and we&apos;ll get back to you with details about our next meeting.
           </p>
           <Link

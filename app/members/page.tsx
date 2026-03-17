@@ -58,7 +58,7 @@ function SkillTags({ skills }: { skills: string[] }) {
 function SocialLinks({ member }: { member: Member }) {
   const hasSocials = member.github || member.linkedin || member.twitter;
   return (
-    <div className="flex items-center gap-2 pt-4 border-t border-[#1e1e2e]">
+    <div className="flex items-center gap-2 pt-4 border-t border-[#1e2d45]">
       {member.github && (
         <a href={member.github} target="_blank" rel="noopener noreferrer"
           className="flex items-center justify-center w-8 h-8 rounded-lg bg-white/5 text-slate-400 hover:text-white hover:bg-white/10 transition-all" aria-label="GitHub">
@@ -84,7 +84,7 @@ function SocialLinks({ member }: { member: Member }) {
 
 function MemberCard({ member, index }: { member: Member; index: number }) {
   return (
-    <div className="bg-[#0f0f1a] border border-[#1e1e2e] rounded-2xl p-6 hover:border-violet-500/30 transition-all hover:-translate-y-0.5 flex flex-col">
+    <div className="bg-[#0d1424] border border-[#1e2d45] rounded-2xl p-6 hover:border-violet-500/30 transition-all hover:-translate-y-0.5 flex flex-col">
       <div className="flex items-center gap-4 mb-4">
         <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${avatarGradients[index % avatarGradients.length]} flex items-center justify-center text-white font-bold text-lg shadow-lg flex-shrink-0`}>
           {getInitials(member.name)}
@@ -126,7 +126,7 @@ function MemberCard({ member, index }: { member: Member; index: number }) {
 
 function AdvisorCard({ member, index }: { member: Member; index: number }) {
   return (
-    <div className="bg-[#0f0f1a] border border-amber-500/20 rounded-2xl p-6 hover:border-amber-500/40 transition-all flex flex-col">
+    <div className="bg-[#0d1424] border border-amber-500/20 rounded-2xl p-6 hover:border-amber-500/40 transition-all flex flex-col">
       <div className="flex items-center gap-4 mb-4">
         <div className={`w-16 h-16 rounded-xl bg-gradient-to-br ${avatarGradients[index % avatarGradients.length]} flex items-center justify-center text-white font-bold text-xl shadow-lg flex-shrink-0`}>
           {getInitials(member.name)}
@@ -160,7 +160,7 @@ function AdvisorCard({ member, index }: { member: Member; index: number }) {
 
 function OfficerCard({ member, index }: { member: Member; index: number }) {
   return (
-    <div className="bg-[#0f0f1a] border border-violet-500/20 rounded-2xl p-6 hover:border-violet-500/40 transition-all flex flex-col">
+    <div className="bg-[#0d1424] border border-violet-500/20 rounded-2xl p-6 hover:border-violet-500/40 transition-all flex flex-col">
       <div className="flex items-center gap-4 mb-4">
         <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${avatarGradients[index % avatarGradients.length]} flex items-center justify-center text-white font-bold text-lg shadow-lg flex-shrink-0`}>
           {getInitials(member.name)}
@@ -240,12 +240,12 @@ export default function MembersPage() {
           {advisors.length > 0 && (
             <section>
               <div className="flex items-center gap-3 mb-6">
-                <div className="h-px flex-1 bg-[#1e1e2e]" />
+                <div className="h-px flex-1 bg-[#1e2d45]" />
                 <div className="flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-amber-400" />
                   <h2 className="text-white font-semibold text-lg">Club Advisors</h2>
                 </div>
-                <div className="h-px flex-1 bg-[#1e1e2e]" />
+                <div className="h-px flex-1 bg-[#1e2d45]" />
               </div>
               <div className="grid sm:grid-cols-2 gap-6 max-w-2xl mx-auto">
                 {advisors.map((m, i) => <AdvisorCard key={m.id} member={m} index={i} />)}
@@ -257,12 +257,12 @@ export default function MembersPage() {
           {officers.length > 0 && (
             <section>
               <div className="flex items-center gap-3 mb-6">
-                <div className="h-px flex-1 bg-[#1e1e2e]" />
+                <div className="h-px flex-1 bg-[#1e2d45]" />
                 <div className="flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-violet-400" />
                   <h2 className="text-white font-semibold text-lg">Club Officers</h2>
                 </div>
-                <div className="h-px flex-1 bg-[#1e1e2e]" />
+                <div className="h-px flex-1 bg-[#1e2d45]" />
               </div>
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {officers.map((m, i) => <OfficerCard key={m.id} member={m} index={i} />)}
@@ -274,12 +274,12 @@ export default function MembersPage() {
           {regulars.length > 0 && (
             <section>
               <div className="flex items-center gap-3 mb-6">
-                <div className="h-px flex-1 bg-[#1e1e2e]" />
+                <div className="h-px flex-1 bg-[#1e2d45]" />
                 <div className="flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-blue-400" />
                   <h2 className="text-white font-semibold text-lg">Members</h2>
                 </div>
-                <div className="h-px flex-1 bg-[#1e1e2e]" />
+                <div className="h-px flex-1 bg-[#1e2d45]" />
               </div>
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {regulars.map((m, i) => <MemberCard key={m.id} member={m} index={i} />)}
