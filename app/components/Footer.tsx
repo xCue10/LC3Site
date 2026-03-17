@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export default function Footer() {
   return (
-    <footer className="border-t border-[#1e2d45] bg-[#0d1424] mt-auto">
+    <footer className="border-t border-slate-200 bg-white mt-auto dark:border-[#1e2d45] dark:bg-[#0d1424]">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
@@ -10,15 +10,15 @@ export default function Footer() {
               <div className="w-7 h-7 rounded-md bg-gradient-to-br from-blue-500 to-violet-600 flex items-center justify-center text-white font-bold text-xs">
                 LC3
               </div>
-              <span className="font-semibold text-white">LC3 - Lowcode Cloud Club</span>
+              <span className="font-semibold text-slate-900 dark:text-white">LC3 - Lowcode Cloud Club</span>
             </div>
-            <p className="text-slate-400 text-sm leading-relaxed">
+            <p className="text-slate-500 text-sm leading-relaxed">
               Building the future through code, collaboration, and curiosity.
             </p>
           </div>
 
           <div>
-            <h3 className="text-white font-medium mb-3 text-sm">Quick Links</h3>
+            <h3 className="text-slate-900 dark:text-white font-medium mb-3 text-sm">Quick Links</h3>
             <ul className="space-y-2">
               {[
                 { href: '/', label: 'Home' },
@@ -27,7 +27,7 @@ export default function Footer() {
                 { href: '/contact', label: 'Join Us' },
               ].map(({ href, label }) => (
                 <li key={href}>
-                  <Link href={href} className="text-slate-400 hover:text-violet-400 text-sm transition-colors">
+                  <Link href={href} className="text-slate-500 hover:text-violet-600 dark:hover:text-violet-400 text-sm transition-colors">
                     {label}
                   </Link>
                 </li>
@@ -36,8 +36,8 @@ export default function Footer() {
           </div>
 
           <div>
-            <h3 className="text-white font-medium mb-3 text-sm">Get Involved</h3>
-            <p className="text-slate-400 text-sm mb-3">
+            <h3 className="text-slate-900 dark:text-white font-medium mb-3 text-sm">Get Involved</h3>
+            <p className="text-slate-500 text-sm mb-3">
               Interested in joining? Fill out our interest form and we&apos;ll reach out!
             </p>
             <Link
@@ -49,7 +49,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-[#1e2d45] mt-8 pt-6 text-center text-slate-500 text-sm">
+        <div className="border-t border-slate-200 dark:border-[#1e2d45] mt-8 pt-6 text-center text-slate-400 text-sm">
           © {new Date().getFullYear()} LC3 - Lowcode Cloud Club. All rights reserved.
         </div>
       </div>

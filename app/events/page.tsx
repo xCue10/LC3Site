@@ -33,9 +33,9 @@ export default function EventsPage() {
     <div className="max-w-4xl mx-auto px-4 sm:px-6 py-16">
       {/* Header */}
       <div className="text-center mb-14">
-        <p className="text-blue-400 text-sm font-medium mb-2">Stay in the loop</p>
-        <h1 className="text-4xl sm:text-5xl font-bold text-white mb-4">Events</h1>
-        <p className="text-slate-400 max-w-xl mx-auto">
+        <p className="text-blue-600 dark:text-blue-400 text-sm font-medium mb-2">Stay in the loop</p>
+        <h1 className="text-4xl sm:text-5xl font-bold text-slate-900 dark:text-white mb-4">Events</h1>
+        <p className="text-slate-500 max-w-xl mx-auto">
           From workshops and hackathons to industry panels — there&apos;s always something going on.
         </p>
       </div>
@@ -43,16 +43,16 @@ export default function EventsPage() {
       {/* Upcoming Events */}
       <section className="mb-16">
         <div className="flex items-center gap-3 mb-6">
-          <h2 className="text-2xl font-bold text-white">Upcoming</h2>
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Upcoming</h2>
           {upcoming.length > 0 && (
-            <span className="bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-medium px-2.5 py-1 rounded-full">
+            <span className="bg-blue-50 border border-blue-200 text-blue-600 text-xs font-medium px-2.5 py-1 rounded-full dark:bg-blue-500/10 dark:border-blue-500/20 dark:text-blue-400">
               {upcoming.length} event{upcoming.length !== 1 ? 's' : ''}
             </span>
           )}
         </div>
 
         {upcoming.length === 0 ? (
-          <div className="bg-[#0d1424] border border-[#1e2d45] rounded-2xl p-10 text-center text-slate-500">
+          <div className="bg-white border border-slate-200 rounded-2xl p-10 text-center text-slate-400 dark:bg-[#0d1424] dark:border-[#1e2d45] dark:text-slate-500">
             No upcoming events scheduled. Check back soon!
           </div>
         ) : (
@@ -60,18 +60,18 @@ export default function EventsPage() {
             {upcoming.map((event) => (
               <div
                 key={event.id}
-                className="bg-[#0d1424] border border-[#1e2d45] rounded-2xl p-6 hover:border-blue-500/30 transition-all group"
+                className="bg-white border border-slate-200 rounded-2xl p-6 hover:border-blue-200 hover:shadow-sm transition-all group dark:bg-[#0d1424] dark:border-[#1e2d45] dark:hover:border-blue-500/30 dark:hover:shadow-none"
               >
                 <div className="flex flex-col sm:flex-row sm:items-start gap-4">
                   {/* Date block */}
-                  <div className="flex-shrink-0 text-center bg-blue-500/10 border border-blue-500/20 rounded-xl px-4 py-3 sm:min-w-[64px]">
-                    <div className="text-blue-400 text-xs font-semibold uppercase tracking-wide">
+                  <div className="flex-shrink-0 text-center bg-blue-50 border border-blue-100 rounded-xl px-4 py-3 sm:min-w-[64px] dark:bg-blue-500/10 dark:border-blue-500/20">
+                    <div className="text-blue-600 dark:text-blue-400 text-xs font-semibold uppercase tracking-wide">
                       {new Date(event.date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short' })}
                     </div>
-                    <div className="text-white text-3xl font-bold leading-tight">
+                    <div className="text-slate-900 dark:text-white text-3xl font-bold leading-tight">
                       {new Date(event.date + 'T00:00:00').getDate()}
                     </div>
-                    <div className="text-slate-500 text-xs">
+                    <div className="text-slate-400 text-xs">
                       {new Date(event.date + 'T00:00:00').getFullYear()}
                     </div>
                   </div>
@@ -79,14 +79,14 @@ export default function EventsPage() {
                   {/* Content */}
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="w-2 h-2 bg-blue-400 rounded-full animate-pulse" />
-                      <span className="text-blue-400 text-xs font-medium uppercase tracking-wide">Upcoming</span>
+                      <span className="w-2 h-2 bg-blue-500 rounded-full animate-pulse dark:bg-blue-400" />
+                      <span className="text-blue-600 dark:text-blue-400 text-xs font-medium uppercase tracking-wide">Upcoming</span>
                     </div>
-                    <h3 className="text-white text-xl font-semibold mb-2 group-hover:text-blue-300 transition-colors">
+                    <h3 className="text-slate-900 dark:text-white text-xl font-semibold mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-300 transition-colors">
                       {event.title}
                     </h3>
-                    <p className="text-slate-400 leading-relaxed mb-4">{event.description}</p>
-                    <div className="flex flex-wrap gap-4 text-sm text-slate-500 mb-4">
+                    <p className="text-slate-600 dark:text-slate-400 leading-relaxed mb-4">{event.description}</p>
+                    <div className="flex flex-wrap gap-4 text-sm text-slate-400 mb-4">
                       <span className="flex items-center gap-1.5">
                         <CalendarIcon />
                         {formatDate(event.date)}
@@ -120,16 +120,16 @@ export default function EventsPage() {
       {/* Past Events */}
       <section>
         <div className="flex items-center gap-3 mb-6">
-          <h2 className="text-2xl font-bold text-white">Past Events</h2>
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Past Events</h2>
           {past.length > 0 && (
-            <span className="bg-slate-700/50 border border-slate-600/30 text-slate-400 text-xs font-medium px-2.5 py-1 rounded-full">
+            <span className="bg-slate-100 border border-slate-200 text-slate-500 text-xs font-medium px-2.5 py-1 rounded-full dark:bg-slate-700/50 dark:border-slate-600/30 dark:text-slate-400">
               {past.length} event{past.length !== 1 ? 's' : ''}
             </span>
           )}
         </div>
 
         {past.length === 0 ? (
-          <div className="bg-[#0d1424] border border-[#1e2d45] rounded-2xl p-10 text-center text-slate-500">
+          <div className="bg-white border border-slate-200 rounded-2xl p-10 text-center text-slate-400 dark:bg-[#0d1424] dark:border-[#1e2d45] dark:text-slate-500">
             No past events recorded yet.
           </div>
         ) : (
@@ -137,18 +137,18 @@ export default function EventsPage() {
             {past.map((event) => (
               <div
                 key={event.id}
-                className="bg-[#0d1424] border border-[#1e2d45] rounded-2xl p-6 opacity-80 hover:opacity-100 transition-all group"
+                className="bg-white border border-slate-200 rounded-2xl p-6 opacity-80 hover:opacity-100 transition-all group dark:bg-[#0d1424] dark:border-[#1e2d45]"
               >
                 <div className="flex flex-col sm:flex-row sm:items-start gap-4">
                   {/* Date block */}
-                  <div className="flex-shrink-0 text-center bg-slate-700/20 border border-slate-700/30 rounded-xl px-4 py-3 sm:min-w-[64px]">
-                    <div className="text-slate-500 text-xs font-semibold uppercase tracking-wide">
+                  <div className="flex-shrink-0 text-center bg-slate-100 border border-slate-200 rounded-xl px-4 py-3 sm:min-w-[64px] dark:bg-slate-700/20 dark:border-slate-700/30">
+                    <div className="text-slate-400 text-xs font-semibold uppercase tracking-wide">
                       {new Date(event.date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short' })}
                     </div>
-                    <div className="text-slate-300 text-3xl font-bold leading-tight">
+                    <div className="text-slate-600 dark:text-slate-300 text-3xl font-bold leading-tight">
                       {new Date(event.date + 'T00:00:00').getDate()}
                     </div>
-                    <div className="text-slate-600 text-xs">
+                    <div className="text-slate-400 dark:text-slate-600 text-xs">
                       {new Date(event.date + 'T00:00:00').getFullYear()}
                     </div>
                   </div>
@@ -156,12 +156,12 @@ export default function EventsPage() {
                   {/* Content */}
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="w-2 h-2 bg-slate-600 rounded-full" />
-                      <span className="text-slate-500 text-xs font-medium uppercase tracking-wide">Past</span>
+                      <span className="w-2 h-2 bg-slate-400 dark:bg-slate-600 rounded-full" />
+                      <span className="text-slate-400 dark:text-slate-500 text-xs font-medium uppercase tracking-wide">Past</span>
                     </div>
-                    <h3 className="text-slate-300 text-xl font-semibold mb-2">{event.title}</h3>
+                    <h3 className="text-slate-700 dark:text-slate-300 text-xl font-semibold mb-2">{event.title}</h3>
                     <p className="text-slate-500 leading-relaxed mb-4">{event.description}</p>
-                    <div className="flex flex-wrap gap-4 text-sm text-slate-600">
+                    <div className="flex flex-wrap gap-4 text-sm text-slate-400">
                       <span className="flex items-center gap-1.5">
                         <CalendarIcon />
                         {formatDate(event.date)}

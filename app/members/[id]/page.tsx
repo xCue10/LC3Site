@@ -48,9 +48,9 @@ const memberTypeLabel: Record<string, string> = {
 };
 
 const memberTypeBadgeClass: Record<string, string> = {
-  advisor: 'bg-amber-500/10 border border-amber-500/20 text-amber-400',
-  officer: 'bg-violet-500/10 border border-violet-500/20 text-violet-400',
-  member: 'bg-blue-500/10 border border-blue-500/20 text-blue-400',
+  advisor: 'bg-amber-50 border border-amber-200 text-amber-600 dark:bg-amber-500/10 dark:border-amber-500/20 dark:text-amber-400',
+  officer: 'bg-violet-50 border border-violet-200 text-violet-600 dark:bg-violet-500/10 dark:border-violet-500/20 dark:text-violet-400',
+  member: 'bg-blue-50 border border-blue-200 text-blue-600 dark:bg-blue-500/10 dark:border-blue-500/20 dark:text-blue-400',
 };
 
 export default async function MemberProfilePage({ params }: { params: Promise<{ id: string }> }) {
@@ -67,7 +67,7 @@ export default async function MemberProfilePage({ params }: { params: Promise<{ 
       {/* Back */}
       <Link
         href="/members"
-        className="inline-flex items-center gap-2 text-slate-400 hover:text-white text-sm mb-8 transition-colors group"
+        className="inline-flex items-center gap-2 text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white text-sm mb-8 transition-colors group"
       >
         <svg className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -76,7 +76,7 @@ export default async function MemberProfilePage({ params }: { params: Promise<{ 
       </Link>
 
       {/* Profile card */}
-      <div className="bg-[#0d1424] border border-[#1e2d45] rounded-2xl overflow-hidden">
+      <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm dark:bg-[#0d1424] dark:border-[#1e2d45] dark:shadow-none">
         {/* Top accent bar */}
         <div className={`h-1.5 bg-gradient-to-r ${gradient}`} />
 
@@ -95,20 +95,20 @@ export default async function MemberProfilePage({ params }: { params: Promise<{ 
               </div>
             )}
             <div className="min-w-0 flex-1">
-              <h1 className="text-3xl font-bold text-white mb-2">{member.name}</h1>
+              <h1 className="text-3xl font-bold text-slate-900 dark:text-white mb-2">{member.name}</h1>
               <div className="flex flex-wrap items-center gap-2">
                 <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${memberTypeBadgeClass[member.memberType] ?? memberTypeBadgeClass.member}`}>
                   {member.role || memberTypeLabel[member.memberType] || 'Member'}
                 </span>
                 {member.focusArea && (
-                  <span className="inline-flex items-center gap-1.5 bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs px-3 py-1 rounded-full">
-                    <span className="w-1.5 h-1.5 bg-blue-400 rounded-full" />
+                  <span className="inline-flex items-center gap-1.5 bg-blue-50 border border-blue-200 text-blue-600 text-xs px-3 py-1 rounded-full dark:bg-blue-500/10 dark:border-blue-500/20 dark:text-blue-400">
+                    <span className="w-1.5 h-1.5 bg-blue-500 rounded-full dark:bg-blue-400" />
                     {member.focusArea}
                   </span>
                 )}
                 {member.status && (
-                  <span className="inline-flex items-center gap-1.5 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs px-3 py-1 rounded-full">
-                    <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full" />
+                  <span className="inline-flex items-center gap-1.5 bg-emerald-50 border border-emerald-200 text-emerald-600 text-xs px-3 py-1 rounded-full dark:bg-emerald-500/10 dark:border-emerald-500/20 dark:text-emerald-400">
+                    <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full dark:bg-emerald-400" />
                     {member.status}
                   </span>
                 )}
@@ -119,12 +119,12 @@ export default async function MemberProfilePage({ params }: { params: Promise<{ 
           {/* Majors */}
           {(member.majors ?? []).length > 0 && (
             <div className="mb-6">
-              <p className="text-slate-500 text-xs font-medium uppercase tracking-wider mb-2">
+              <p className="text-slate-400 text-xs font-medium uppercase tracking-wider mb-2">
                 {member.majors.length === 1 ? 'Major' : 'Majors'}
               </p>
               <div className="flex flex-wrap gap-2">
                 {member.majors.map((m) => (
-                  <span key={m} className="text-sm bg-slate-700/40 text-slate-300 px-3 py-1.5 rounded-lg">
+                  <span key={m} className="text-sm bg-slate-100 text-slate-700 px-3 py-1.5 rounded-lg dark:bg-slate-700/40 dark:text-slate-300">
                     {m}
                   </span>
                 ))}
@@ -135,10 +135,10 @@ export default async function MemberProfilePage({ params }: { params: Promise<{ 
           {/* Skills */}
           {(member.skills ?? []).length > 0 && (
             <div className="mb-6">
-              <p className="text-slate-500 text-xs font-medium uppercase tracking-wider mb-2">Skills</p>
+              <p className="text-slate-400 text-xs font-medium uppercase tracking-wider mb-2">Skills</p>
               <div className="flex flex-wrap gap-2">
                 {member.skills.map((skill) => (
-                  <span key={skill} className="text-sm bg-violet-500/10 border border-violet-500/20 text-violet-300 px-3 py-1.5 rounded-lg">
+                  <span key={skill} className="text-sm bg-violet-50 border border-violet-200 text-violet-600 px-3 py-1.5 rounded-lg dark:bg-violet-500/10 dark:border-violet-500/20 dark:text-violet-300">
                     {skill}
                   </span>
                 ))}
@@ -149,10 +149,10 @@ export default async function MemberProfilePage({ params }: { params: Promise<{ 
           {/* Projects */}
           {(member.projects ?? []).length > 0 && (
             <div className="mb-6">
-              <p className="text-slate-500 text-xs font-medium uppercase tracking-wider mb-2">Projects</p>
+              <p className="text-slate-400 text-xs font-medium uppercase tracking-wider mb-2">Projects</p>
               <div className="flex flex-wrap gap-2">
                 {member.projects.map((project) => (
-                  <span key={project} className="text-sm bg-white/5 border border-white/10 text-slate-300 px-3 py-1.5 rounded-lg">
+                  <span key={project} className="text-sm bg-slate-100 border border-slate-200 text-slate-600 px-3 py-1.5 rounded-lg dark:bg-white/5 dark:border-white/10 dark:text-slate-300">
                     {project}
                   </span>
                 ))}
@@ -162,15 +162,15 @@ export default async function MemberProfilePage({ params }: { params: Promise<{ 
 
           {/* Social Links */}
           {(member.github || member.linkedin || member.twitter) && (
-            <div className="pt-6 border-t border-[#1e2d45]">
-              <p className="text-slate-500 text-xs font-medium uppercase tracking-wider mb-3">Connect</p>
+            <div className="pt-6 border-t border-slate-200 dark:border-[#1e2d45]">
+              <p className="text-slate-400 text-xs font-medium uppercase tracking-wider mb-3">Connect</p>
               <div className="flex flex-wrap gap-3">
                 {member.github && (
                   <a
                     href={member.github}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 px-4 py-2.5 bg-white/5 border border-white/10 text-slate-300 hover:text-white hover:bg-white/10 rounded-xl transition-all text-sm"
+                    className="flex items-center gap-2 px-4 py-2.5 bg-slate-100 border border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-200 rounded-xl transition-all text-sm dark:bg-white/5 dark:border-white/10 dark:text-slate-300 dark:hover:text-white dark:hover:bg-white/10"
                   >
                     <GithubIcon />
                     GitHub
@@ -181,7 +181,7 @@ export default async function MemberProfilePage({ params }: { params: Promise<{ 
                     href={member.linkedin}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 px-4 py-2.5 bg-blue-500/10 border border-blue-500/20 text-blue-400 hover:text-blue-300 hover:bg-blue-500/20 rounded-xl transition-all text-sm"
+                    className="flex items-center gap-2 px-4 py-2.5 bg-blue-50 border border-blue-200 text-blue-600 hover:bg-blue-100 rounded-xl transition-all text-sm dark:bg-blue-500/10 dark:border-blue-500/20 dark:text-blue-400 dark:hover:text-blue-300 dark:hover:bg-blue-500/20"
                   >
                     <LinkedInIcon />
                     LinkedIn
@@ -192,7 +192,7 @@ export default async function MemberProfilePage({ params }: { params: Promise<{ 
                     href={member.twitter}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 px-4 py-2.5 bg-sky-500/10 border border-sky-500/20 text-sky-400 hover:text-sky-300 hover:bg-sky-500/20 rounded-xl transition-all text-sm"
+                    className="flex items-center gap-2 px-4 py-2.5 bg-sky-50 border border-sky-200 text-sky-600 hover:bg-sky-100 rounded-xl transition-all text-sm dark:bg-sky-500/10 dark:border-sky-500/20 dark:text-sky-400 dark:hover:text-sky-300 dark:hover:bg-sky-500/20"
                   >
                     <TwitterIcon />
                     Twitter / X

@@ -12,15 +12,15 @@ function GithubIcon() {
 
 function ProjectCard({ project }: { project: Project }) {
   return (
-    <div className="bg-[#0d1424] border border-[#1e2d45] rounded-2xl overflow-hidden hover:border-violet-500/30 hover:-translate-y-0.5 transition-all flex flex-col">
+    <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden hover:border-violet-200 hover:shadow-md hover:-translate-y-0.5 transition-all flex flex-col dark:bg-[#0d1424] dark:border-[#1e2d45] dark:hover:border-violet-500/30 dark:hover:shadow-none">
       <div className={`h-1.5 bg-gradient-to-r ${project.gradient}`} />
       <div className="p-6 flex flex-col flex-1">
-        <h3 className="text-white font-semibold text-lg mb-2">{project.name}</h3>
-        <p className="text-slate-400 text-sm leading-relaxed mb-4 flex-1">{project.description}</p>
+        <h3 className="text-slate-900 dark:text-white font-semibold text-lg mb-2">{project.name}</h3>
+        <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-4 flex-1">{project.description}</p>
         {project.tags.length > 0 && (
           <div className="flex flex-wrap gap-1.5 mb-4">
             {project.tags.map((tag) => (
-              <span key={tag} className="text-xs bg-white/5 border border-white/10 text-slate-400 px-2.5 py-1 rounded-md">
+              <span key={tag} className="text-xs bg-slate-100 border border-slate-200 text-slate-600 px-2.5 py-1 rounded-md dark:bg-white/5 dark:border-white/10 dark:text-slate-400">
                 {tag}
               </span>
             ))}
@@ -31,7 +31,7 @@ function ProjectCard({ project }: { project: Project }) {
             href={project.github}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors mt-auto pt-4 border-t border-[#1e2d45]"
+            className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition-colors mt-auto pt-4 border-t border-slate-200 dark:border-[#1e2d45]"
           >
             <GithubIcon />
             View on GitHub
@@ -52,21 +52,21 @@ export default function ProjectsPage() {
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-16">
       {/* Header */}
       <div className="text-center mb-16">
-        <p className="text-violet-400 text-sm font-medium mb-2">Built by our members</p>
-        <h1 className="text-4xl sm:text-5xl font-bold text-white mb-4">Projects</h1>
-        <p className="text-slate-400 max-w-xl mx-auto">
+        <p className="text-violet-600 dark:text-violet-400 text-sm font-medium mb-2">Built by our members</p>
+        <h1 className="text-4xl sm:text-5xl font-bold text-slate-900 dark:text-white mb-4">Projects</h1>
+        <p className="text-slate-500 max-w-xl mx-auto">
           Real-world projects built by LC3 members — from automation tools to full-stack apps.
         </p>
       </div>
 
       {projects.length === 0 ? (
         <div className="text-center py-20">
-          <div className="w-16 h-16 bg-[#0d1424] border border-[#1e2d45] rounded-2xl flex items-center justify-center mx-auto mb-4">
-            <svg className="w-8 h-8 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div className="w-16 h-16 bg-white border border-slate-200 rounded-2xl flex items-center justify-center mx-auto mb-4 dark:bg-[#0d1424] dark:border-[#1e2d45]">
+            <svg className="w-8 h-8 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
             </svg>
           </div>
-          <p className="text-slate-500">No projects yet. Check back soon!</p>
+          <p className="text-slate-400">No projects yet. Check back soon!</p>
         </div>
       ) : (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">

@@ -12,9 +12,9 @@ const timelines = ['ASAP', '1–3 months', '3–6 months', '6+ months', 'Flexibl
 const durations = ['Summer (3 months)', 'Part-time (ongoing)', 'Full-time', 'Semester-long', 'Flexible'];
 const compensations = ['Paid', 'Unpaid', 'Stipend', 'Course Credit', 'TBD'];
 
-const inputClass = 'w-full bg-[#111a2e] border border-[#1e2d45] text-white placeholder:text-slate-600 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-violet-500/50 focus:ring-1 focus:ring-violet-500/30 transition-all';
+const inputClass = 'w-full bg-white border border-slate-300 text-slate-900 placeholder:text-slate-400 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-violet-400 focus:ring-1 focus:ring-violet-400/30 transition-all dark:bg-[#111a2e] dark:border-[#1e2d45] dark:text-white dark:placeholder:text-slate-600 dark:focus:border-violet-500/50 dark:focus:ring-violet-500/30';
 const selectClass = `${inputClass} appearance-none cursor-pointer`;
-const labelClass = 'block text-sm font-medium text-slate-300 mb-2';
+const labelClass = 'block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2';
 
 export default function HireForm() {
   const [inquiryType, setInquiryType] = useState<'project' | 'internship'>('project');
@@ -56,10 +56,10 @@ export default function HireForm() {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
           </svg>
         </div>
-        <h2 className="text-3xl font-bold text-white mb-4">
+        <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-4">
           {inquiryType === 'internship' ? 'Internship Posting Received!' : 'Inquiry Received!'}
         </h2>
-        <p className="text-slate-300 leading-relaxed mb-8">
+        <p className="text-slate-600 dark:text-slate-300 leading-relaxed mb-8">
           {inquiryType === 'internship'
             ? "Thanks for posting an internship opportunity. We'll share it with our members and follow up shortly."
             : "Thanks for reaching out. We'll review your project and get back to you within a few business days."}
@@ -78,50 +78,50 @@ export default function HireForm() {
     {
       title: 'Vetted Student Teams',
       desc: 'Work with students who build projects, win hackathons, and learn on their own time.',
-      color: 'text-violet-400',
+      colorClass: 'text-violet-600 dark:text-violet-400',
       icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />,
     },
     {
       title: 'Low Cost, High Value',
       desc: 'Sponsor a project at a fraction of agency rates while giving students real experience.',
-      color: 'text-emerald-400',
+      colorClass: 'text-emerald-600 dark:text-emerald-400',
       icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />,
     },
     {
       title: 'Flexible Engagements',
       desc: 'From a weekend prototype to a semester-long project — we work around your timeline.',
-      color: 'text-blue-400',
+      colorClass: 'text-blue-600 dark:text-blue-400',
       icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />,
     },
     {
       title: 'Tech Stack Depth',
       desc: 'Web apps, mobile, cloud infra, data pipelines, automation, and AI integrations.',
-      color: 'text-amber-400',
+      colorClass: 'text-amber-600 dark:text-amber-400',
       icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />,
     },
   ] : [
     {
       title: 'Motivated Candidates',
       desc: 'Our members are actively building skills and looking for real-world experience.',
-      color: 'text-violet-400',
+      colorClass: 'text-violet-600 dark:text-violet-400',
       icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />,
     },
     {
       title: 'Diverse Skill Sets',
       desc: 'From Power Platform and cloud to web dev, data, and AI — we cover a wide range.',
-      color: 'text-blue-400',
+      colorClass: 'text-blue-600 dark:text-blue-400',
       icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />,
     },
     {
       title: 'Grow Your Pipeline',
       desc: 'Internships with LC3 members often lead to full-time hires — invest early.',
-      color: 'text-emerald-400',
+      colorClass: 'text-emerald-600 dark:text-emerald-400',
       icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />,
     },
     {
       title: 'Simple Process',
       desc: "Fill out the form, we'll match you with members who fit your requirements.",
-      color: 'text-amber-400',
+      colorClass: 'text-amber-600 dark:text-amber-400',
       icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />,
     },
   ];
@@ -132,22 +132,22 @@ export default function HireForm() {
 
         {/* Left: Value Props */}
         <div>
-          <p className="text-blue-400 text-sm font-medium mb-2">Work with student talent</p>
-          <h1 className="text-4xl sm:text-5xl font-bold text-white mb-6">Partner with LC3</h1>
-          <p className="text-slate-300 leading-relaxed mb-8">
+          <p className="text-blue-600 dark:text-blue-400 text-sm font-medium mb-2">Work with student talent</p>
+          <h1 className="text-4xl sm:text-5xl font-bold text-slate-900 dark:text-white mb-6">Partner with LC3</h1>
+          <p className="text-slate-600 dark:text-slate-300 leading-relaxed mb-8">
             {inquiryType === 'project'
               ? 'LC3 connects companies with motivated students ready to build real-world solutions. Whether you need a prototype, a data pipeline, or a full product — our teams deliver.'
               : 'Offer an internship to LC3 members and get motivated, skilled students who are hungry to learn and contribute. Many of our members are already working in the industry part-time.'}
           </p>
 
           <div className="space-y-4">
-            {valueProps.map(({ color, title, desc, icon }) => (
+            {valueProps.map(({ colorClass, title, desc, icon }) => (
               <div key={title} className="flex items-start gap-4">
-                <div className="w-10 h-10 bg-[#0d1424] border border-[#1e2d45] rounded-xl flex items-center justify-center flex-shrink-0">
-                  <svg className={`w-5 h-5 ${color}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">{icon}</svg>
+                <div className="w-10 h-10 bg-white border border-slate-200 rounded-xl flex items-center justify-center flex-shrink-0 dark:bg-[#0d1424] dark:border-[#1e2d45]">
+                  <svg className={`w-5 h-5 ${colorClass}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">{icon}</svg>
                 </div>
                 <div>
-                  <div className="text-white font-medium">{title}</div>
+                  <div className="text-slate-900 dark:text-white font-medium">{title}</div>
                   <div className="text-slate-500 text-sm">{desc}</div>
                 </div>
               </div>
@@ -156,7 +156,7 @@ export default function HireForm() {
         </div>
 
         {/* Right: Form */}
-        <div className="bg-[#0d1424] border border-[#1e2d45] rounded-2xl p-8">
+        <div className="bg-white border border-slate-200 rounded-2xl p-8 shadow-sm dark:bg-[#0d1424] dark:border-[#1e2d45] dark:shadow-none">
 
           {/* Type Toggle */}
           <div className="grid grid-cols-2 gap-3 mb-7">
@@ -186,11 +186,11 @@ export default function HireForm() {
                 onClick={() => setInquiryType(id)}
                 className={`flex flex-col items-center gap-2 p-4 rounded-xl border text-sm font-medium transition-all ${
                   inquiryType === id
-                    ? 'bg-gradient-to-br from-blue-600/20 to-violet-600/20 border-violet-500/50 text-white'
-                    : 'border-[#1e2d45] text-slate-400 hover:text-white hover:border-slate-500/50'
+                    ? 'bg-gradient-to-br from-blue-50 to-violet-50 border-violet-300 text-slate-900 dark:from-blue-600/20 dark:to-violet-600/20 dark:border-violet-500/50 dark:text-white'
+                    : 'border-slate-200 text-slate-500 hover:text-slate-700 hover:border-slate-300 dark:border-[#1e2d45] dark:text-slate-400 dark:hover:text-white dark:hover:border-slate-500/50'
                 }`}
               >
-                <span className={inquiryType === id ? 'text-violet-400' : 'text-slate-500'}>{icon}</span>
+                <span className={inquiryType === id ? 'text-violet-600 dark:text-violet-400' : 'text-slate-400 dark:text-slate-500'}>{icon}</span>
                 {label}
               </button>
             ))}
@@ -200,17 +200,17 @@ export default function HireForm() {
             {/* Common fields */}
             <div className="grid sm:grid-cols-2 gap-4">
               <div>
-                <label htmlFor="companyName" className={labelClass}>Company Name <span className="text-violet-400">*</span></label>
+                <label htmlFor="companyName" className={labelClass}>Company Name <span className="text-violet-600 dark:text-violet-400">*</span></label>
                 <input id="companyName" name="companyName" type="text" required value={form.companyName} onChange={handleChange} placeholder="Acme Corp" className={inputClass} />
               </div>
               <div>
-                <label htmlFor="contactName" className={labelClass}>Your Name <span className="text-violet-400">*</span></label>
+                <label htmlFor="contactName" className={labelClass}>Your Name <span className="text-violet-600 dark:text-violet-400">*</span></label>
                 <input id="contactName" name="contactName" type="text" required value={form.contactName} onChange={handleChange} placeholder="Jane Smith" className={inputClass} />
               </div>
             </div>
 
             <div>
-              <label htmlFor="email" className={labelClass}>Work Email <span className="text-violet-400">*</span></label>
+              <label htmlFor="email" className={labelClass}>Work Email <span className="text-violet-600 dark:text-violet-400">*</span></label>
               <input id="email" name="email" type="email" required value={form.email} onChange={handleChange} placeholder="jane@company.com" className={inputClass} />
             </div>
 
@@ -218,17 +218,17 @@ export default function HireForm() {
             {inquiryType === 'project' && (
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
-                  <label htmlFor="projectType" className={labelClass}>Project Type <span className="text-violet-400">*</span></label>
+                  <label htmlFor="projectType" className={labelClass}>Project Type <span className="text-violet-600 dark:text-violet-400">*</span></label>
                   <select id="projectType" name="projectType" required value={form.projectType} onChange={handleChange} className={selectClass}>
                     <option value="">Select type...</option>
-                    {projectTypes.map((t) => <option key={t} value={t} className="bg-[#111a2e]">{t}</option>)}
+                    {projectTypes.map((t) => <option key={t} value={t} className="dark:bg-[#111a2e]">{t}</option>)}
                   </select>
                 </div>
                 <div>
-                  <label htmlFor="timeline" className={labelClass}>Timeline <span className="text-violet-400">*</span></label>
+                  <label htmlFor="timeline" className={labelClass}>Timeline <span className="text-violet-600 dark:text-violet-400">*</span></label>
                   <select id="timeline" name="timeline" required value={form.timeline} onChange={handleChange} className={selectClass}>
                     <option value="">Select timeline...</option>
-                    {timelines.map((t) => <option key={t} value={t} className="bg-[#111a2e]">{t}</option>)}
+                    {timelines.map((t) => <option key={t} value={t} className="dark:bg-[#111a2e]">{t}</option>)}
                   </select>
                 </div>
               </div>
@@ -238,22 +238,22 @@ export default function HireForm() {
             {inquiryType === 'internship' && (
               <>
                 <div>
-                  <label htmlFor="positionTitle" className={labelClass}>Position Title <span className="text-violet-400">*</span></label>
+                  <label htmlFor="positionTitle" className={labelClass}>Position Title <span className="text-violet-600 dark:text-violet-400">*</span></label>
                   <input id="positionTitle" name="positionTitle" type="text" required value={form.positionTitle} onChange={handleChange} placeholder="Junior Developer Intern" className={inputClass} />
                 </div>
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div>
-                    <label htmlFor="duration" className={labelClass}>Duration <span className="text-violet-400">*</span></label>
+                    <label htmlFor="duration" className={labelClass}>Duration <span className="text-violet-600 dark:text-violet-400">*</span></label>
                     <select id="duration" name="duration" required value={form.duration} onChange={handleChange} className={selectClass}>
                       <option value="">Select duration...</option>
-                      {durations.map((d) => <option key={d} value={d} className="bg-[#111a2e]">{d}</option>)}
+                      {durations.map((d) => <option key={d} value={d} className="dark:bg-[#111a2e]">{d}</option>)}
                     </select>
                   </div>
                   <div>
-                    <label htmlFor="compensation" className={labelClass}>Compensation <span className="text-violet-400">*</span></label>
+                    <label htmlFor="compensation" className={labelClass}>Compensation <span className="text-violet-600 dark:text-violet-400">*</span></label>
                     <select id="compensation" name="compensation" required value={form.compensation} onChange={handleChange} className={selectClass}>
                       <option value="">Select...</option>
-                      {compensations.map((c) => <option key={c} value={c} className="bg-[#111a2e]">{c}</option>)}
+                      {compensations.map((c) => <option key={c} value={c} className="dark:bg-[#111a2e]">{c}</option>)}
                     </select>
                   </div>
                 </div>
@@ -267,7 +267,7 @@ export default function HireForm() {
             {/* Description */}
             <div>
               <label htmlFor="description" className={labelClass}>
-                {inquiryType === 'project' ? 'Project Description' : 'Role Description'} <span className="text-violet-400">*</span>
+                {inquiryType === 'project' ? 'Project Description' : 'Role Description'} <span className="text-violet-600 dark:text-violet-400">*</span>
               </label>
               <textarea
                 id="description" name="description" required rows={4}
@@ -280,7 +280,7 @@ export default function HireForm() {
             </div>
 
             {error && (
-              <div className="bg-red-500/10 border border-red-500/20 text-red-400 text-sm px-4 py-3 rounded-xl">{error}</div>
+              <div className="bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-xl dark:bg-red-500/10 dark:border-red-500/20 dark:text-red-400">{error}</div>
             )}
 
             <button

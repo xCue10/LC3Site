@@ -35,21 +35,21 @@ function SocialIcons({ member }: { member: Member }) {
     <div className="relative z-10 flex items-center gap-1">
       {member.github && (
         <a href={member.github} target="_blank" rel="noopener noreferrer"
-          className="flex items-center justify-center w-6 h-6 rounded-md text-slate-500 hover:text-white hover:bg-white/10 transition-all"
+          className="flex items-center justify-center w-6 h-6 rounded-md text-slate-400 hover:text-slate-700 hover:bg-slate-100 dark:text-slate-500 dark:hover:text-white dark:hover:bg-white/10 transition-all"
           aria-label="GitHub" onClick={(e) => e.stopPropagation()}>
           <GithubIcon />
         </a>
       )}
       {member.linkedin && (
         <a href={member.linkedin} target="_blank" rel="noopener noreferrer"
-          className="flex items-center justify-center w-6 h-6 rounded-md text-slate-500 hover:text-blue-400 hover:bg-blue-500/10 transition-all"
+          className="flex items-center justify-center w-6 h-6 rounded-md text-slate-400 hover:text-blue-600 hover:bg-blue-50 dark:text-slate-500 dark:hover:text-blue-400 dark:hover:bg-blue-500/10 transition-all"
           aria-label="LinkedIn" onClick={(e) => e.stopPropagation()}>
           <LinkedInIcon />
         </a>
       )}
       {member.twitter && (
         <a href={member.twitter} target="_blank" rel="noopener noreferrer"
-          className="flex items-center justify-center w-6 h-6 rounded-md text-slate-500 hover:text-sky-400 hover:bg-sky-500/10 transition-all"
+          className="flex items-center justify-center w-6 h-6 rounded-md text-slate-400 hover:text-sky-500 hover:bg-sky-50 dark:text-slate-500 dark:hover:text-sky-400 dark:hover:bg-sky-500/10 transition-all"
           aria-label="Twitter / X" onClick={(e) => e.stopPropagation()}>
           <TwitterIcon />
         </a>
@@ -91,16 +91,16 @@ function Avatar({ member, index, size = 'md' }: { member: Member; index: number;
 
 function MemberCard({ member, index }: { member: Member; index: number }) {
   return (
-    <div className="group relative bg-[#0d1424] border border-[#1e2d45] rounded-2xl p-5 hover:border-violet-500/40 hover:-translate-y-0.5 transition-all flex flex-col gap-3">
+    <div className="group relative bg-white border border-slate-200 rounded-2xl p-5 hover:border-violet-200 hover:shadow-sm hover:-translate-y-0.5 transition-all flex flex-col gap-3 dark:bg-[#0d1424] dark:border-[#1e2d45] dark:hover:border-violet-500/40">
       <Link href={`/members/${member.id}`} className="absolute inset-0 rounded-2xl z-0" aria-label={`View ${member.name}'s profile`} />
       <div className="flex items-center gap-3">
         <Avatar member={member} index={index} />
         <div className="min-w-0">
-          <h3 className="text-white font-semibold truncate group-hover:text-violet-300 transition-colors">{member.name}</h3>
+          <h3 className="text-slate-900 dark:text-white font-semibold truncate group-hover:text-violet-600 dark:group-hover:text-violet-300 transition-colors">{member.name}</h3>
           {(member.majors ?? []).length > 0 && (
             <div className="flex flex-wrap gap-1 mt-0.5">
               {member.majors.map((m) => (
-                <span key={m} className="text-xs bg-slate-700/40 text-slate-400 px-2 py-0.5 rounded-md">{m}</span>
+                <span key={m} className="text-xs bg-slate-100 text-slate-500 px-2 py-0.5 rounded-md dark:bg-slate-700/40 dark:text-slate-400">{m}</span>
               ))}
             </div>
           )}
@@ -109,20 +109,20 @@ function MemberCard({ member, index }: { member: Member; index: number }) {
 
       <div className="flex flex-wrap gap-1.5">
         {member.focusArea && (
-          <span className="inline-flex items-center gap-1 bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs px-2.5 py-0.5 rounded-full">
-            <span className="w-1 h-1 bg-blue-400 rounded-full" />{member.focusArea}
+          <span className="inline-flex items-center gap-1 bg-blue-50 border border-blue-200 text-blue-600 text-xs px-2.5 py-0.5 rounded-full dark:bg-blue-500/10 dark:border-blue-500/20 dark:text-blue-400">
+            <span className="w-1 h-1 bg-blue-500 rounded-full dark:bg-blue-400" />{member.focusArea}
           </span>
         )}
         {member.status && (
-          <span className="inline-flex items-center gap-1 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs px-2.5 py-0.5 rounded-full">
-            <span className="w-1 h-1 bg-emerald-400 rounded-full" />{member.status}
+          <span className="inline-flex items-center gap-1 bg-emerald-50 border border-emerald-200 text-emerald-600 text-xs px-2.5 py-0.5 rounded-full dark:bg-emerald-500/10 dark:border-emerald-500/20 dark:text-emerald-400">
+            <span className="w-1 h-1 bg-emerald-500 rounded-full dark:bg-emerald-400" />{member.status}
           </span>
         )}
       </div>
 
-      <div className="mt-auto pt-3 border-t border-[#1e2d45] flex items-center justify-between">
+      <div className="mt-auto pt-3 border-t border-slate-100 dark:border-[#1e2d45] flex items-center justify-between">
         <SocialIcons member={member} />
-        <span className="relative z-10 text-xs text-slate-600 group-hover:text-violet-400 transition-colors ml-auto">View Profile →</span>
+        <span className="relative z-10 text-xs text-slate-400 group-hover:text-violet-600 dark:text-slate-600 dark:group-hover:text-violet-400 transition-colors ml-auto">View Profile →</span>
       </div>
     </div>
   );
@@ -130,21 +130,21 @@ function MemberCard({ member, index }: { member: Member; index: number }) {
 
 function AdvisorCard({ member, index }: { member: Member; index: number }) {
   return (
-    <div className="group relative bg-[#0d1424] border border-amber-500/20 rounded-2xl p-5 hover:border-amber-500/40 hover:-translate-y-0.5 transition-all flex flex-col gap-3">
+    <div className="group relative bg-white border border-amber-200 rounded-2xl p-5 hover:border-amber-300 hover:shadow-sm hover:-translate-y-0.5 transition-all flex flex-col gap-3 dark:bg-[#0d1424] dark:border-amber-500/20 dark:hover:border-amber-500/40">
       <Link href={`/members/${member.id}`} className="absolute inset-0 rounded-2xl z-0" aria-label={`View ${member.name}'s profile`} />
       <div className="flex items-center gap-3">
         <Avatar member={member} index={index} size="lg" />
         <div className="min-w-0">
-          <h3 className="text-white font-semibold text-lg truncate group-hover:text-amber-300 transition-colors">{member.name}</h3>
+          <h3 className="text-slate-900 dark:text-white font-semibold text-lg truncate group-hover:text-amber-600 dark:group-hover:text-amber-300 transition-colors">{member.name}</h3>
           {member.role && (
-            <span className="inline-block mt-1 text-xs font-medium bg-amber-500/10 border border-amber-500/20 text-amber-400 px-2.5 py-0.5 rounded-full">
+            <span className="inline-block mt-1 text-xs font-medium bg-amber-50 border border-amber-200 text-amber-600 px-2.5 py-0.5 rounded-full dark:bg-amber-500/10 dark:border-amber-500/20 dark:text-amber-400">
               {member.role}
             </span>
           )}
           {(member.majors ?? []).length > 0 && (
             <div className="flex flex-wrap gap-1 mt-1">
               {member.majors.map((m) => (
-                <span key={m} className="text-xs bg-slate-700/40 text-slate-400 px-2 py-0.5 rounded-md">{m}</span>
+                <span key={m} className="text-xs bg-slate-100 text-slate-500 px-2 py-0.5 rounded-md dark:bg-slate-700/40 dark:text-slate-400">{m}</span>
               ))}
             </div>
           )}
@@ -153,20 +153,20 @@ function AdvisorCard({ member, index }: { member: Member; index: number }) {
 
       <div className="flex flex-wrap gap-1.5">
         {member.focusArea && (
-          <span className="inline-flex items-center gap-1 bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs px-2.5 py-0.5 rounded-full">
-            <span className="w-1 h-1 bg-blue-400 rounded-full" />{member.focusArea}
+          <span className="inline-flex items-center gap-1 bg-blue-50 border border-blue-200 text-blue-600 text-xs px-2.5 py-0.5 rounded-full dark:bg-blue-500/10 dark:border-blue-500/20 dark:text-blue-400">
+            <span className="w-1 h-1 bg-blue-500 rounded-full dark:bg-blue-400" />{member.focusArea}
           </span>
         )}
         {member.status && (
-          <span className="inline-flex items-center gap-1 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs px-2.5 py-0.5 rounded-full">
-            <span className="w-1 h-1 bg-emerald-400 rounded-full" />{member.status}
+          <span className="inline-flex items-center gap-1 bg-emerald-50 border border-emerald-200 text-emerald-600 text-xs px-2.5 py-0.5 rounded-full dark:bg-emerald-500/10 dark:border-emerald-500/20 dark:text-emerald-400">
+            <span className="w-1 h-1 bg-emerald-500 rounded-full dark:bg-emerald-400" />{member.status}
           </span>
         )}
       </div>
 
-      <div className="mt-auto pt-3 border-t border-[#1e2d45] flex items-center justify-between">
+      <div className="mt-auto pt-3 border-t border-amber-100 dark:border-[#1e2d45] flex items-center justify-between">
         <SocialIcons member={member} />
-        <span className="relative z-10 text-xs text-slate-600 group-hover:text-amber-400 transition-colors ml-auto">View Profile →</span>
+        <span className="relative z-10 text-xs text-slate-400 group-hover:text-amber-600 dark:text-slate-600 dark:group-hover:text-amber-400 transition-colors ml-auto">View Profile →</span>
       </div>
     </div>
   );
@@ -174,21 +174,21 @@ function AdvisorCard({ member, index }: { member: Member; index: number }) {
 
 function OfficerCard({ member, index }: { member: Member; index: number }) {
   return (
-    <div className="group relative bg-[#0d1424] border border-violet-500/20 rounded-2xl p-5 hover:border-violet-500/40 hover:-translate-y-0.5 transition-all flex flex-col gap-3">
+    <div className="group relative bg-white border border-violet-200 rounded-2xl p-5 hover:border-violet-300 hover:shadow-sm hover:-translate-y-0.5 transition-all flex flex-col gap-3 dark:bg-[#0d1424] dark:border-violet-500/20 dark:hover:border-violet-500/40">
       <Link href={`/members/${member.id}`} className="absolute inset-0 rounded-2xl z-0" aria-label={`View ${member.name}'s profile`} />
       <div className="flex items-center gap-3">
         <Avatar member={member} index={index} />
         <div className="min-w-0">
-          <h3 className="text-white font-semibold truncate group-hover:text-violet-300 transition-colors">{member.name}</h3>
+          <h3 className="text-slate-900 dark:text-white font-semibold truncate group-hover:text-violet-600 dark:group-hover:text-violet-300 transition-colors">{member.name}</h3>
           {member.role && (
-            <span className="inline-block mt-1 text-xs font-medium bg-violet-500/10 border border-violet-500/20 text-violet-400 px-2.5 py-0.5 rounded-full">
+            <span className="inline-block mt-1 text-xs font-medium bg-violet-50 border border-violet-200 text-violet-600 px-2.5 py-0.5 rounded-full dark:bg-violet-500/10 dark:border-violet-500/20 dark:text-violet-400">
               {member.role}
             </span>
           )}
           {(member.majors ?? []).length > 0 && (
             <div className="flex flex-wrap gap-1 mt-1">
               {member.majors.map((m) => (
-                <span key={m} className="text-xs bg-slate-700/40 text-slate-400 px-2 py-0.5 rounded-md">{m}</span>
+                <span key={m} className="text-xs bg-slate-100 text-slate-500 px-2 py-0.5 rounded-md dark:bg-slate-700/40 dark:text-slate-400">{m}</span>
               ))}
             </div>
           )}
@@ -197,20 +197,20 @@ function OfficerCard({ member, index }: { member: Member; index: number }) {
 
       <div className="flex flex-wrap gap-1.5">
         {member.focusArea && (
-          <span className="inline-flex items-center gap-1 bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs px-2.5 py-0.5 rounded-full">
-            <span className="w-1 h-1 bg-blue-400 rounded-full" />{member.focusArea}
+          <span className="inline-flex items-center gap-1 bg-blue-50 border border-blue-200 text-blue-600 text-xs px-2.5 py-0.5 rounded-full dark:bg-blue-500/10 dark:border-blue-500/20 dark:text-blue-400">
+            <span className="w-1 h-1 bg-blue-500 rounded-full dark:bg-blue-400" />{member.focusArea}
           </span>
         )}
         {member.status && (
-          <span className="inline-flex items-center gap-1 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs px-2.5 py-0.5 rounded-full">
-            <span className="w-1 h-1 bg-emerald-400 rounded-full" />{member.status}
+          <span className="inline-flex items-center gap-1 bg-emerald-50 border border-emerald-200 text-emerald-600 text-xs px-2.5 py-0.5 rounded-full dark:bg-emerald-500/10 dark:border-emerald-500/20 dark:text-emerald-400">
+            <span className="w-1 h-1 bg-emerald-500 rounded-full dark:bg-emerald-400" />{member.status}
           </span>
         )}
       </div>
 
-      <div className="mt-auto pt-3 border-t border-[#1e2d45] flex items-center justify-between">
+      <div className="mt-auto pt-3 border-t border-violet-100 dark:border-[#1e2d45] flex items-center justify-between">
         <SocialIcons member={member} />
-        <span className="relative z-10 text-xs text-slate-600 group-hover:text-violet-400 transition-colors ml-auto">View Profile →</span>
+        <span className="relative z-10 text-xs text-slate-400 group-hover:text-violet-600 dark:text-slate-600 dark:group-hover:text-violet-400 transition-colors ml-auto">View Profile →</span>
       </div>
     </div>
   );
@@ -219,12 +219,12 @@ function OfficerCard({ member, index }: { member: Member; index: number }) {
 function SectionDivider({ color, label }: { color: string; label: string }) {
   return (
     <div className="flex items-center gap-3 mb-6">
-      <div className="h-px flex-1 bg-[#1e2d45]" />
+      <div className="h-px flex-1 bg-slate-200 dark:bg-[#1e2d45]" />
       <div className="flex items-center gap-2">
         <span className={`w-2 h-2 rounded-full ${color}`} />
-        <h2 className="text-white font-semibold text-lg">{label}</h2>
+        <h2 className="text-slate-900 dark:text-white font-semibold text-lg">{label}</h2>
       </div>
-      <div className="h-px flex-1 bg-[#1e2d45]" />
+      <div className="h-px flex-1 bg-slate-200 dark:bg-[#1e2d45]" />
     </div>
   );
 }
@@ -269,14 +269,14 @@ export default function MembersClient({ members }: { members: Member[] }) {
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-16">
       {/* Header */}
       <div className="text-center mb-12">
-        <p className="text-violet-400 text-sm font-medium mb-2">The people behind the code</p>
-        <h1 className="text-4xl sm:text-5xl font-bold text-white mb-4">Meet Our Members</h1>
-        <p className="text-slate-400 max-w-xl mx-auto mb-4">
+        <p className="text-violet-600 dark:text-violet-400 text-sm font-medium mb-2">The people behind the code</p>
+        <h1 className="text-4xl sm:text-5xl font-bold text-slate-900 dark:text-white mb-4">Meet Our Members</h1>
+        <p className="text-slate-500 max-w-xl mx-auto mb-4">
           A diverse group of students and advisors united by a passion for technology and building things that matter.
         </p>
         {members.length > 0 && (
-          <div className="inline-flex items-center gap-2 bg-white/5 border border-white/10 text-slate-400 text-sm px-4 py-1.5 rounded-full">
-            <span className="w-1.5 h-1.5 bg-violet-400 rounded-full" />
+          <div className="inline-flex items-center gap-2 bg-slate-100 border border-slate-200 text-slate-500 text-sm px-4 py-1.5 rounded-full dark:bg-white/5 dark:border-white/10 dark:text-slate-400">
+            <span className="w-1.5 h-1.5 bg-violet-500 rounded-full dark:bg-violet-400" />
             {members.length} member{members.length !== 1 ? 's' : ''} total
           </div>
         )}
@@ -286,7 +286,7 @@ export default function MembersClient({ members }: { members: Member[] }) {
       {!isEmpty && (
         <div className="mb-10 space-y-3">
           <div className="relative max-w-md mx-auto">
-            <svg className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
             <input
@@ -294,7 +294,7 @@ export default function MembersClient({ members }: { members: Member[] }) {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search by name, skill, major, or focus area..."
-              className="w-full bg-[#0f1a2e] border border-[#253650] text-white placeholder:text-slate-600 rounded-xl pl-10 pr-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+              className="w-full bg-white border border-slate-300 text-slate-900 placeholder:text-slate-400 rounded-xl pl-10 pr-4 py-2.5 text-sm focus:outline-none focus:border-violet-400 focus:ring-1 focus:ring-violet-400/30 transition-all dark:bg-[#0f1a2e] dark:border-[#253650] dark:text-white dark:placeholder:text-slate-600 dark:focus:border-violet-500/50 dark:focus:ring-violet-500/30"
             />
           </div>
 
@@ -307,7 +307,7 @@ export default function MembersClient({ members }: { members: Member[] }) {
                   className={`text-xs px-3 py-1.5 rounded-full border transition-all ${
                     focusFilter === area
                       ? 'bg-violet-600 border-violet-500 text-white'
-                      : 'bg-white/5 border-white/10 text-slate-400 hover:text-white hover:border-white/20'
+                      : 'bg-white border-slate-200 text-slate-600 hover:text-slate-900 hover:border-slate-300 dark:bg-white/5 dark:border-white/10 dark:text-slate-400 dark:hover:text-white dark:hover:border-white/20'
                   }`}
                 >
                   {area}
@@ -319,34 +319,34 @@ export default function MembersClient({ members }: { members: Member[] }) {
       )}
 
       {isEmpty ? (
-        <div className="text-center py-20 text-slate-500">No members yet. Check back soon!</div>
+        <div className="text-center py-20 text-slate-400">No members yet. Check back soon!</div>
       ) : noResults ? (
-        <div className="text-center py-20 text-slate-500">No members match your search.</div>
+        <div className="text-center py-20 text-slate-400">No members match your search.</div>
       ) : (
         <div className="space-y-16">
           {advisors.length > 0 && (
             <section>
-              <SectionDivider color="bg-amber-400" label={`Club Advisors${advisors.length !== allAdvisors.length ? ` (${advisors.length}/${allAdvisors.length})` : ''}`} />
+              <SectionDivider color="bg-amber-500" label={`Club Advisors${advisors.length !== allAdvisors.length ? ` (${advisors.length}/${allAdvisors.length})` : ''}`} />
               <div className="grid sm:grid-cols-2 gap-5 max-w-2xl mx-auto">
-                {advisors.map((m, i) => <AdvisorCard key={m.id} member={m} index={members.indexOf(m)} />)}
+                {advisors.map((m) => <AdvisorCard key={m.id} member={m} index={members.indexOf(m)} />)}
               </div>
             </section>
           )}
 
           {officers.length > 0 && (
             <section>
-              <SectionDivider color="bg-violet-400" label={`Club Officers${officers.length !== allOfficers.length ? ` (${officers.length}/${allOfficers.length})` : ''}`} />
+              <SectionDivider color="bg-violet-500" label={`Club Officers${officers.length !== allOfficers.length ? ` (${officers.length}/${allOfficers.length})` : ''}`} />
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                {officers.map((m, i) => <OfficerCard key={m.id} member={m} index={members.indexOf(m)} />)}
+                {officers.map((m) => <OfficerCard key={m.id} member={m} index={members.indexOf(m)} />)}
               </div>
             </section>
           )}
 
           {regulars.length > 0 && (
             <section>
-              <SectionDivider color="bg-blue-400" label={`Members${regulars.length !== allRegulars.length ? ` (${regulars.length}/${allRegulars.length})` : ''}`} />
+              <SectionDivider color="bg-blue-500" label={`Members${regulars.length !== allRegulars.length ? ` (${regulars.length}/${allRegulars.length})` : ''}`} />
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-                {regulars.map((m, i) => <MemberCard key={m.id} member={m} index={members.indexOf(m)} />)}
+                {regulars.map((m) => <MemberCard key={m.id} member={m} index={members.indexOf(m)} />)}
               </div>
             </section>
           )}
