@@ -859,24 +859,33 @@ function Dashboard() {
   };
 
   // Sponsor helpers
-  const saveSponsor = (data: { name: string; logoUrl: string; website: string; tier: string }) => {
+  const persistSponsors = async (config: SponsorsConfig) => {
+    await fetch('/api/sponsors', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(config) });
+  };
+
+  const saveSponsor = async (data: { name: string; logoUrl: string; website: string; tier: string }) => {
     let updated: Sponsor[];
     if (sponsorModal.sponsor) {
       updated = sponsorsConfig.sponsors.map((s) => s.id === sponsorModal.sponsor!.id ? { ...s, ...data } : s);
     } else {
       updated = [...sponsorsConfig.sponsors, { id: Date.now().toString(), ...data }];
     }
-    setSponsorsConfig((c) => ({ ...c, sponsors: updated }));
+    const next = { ...sponsorsConfig, sponsors: updated };
+    setSponsorsConfig(next);
     setSponsorModal({ open: false, sponsor: null });
+    await persistSponsors(next);
   };
 
-  const deleteSponsor = (id: string) => {
-    setSponsorsConfig((c) => ({ ...c, sponsors: c.sponsors.filter((s) => s.id !== id) }));
+  const deleteSponsor = async (id: string) => {
+    const next = { ...sponsorsConfig, sponsors: sponsorsConfig.sponsors.filter((s) => s.id !== id) };
+    setSponsorsConfig(next);
+    await persistSponsors(next);
   };
 
-  const saveSponsors = async () => {
-    await fetch('/api/sponsors', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(sponsorsConfig) });
-    fetchData();
+  const toggleSponsorsLive = async () => {
+    const next = { ...sponsorsConfig, live: !sponsorsConfig.live };
+    setSponsorsConfig(next);
+    await persistSponsors(next);
   };
 
   const tabs = [
@@ -1449,7 +1458,7 @@ function Dashboard() {
                   </p>
                 </div>
                 <button
-                  onClick={() => setSponsorsConfig((c) => ({ ...c, live: !c.live }))}
+                  onClick={toggleSponsorsLive}
                   className={`relative flex-shrink-0 w-14 h-8 rounded-full transition-colors focus:outline-none ${sponsorsConfig.live ? 'bg-green-500' : 'bg-slate-300 dark:bg-slate-600'}`}
                 >
                   <div className={`absolute top-1 left-1 w-6 h-6 rounded-full bg-white shadow-md transition-transform ${sponsorsConfig.live ? 'translate-x-6' : ''}`} />
@@ -1516,14 +1525,6 @@ function Dashboard() {
                 </div>
               </div>
 
-              <div className="flex justify-end">
-                <button
-                  onClick={saveSponsors}
-                  className="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-violet-600 text-white text-sm font-semibold rounded-xl hover:opacity-90 transition-opacity"
-                >
-                  {sponsorsConfig.live ? 'Save & Go Live' : 'Save Changes'}
-                </button>
-              </div>
             </div>
           )}
 
