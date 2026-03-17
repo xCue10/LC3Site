@@ -95,6 +95,25 @@ export default function HomePage() {
               Meet the Team
             </Link>
           </div>
+
+          {/* Company CTA */}
+          <div className="mt-10 inline-flex items-center gap-4 bg-[#0d1424]/80 border border-[#1e2d45] hover:border-blue-500/40 rounded-2xl px-6 py-4 transition-all group">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500/20 to-violet-500/20 border border-blue-500/20 flex items-center justify-center flex-shrink-0">
+              <svg className="w-5 h-5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+              </svg>
+            </div>
+            <div className="text-left">
+              <p className="text-white text-sm font-medium">Are you a company?</p>
+              <p className="text-slate-400 text-xs">Partner with us for projects or offer internships to our members.</p>
+            </div>
+            <Link
+              href="/hire"
+              className="flex-shrink-0 text-xs font-semibold text-blue-400 group-hover:text-blue-300 border border-blue-500/30 group-hover:border-blue-400/50 px-4 py-2 rounded-lg transition-all"
+            >
+              Learn more →
+            </Link>
+          </div>
         </div>
       </section>
 
