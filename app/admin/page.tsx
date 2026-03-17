@@ -40,7 +40,7 @@ interface Project {
   github: string;
 }
 
-const ADMIN_PASSWORD = 'admin123';
+const ADMIN_PASSWORD = process.env.NEXT_PUBLIC_ADMIN_PASSWORD ?? '';
 
 const GRADIENTS = [
   { label: 'Blue → Cyan', value: 'from-blue-500 to-cyan-500' },
