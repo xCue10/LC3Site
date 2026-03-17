@@ -39,19 +39,19 @@ export default function HomePage() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 text-center">
           <div className="inline-flex items-center gap-2 bg-violet-500/10 border border-violet-500/20 text-violet-400 text-sm px-4 py-1.5 rounded-full mb-6">
             <span className="w-2 h-2 bg-violet-400 rounded-full animate-pulse" />
-            Now recruiting for Spring 2026
+            LC3 — Now recruiting for Spring 2026
           </div>
 
           <h1 className="text-5xl sm:text-7xl font-bold text-white mb-6 tracking-tight">
             Welcome to{' '}
             <span className="bg-gradient-to-r from-blue-400 to-violet-500 bg-clip-text text-transparent">
-              Tech Club
+              LC3
             </span>
           </h1>
 
           <p className="text-slate-400 text-lg sm:text-xl max-w-2xl mx-auto leading-relaxed mb-10">
-            We are a community of passionate students building real projects, learning from each other, and launching
-            careers in tech — one hackathon at a time.
+            We are a community of passionate students exploring low-code platforms and cloud technology — building
+            real solutions and launching careers without needing to write every line from scratch.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -96,9 +96,9 @@ export default function HomePage() {
           <div>
             <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">Our Mission</h2>
             <p className="text-slate-400 leading-relaxed mb-4">
-              Tech Club exists to bridge the gap between classroom theory and real-world application. We provide
-              students with hands-on experience, mentorship from industry professionals, and a collaborative community
-              to grow in.
+              LC3 exists to bridge the gap between classroom theory and real-world application. We empower
+              students to build with low-code platforms and cloud tools, guided by industry professionals in a
+              collaborative community.
             </p>
             <p className="text-slate-400 leading-relaxed mb-6">
               Whether you&apos;re a curious beginner or an experienced developer, there&apos;s a place for you here.
@@ -232,7 +232,7 @@ export default function HomePage() {
             href="/contact"
             className="px-10 py-4 bg-gradient-to-r from-blue-600 to-violet-600 text-white font-semibold rounded-xl hover:opacity-90 transition-all shadow-lg shadow-violet-500/25 inline-block"
           >
-            Apply to Join Tech Club
+            Apply to Join LC3
           </Link>
         </div>
       </section>

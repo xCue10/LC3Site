@@ -24,8 +24,14 @@ function TwitterIcon() {
   );
 }
 
+const BLANK = (v: string) => !v || v.trim().toLowerCase() === 'n/a' || v.trim() === '';
+const ROOT_DOMAINS = ['https://github.com', 'https://linkedin.com', 'https://twitter.com', 'http://github.com', 'http://linkedin.com', 'http://twitter.com'];
+const validLink = (v: string) => !BLANK(v) && !ROOT_DOMAINS.includes(v.trim().replace(/\/$/, ''));
+
 function getInitials(name: string) {
+  if (BLANK(name)) return '?';
   return name
+    .trim()
     .split(' ')
     .map((n) => n[0])
     .join('')
@@ -74,25 +80,31 @@ export default function MembersPage() {
                   {getInitials(member.name)}
                 </div>
                 <div className="min-w-0">
-                  <h3 className="text-white font-semibold truncate">{member.name}</h3>
-                  <p className="text-slate-500 text-sm truncate">{member.major}</p>
+                  <h3 className="text-white font-semibold truncate">
+                    {BLANK(member.name) ? <span className="text-slate-500 italic">Name TBD</span> : member.name}
+                  </h3>
+                  {!BLANK(member.major) && (
+                    <p className="text-slate-500 text-sm truncate">{member.major}</p>
+                  )}
                 </div>
               </div>
 
               {/* Focus area badge */}
-              <div className="mb-4">
-                <span className="inline-flex items-center gap-1.5 bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs px-3 py-1 rounded-full">
-                  <span className="w-1.5 h-1.5 bg-blue-400 rounded-full" />
-                  {member.focusArea}
-                </span>
-              </div>
+              {!BLANK(member.focusArea) && (
+                <div className="mb-4">
+                  <span className="inline-flex items-center gap-1.5 bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs px-3 py-1 rounded-full">
+                    <span className="w-1.5 h-1.5 bg-blue-400 rounded-full" />
+                    {member.focusArea}
+                  </span>
+                </div>
+              )}
 
               {/* Projects */}
-              {member.projects.length > 0 && (
+              {member.projects.filter((p) => !BLANK(p)).length > 0 && (
                 <div className="mb-5 flex-1">
                   <p className="text-slate-500 text-xs font-medium uppercase tracking-wider mb-2">Projects</p>
                   <div className="flex flex-wrap gap-1.5">
-                    {member.projects.map((project) => (
+                    {member.projects.filter((p) => !BLANK(p)).map((project) => (
                       <span
                         key={project}
                         className="text-xs bg-white/5 border border-white/8 text-slate-400 px-2.5 py-1 rounded-md"
@@ -105,8 +117,8 @@ export default function MembersPage() {
               )}
 
               {/* Social links */}
-              <div className="flex items-center gap-2 pt-4 border-t border-[#1e1e2e]">
-                {member.github && (
+              <div className="flex items-center gap-2 pt-4 border-t border-[#1e1e2e] mt-auto">
+                {validLink(member.github) && (
                   <a
                     href={member.github}
                     target="_blank"
@@ -117,7 +129,7 @@ export default function MembersPage() {
                     <GithubIcon />
                   </a>
                 )}
-                {member.linkedin && (
+                {validLink(member.linkedin) && (
                   <a
                     href={member.linkedin}
                     target="_blank"
@@ -128,7 +140,7 @@ export default function MembersPage() {
                     <LinkedInIcon />
                   </a>
                 )}
-                {member.twitter && (
+                {validLink(member.twitter) && (
                   <a
                     href={member.twitter}
                     target="_blank"
@@ -139,8 +151,8 @@ export default function MembersPage() {
                     <TwitterIcon />
                   </a>
                 )}
-                {!member.github && !member.linkedin && !member.twitter && (
-                  <span className="text-slate-600 text-xs">No socials listed</span>
+                {!validLink(member.github) && !validLink(member.linkedin) && !validLink(member.twitter) && (
+                  <span className="text-slate-600 text-xs italic">Socials coming soon</span>
                 )}
               </div>
             </div>

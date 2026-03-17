@@ -54,7 +54,7 @@ export default function ContactPage() {
         </div>
         <h2 className="text-3xl font-bold text-white mb-4">Application Submitted!</h2>
         <p className="text-slate-400 leading-relaxed mb-8">
-          Thanks for your interest in Tech Club! We&apos;ll review your application and reach out to your email within
+          Thanks for your interest in LC3! We&apos;ll review your application and reach out to your email within
           a few days.
         </p>
         <button
@@ -73,10 +73,10 @@ export default function ContactPage() {
         {/* Left: Info */}
         <div>
           <p className="text-violet-400 text-sm font-medium mb-2">Get involved</p>
-          <h1 className="text-4xl sm:text-5xl font-bold text-white mb-6">Join Tech Club</h1>
+          <h1 className="text-4xl sm:text-5xl font-bold text-white mb-6">Join LC3</h1>
           <p className="text-slate-400 leading-relaxed mb-8">
             We welcome students of all skill levels and majors. Whether you&apos;re a seasoned developer or just
-            starting out, Tech Club has something for you. Fill out the form and we&apos;ll be in touch!
+            starting out, LC3 has something for you. Fill out the form and we&apos;ll be in touch!
           </p>
 
           <div className="space-y-4">
@@ -184,7 +184,7 @@ export default function ContactPage() {
                 rows={4}
                 value={form.reason}
                 onChange={handleChange}
-                placeholder="Tell us about yourself, your interests, and what you hope to get out of Tech Club..."
+                placeholder="Tell us about yourself, your interests, and what you hope to get out of LC3..."
                 className="w-full bg-[#13131f] border border-[#1e1e2e] text-white placeholder:text-slate-600 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-violet-500/50 focus:ring-1 focus:ring-violet-500/30 transition-all resize-none"
               />
             </div>
