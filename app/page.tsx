@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import { readJSON, Member, Event } from '@/lib/data';
 
+export const dynamic = 'force-dynamic';
+
 const featuredProjects = [
   {
     name: 'AI Study Bot',
