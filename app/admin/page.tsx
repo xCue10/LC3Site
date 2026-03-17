@@ -23,6 +23,7 @@ interface Member {
   memberType: 'advisor' | 'officer' | 'member';
   major: string;
   focusArea: string;
+  skills: string[];
   projects: string[];
   github: string;
   linkedin: string;
@@ -83,7 +84,7 @@ const emptyProject: Omit<Project, 'id'> = {
 };
 
 const emptyMember: Omit<Member, 'id'> = {
-  name: '', role: '', memberType: 'member', major: '', focusArea: '', projects: [], github: '', linkedin: '', twitter: '',
+  name: '', role: '', memberType: 'member', major: '', focusArea: '', skills: [], projects: [], github: '', linkedin: '', twitter: '',
 };
 
 const emptyEvent: Omit<Event, 'id'> = {
@@ -158,6 +159,7 @@ function MemberModal({
   const [form, setForm] = useState<Omit<Member, 'id'>>(
     member ? { ...member } : { ...emptyMember }
   );
+  const [skillsStr, setSkillsStr] = useState((member?.skills ?? []).join(', '));
   const [projectsStr, setProjectsStr] = useState((member?.projects ?? []).join(', '));
   const [saving, setSaving] = useState(false);
 
@@ -168,7 +170,11 @@ function MemberModal({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
-    await onSave({ ...form, projects: projectsStr.split(',').map((s) => s.trim()).filter(Boolean) });
+    await onSave({
+      ...form,
+      skills: skillsStr.split(',').map((s) => s.trim()).filter(Boolean),
+      projects: projectsStr.split(',').map((s) => s.trim()).filter(Boolean),
+    });
     setSaving(false);
   };
 
@@ -235,6 +241,19 @@ function MemberModal({
               />
             </div>
           ))}
+
+          <div>
+            <label className="block text-sm font-medium text-slate-300 mb-1.5">
+              Skills <span className="text-slate-500 font-normal">(comma-separated)</span>
+            </label>
+            <input
+              type="text"
+              value={skillsStr}
+              onChange={(e) => setSkillsStr(e.target.value)}
+              placeholder="Canvas Apps, Power Automate, React, Python"
+              className="w-full bg-[#13131f] border border-[#1e1e2e] text-white placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+            />
+          </div>
 
           <div>
             <label className="block text-sm font-medium text-slate-300 mb-1.5">Projects <span className="text-slate-500 font-normal">(comma-separated)</span></label>

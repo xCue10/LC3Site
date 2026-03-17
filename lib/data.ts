@@ -39,6 +39,7 @@ export interface Member {
   memberType: 'advisor' | 'officer' | 'member';
   major: string;
   focusArea: string;
+  skills: string[];
   projects: string[];
   github: string;
   linkedin: string;

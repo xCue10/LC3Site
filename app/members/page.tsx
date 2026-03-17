@@ -39,6 +39,22 @@ const avatarGradients = [
   'from-blue-600 to-violet-600',
 ];
 
+function SkillTags({ skills }: { skills: string[] }) {
+  if (!skills || skills.length === 0) return null;
+  return (
+    <div className="mb-4">
+      <p className="text-slate-500 text-xs font-medium uppercase tracking-wider mb-2">Skills</p>
+      <div className="flex flex-wrap gap-1.5">
+        {skills.map((skill) => (
+          <span key={skill} className="text-xs bg-violet-500/10 border border-violet-500/20 text-violet-300 px-2.5 py-1 rounded-md">
+            {skill}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function SocialLinks({ member }: { member: Member }) {
   const hasSocials = member.github || member.linkedin || member.twitter;
   return (
@@ -88,6 +104,8 @@ function MemberCard({ member, index }: { member: Member; index: number }) {
         </div>
       )}
 
+      <SkillTags skills={member.skills ?? []} />
+
       {member.projects.length > 0 && (
         <div className="mb-5 flex-1">
           <p className="text-slate-500 text-xs font-medium uppercase tracking-wider mb-2">Projects</p>
@@ -133,6 +151,8 @@ function AdvisorCard({ member, index }: { member: Member; index: number }) {
         </div>
       )}
 
+      <SkillTags skills={member.skills ?? []} />
+
       <SocialLinks member={member} />
     </div>
   );
@@ -164,6 +184,8 @@ function OfficerCard({ member, index }: { member: Member; index: number }) {
           </span>
         </div>
       )}
+
+      <SkillTags skills={member.skills ?? []} />
 
       {member.projects.length > 0 && (
         <div className="mb-5 flex-1">
