@@ -496,9 +496,11 @@ function ProjectModal({
   );
 }
 
+type TabId = 'members' | 'events' | 'contacts' | 'partners' | 'projects' | 'stats' | 'settings';
+
 // ─── Dashboard ───────────────────────────────────────────────────────────────
 function Dashboard() {
-  const [tab, setTab] = useState<'members' | 'events' | 'contacts' | 'partners' | 'projects' | 'stats' | 'settings'>('members');
+  const [tab, setTabRaw] = useState<TabId>('members');
   const [members, setMembers] = useState<Member[]>([]);
   const [events, setEvents] = useState<Event[]>([]);
   const [contacts, setContacts] = useState<Contact[]>([]);
@@ -507,6 +509,37 @@ function Dashboard() {
   const [stats, setStats] = useState<Stats>({ activeMembers: '', eventsHosted: '', projectsBuilt: '', yearsActive: '' });
   const [siteSettings, setSiteSettings] = useState<SiteSettings>({ recruitingBanner: '', meetingDay: '', meetingTime: '', meetingLocation: '' });
   const [loading, setLoading] = useState(true);
+
+  // Search & sort
+  const [membersSearch, setMembersSearch] = useState('');
+  const [contactsSort, setContactsSort] = useState<'newest' | 'oldest'>('newest');
+  const [partnersSort, setPartnersSort] = useState<'newest' | 'oldest'>('newest');
+
+  // Unread tracking
+  const [lastSeenContacts, setLastSeenContacts] = useState<number>(0);
+  const [lastSeenPartners, setLastSeenPartners] = useState<number>(0);
+
+  useEffect(() => {
+    setLastSeenContacts(Number(localStorage.getItem('lastSeen_contacts') ?? 0));
+    setLastSeenPartners(Number(localStorage.getItem('lastSeen_partners') ?? 0));
+  }, []);
+
+  const setTab = (id: TabId) => {
+    setTabRaw(id);
+    if (id === 'contacts') {
+      const now = Date.now();
+      localStorage.setItem('lastSeen_contacts', String(now));
+      setLastSeenContacts(now);
+    }
+    if (id === 'partners') {
+      const now = Date.now();
+      localStorage.setItem('lastSeen_partners', String(now));
+      setLastSeenPartners(now);
+    }
+  };
+
+  const unreadContacts = contacts.filter((c) => new Date(c.submittedAt).getTime() > lastSeenContacts).length;
+  const unreadPartners = partners.filter((p) => new Date(p.submittedAt).getTime() > lastSeenPartners).length;
 
   const [memberModal, setMemberModal] = useState<{ open: boolean; member: Member | null }>({ open: false, member: null });
   const [eventModal, setEventModal] = useState(false);
@@ -584,13 +617,13 @@ function Dashboard() {
   };
 
   const tabs = [
-    { id: 'members' as const, label: 'Members', count: members.length },
-    { id: 'events' as const, label: 'Events', count: events.length },
-    { id: 'projects' as const, label: 'Projects', count: projects.length },
-    { id: 'contacts' as const, label: 'Contacts', count: contacts.length },
-    { id: 'partners' as const, label: 'Partners', count: partners.length },
-    { id: 'stats' as const, label: 'Stats', count: null },
-    { id: 'settings' as const, label: 'Settings', count: null },
+    { id: 'members' as const, label: 'Members', count: members.length, unread: 0 },
+    { id: 'events' as const, label: 'Events', count: events.length, unread: 0 },
+    { id: 'projects' as const, label: 'Projects', count: projects.length, unread: 0 },
+    { id: 'contacts' as const, label: 'Contacts', count: contacts.length, unread: unreadContacts },
+    { id: 'partners' as const, label: 'Partners', count: partners.length, unread: unreadPartners },
+    { id: 'stats' as const, label: 'Stats', count: null, unread: 0 },
+    { id: 'settings' as const, label: 'Settings', count: null, unread: 0 },
   ];
 
   return (
@@ -608,30 +641,48 @@ function Dashboard() {
       </div>
 
       {/* Stats Row */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
-        {tabs.filter((t) => t.count !== null).map(({ id, label, count }) => (
-          <div key={id} className="bg-[#0d1424] border border-[#1e2d45] rounded-xl p-4 text-center">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
+        {tabs.filter((t) => t.count !== null).map(({ id, label, count, unread }) => (
+          <button
+            key={id}
+            onClick={() => setTab(id)}
+            className={`relative bg-[#0d1424] border rounded-xl p-4 text-center transition-all hover:-translate-y-0.5 hover:border-violet-500/40 ${
+              tab === id ? 'border-violet-500/50 shadow-lg shadow-violet-500/10' : 'border-[#1e2d45]'
+            }`}
+          >
+            {unread > 0 && (
+              <span className="absolute top-2 right-2 w-2 h-2 bg-violet-400 rounded-full animate-pulse" />
+            )}
             <div className="text-2xl font-bold text-white">{count}</div>
             <div className="text-slate-500 text-sm">{label}</div>
-          </div>
+          </button>
         ))}
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1 bg-[#0d1424] border border-[#1e2d45] rounded-xl p-1 mb-6 w-fit">
-        {tabs.map(({ id, label }) => (
-          <button
-            key={id}
-            onClick={() => setTab(id)}
-            className={`px-5 py-2 rounded-lg text-sm font-medium transition-all ${
-              tab === id
-                ? 'bg-gradient-to-r from-blue-600 to-violet-600 text-white shadow'
-                : 'text-slate-400 hover:text-white'
-            }`}
-          >
-            {label}
-          </button>
-        ))}
+      <div className="overflow-x-auto mb-6 pb-1">
+        <div className="flex gap-1 bg-[#0d1424] border border-[#1e2d45] rounded-xl p-1 w-fit min-w-full sm:min-w-0">
+          {tabs.map(({ id, label, unread }) => (
+            <button
+              key={id}
+              onClick={() => setTab(id)}
+              className={`relative flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap ${
+                tab === id
+                  ? 'bg-gradient-to-r from-blue-600 to-violet-600 text-white shadow'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              {label}
+              {unread > 0 && (
+                <span className={`flex items-center justify-center w-4 h-4 rounded-full text-xs font-bold ${
+                  tab === id ? 'bg-white/20 text-white' : 'bg-violet-500/20 text-violet-300'
+                }`}>
+                  {unread}
+                </span>
+              )}
+            </button>
+          ))}
+        </div>
       </div>
 
       {loading ? (
@@ -641,9 +692,29 @@ function Dashboard() {
           {/* Members Tab */}
           {tab === 'members' && (
             <div>
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-semibold text-white">All Members</h2>
-                <button
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+                <div>
+                  <h2 className="text-lg font-semibold text-white">All Members</h2>
+                  {members.length > 0 && (
+                    <p className="text-slate-500 text-xs mt-0.5">
+                      {members.filter(m => m.memberType === 'advisor').length} Advisor{members.filter(m => m.memberType === 'advisor').length !== 1 ? 's' : ''} · {members.filter(m => m.memberType === 'officer').length} Officer{members.filter(m => m.memberType === 'officer').length !== 1 ? 's' : ''} · {members.filter(m => m.memberType === 'member' || !m.memberType).length} Member{members.filter(m => m.memberType === 'member' || !m.memberType).length !== 1 ? 's' : ''}
+                    </p>
+                  )}
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="relative">
+                    <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                    <input
+                      type="text"
+                      value={membersSearch}
+                      onChange={(e) => setMembersSearch(e.target.value)}
+                      placeholder="Search members..."
+                      className="bg-[#111a2e] border border-[#1e2d45] text-white placeholder:text-slate-600 rounded-xl pl-9 pr-4 py-2 text-sm focus:outline-none focus:border-violet-500/50 transition-all w-48"
+                    />
+                  </div>
+                  <button
                   onClick={() => setMemberModal({ open: true, member: null })}
                   className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-violet-600 text-white text-sm font-medium rounded-xl hover:opacity-90 transition-opacity"
                 >
@@ -652,13 +723,18 @@ function Dashboard() {
                   </svg>
                   Add Member
                 </button>
+                </div>
               </div>
 
               {members.length === 0 ? (
                 <div className="text-center py-16 text-slate-500 border border-[#1e2d45] rounded-2xl">No members yet.</div>
               ) : (
                 <div className="space-y-3">
-                  {members.map((m) => (
+                  {members.filter((m) => {
+                    if (!membersSearch.trim()) return true;
+                    const q = membersSearch.toLowerCase();
+                    return m.name.toLowerCase().includes(q) || m.major.toLowerCase().includes(q) || m.role.toLowerCase().includes(q) || m.focusArea.toLowerCase().includes(q);
+                  }).map((m) => (
                     <div key={m.id} className="bg-[#0d1424] border border-[#1e2d45] rounded-xl p-4 flex items-center gap-4">
                       <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-violet-600 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
                         {m.name.split(' ').map((n) => n[0]).join('').slice(0, 2).toUpperCase()}
@@ -871,7 +947,17 @@ function Dashboard() {
           {tab === 'partners' && (
             <div>
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-semibold text-white">Partner Inquiries</h2>
+                <div className="flex items-center gap-3">
+                  <h2 className="text-lg font-semibold text-white">Partner Inquiries</h2>
+                  <div className="flex rounded-lg border border-[#1e2d45] overflow-hidden text-xs">
+                    {(['newest', 'oldest'] as const).map((s) => (
+                      <button key={s} onClick={() => setPartnersSort(s)}
+                        className={`px-3 py-1.5 font-medium transition-colors capitalize ${partnersSort === s ? 'bg-violet-600 text-white' : 'text-slate-400 hover:text-white'}`}>
+                        {s}
+                      </button>
+                    ))}
+                  </div>
+                </div>
                 {partners.length > 0 && (
                   <button
                     onClick={() => {
@@ -907,7 +993,10 @@ function Dashboard() {
                 <div className="text-center py-16 text-slate-500 border border-[#1e2d45] rounded-2xl">No inquiries yet.</div>
               ) : (
                 <div className="space-y-3">
-                  {partners.map((p) => (
+                  {[...partners].sort((a, b) => {
+                    const diff = new Date(b.submittedAt).getTime() - new Date(a.submittedAt).getTime();
+                    return partnersSort === 'newest' ? diff : -diff;
+                  }).map((p) => (
                     <div key={p.id} className="bg-[#0d1424] border border-[#1e2d45] rounded-xl p-5">
                       <div className="flex items-start justify-between gap-4 mb-3">
                         <div>
@@ -1005,7 +1094,17 @@ function Dashboard() {
           {tab === 'contacts' && (
             <div>
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-semibold text-white">Contact Submissions</h2>
+                <div className="flex items-center gap-3">
+                  <h2 className="text-lg font-semibold text-white">Contact Submissions</h2>
+                  <div className="flex rounded-lg border border-[#1e2d45] overflow-hidden text-xs">
+                    {(['newest', 'oldest'] as const).map((s) => (
+                      <button key={s} onClick={() => setContactsSort(s)}
+                        className={`px-3 py-1.5 font-medium transition-colors capitalize ${contactsSort === s ? 'bg-violet-600 text-white' : 'text-slate-400 hover:text-white'}`}>
+                        {s}
+                      </button>
+                    ))}
+                  </div>
+                </div>
                 {contacts.length > 0 && (
                   <button
                     onClick={() => {
@@ -1039,7 +1138,10 @@ function Dashboard() {
                 <div className="text-center py-16 text-slate-500 border border-[#1e2d45] rounded-2xl">No submissions yet.</div>
               ) : (
                 <div className="space-y-3">
-                  {contacts.map((c) => (
+                  {[...contacts].sort((a, b) => {
+                    const diff = new Date(b.submittedAt).getTime() - new Date(a.submittedAt).getTime();
+                    return contactsSort === 'newest' ? diff : -diff;
+                  }).map((c) => (
                     <div key={c.id} className="bg-[#0d1424] border border-[#1e2d45] rounded-xl p-5">
                       <div className="flex items-start justify-between gap-4 mb-3">
                         <div>
