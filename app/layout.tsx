@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "LC3 — Lowcode Cloud Club",
-  description: "The official website for LC3, the Lowcode Cloud Club — building the future with low-code tools and cloud technology.",
+  title: "LC3 Low Code Cloud Club",
+  description: "The official website for LC3, the Low Code Cloud Club — building the future with low-code tools and cloud technology.",
 };
 
 export default function RootLayout({

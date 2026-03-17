@@ -22,7 +22,7 @@ export default function Navbar() {
           </div>
           <div className="flex flex-col leading-tight">
             <span className="font-bold text-white text-base tracking-tight">LC3</span>
-            <span className="text-slate-500 text-[10px] tracking-wide">Lowcode Cloud Club</span>
+            <span className="text-slate-500 text-[10px] tracking-wide">Low Code Cloud Club</span>
           </div>
         </Link>
 

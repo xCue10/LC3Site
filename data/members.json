@@ -4,9 +4,9 @@
     "name": "Lee Ramirez",
     "major": "Cloud Computing",
     "focusArea": "N/A",
-    "projects": ["Club Website", "AI Study Bot"],
-    "github": "https://github.com",
-    "linkedin": "https://linkedin.com",
+    "projects": [],
+    "github": "",
+    "linkedin": "",
     "twitter": ""
   },
   {
@@ -14,29 +14,29 @@
     "name": "Jordon Aquiningoc",
     "major": "Cybersecurity",
     "focusArea": "Digital Forensics",
-    "projects": ["Image Classifier", "Robotics Arm Controller"],
-    "github": "https://github.com",
-    "linkedin": "https://linkedin.com",
-    "twitter": "https://twitter.com"
+    "projects": [],
+    "github": "",
+    "linkedin": "",
+    "twitter": ""
   },
   {
     "id": "3",
     "name": "Erika Valencia",
     "major": "N/A",
     "focusArea": "N/A",
-    "projects": ["Campus Event Tracker", "Grade Predictor"],
-    "github": "https://github.com",
+    "projects": [],
+    "github": "",
     "linkedin": "",
-    "twitter": "https://twitter.com"
+    "twitter": ""
   },
   {
     "id": "4",
-    "name": "Jeffery Aragon ",
+    "name": "Jeffery Aragon",
     "major": "N/A",
     "focusArea": "N/A",
-    "projects": ["CTF Toolkit", "Network Scanner"],
-    "github": "https://github.com",
-    "linkedin": "https://linkedin.com",
+    "projects": [],
+    "github": "",
+    "linkedin": "",
     "twitter": ""
   },
   {
@@ -44,19 +44,9 @@
     "name": "Kendra Hardin",
     "major": "N/A",
     "focusArea": "N/A",
-    "projects": ["Campus Map App", "Study Group Finder"],
-    "github": "https://github.com",
-    "linkedin": "https://linkedin.com",
-    "twitter": "https://twitter.com"
-  },
-  {
-    "id": "6",
-    "name": "N/A",
-    "major": "N/A",
-    "focusArea": "Cloud & DevOps",
-    "projects": ["CI/CD Pipeline", "Auto-Deploy Bot"],
-    "github": "https://github.com",
-    "linkedin": "https://linkedin.com",
+    "projects": [],
+    "github": "",
+    "linkedin": "",
     "twitter": ""
   }
 ]
