@@ -1,6 +1,12 @@
 import { readJSON, Project } from '@/lib/data';
+import type { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
+
+export const metadata: Metadata = {
+  title: 'Projects',
+  description: 'Explore real-world software projects built by LC3 student teams — from Power Platform apps to cloud-native solutions.',
+};
 
 function GithubIcon() {
   return (

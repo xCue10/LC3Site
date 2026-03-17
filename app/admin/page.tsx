@@ -15,6 +15,9 @@ interface SiteSettings {
   meetingTime: string;
   meetingLocation: string;
   lastUpdated?: string;
+  discord?: string;
+  github?: string;
+  linkedin?: string;
 }
 
 interface Member {
@@ -26,6 +29,7 @@ interface Member {
   focusArea: string;
   status: string;
   avatarUrl: string;
+  bio: string;
   skills: string[];
   projects: string[];
   github: string;
@@ -93,7 +97,7 @@ const emptyProject: Omit<Project, 'id'> = {
 };
 
 const emptyMember: Omit<Member, 'id'> = {
-  name: '', role: '', memberType: 'member', majors: [], focusArea: '', status: '', avatarUrl: '', skills: [], projects: [], github: '', linkedin: '', twitter: '',
+  name: '', role: '', memberType: 'member', majors: [], focusArea: '', status: '', avatarUrl: '', bio: '', skills: [], projects: [], github: '', linkedin: '', twitter: '',
 };
 
 const emptyEvent: Omit<Event, 'id'> = {
@@ -253,6 +257,20 @@ function MemberModal({
               />
             </div>
           ))}
+
+          <div>
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
+              Bio <span className="text-slate-500 font-normal">(optional)</span>
+            </label>
+            <textarea
+              name="bio"
+              rows={3}
+              value={form.bio}
+              onChange={handleChange}
+              placeholder="A short bio about this member..."
+              className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all resize-none"
+            />
+          </div>
 
           <div>
             <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
@@ -1187,6 +1205,28 @@ function Dashboard() {
                         <input
                           type="text"
                           value={siteSettings[key]}
+                          onChange={(e) => setSiteSettings((s) => ({ ...s, [key]: e.target.value }))}
+                          placeholder={placeholder}
+                          className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <p className="text-xs text-slate-500 font-medium uppercase tracking-wider mb-3">Club Social Links</p>
+                  <div className="space-y-3">
+                    {[
+                      { key: 'discord' as const, label: 'Discord Invite URL', placeholder: 'https://discord.gg/...' },
+                      { key: 'github' as const, label: 'GitHub Organization URL', placeholder: 'https://github.com/your-org' },
+                      { key: 'linkedin' as const, label: 'LinkedIn Page URL', placeholder: 'https://linkedin.com/company/...' },
+                    ].map(({ key, label, placeholder }) => (
+                      <div key={key}>
+                        <label className="block text-sm font-medium text-slate-400 mb-1.5">{label}</label>
+                        <input
+                          type="url"
+                          value={siteSettings[key] ?? ''}
                           onChange={(e) => setSiteSettings((s) => ({ ...s, [key]: e.target.value }))}
                           placeholder={placeholder}
                           className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"

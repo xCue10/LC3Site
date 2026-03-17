@@ -1,6 +1,7 @@
 import { readJSON, Member } from '@/lib/data';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export const dynamic = 'force-dynamic';
 
@@ -84,9 +85,11 @@ export default async function MemberProfilePage({ params }: { params: Promise<{ 
           {/* Header */}
           <div className="flex items-start gap-6 mb-8">
             {member.avatarUrl ? (
-              <img
+              <Image
                 src={member.avatarUrl}
                 alt={member.name}
+                width={80}
+                height={80}
                 className="w-20 h-20 rounded-2xl object-cover shadow-lg flex-shrink-0"
               />
             ) : (
@@ -115,6 +118,14 @@ export default async function MemberProfilePage({ params }: { params: Promise<{ 
               </div>
             </div>
           </div>
+
+          {/* Bio */}
+          {member.bio && (
+            <div className="mb-6">
+              <p className="text-slate-400 text-xs font-medium uppercase tracking-wider mb-2">About</p>
+              <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-sm">{member.bio}</p>
+            </div>
+          )}
 
           {/* Majors */}
           {(member.majors ?? []).length > 0 && (

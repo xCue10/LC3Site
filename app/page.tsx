@@ -1,7 +1,14 @@
 import Link from 'next/link';
 import { readJSON, Event, Project, Stats, SiteSettings } from '@/lib/data';
+import ScrollReveal from './components/ScrollReveal';
+import type { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
+
+export const metadata: Metadata = {
+  title: 'LC3 - Lowcode Cloud Club',
+  description: 'LC3 is a university tech club focused on low-code platforms, cloud computing, and real-world software projects. Join us to build, learn, and connect.',
+};
 
 export default function HomePage() {
   const events = readJSON<Event[]>('events.json');
@@ -136,6 +143,7 @@ export default function HomePage() {
 
       {/* Stats */}
       <section className="border-y border-slate-200 bg-white dark:border-[#1e2d45] dark:bg-[#0d1424]">
+        <ScrollReveal>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
           {[
             { value: stats.activeMembers, label: 'Active Members' },
@@ -151,10 +159,12 @@ export default function HomePage() {
             </div>
           ))}
         </div>
+        </ScrollReveal>
       </section>
 
       {/* About */}
       <section className="py-20 max-w-6xl mx-auto px-4 sm:px-6">
+        <ScrollReveal>
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div>
             <p className="text-violet-600 dark:text-violet-400 text-sm font-medium mb-2">Who we are</p>
@@ -206,11 +216,13 @@ export default function HomePage() {
             ))}
           </div>
         </div>
+        </ScrollReveal>
       </section>
 
       {/* Featured Projects */}
       {featuredProjects.length > 0 && (
         <section className="py-20 bg-slate-50 border-t border-slate-200 dark:bg-[#0d1424] dark:border-[#1e2d45]">
+          <ScrollReveal>
           <div className="max-w-6xl mx-auto px-4 sm:px-6">
             <div className="flex items-end justify-between mb-10">
               <div>
@@ -253,12 +265,14 @@ export default function HomePage() {
               ))}
             </div>
           </div>
+          </ScrollReveal>
         </section>
       )}
 
       {/* Upcoming Events Preview */}
       {upcomingEvents.length > 0 && (
         <section className="py-20 max-w-6xl mx-auto px-4 sm:px-6">
+          <ScrollReveal>
           <div className="flex items-end justify-between mb-10">
             <div>
               <p className="text-blue-600 dark:text-blue-400 text-sm font-medium mb-1">Mark your calendar</p>
@@ -296,11 +310,13 @@ export default function HomePage() {
               </div>
             ))}
           </div>
+          </ScrollReveal>
         </section>
       )}
 
       {/* CTA */}
       <section className="py-20 border-t border-slate-200 dark:border-[#1e2d45]">
+        <ScrollReveal>
         <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
           <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white mb-4">Ready to join?</h2>
           <p className="text-slate-600 dark:text-slate-300 mb-8">
@@ -313,6 +329,7 @@ export default function HomePage() {
             Apply to Join LC3
           </Link>
         </div>
+        </ScrollReveal>
       </section>
     </div>
   );

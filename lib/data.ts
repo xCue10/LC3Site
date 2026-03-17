@@ -41,6 +41,7 @@ export interface Member {
   focusArea: string;
   status: string;
   avatarUrl: string;
+  bio: string;
   skills: string[];
   projects: string[];
   github: string;
@@ -73,6 +74,9 @@ export interface SiteSettings {
   meetingTime: string;
   meetingLocation: string;
   lastUpdated?: string;
+  discord?: string;
+  github?: string;
+  linkedin?: string;
 }
 
 export interface Stats {

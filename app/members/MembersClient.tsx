@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Member } from '@/lib/data';
 
 function GithubIcon() {
@@ -75,9 +76,11 @@ function Avatar({ member, index, size = 'md' }: { member: Member; index: number;
   const sizeClass = size === 'lg' ? 'w-14 h-14 text-lg' : size === 'sm' ? 'w-10 h-10 text-sm' : 'w-12 h-12 text-base';
   if (member.avatarUrl) {
     return (
-      <img
+      <Image
         src={member.avatarUrl}
         alt={member.name}
+        width={56}
+        height={56}
         className={`${sizeClass} rounded-xl object-cover flex-shrink-0 shadow-lg`}
       />
     );

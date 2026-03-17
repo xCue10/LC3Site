@@ -15,8 +15,24 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "LC3 - Lowcode Cloud Club",
-  description: "The official website for LC3 - Lowcode Cloud Club — building the future, one project at a time.",
+  metadataBase: new URL('https://lc3.up.railway.app'),
+  title: {
+    default: 'LC3 - Lowcode Cloud Club',
+    template: '%s | LC3',
+  },
+  description: 'LC3 is a university tech club focused on low-code platforms, cloud computing, and real-world software projects. Join us to build, learn, and connect.',
+  keywords: ['LC3', 'Lowcode Cloud Club', 'tech club', 'Power Platform', 'Azure', 'student club', 'software development'],
+  openGraph: {
+    type: 'website',
+    siteName: 'LC3 - Lowcode Cloud Club',
+    title: 'LC3 - Lowcode Cloud Club',
+    description: 'Building the future through code, collaboration, and curiosity.',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'LC3 - Lowcode Cloud Club',
+    description: 'Building the future through code, collaboration, and curiosity.',
+  },
 };
 
 export default function RootLayout({

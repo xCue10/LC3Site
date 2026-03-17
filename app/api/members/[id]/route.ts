@@ -19,6 +19,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     focusArea: body.focusArea ?? members[index].focusArea,
     status: body.status ?? members[index].status ?? '',
     avatarUrl: body.avatarUrl ?? members[index].avatarUrl ?? '',
+    bio: body.bio ?? members[index].bio ?? '',
     skills: Array.isArray(body.skills)
       ? body.skills
       : (body.skills || '').split(',').map((s: string) => s.trim()).filter(Boolean),

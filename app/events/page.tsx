@@ -1,6 +1,12 @@
 import { readJSON, Event } from '@/lib/data';
+import type { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
+
+export const metadata: Metadata = {
+  title: 'Events',
+  description: 'Upcoming and past events hosted by LC3 - Lowcode Cloud Club. Workshops, hackathons, speaker sessions, and more.',
+};
 
 function formatDate(dateStr: string) {
   const d = new Date(dateStr + 'T00:00:00');
