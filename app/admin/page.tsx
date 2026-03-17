@@ -755,28 +755,31 @@ function Dashboard() {
 
   const fetchData = useCallback(async () => {
     setLoading(true);
+    const safe = <T,>(url: string, fallback: T) =>
+      fetch(url).then((r) => r.ok ? r.json() as Promise<T> : fallback).catch(() => fallback);
+
     const [m, e, c, pt, p, s, st, ab, po, sp] = await Promise.all([
-      fetch('/api/members').then((r) => r.json()),
-      fetch('/api/events').then((r) => r.json()),
-      fetch('/api/contact').then((r) => r.json()),
-      fetch('/api/hire').then((r) => r.json()),
-      fetch('/api/projects').then((r) => r.json()),
-      fetch('/api/stats').then((r) => r.json()),
-      fetch('/api/settings').then((r) => r.json()),
-      fetch('/api/about').then((r) => r.json()),
-      fetch('/api/posts').then((r) => r.json()),
-      fetch('/api/sponsors').then((r) => r.json()),
+      safe('/api/members', []),
+      safe('/api/events', []),
+      safe('/api/contact', []),
+      safe('/api/hire', []),
+      safe('/api/projects', []),
+      safe('/api/stats', { activeMembers: '', eventsHosted: '', projectsBuilt: '', yearsActive: '' }),
+      safe('/api/settings', { recruitingBanner: '', meetingDay: '', meetingTime: '', meetingLocation: '' }),
+      safe('/api/about', {}),
+      safe('/api/posts', []),
+      safe('/api/sponsors', { live: false, sectionTitle: 'Supported By', sponsors: [] }),
     ]);
-    setMembers(m);
-    setEvents(e);
-    setContacts(c);
-    setPartners(pt);
-    setProjects(p);
-    setStats(s);
-    setSiteSettings(st);
-    setAboutContent(ab);
-    setPosts(Array.isArray(po) ? po : []);
-    setSponsorsConfig(sp);
+    setMembers(m as Member[]);
+    setEvents(e as Event[]);
+    setContacts(c as Contact[]);
+    setPartners(pt as PartnerInquiry[]);
+    setProjects(p as Project[]);
+    setStats(s as Stats);
+    setSiteSettings(st as SiteSettings);
+    setAboutContent(ab as AboutContent);
+    setPosts(Array.isArray(po) ? po as Post[] : []);
+    setSponsorsConfig(sp as SponsorsConfig);
     setLoading(false);
   }, []);
 
