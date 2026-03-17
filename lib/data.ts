@@ -72,6 +72,7 @@ export interface SiteSettings {
   meetingDay: string;
   meetingTime: string;
   meetingLocation: string;
+  lastUpdated?: string;
 }
 
 export interface Stats {

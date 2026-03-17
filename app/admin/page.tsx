@@ -14,6 +14,7 @@ interface SiteSettings {
   meetingDay: string;
   meetingTime: string;
   meetingLocation: string;
+  lastUpdated?: string;
 }
 
 interface Member {
@@ -1143,9 +1144,21 @@ function Dashboard() {
           {/* Settings Tab */}
           {tab === 'settings' && (
             <div>
-              <div className="mb-4">
-                <h2 className="text-lg font-semibold text-white">Site Settings</h2>
-                <p className="text-slate-500 text-sm mt-1">Control site-wide content like the recruiting banner and meeting details.</p>
+              <div className="flex items-start justify-between mb-4">
+                <div>
+                  <h2 className="text-lg font-semibold text-white">Site Settings</h2>
+                  <p className="text-slate-500 text-sm mt-1">Control site-wide content like the recruiting banner and meeting details.</p>
+                </div>
+                {siteSettings.lastUpdated && (
+                  <div className="text-xs text-slate-600 text-right flex-shrink-0">
+                    <span className="block">Last saved</span>
+                    <span className="text-slate-500">
+                      {new Date(siteSettings.lastUpdated).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                      {' · '}
+                      {new Date(siteSettings.lastUpdated).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
+                    </span>
+                  </div>
+                )}
               </div>
               <div className="bg-[#0d1424] border border-[#1e2d45] rounded-2xl p-6 space-y-5">
                 <div>
