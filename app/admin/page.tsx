@@ -2,6 +2,13 @@
 
 import { useState, useEffect, useCallback } from 'react';
 
+interface Stats {
+  activeMembers: string;
+  eventsHosted: string;
+  projectsBuilt: string;
+  yearsActive: string;
+}
+
 interface Member {
   id: string;
   name: string;
@@ -420,11 +427,12 @@ function ProjectModal({
 
 // ─── Dashboard ───────────────────────────────────────────────────────────────
 function Dashboard() {
-  const [tab, setTab] = useState<'members' | 'events' | 'contacts' | 'projects'>('members');
+  const [tab, setTab] = useState<'members' | 'events' | 'contacts' | 'projects' | 'stats'>('members');
   const [members, setMembers] = useState<Member[]>([]);
   const [events, setEvents] = useState<Event[]>([]);
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
+  const [stats, setStats] = useState<Stats>({ activeMembers: '', eventsHosted: '', projectsBuilt: '', yearsActive: '' });
   const [loading, setLoading] = useState(true);
 
   const [memberModal, setMemberModal] = useState<{ open: boolean; member: Member | null }>({ open: false, member: null });
@@ -434,16 +442,18 @@ function Dashboard() {
 
   const fetchData = useCallback(async () => {
     setLoading(true);
-    const [m, e, c, p] = await Promise.all([
+    const [m, e, c, p, s] = await Promise.all([
       fetch('/api/members').then((r) => r.json()),
       fetch('/api/events').then((r) => r.json()),
       fetch('/api/contact').then((r) => r.json()),
       fetch('/api/projects').then((r) => r.json()),
+      fetch('/api/stats').then((r) => r.json()),
     ]);
     setMembers(m);
     setEvents(e);
     setContacts(c);
     setProjects(p);
+    setStats(s);
     setLoading(false);
   }, []);
 
@@ -501,6 +511,7 @@ function Dashboard() {
     { id: 'events' as const, label: 'Events', count: events.length },
     { id: 'projects' as const, label: 'Projects', count: projects.length },
     { id: 'contacts' as const, label: 'Contacts', count: contacts.length },
+    { id: 'stats' as const, label: 'Stats', count: null },
   ];
 
   return (
@@ -519,7 +530,7 @@ function Dashboard() {
 
       {/* Stats Row */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
-        {tabs.map(({ id, label, count }) => (
+        {tabs.filter((t) => t.count !== null).map(({ id, label, count }) => (
           <div key={id} className="bg-[#0f0f1a] border border-[#1e1e2e] rounded-xl p-4 text-center">
             <div className="text-2xl font-bold text-white">{count}</div>
             <div className="text-slate-500 text-sm">{label}</div>
@@ -726,6 +737,46 @@ function Dashboard() {
                   ))}
                 </div>
               )}
+            </div>
+          )}
+
+          {/* Stats Tab */}
+          {tab === 'stats' && (
+            <div>
+              <div className="mb-4">
+                <h2 className="text-lg font-semibold text-white">Homepage Stats</h2>
+                <p className="text-slate-500 text-sm mt-1">These values appear in the stats bar on the home page.</p>
+              </div>
+              <div className="bg-[#0f0f1a] border border-[#1e1e2e] rounded-2xl p-6">
+                <div className="grid sm:grid-cols-2 gap-4 mb-6">
+                  {[
+                    { key: 'activeMembers' as const, label: 'Active Members', placeholder: '25+' },
+                    { key: 'eventsHosted' as const, label: 'Events Hosted', placeholder: '10+' },
+                    { key: 'projectsBuilt' as const, label: 'Projects Built', placeholder: '15+' },
+                    { key: 'yearsActive' as const, label: 'Years Active', placeholder: '3+' },
+                  ].map(({ key, label, placeholder }) => (
+                    <div key={key}>
+                      <label className="block text-sm font-medium text-slate-300 mb-1.5">{label}</label>
+                      <input
+                        type="text"
+                        value={stats[key]}
+                        onChange={(e) => setStats((s) => ({ ...s, [key]: e.target.value }))}
+                        placeholder={placeholder}
+                        className="w-full bg-[#13131f] border border-[#1e1e2e] text-white placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                      />
+                    </div>
+                  ))}
+                </div>
+                <button
+                  onClick={async () => {
+                    await fetch('/api/stats', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(stats) });
+                    fetchData();
+                  }}
+                  className="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-violet-600 text-white text-sm font-semibold rounded-xl hover:opacity-90 transition-opacity"
+                >
+                  Save Stats
+                </button>
+              </div>
             </div>
           )}
 

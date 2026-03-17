@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { readJSON, Member, Event, Project } from '@/lib/data';
+import { readJSON, Member, Event, Project, Stats } from '@/lib/data';
 
 export const dynamic = 'force-dynamic';
 
@@ -7,6 +7,7 @@ export default function HomePage() {
   const members = readJSON<Member[]>('members.json');
   const events = readJSON<Event[]>('events.json');
   const featuredProjects = readJSON<Project[]>('projects.json');
+  const stats = readJSON<Stats>('stats.json');
   const upcomingEvents = events.filter((e) => e.type === 'upcoming').slice(0, 2);
 
   return (
@@ -57,10 +58,10 @@ export default function HomePage() {
       <section className="border-y border-[#1e1e2e] bg-[#0f0f1a]">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
           {[
-            { value: `${members.length}+`, label: 'Active Members' },
-            { value: `${events.length}+`, label: 'Events Hosted' },
-            { value: '15+', label: 'Projects Built' },
-            { value: '3+', label: 'Years Active' },
+            { value: stats.activeMembers, label: 'Active Members' },
+            { value: stats.eventsHosted, label: 'Events Hosted' },
+            { value: stats.projectsBuilt, label: 'Projects Built' },
+            { value: stats.yearsActive, label: 'Years Active' },
           ].map(({ value, label }) => (
             <div key={label}>
               <div className="text-3xl font-bold bg-gradient-to-r from-blue-400 to-violet-400 bg-clip-text text-transparent">

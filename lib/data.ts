@@ -47,6 +47,13 @@ export interface Contact {
   submittedAt: string;
 }
 
+export interface Stats {
+  activeMembers: string;
+  eventsHosted: string;
+  projectsBuilt: string;
+  yearsActive: string;
+}
+
 export interface Project {
   id: string;
   name: string;
