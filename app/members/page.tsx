@@ -1,4 +1,5 @@
 import { readJSON, Member } from '@/lib/data';
+import Link from 'next/link';
 
 export const dynamic = 'force-dynamic';
 
@@ -78,6 +79,9 @@ function SocialLinks({ member }: { member: Member }) {
         </a>
       )}
       {!hasSocials && <span className="text-slate-600 text-xs">No socials listed</span>}
+      <Link href={`/members/${member.id}`} className="ml-auto text-xs text-slate-500 hover:text-violet-400 transition-colors">
+        View Profile →
+      </Link>
     </div>
   );
 }

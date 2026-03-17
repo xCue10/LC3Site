@@ -53,6 +53,7 @@ export interface Event {
   description: string;
   location: string;
   type: 'upcoming' | 'past';
+  rsvpUrl?: string;
 }
 
 export interface Contact {

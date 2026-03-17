@@ -16,6 +16,7 @@ export async function POST(req: NextRequest) {
     description: body.description || '',
     location: body.location || '',
     type: body.type === 'past' ? 'past' : 'upcoming',
+    ...(body.rsvpUrl ? { rsvpUrl: body.rsvpUrl } : {}),
   };
   events.push(newEvent);
   writeJSON('events.json', events);

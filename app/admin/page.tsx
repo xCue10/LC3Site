@@ -37,6 +37,7 @@ interface Event {
   description: string;
   location: string;
   type: 'upcoming' | 'past';
+  rsvpUrl?: string;
 }
 
 interface Contact {
@@ -383,6 +384,13 @@ function EventModal({
             <textarea name="description" required rows={4} value={form.description} onChange={handleChange} placeholder="Describe the event..." className="w-full bg-[#111a2e] border border-[#1e2d45] text-white placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all resize-none" />
           </div>
 
+          <div>
+            <label className="block text-sm font-medium text-slate-300 mb-1.5">
+              RSVP Link <span className="text-slate-500 font-normal">(optional — Google Form, etc.)</span>
+            </label>
+            <input name="rsvpUrl" type="url" value={form.rsvpUrl ?? ''} onChange={handleChange} placeholder="https://forms.google.com/..." className="w-full bg-[#111a2e] border border-[#1e2d45] text-white placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all" />
+          </div>
+
           <div className="flex gap-3 pt-2">
             <button type="button" onClick={onClose} className="flex-1 py-2.5 border border-[#1e2d45] text-slate-400 rounded-xl hover:bg-white/5 transition-colors text-sm font-medium">
               Cancel
@@ -533,6 +541,10 @@ function Dashboard() {
   const [membersSearch, setMembersSearch] = useState('');
   const [contactsSort, setContactsSort] = useState<'newest' | 'oldest'>('newest');
   const [partnersSort, setPartnersSort] = useState<'newest' | 'oldest'>('newest');
+
+  // Bulk select
+  const [selectedContacts, setSelectedContacts] = useState<string[]>([]);
+  const [selectedPartners, setSelectedPartners] = useState<string[]>([]);
 
   // Unread tracking
   const [lastSeenContacts, setLastSeenContacts] = useState<number>(0);
@@ -976,6 +988,22 @@ function Dashboard() {
                       </button>
                     ))}
                   </div>
+                  {selectedPartners.length > 0 && (
+                    <button
+                      onClick={async () => {
+                        if (!confirm(`Delete ${selectedPartners.length} selected inquiry${selectedPartners.length !== 1 ? 'ies' : ''}?`)) return;
+                        await Promise.all(selectedPartners.map((id) => fetch(`/api/hire/${id}`, { method: 'DELETE' })));
+                        setSelectedPartners([]);
+                        fetchData();
+                      }}
+                      className="flex items-center gap-1.5 px-3 py-1.5 bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-medium rounded-lg hover:bg-red-500/20 transition-colors"
+                    >
+                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                      </svg>
+                      Delete {selectedPartners.length}
+                    </button>
+                  )}
                 </div>
                 {partners.length > 0 && (
                   <button
@@ -1011,16 +1039,37 @@ function Dashboard() {
               {partners.length === 0 ? (
                 <div className="text-center py-16 text-slate-500 border border-[#1e2d45] rounded-2xl">No inquiries yet.</div>
               ) : (
-                <div className="space-y-3">
+                <>
+                  <div className="flex items-center gap-2 mb-2">
+                    <input
+                      type="checkbox"
+                      id="selectAllPartners"
+                      checked={selectedPartners.length === partners.length}
+                      onChange={(e) => setSelectedPartners(e.target.checked ? partners.map((p) => p.id) : [])}
+                      className="w-4 h-4 accent-violet-500 cursor-pointer"
+                    />
+                    <label htmlFor="selectAllPartners" className="text-slate-500 text-xs cursor-pointer select-none">
+                      Select all
+                    </label>
+                  </div>
+                  <div className="space-y-3">
                   {[...partners].sort((a, b) => {
                     const diff = new Date(b.submittedAt).getTime() - new Date(a.submittedAt).getTime();
                     return partnersSort === 'newest' ? diff : -diff;
                   }).map((p) => (
-                    <div key={p.id} className="bg-[#0d1424] border border-[#1e2d45] rounded-xl p-5">
+                    <div key={p.id} className={`bg-[#0d1424] border rounded-xl p-5 transition-colors ${selectedPartners.includes(p.id) ? 'border-violet-500/40' : 'border-[#1e2d45]'}`}>
                       <div className="flex items-start justify-between gap-4 mb-3">
-                        <div>
-                          <div className="text-white font-medium">{p.companyName}</div>
-                          <div className="text-slate-500 text-sm">{p.contactName} · {p.email}</div>
+                        <div className="flex items-start gap-3">
+                          <input
+                            type="checkbox"
+                            checked={selectedPartners.includes(p.id)}
+                            onChange={(e) => setSelectedPartners(e.target.checked ? [...selectedPartners, p.id] : selectedPartners.filter((id) => id !== p.id))}
+                            className="w-4 h-4 accent-violet-500 cursor-pointer mt-0.5"
+                          />
+                          <div>
+                            <div className="text-white font-medium">{p.companyName}</div>
+                            <div className="text-slate-500 text-sm">{p.contactName} · {p.email}</div>
+                          </div>
                         </div>
                         <div className="flex items-center gap-3">
                           <div className="text-slate-600 text-xs">
@@ -1030,6 +1079,7 @@ function Dashboard() {
                             onClick={async () => {
                               if (!confirm(`Delete inquiry from ${p.companyName}?`)) return;
                               await fetch(`/api/hire/${p.id}`, { method: 'DELETE' });
+                              setSelectedPartners((s) => s.filter((id) => id !== p.id));
                               fetchData();
                             }}
                             className="flex items-center justify-center w-7 h-7 rounded-lg text-slate-500 hover:text-red-400 hover:bg-red-500/10 transition-all"
@@ -1063,7 +1113,8 @@ function Dashboard() {
                       <p className="text-slate-400 text-sm leading-relaxed bg-[#111a2e] rounded-lg p-3">{p.description}</p>
                     </div>
                   ))}
-                </div>
+                  </div>
+                </>
               )}
             </div>
           )}
@@ -1138,6 +1189,22 @@ function Dashboard() {
                       </button>
                     ))}
                   </div>
+                  {selectedContacts.length > 0 && (
+                    <button
+                      onClick={async () => {
+                        if (!confirm(`Delete ${selectedContacts.length} selected submission${selectedContacts.length !== 1 ? 's' : ''}?`)) return;
+                        await Promise.all(selectedContacts.map((id) => fetch(`/api/contact/${id}`, { method: 'DELETE' })));
+                        setSelectedContacts([]);
+                        fetchData();
+                      }}
+                      className="flex items-center gap-1.5 px-3 py-1.5 bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-medium rounded-lg hover:bg-red-500/20 transition-colors"
+                    >
+                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                      </svg>
+                      Delete {selectedContacts.length}
+                    </button>
+                  )}
                 </div>
                 {contacts.length > 0 && (
                   <button
@@ -1171,40 +1238,63 @@ function Dashboard() {
               {contacts.length === 0 ? (
                 <div className="text-center py-16 text-slate-500 border border-[#1e2d45] rounded-2xl">No submissions yet.</div>
               ) : (
-                <div className="space-y-3">
-                  {[...contacts].sort((a, b) => {
-                    const diff = new Date(b.submittedAt).getTime() - new Date(a.submittedAt).getTime();
-                    return contactsSort === 'newest' ? diff : -diff;
-                  }).map((c) => (
-                    <div key={c.id} className="bg-[#0d1424] border border-[#1e2d45] rounded-xl p-5">
-                      <div className="flex items-start justify-between gap-4 mb-3">
-                        <div>
-                          <div className="text-white font-medium">{c.name}</div>
-                          <div className="text-slate-500 text-sm">{c.email} · {c.major}</div>
-                        </div>
-                        <div className="flex items-center gap-3">
-                          <div className="text-slate-600 text-xs">
-                            {new Date(c.submittedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                <>
+                  <div className="flex items-center gap-2 mb-2">
+                    <input
+                      type="checkbox"
+                      id="selectAllContacts"
+                      checked={selectedContacts.length === contacts.length}
+                      onChange={(e) => setSelectedContacts(e.target.checked ? contacts.map((c) => c.id) : [])}
+                      className="w-4 h-4 accent-violet-500 cursor-pointer"
+                    />
+                    <label htmlFor="selectAllContacts" className="text-slate-500 text-xs cursor-pointer select-none">
+                      Select all
+                    </label>
+                  </div>
+                  <div className="space-y-3">
+                    {[...contacts].sort((a, b) => {
+                      const diff = new Date(b.submittedAt).getTime() - new Date(a.submittedAt).getTime();
+                      return contactsSort === 'newest' ? diff : -diff;
+                    }).map((c) => (
+                      <div key={c.id} className={`bg-[#0d1424] border rounded-xl p-5 transition-colors ${selectedContacts.includes(c.id) ? 'border-violet-500/40' : 'border-[#1e2d45]'}`}>
+                        <div className="flex items-start justify-between gap-4 mb-3">
+                          <div className="flex items-start gap-3">
+                            <input
+                              type="checkbox"
+                              checked={selectedContacts.includes(c.id)}
+                              onChange={(e) => setSelectedContacts(e.target.checked ? [...selectedContacts, c.id] : selectedContacts.filter((id) => id !== c.id))}
+                              className="w-4 h-4 accent-violet-500 cursor-pointer mt-0.5"
+                            />
+                            <div>
+                              <div className="text-white font-medium">{c.name}</div>
+                              <div className="text-slate-500 text-sm">{c.email} · {c.major}</div>
+                            </div>
                           </div>
-                          <button
-                            onClick={async () => {
-                              if (!confirm(`Delete submission from ${c.name}?`)) return;
-                              await fetch(`/api/contact/${c.id}`, { method: 'DELETE' });
-                              fetchData();
-                            }}
-                            className="flex items-center justify-center w-7 h-7 rounded-lg text-slate-500 hover:text-red-400 hover:bg-red-500/10 transition-all"
-                            title="Delete"
-                          >
-                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                            </svg>
-                          </button>
+                          <div className="flex items-center gap-3">
+                            <div className="text-slate-600 text-xs">
+                              {new Date(c.submittedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                            </div>
+                            <button
+                              onClick={async () => {
+                                if (!confirm(`Delete submission from ${c.name}?`)) return;
+                                await fetch(`/api/contact/${c.id}`, { method: 'DELETE' });
+                                setSelectedContacts((s) => s.filter((id) => id !== c.id));
+                                fetchData();
+                              }}
+                              className="flex items-center justify-center w-7 h-7 rounded-lg text-slate-500 hover:text-red-400 hover:bg-red-500/10 transition-all"
+                              title="Delete"
+                            >
+                              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                              </svg>
+                            </button>
+                          </div>
                         </div>
+                        <p className="text-slate-400 text-sm leading-relaxed bg-[#111a2e] rounded-lg p-3">{c.reason}</p>
                       </div>
-                      <p className="text-slate-400 text-sm leading-relaxed bg-[#111a2e] rounded-lg p-3">{c.reason}</p>
-                    </div>
-                  ))}
-                </div>
+                    ))}
+                  </div>
+                </>
               )}
             </div>
           )}
