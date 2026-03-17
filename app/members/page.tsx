@@ -104,10 +104,19 @@ function MemberCard({ member, index }: { member: Member; index: number }) {
       </div>
 
       {member.focusArea && (
-        <div className="mb-4">
+        <div className="mb-3">
           <span className="inline-flex items-center gap-1.5 bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs px-3 py-1 rounded-full">
             <span className="w-1.5 h-1.5 bg-blue-400 rounded-full" />
             {member.focusArea}
+          </span>
+        </div>
+      )}
+
+      {member.status && (
+        <div className="mb-3">
+          <span className="inline-flex items-center gap-1.5 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs px-3 py-1 rounded-full">
+            <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full" />
+            {member.status}
           </span>
         </div>
       )}
@@ -157,10 +166,19 @@ function AdvisorCard({ member, index }: { member: Member; index: number }) {
       </div>
 
       {member.focusArea && (
-        <div className="mb-4">
+        <div className="mb-3">
           <span className="inline-flex items-center gap-1.5 bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs px-3 py-1 rounded-full">
             <span className="w-1.5 h-1.5 bg-blue-400 rounded-full" />
             {member.focusArea}
+          </span>
+        </div>
+      )}
+
+      {member.status && (
+        <div className="mb-3">
+          <span className="inline-flex items-center gap-1.5 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs px-3 py-1 rounded-full">
+            <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full" />
+            {member.status}
           </span>
         </div>
       )}
@@ -197,10 +215,19 @@ function OfficerCard({ member, index }: { member: Member; index: number }) {
       </div>
 
       {member.focusArea && (
-        <div className="mb-4">
+        <div className="mb-3">
           <span className="inline-flex items-center gap-1.5 bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs px-3 py-1 rounded-full">
             <span className="w-1.5 h-1.5 bg-blue-400 rounded-full" />
             {member.focusArea}
+          </span>
+        </div>
+      )}
+
+      {member.status && (
+        <div className="mb-3">
+          <span className="inline-flex items-center gap-1.5 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs px-3 py-1 rounded-full">
+            <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full" />
+            {member.status}
           </span>
         </div>
       )}

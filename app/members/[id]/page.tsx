@@ -98,6 +98,12 @@ export default async function MemberProfilePage({ params }: { params: Promise<{ 
                     {member.focusArea}
                   </span>
                 )}
+                {member.status && (
+                  <span className="inline-flex items-center gap-1.5 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs px-3 py-1 rounded-full">
+                    <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full" />
+                    {member.status}
+                  </span>
+                )}
               </div>
             </div>
           </div>

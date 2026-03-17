@@ -16,6 +16,7 @@ export async function POST(req: NextRequest) {
     memberType: body.memberType || 'member',
     majors: Array.isArray(body.majors) ? body.majors : (body.majors || '').split(',').map((s: string) => s.trim()).filter(Boolean),
     focusArea: body.focusArea || '',
+    status: body.status || '',
     skills: Array.isArray(body.skills) ? body.skills : (body.skills || '').split(',').map((s: string) => s.trim()).filter(Boolean),
     projects: Array.isArray(body.projects) ? body.projects : (body.projects || '').split(',').map((p: string) => p.trim()).filter(Boolean),
     github: body.github || '',

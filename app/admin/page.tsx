@@ -23,6 +23,7 @@ interface Member {
   memberType: 'advisor' | 'officer' | 'member';
   majors: string[];
   focusArea: string;
+  status: string;
   skills: string[];
   projects: string[];
   github: string;
@@ -90,7 +91,7 @@ const emptyProject: Omit<Project, 'id'> = {
 };
 
 const emptyMember: Omit<Member, 'id'> = {
-  name: '', role: '', memberType: 'member', majors: [], focusArea: '', skills: [], projects: [], github: '', linkedin: '', twitter: '',
+  name: '', role: '', memberType: 'member', majors: [], focusArea: '', status: '', skills: [], projects: [], github: '', linkedin: '', twitter: '',
 };
 
 const emptyEvent: Omit<Event, 'id'> = {
@@ -234,6 +235,7 @@ function MemberModal({
           {[
             { name: 'name', label: 'Full Name', placeholder: 'Alex Johnson' },
             { name: 'focusArea', label: 'Focus Area', placeholder: 'Web Development' },
+            { name: 'status', label: 'Status', placeholder: 'Open to Opportunities · Interning at Microsoft · Graduating May 2026' },
           ].map(({ name, label, placeholder }) => (
             <div key={name}>
               <label className="block text-sm font-medium text-slate-300 mb-1.5">{label}</label>
