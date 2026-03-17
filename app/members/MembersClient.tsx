@@ -4,6 +4,60 @@ import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { Member } from '@/lib/data';
 
+function GithubIcon() {
+  return (
+    <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+    </svg>
+  );
+}
+
+function LinkedInIcon() {
+  return (
+    <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+    </svg>
+  );
+}
+
+function TwitterIcon() {
+  return (
+    <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+    </svg>
+  );
+}
+
+function SocialIcons({ member }: { member: Member }) {
+  const hasSocials = member.github || member.linkedin || member.twitter;
+  if (!hasSocials) return null;
+  return (
+    <div className="relative z-10 flex items-center gap-1">
+      {member.github && (
+        <a href={member.github} target="_blank" rel="noopener noreferrer"
+          className="flex items-center justify-center w-6 h-6 rounded-md text-slate-500 hover:text-white hover:bg-white/10 transition-all"
+          aria-label="GitHub" onClick={(e) => e.stopPropagation()}>
+          <GithubIcon />
+        </a>
+      )}
+      {member.linkedin && (
+        <a href={member.linkedin} target="_blank" rel="noopener noreferrer"
+          className="flex items-center justify-center w-6 h-6 rounded-md text-slate-500 hover:text-blue-400 hover:bg-blue-500/10 transition-all"
+          aria-label="LinkedIn" onClick={(e) => e.stopPropagation()}>
+          <LinkedInIcon />
+        </a>
+      )}
+      {member.twitter && (
+        <a href={member.twitter} target="_blank" rel="noopener noreferrer"
+          className="flex items-center justify-center w-6 h-6 rounded-md text-slate-500 hover:text-sky-400 hover:bg-sky-500/10 transition-all"
+          aria-label="Twitter / X" onClick={(e) => e.stopPropagation()}>
+          <TwitterIcon />
+        </a>
+      )}
+    </div>
+  );
+}
+
 const avatarGradients = [
   'from-blue-500 to-cyan-500',
   'from-violet-500 to-purple-600',
@@ -37,10 +91,8 @@ function Avatar({ member, index, size = 'md' }: { member: Member; index: number;
 
 function MemberCard({ member, index }: { member: Member; index: number }) {
   return (
-    <Link
-      href={`/members/${member.id}`}
-      className="group bg-[#0d1424] border border-[#1e2d45] rounded-2xl p-5 hover:border-violet-500/40 hover:-translate-y-0.5 transition-all flex flex-col gap-3"
-    >
+    <div className="group relative bg-[#0d1424] border border-[#1e2d45] rounded-2xl p-5 hover:border-violet-500/40 hover:-translate-y-0.5 transition-all flex flex-col gap-3">
+      <Link href={`/members/${member.id}`} className="absolute inset-0 rounded-2xl z-0" aria-label={`View ${member.name}'s profile`} />
       <div className="flex items-center gap-3">
         <Avatar member={member} index={index} />
         <div className="min-w-0">
@@ -69,22 +121,17 @@ function MemberCard({ member, index }: { member: Member; index: number }) {
       </div>
 
       <div className="mt-auto pt-3 border-t border-[#1e2d45] flex items-center justify-between">
-        <div className="flex gap-3 text-xs text-slate-600">
-          {(member.skills ?? []).length > 0 && <span>{member.skills.length} skill{member.skills.length !== 1 ? 's' : ''}</span>}
-          {(member.projects ?? []).length > 0 && <span>{member.projects.length} project{member.projects.length !== 1 ? 's' : ''}</span>}
-        </div>
-        <span className="text-xs text-slate-600 group-hover:text-violet-400 transition-colors">View Profile →</span>
+        <SocialIcons member={member} />
+        <span className="relative z-10 text-xs text-slate-600 group-hover:text-violet-400 transition-colors ml-auto">View Profile →</span>
       </div>
-    </Link>
+    </div>
   );
 }
 
 function AdvisorCard({ member, index }: { member: Member; index: number }) {
   return (
-    <Link
-      href={`/members/${member.id}`}
-      className="group bg-[#0d1424] border border-amber-500/20 rounded-2xl p-5 hover:border-amber-500/40 hover:-translate-y-0.5 transition-all flex flex-col gap-3"
-    >
+    <div className="group relative bg-[#0d1424] border border-amber-500/20 rounded-2xl p-5 hover:border-amber-500/40 hover:-translate-y-0.5 transition-all flex flex-col gap-3">
+      <Link href={`/members/${member.id}`} className="absolute inset-0 rounded-2xl z-0" aria-label={`View ${member.name}'s profile`} />
       <div className="flex items-center gap-3">
         <Avatar member={member} index={index} size="lg" />
         <div className="min-w-0">
@@ -117,19 +164,18 @@ function AdvisorCard({ member, index }: { member: Member; index: number }) {
         )}
       </div>
 
-      <div className="mt-auto pt-3 border-t border-[#1e2d45] flex justify-end">
-        <span className="text-xs text-slate-600 group-hover:text-amber-400 transition-colors">View Profile →</span>
+      <div className="mt-auto pt-3 border-t border-[#1e2d45] flex items-center justify-between">
+        <SocialIcons member={member} />
+        <span className="relative z-10 text-xs text-slate-600 group-hover:text-amber-400 transition-colors ml-auto">View Profile →</span>
       </div>
-    </Link>
+    </div>
   );
 }
 
 function OfficerCard({ member, index }: { member: Member; index: number }) {
   return (
-    <Link
-      href={`/members/${member.id}`}
-      className="group bg-[#0d1424] border border-violet-500/20 rounded-2xl p-5 hover:border-violet-500/40 hover:-translate-y-0.5 transition-all flex flex-col gap-3"
-    >
+    <div className="group relative bg-[#0d1424] border border-violet-500/20 rounded-2xl p-5 hover:border-violet-500/40 hover:-translate-y-0.5 transition-all flex flex-col gap-3">
+      <Link href={`/members/${member.id}`} className="absolute inset-0 rounded-2xl z-0" aria-label={`View ${member.name}'s profile`} />
       <div className="flex items-center gap-3">
         <Avatar member={member} index={index} />
         <div className="min-w-0">
@@ -163,13 +209,10 @@ function OfficerCard({ member, index }: { member: Member; index: number }) {
       </div>
 
       <div className="mt-auto pt-3 border-t border-[#1e2d45] flex items-center justify-between">
-        <div className="flex gap-3 text-xs text-slate-600">
-          {(member.skills ?? []).length > 0 && <span>{member.skills.length} skill{member.skills.length !== 1 ? 's' : ''}</span>}
-          {(member.projects ?? []).length > 0 && <span>{member.projects.length} project{member.projects.length !== 1 ? 's' : ''}</span>}
-        </div>
-        <span className="text-xs text-slate-600 group-hover:text-violet-400 transition-colors">View Profile →</span>
+        <SocialIcons member={member} />
+        <span className="relative z-10 text-xs text-slate-600 group-hover:text-violet-400 transition-colors ml-auto">View Profile →</span>
       </div>
-    </Link>
+    </div>
   );
 }
 
