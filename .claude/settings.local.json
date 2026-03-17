@@ -9,7 +9,8 @@
       "Bash(git -C \"C:/Users/Jordon/club-website\" remote set-url origin https://github.com/xCue10/LC3Site.git)",
       "Bash(git -C \"C:/Users/Jordon/club-website\" status)",
       "Bash(git -C \"C:/Users/Jordon/club-website\" add app/components/Footer.tsx app/components/Navbar.tsx app/contact/page.tsx app/layout.tsx app/members/page.tsx app/page.tsx data/members.json)",
-      "Bash(git -C:*)"
+      "Bash(git -C:*)",
+      "Bash(npm install:*)"
     ]
   }
 }
