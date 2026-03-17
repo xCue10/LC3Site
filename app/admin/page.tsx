@@ -56,6 +56,33 @@ interface Contact {
   submittedAt: string;
 }
 
+interface AboutValue {
+  title: string;
+  desc: string;
+}
+
+interface AboutActivity {
+  title: string;
+  desc: string;
+}
+
+interface AboutContent {
+  heroTagline: string;
+  heroDescription: string;
+  mission: string;
+  valuesTitle: string;
+  valuesSubtitle: string;
+  values: AboutValue[];
+  techStackTitle: string;
+  techStackSubtitle: string;
+  techStack: string[];
+  activitiesTitle: string;
+  activitiesSubtitle: string;
+  activities: AboutActivity[];
+  ctaTitle: string;
+  ctaDescription: string;
+}
+
 interface PartnerInquiry {
   id: string;
   inquiryType: 'project' | 'internship';
@@ -550,7 +577,7 @@ function ProjectModal({
   );
 }
 
-type TabId = 'members' | 'events' | 'contacts' | 'partners' | 'projects' | 'stats' | 'settings';
+type TabId = 'members' | 'events' | 'contacts' | 'partners' | 'projects' | 'stats' | 'settings' | 'about';
 
 // ─── Dashboard ───────────────────────────────────────────────────────────────
 function Dashboard() {
@@ -562,6 +589,13 @@ function Dashboard() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [stats, setStats] = useState<Stats>({ activeMembers: '', eventsHosted: '', projectsBuilt: '', yearsActive: '' });
   const [siteSettings, setSiteSettings] = useState<SiteSettings>({ recruitingBanner: '', meetingDay: '', meetingTime: '', meetingLocation: '' });
+  const [aboutContent, setAboutContent] = useState<AboutContent>({
+    heroTagline: '', heroDescription: '', mission: '',
+    valuesTitle: '', valuesSubtitle: '', values: [],
+    techStackTitle: '', techStackSubtitle: '', techStack: [],
+    activitiesTitle: '', activitiesSubtitle: '', activities: [],
+    ctaTitle: '', ctaDescription: '',
+  });
   const [loading, setLoading] = useState(true);
 
   // Search & sort
@@ -606,7 +640,7 @@ function Dashboard() {
 
   const fetchData = useCallback(async () => {
     setLoading(true);
-    const [m, e, c, pt, p, s, st] = await Promise.all([
+    const [m, e, c, pt, p, s, st, ab] = await Promise.all([
       fetch('/api/members').then((r) => r.json()),
       fetch('/api/events').then((r) => r.json()),
       fetch('/api/contact').then((r) => r.json()),
@@ -614,6 +648,7 @@ function Dashboard() {
       fetch('/api/projects').then((r) => r.json()),
       fetch('/api/stats').then((r) => r.json()),
       fetch('/api/settings').then((r) => r.json()),
+      fetch('/api/about').then((r) => r.json()),
     ]);
     setMembers(m);
     setEvents(e);
@@ -622,6 +657,7 @@ function Dashboard() {
     setProjects(p);
     setStats(s);
     setSiteSettings(st);
+    setAboutContent(ab);
     setLoading(false);
   }, []);
 
@@ -685,6 +721,7 @@ function Dashboard() {
     { id: 'contacts' as const, label: 'Contacts', count: contacts.length, unread: unreadContacts },
     { id: 'partners' as const, label: 'Partners', count: partners.length, unread: unreadPartners },
     { id: 'stats' as const, label: 'Stats', count: null, unread: 0 },
+    { id: 'about' as const, label: 'About Page', count: null, unread: 0 },
     { id: 'settings' as const, label: 'Settings', count: null, unread: 0 },
   ];
 
@@ -1156,6 +1193,234 @@ function Dashboard() {
                   </div>
                 </>
               )}
+            </div>
+          )}
+
+          {/* About Page Tab */}
+          {tab === 'about' && (
+            <div className="space-y-6">
+              <div>
+                <h2 className="text-lg font-semibold text-slate-900 dark:text-white">About Page</h2>
+                <p className="text-slate-500 text-sm mt-1">Edit all content that appears on the public /about page.</p>
+              </div>
+
+              {/* Hero Section */}
+              <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl p-6 space-y-4">
+                <p className="text-xs text-slate-500 font-medium uppercase tracking-wider">Hero Section</p>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Tagline <span className="text-slate-400 font-normal">(small text above title)</span></label>
+                  <input type="text" value={aboutContent.heroTagline}
+                    onChange={(e) => setAboutContent((a) => ({ ...a, heroTagline: e.target.value }))}
+                    placeholder="Who we are"
+                    className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Hero Description</label>
+                  <textarea rows={3} value={aboutContent.heroDescription}
+                    onChange={(e) => setAboutContent((a) => ({ ...a, heroDescription: e.target.value }))}
+                    placeholder="LC3 — the Lowcode Cloud Club — is a university student organization..."
+                    className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all resize-none"
+                  />
+                </div>
+              </div>
+
+              {/* Mission */}
+              <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl p-6">
+                <p className="text-xs text-slate-500 font-medium uppercase tracking-wider mb-4">Mission Statement</p>
+                <textarea rows={3} value={aboutContent.mission}
+                  onChange={(e) => setAboutContent((a) => ({ ...a, mission: e.target.value }))}
+                  placeholder="To empower students to build real-world software..."
+                  className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all resize-none"
+                />
+              </div>
+
+              {/* Values */}
+              <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl p-6 space-y-4">
+                <div className="flex items-center justify-between">
+                  <p className="text-xs text-slate-500 font-medium uppercase tracking-wider">What We Stand For</p>
+                  <button
+                    onClick={() => setAboutContent((a) => ({ ...a, values: [...a.values, { title: '', desc: '' }] }))}
+                    className="flex items-center gap-1 text-xs text-violet-600 dark:text-violet-400 hover:text-violet-700 dark:hover:text-violet-300 font-medium transition-colors"
+                  >
+                    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
+                    Add Value
+                  </button>
+                </div>
+                <div className="grid sm:grid-cols-2 gap-3">
+                  {aboutContent.values.map((v, i) => (
+                    <div key={i} className="bg-slate-50 dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] rounded-xl p-4 space-y-2">
+                      <div className="flex items-center justify-between gap-2">
+                        <input type="text" value={v.title}
+                          onChange={(e) => setAboutContent((a) => { const vals = [...a.values]; vals[i] = { ...vals[i], title: e.target.value }; return { ...a, values: vals }; })}
+                          placeholder="Value title"
+                          className="flex-1 bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#253650] text-slate-900 dark:text-white placeholder:text-slate-400 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all font-medium"
+                        />
+                        <button onClick={() => setAboutContent((a) => ({ ...a, values: a.values.filter((_, j) => j !== i) }))}
+                          className="flex-shrink-0 w-6 h-6 flex items-center justify-center rounded-md text-slate-400 hover:text-red-400 hover:bg-red-500/10 transition-all">
+                          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                        </button>
+                      </div>
+                      <textarea rows={2} value={v.desc}
+                        onChange={(e) => setAboutContent((a) => { const vals = [...a.values]; vals[i] = { ...vals[i], desc: e.target.value }; return { ...a, values: vals }; })}
+                        placeholder="Description..."
+                        className="w-full bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#253650] text-slate-900 dark:text-white placeholder:text-slate-400 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all resize-none"
+                      />
+                    </div>
+                  ))}
+                </div>
+                <div className="grid sm:grid-cols-2 gap-4 pt-1">
+                  <div>
+                    <label className="block text-sm font-medium text-slate-400 mb-1.5">Section Title</label>
+                    <input type="text" value={aboutContent.valuesTitle}
+                      onChange={(e) => setAboutContent((a) => ({ ...a, valuesTitle: e.target.value }))}
+                      placeholder="What we stand for"
+                      className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-400 mb-1.5">Subtitle</label>
+                    <input type="text" value={aboutContent.valuesSubtitle}
+                      onChange={(e) => setAboutContent((a) => ({ ...a, valuesSubtitle: e.target.value }))}
+                      placeholder="The principles that guide everything we do."
+                      className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Tech Stack */}
+              <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl p-6 space-y-4">
+                <p className="text-xs text-slate-500 font-medium uppercase tracking-wider">Tech Stack</p>
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-slate-400 mb-1.5">Section Title</label>
+                    <input type="text" value={aboutContent.techStackTitle}
+                      onChange={(e) => setAboutContent((a) => ({ ...a, techStackTitle: e.target.value }))}
+                      placeholder="What we work with"
+                      className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-400 mb-1.5">Subtitle</label>
+                    <input type="text" value={aboutContent.techStackSubtitle}
+                      onChange={(e) => setAboutContent((a) => ({ ...a, techStackSubtitle: e.target.value }))}
+                      placeholder="Our toolkit spans..."
+                      className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Technologies <span className="text-slate-400 font-normal">(comma-separated)</span></label>
+                  <input type="text"
+                    value={aboutContent.techStack.join(', ')}
+                    onChange={(e) => setAboutContent((a) => ({ ...a, techStack: e.target.value.split(',').map((s) => s.trim()).filter(Boolean) }))}
+                    placeholder="Power Apps, Power Automate, Azure, React, Python"
+                    className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                  />
+                  {aboutContent.techStack.length > 0 && (
+                    <div className="flex flex-wrap gap-2 mt-2">
+                      {aboutContent.techStack.map((t, i) => (
+                        <span key={i} className="text-xs bg-violet-50 border border-violet-200 text-violet-600 dark:bg-violet-500/10 dark:border-violet-500/20 dark:text-violet-400 px-2.5 py-1 rounded-full">{t}</span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Activities */}
+              <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl p-6 space-y-4">
+                <div className="flex items-center justify-between">
+                  <p className="text-xs text-slate-500 font-medium uppercase tracking-wider">What We Do</p>
+                  <button
+                    onClick={() => setAboutContent((a) => ({ ...a, activities: [...a.activities, { title: '', desc: '' }] }))}
+                    className="flex items-center gap-1 text-xs text-violet-600 dark:text-violet-400 hover:text-violet-700 dark:hover:text-violet-300 font-medium transition-colors"
+                  >
+                    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
+                    Add Activity
+                  </button>
+                </div>
+                <div className="grid sm:grid-cols-2 gap-3">
+                  {aboutContent.activities.map((act, i) => (
+                    <div key={i} className="bg-slate-50 dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] rounded-xl p-4 space-y-2">
+                      <div className="flex items-center justify-between gap-2">
+                        <input type="text" value={act.title}
+                          onChange={(e) => setAboutContent((a) => { const acts = [...a.activities]; acts[i] = { ...acts[i], title: e.target.value }; return { ...a, activities: acts }; })}
+                          placeholder="Activity title"
+                          className="flex-1 bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#253650] text-slate-900 dark:text-white placeholder:text-slate-400 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all font-medium"
+                        />
+                        <button onClick={() => setAboutContent((a) => ({ ...a, activities: a.activities.filter((_, j) => j !== i) }))}
+                          className="flex-shrink-0 w-6 h-6 flex items-center justify-center rounded-md text-slate-400 hover:text-red-400 hover:bg-red-500/10 transition-all">
+                          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                        </button>
+                      </div>
+                      <textarea rows={2} value={act.desc}
+                        onChange={(e) => setAboutContent((a) => { const acts = [...a.activities]; acts[i] = { ...acts[i], desc: e.target.value }; return { ...a, activities: acts }; })}
+                        placeholder="Description..."
+                        className="w-full bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#253650] text-slate-900 dark:text-white placeholder:text-slate-400 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all resize-none"
+                      />
+                    </div>
+                  ))}
+                </div>
+                <div className="grid sm:grid-cols-2 gap-4 pt-1">
+                  <div>
+                    <label className="block text-sm font-medium text-slate-400 mb-1.5">Section Title</label>
+                    <input type="text" value={aboutContent.activitiesTitle}
+                      onChange={(e) => setAboutContent((a) => ({ ...a, activitiesTitle: e.target.value }))}
+                      placeholder="What we do"
+                      className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-400 mb-1.5">Subtitle</label>
+                    <input type="text" value={aboutContent.activitiesSubtitle}
+                      onChange={(e) => setAboutContent((a) => ({ ...a, activitiesSubtitle: e.target.value }))}
+                      placeholder="A look at the activities and programs..."
+                      className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* CTA */}
+              <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl p-6 space-y-4">
+                <p className="text-xs text-slate-500 font-medium uppercase tracking-wider">Call to Action Banner</p>
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-slate-400 mb-1.5">Title</label>
+                    <input type="text" value={aboutContent.ctaTitle}
+                      onChange={(e) => setAboutContent((a) => ({ ...a, ctaTitle: e.target.value }))}
+                      placeholder="Ready to join?"
+                      className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-400 mb-1.5">Description</label>
+                    <input type="text" value={aboutContent.ctaDescription}
+                      onChange={(e) => setAboutContent((a) => ({ ...a, ctaDescription: e.target.value }))}
+                      placeholder="Whether you want to build, learn, or lead..."
+                      className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between">
+                <a href="/about" target="_blank" rel="noopener noreferrer"
+                  className="text-sm text-slate-500 hover:text-violet-600 dark:hover:text-violet-400 transition-colors flex items-center gap-1.5">
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+                  Preview About page
+                </a>
+                <button
+                  onClick={async () => {
+                    await fetch('/api/about', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(aboutContent) });
+                    fetchData();
+                  }}
+                  className="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-violet-600 text-white text-sm font-semibold rounded-xl hover:opacity-90 transition-opacity"
+                >
+                  Save About Page
+                </button>
+              </div>
             </div>
           )}
 

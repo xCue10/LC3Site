@@ -95,6 +95,33 @@ export interface Project {
   github: string;
 }
 
+export interface AboutValue {
+  title: string;
+  desc: string;
+}
+
+export interface AboutActivity {
+  title: string;
+  desc: string;
+}
+
+export interface AboutContent {
+  heroTagline: string;
+  heroDescription: string;
+  mission: string;
+  valuesTitle: string;
+  valuesSubtitle: string;
+  values: AboutValue[];
+  techStackTitle: string;
+  techStackSubtitle: string;
+  techStack: string[];
+  activitiesTitle: string;
+  activitiesSubtitle: string;
+  activities: AboutActivity[];
+  ctaTitle: string;
+  ctaDescription: string;
+}
+
 export interface PartnerInquiry {
   id: string;
   inquiryType: 'project' | 'internship';
