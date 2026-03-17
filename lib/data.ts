@@ -2,7 +2,9 @@ import fs from 'fs';
 import path from 'path';
 
 const dataDir = process.env.DATA_DIR ?? path.join(process.cwd(), 'data');
-if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true });
+try {
+  if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true });
+} catch { /* read-only filesystem — data will be in-memory only */ }
 
 export function readJSON<T>(filename: string, defaultValue: T = [] as unknown as T): T {
   const filePath = path.join(dataDir, filename);
