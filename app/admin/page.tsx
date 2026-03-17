@@ -130,9 +130,8 @@ interface Project {
   tags: string[];
   gradient: string;
   github: string;
+  contributors?: string[];
 }
-
-const ADMIN_PASSWORD = process.env.NEXT_PUBLIC_ADMIN_PASSWORD ?? '';
 
 const GRADIENTS = [
   { label: 'Blue → Cyan', value: 'from-blue-500 to-cyan-500' },
@@ -144,7 +143,7 @@ const GRADIENTS = [
 ];
 
 const emptyProject: Omit<Project, 'id'> = {
-  name: '', description: '', tags: [], gradient: GRADIENTS[0].value, github: '',
+  name: '', description: '', tags: [], gradient: GRADIENTS[0].value, github: '', contributors: [],
 };
 
 const emptyMember: Omit<Member, 'id'> = {
@@ -154,61 +153,6 @@ const emptyMember: Omit<Member, 'id'> = {
 const emptyEvent: Omit<Event, 'id'> = {
   title: '', date: '', description: '', location: '', type: 'upcoming',
 };
-
-// ─── Auth Gate ──────────────────────────────────────────────────────────────
-function AuthGate({ onAuth }: { onAuth: () => void }) {
-  const [pw, setPw] = useState('');
-  const [error, setError] = useState(false);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (pw === ADMIN_PASSWORD) {
-      onAuth();
-    } else {
-      setError(true);
-      setPw('');
-    }
-  };
-
-  return (
-    <div className="min-h-[80vh] flex items-center justify-center px-4">
-      <div className="w-full max-w-sm">
-        <div className="text-center mb-8">
-          <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-violet-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-violet-500/30">
-            <svg className="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-            </svg>
-          </div>
-          <h1 className="text-2xl font-bold text-slate-900 dark:text-white">Admin Dashboard</h1>
-          <p className="text-slate-500 text-sm mt-1">Enter the admin password to continue</p>
-        </div>
-
-        <form onSubmit={handleSubmit} className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl p-6 space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Password</label>
-            <input
-              type="password"
-              value={pw}
-              onChange={(e) => { setPw(e.target.value); setError(false); }}
-              placeholder="Enter password"
-              autoFocus
-              className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-violet-500/50 focus:ring-1 focus:ring-violet-500/30 transition-all"
-            />
-            {error && (
-              <p className="text-red-400 text-xs mt-2">Incorrect password. Try again.</p>
-            )}
-          </div>
-          <button
-            type="submit"
-            className="w-full py-3 bg-gradient-to-r from-blue-600 to-violet-600 text-white font-semibold rounded-xl hover:opacity-90 transition-opacity"
-          >
-            Sign In
-          </button>
-        </form>
-      </div>
-    </div>
-  );
-}
 
 // ─── Member Form Modal ───────────────────────────────────────────────────────
 function MemberModal({
@@ -497,6 +441,7 @@ function ProjectModal({
     project ? { ...project } : { ...emptyProject }
   );
   const [tagsStr, setTagsStr] = useState((project?.tags ?? []).join(', '));
+  const [contributorsStr, setContributorsStr] = useState((project?.contributors ?? []).join(', '));
   const [saving, setSaving] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -506,7 +451,11 @@ function ProjectModal({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
-    await onSave({ ...form, tags: tagsStr.split(',').map((t) => t.trim()).filter(Boolean) });
+    await onSave({
+      ...form,
+      tags: tagsStr.split(',').map((t) => t.trim()).filter(Boolean),
+      contributors: contributorsStr.split(',').map((c) => c.trim()).filter(Boolean),
+    });
     setSaving(false);
   };
 
@@ -583,6 +532,17 @@ function ProjectModal({
               value={form.github}
               onChange={handleChange}
               placeholder="https://github.com/org/repo"
+              className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Contributors <span className="text-slate-500 font-normal">(comma-separated names, optional)</span></label>
+            <input
+              type="text"
+              value={contributorsStr}
+              onChange={(e) => setContributorsStr(e.target.value)}
+              placeholder="Alice Johnson, Bob Smith"
               className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
             />
           </div>
@@ -702,6 +662,7 @@ function Dashboard() {
   const [siteSettings, setSiteSettings] = useState<SiteSettings>({ recruitingBanner: '', meetingDay: '', meetingTime: '', meetingLocation: '' });
   const [posts, setPosts] = useState<Post[]>([]);
   const [sponsorsConfig, setSponsorsConfig] = useState<SponsorsConfig>({ live: false, sectionTitle: 'Supported By', sponsors: [] });
+  const [rsvpCounts, setRsvpCounts] = useState<Record<string, number>>({});
   const [postModal, setPostModal] = useState<{ open: boolean; post: Post | null }>({ open: false, post: null });
   const [sponsorModal, setSponsorModal] = useState<{ open: boolean; sponsor: Sponsor | null }>({ open: false, sponsor: null });
   const [aboutContent, setAboutContent] = useState<AboutContent>({
@@ -758,7 +719,7 @@ function Dashboard() {
     const safe = <T,>(url: string, fallback: T) =>
       fetch(url).then((r) => r.ok ? r.json() as Promise<T> : fallback).catch(() => fallback);
 
-    const [m, e, c, pt, p, s, st, ab, po, sp] = await Promise.all([
+    const [m, e, c, pt, p, s, st, ab, po, sp, rv] = await Promise.all([
       safe('/api/members', []),
       safe('/api/events', []),
       safe('/api/contact', []),
@@ -769,6 +730,7 @@ function Dashboard() {
       safe('/api/about', {}),
       safe('/api/posts', []),
       safe('/api/sponsors', { live: false, sectionTitle: 'Supported By', sponsors: [] }),
+      safe('/api/rsvps', []),
     ]);
     setMembers(m as Member[]);
     setEvents(e as Event[]);
@@ -780,6 +742,9 @@ function Dashboard() {
     setAboutContent(ab as AboutContent);
     setPosts(Array.isArray(po) ? po as Post[] : []);
     setSponsorsConfig(sp as SponsorsConfig);
+    const counts: Record<string, number> = {};
+    (rv as Array<{ eventId: string }>).forEach((r) => { counts[r.eventId] = (counts[r.eventId] ?? 0) + 1; });
+    setRsvpCounts(counts);
     setLoading(false);
   }, []);
 
@@ -909,9 +874,20 @@ function Dashboard() {
           <h1 className="text-3xl font-bold text-slate-900 dark:text-white">Admin Dashboard</h1>
           <p className="text-slate-500 text-sm mt-1">Manage members, events, and contact submissions</p>
         </div>
-        <div className="flex items-center gap-2 bg-green-50 border border-green-200 text-green-600 dark:bg-green-500/10 dark:border-green-500/20 dark:text-green-400 text-xs px-3 py-1.5 rounded-full">
-          <span className="w-1.5 h-1.5 bg-green-400 rounded-full" />
-          Authenticated
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 bg-green-50 border border-green-200 text-green-600 dark:bg-green-500/10 dark:border-green-500/20 dark:text-green-400 text-xs px-3 py-1.5 rounded-full">
+            <span className="w-1.5 h-1.5 bg-green-400 rounded-full" />
+            Authenticated
+          </div>
+          <button
+            onClick={async () => {
+              await fetch('/api/auth', { method: 'DELETE' });
+              window.location.href = '/admin/login';
+            }}
+            className="text-xs text-slate-400 hover:text-slate-700 dark:hover:text-white transition-colors px-3 py-1.5 border border-slate-200 dark:border-[#1e2d45] rounded-full hover:border-slate-300 dark:hover:border-slate-500/50"
+          >
+            Sign out
+          </button>
         </div>
       </div>
 
@@ -1033,7 +1009,39 @@ function Dashboard() {
                           </span>
                         ))}
                       </div>
-                      <div className="flex items-center gap-2 flex-shrink-0">
+                      <div className="flex items-center gap-1 flex-shrink-0">
+                        {!membersSearch.trim() && (
+                          <>
+                            <button
+                              onClick={async () => {
+                                const idx = members.indexOf(m);
+                                if (idx === 0) return;
+                                const next = [...members];
+                                [next[idx - 1], next[idx]] = [next[idx], next[idx - 1]];
+                                setMembers(next);
+                                await fetch('/api/members/reorder', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ids: next.map((x) => x.id) }) });
+                              }}
+                              className="p-1.5 text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5 rounded-lg transition-all"
+                              title="Move up"
+                            >
+                              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" /></svg>
+                            </button>
+                            <button
+                              onClick={async () => {
+                                const idx = members.indexOf(m);
+                                if (idx === members.length - 1) return;
+                                const next = [...members];
+                                [next[idx], next[idx + 1]] = [next[idx + 1], next[idx]];
+                                setMembers(next);
+                                await fetch('/api/members/reorder', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ids: next.map((x) => x.id) }) });
+                              }}
+                              className="p-1.5 text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5 rounded-lg transition-all"
+                              title="Move down"
+                            >
+                              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+                            </button>
+                          </>
+                        )}
                         <button
                           onClick={() => setMemberModal({ open: true, member: m })}
                           className="p-2 text-slate-400 hover:text-blue-400 hover:bg-blue-500/10 rounded-lg transition-all"
@@ -1096,6 +1104,11 @@ function Dashboard() {
                           <span className={`text-xs px-2 py-0.5 rounded-full flex-shrink-0 ${ev.type === 'upcoming' ? 'bg-blue-500/10 text-blue-400' : 'bg-slate-700/30 text-slate-500'}`}>
                             {ev.type}
                           </span>
+                          {(rsvpCounts[ev.id] ?? 0) > 0 && (
+                            <span className="text-xs px-2 py-0.5 rounded-full flex-shrink-0 bg-green-500/10 text-green-400 border border-green-500/20">
+                              {rsvpCounts[ev.id]} RSVP{rsvpCounts[ev.id] !== 1 ? 's' : ''}
+                            </span>
+                          )}
                         </div>
                         <div className="text-slate-500 text-sm truncate">{ev.location}</div>
                       </div>
@@ -2045,6 +2058,5 @@ function Dashboard() {
 
 // ─── Main Export ─────────────────────────────────────────────────────────────
 export default function AdminPage() {
-  const [authed, setAuthed] = useState(false);
-  return authed ? <Dashboard /> : <AuthGate onAuth={() => setAuthed(true)} />;
+  return <Dashboard />;
 }

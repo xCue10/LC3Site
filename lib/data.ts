@@ -93,6 +93,15 @@ export interface Project {
   tags: string[];
   gradient: string;
   github: string;
+  contributors?: string[];
+}
+
+export interface RSVP {
+  id: string;
+  eventId: string;
+  name: string;
+  email: string;
+  submittedAt: string;
 }
 
 export interface Post {

@@ -32,6 +32,15 @@ function ProjectCard({ project }: { project: Project }) {
             ))}
           </div>
         )}
+        {project.contributors && project.contributors.length > 0 && (
+          <div className="flex flex-wrap gap-1.5 mb-3">
+            {project.contributors.map((c) => (
+              <span key={c} className="text-xs bg-violet-50 border border-violet-200 text-violet-600 px-2 py-0.5 rounded-full dark:bg-violet-500/10 dark:border-violet-500/20 dark:text-violet-400">
+                {c}
+              </span>
+            ))}
+          </div>
+        )}
         {project.github && (
           <a
             href={project.github}

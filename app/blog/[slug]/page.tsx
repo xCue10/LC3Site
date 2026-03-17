@@ -2,6 +2,8 @@ import { readJSON, Post } from '@/lib/data';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 export const dynamic = 'force-dynamic';
 
@@ -20,8 +22,6 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const post = readJSON<Post[]>('posts.json').find((p) => p.slug === slug && p.published);
   if (!post) notFound();
-
-  const paragraphs = post.content.split(/\n\n+/).filter(Boolean);
 
   return (
     <div className="max-w-2xl mx-auto px-4 sm:px-6 py-16">
@@ -50,12 +50,28 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
           )}
         </div>
 
-        <div className="border-t border-slate-200 dark:border-[#1e2d45] pt-8 space-y-4">
-          {paragraphs.map((para, i) => (
-            <p key={i} className="text-slate-600 dark:text-slate-400 leading-relaxed text-[15px]">
-              {para.replace(/\n/g, ' ')}
-            </p>
-          ))}
+        <div className="border-t border-slate-200 dark:border-[#1e2d45] pt-8">
+          <ReactMarkdown
+            remarkPlugins={[remarkGfm]}
+            components={{
+              h1: ({ children }) => <h1 className="text-2xl font-bold text-slate-900 dark:text-white mt-8 mb-4 first:mt-0">{children}</h1>,
+              h2: ({ children }) => <h2 className="text-xl font-bold text-slate-900 dark:text-white mt-7 mb-3">{children}</h2>,
+              h3: ({ children }) => <h3 className="text-lg font-semibold text-slate-900 dark:text-white mt-6 mb-2">{children}</h3>,
+              p: ({ children }) => <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-[15px] mb-4">{children}</p>,
+              a: ({ href, children }) => <a href={href} className="text-violet-600 dark:text-violet-400 hover:underline" target="_blank" rel="noopener noreferrer">{children}</a>,
+              ul: ({ children }) => <ul className="list-disc list-inside space-y-1 mb-4 text-slate-600 dark:text-slate-400 text-[15px]">{children}</ul>,
+              ol: ({ children }) => <ol className="list-decimal list-inside space-y-1 mb-4 text-slate-600 dark:text-slate-400 text-[15px]">{children}</ol>,
+              li: ({ children }) => <li className="leading-relaxed">{children}</li>,
+              blockquote: ({ children }) => <blockquote className="border-l-2 border-violet-400 pl-4 italic text-slate-500 dark:text-slate-400 mb-4">{children}</blockquote>,
+              code: ({ children, className }) => className
+                ? <code className="block bg-slate-100 dark:bg-white/5 rounded-xl p-4 text-sm font-mono text-slate-700 dark:text-slate-300 mb-4 overflow-x-auto whitespace-pre">{children}</code>
+                : <code className="bg-slate-100 dark:bg-white/5 rounded px-1.5 py-0.5 text-sm font-mono text-slate-700 dark:text-slate-300">{children}</code>,
+              strong: ({ children }) => <strong className="font-semibold text-slate-900 dark:text-white">{children}</strong>,
+              hr: () => <hr className="border-slate-200 dark:border-[#1e2d45] my-8" />,
+            }}
+          >
+            {post.content}
+          </ReactMarkdown>
         </div>
       </article>
 

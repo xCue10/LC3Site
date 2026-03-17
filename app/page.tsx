@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { readJSON, Event, Project, Stats, SiteSettings, Post, SponsorsConfig } from '@/lib/data';
+import { readJSON, Event, Project, Member, Stats, SiteSettings, Post, SponsorsConfig } from '@/lib/data';
 import ScrollReveal from './components/ScrollReveal';
 import type { Metadata } from 'next';
 
@@ -13,11 +13,19 @@ export const metadata: Metadata = {
 export default function HomePage() {
   const events = readJSON<Event[]>('events.json');
   const featuredProjects = readJSON<Project[]>('projects.json');
-  const stats = readJSON<Stats>('stats.json', { activeMembers: '0', eventsHosted: '0', projectsBuilt: '0', yearsActive: '0' });
+  const members = readJSON<Member[]>('members.json');
+  const statsOverrides = readJSON<Stats>('stats.json', { activeMembers: '', eventsHosted: '', projectsBuilt: '', yearsActive: '' });
   const settings = readJSON<SiteSettings>('settings.json', { recruitingBanner: '', meetingDay: '', meetingTime: '', meetingLocation: '' });
   const upcomingEvents = events.filter((e) => e.type === 'upcoming').slice(0, 2);
   const latestPosts = readJSON<Post[]>('posts.json').filter((p) => p.published).slice(0, 3);
   const sponsorsConfig = readJSON<SponsorsConfig>('sponsors.json', { live: false, sectionTitle: 'Supported By', sponsors: [] });
+
+  const stats = {
+    activeMembers: statsOverrides.activeMembers || String(members.length),
+    eventsHosted: statsOverrides.eventsHosted || String(events.filter((e) => e.type === 'past').length),
+    projectsBuilt: statsOverrides.projectsBuilt || String(featuredProjects.length),
+    yearsActive: statsOverrides.yearsActive || '1',
+  };
 
   const missionItems = [
     {

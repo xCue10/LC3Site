@@ -1,5 +1,6 @@
-import { readJSON, Event } from '@/lib/data';
+import { readJSON, Event, RSVP } from '@/lib/data';
 import type { Metadata } from 'next';
+import EventRSVPForm from './EventRSVPForm';
 
 export const dynamic = 'force-dynamic';
 
@@ -32,6 +33,11 @@ function LocationIcon() {
 
 export default function EventsPage() {
   const events = readJSON<Event[]>('events.json');
+  const rsvps = readJSON<RSVP[]>('rsvps.json');
+  const rsvpCounts = rsvps.reduce<Record<string, number>>((acc, r) => {
+    acc[r.eventId] = (acc[r.eventId] ?? 0) + 1;
+    return acc;
+  }, {});
   const upcoming = events.filter((e) => e.type === 'upcoming').sort((a, b) => a.date.localeCompare(b.date));
   const past = events.filter((e) => e.type === 'past').sort((a, b) => b.date.localeCompare(a.date));
 
@@ -102,19 +108,7 @@ export default function EventsPage() {
                         {event.location}
                       </span>
                     </div>
-                    {event.rsvpUrl && (
-                      <a
-                        href={event.rsvpUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-blue-600 to-violet-600 text-white text-sm font-semibold rounded-xl hover:opacity-90 transition-opacity"
-                      >
-                        RSVP Now
-                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                        </svg>
-                      </a>
-                    )}
+                    <EventRSVPForm eventId={event.id} initialCount={rsvpCounts[event.id] ?? 0} />
                   </div>
                 </div>
               </div>

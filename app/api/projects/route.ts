@@ -16,6 +16,7 @@ export async function POST(req: NextRequest) {
     tags: Array.isArray(body.tags) ? body.tags : (body.tags || '').split(',').map((t: string) => t.trim()).filter(Boolean),
     gradient: body.gradient || 'from-blue-500 to-cyan-500',
     github: body.github || '',
+    contributors: Array.isArray(body.contributors) ? body.contributors : (body.contributors || '').split(',').map((c: string) => c.trim()).filter(Boolean),
   };
   projects.push(newProject);
   writeJSON('projects.json', projects);

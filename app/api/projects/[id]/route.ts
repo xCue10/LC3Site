@@ -17,6 +17,9 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
       : (body.tags || '').split(',').map((t: string) => t.trim()).filter(Boolean),
     gradient: body.gradient ?? projects[index].gradient,
     github: body.github ?? projects[index].github,
+    contributors: Array.isArray(body.contributors)
+      ? body.contributors
+      : (body.contributors || '').split(',').map((c: string) => c.trim()).filter(Boolean),
   };
   writeJSON('projects.json', projects);
   return NextResponse.json(projects[index]);
