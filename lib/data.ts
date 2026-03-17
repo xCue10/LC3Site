@@ -95,6 +95,30 @@ export interface Project {
   github: string;
 }
 
+export interface Post {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string;
+  content: string;
+  publishedAt: string;
+  published: boolean;
+}
+
+export interface Sponsor {
+  id: string;
+  name: string;
+  logoUrl: string;
+  website: string;
+  tier: string;
+}
+
+export interface SponsorsConfig {
+  live: boolean;
+  sectionTitle: string;
+  sponsors: Sponsor[];
+}
+
 export interface AboutValue {
   title: string;
   desc: string;

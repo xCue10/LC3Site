@@ -76,6 +76,7 @@ export default function Footer() {
                 { href: '/about', label: 'About' },
                 { href: '/members', label: 'Members' },
                 { href: '/events', label: 'Events' },
+                { href: '/blog', label: 'Blog' },
                 { href: '/contact', label: 'Join Us' },
               ].map(({ href, label }) => (
                 <li key={href}>

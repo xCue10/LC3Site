@@ -56,6 +56,30 @@ interface Contact {
   submittedAt: string;
 }
 
+interface Post {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string;
+  content: string;
+  publishedAt: string;
+  published: boolean;
+}
+
+interface Sponsor {
+  id: string;
+  name: string;
+  logoUrl: string;
+  website: string;
+  tier: string;
+}
+
+interface SponsorsConfig {
+  live: boolean;
+  sectionTitle: string;
+  sponsors: Sponsor[];
+}
+
 interface AboutValue {
   title: string;
   desc: string;
@@ -577,7 +601,94 @@ function ProjectModal({
   );
 }
 
-type TabId = 'members' | 'events' | 'contacts' | 'partners' | 'projects' | 'stats' | 'settings' | 'about';
+// ─── Post Modal ──────────────────────────────────────────────────────────────
+interface PostForm { title: string; excerpt: string; content: string; published: boolean; }
+function PostModal({ post, onSave, onClose }: { post: Post | null; onSave: (d: PostForm) => Promise<void>; onClose: () => void }) {
+  const [form, setForm] = useState<PostForm>(post ? { title: post.title, excerpt: post.excerpt, content: post.content, published: post.published } : { title: '', excerpt: '', content: '', published: false });
+  const [saving, setSaving] = useState(false);
+  const inputCls = 'w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all';
+  return (
+    <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={onClose}>
+      <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+        <div className="flex items-center justify-between p-6 border-b border-slate-200 dark:border-[#1e2d45]">
+          <h2 className="text-slate-900 dark:text-white font-semibold text-lg">{post ? 'Edit Post' : 'New Post'}</h2>
+          <button onClick={onClose} className="text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors">
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+          </button>
+        </div>
+        <form onSubmit={async (e) => { e.preventDefault(); setSaving(true); await onSave(form); setSaving(false); }} className="p-6 space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Title</label>
+            <input type="text" required value={form.title} onChange={(e) => setForm((f) => ({ ...f, title: e.target.value }))} placeholder="My Announcement" className={inputCls} />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Excerpt <span className="text-slate-400 font-normal">(short summary shown in list)</span></label>
+            <textarea rows={2} value={form.excerpt} onChange={(e) => setForm((f) => ({ ...f, excerpt: e.target.value }))} placeholder="A brief description..." className={`${inputCls} resize-none`} />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Content <span className="text-slate-400 font-normal">(blank lines create new paragraphs)</span></label>
+            <textarea rows={10} required value={form.content} onChange={(e) => setForm((f) => ({ ...f, content: e.target.value }))} placeholder="Write your post content here..." className={`${inputCls} resize-y`} />
+          </div>
+          <label className="flex items-center gap-3 cursor-pointer select-none">
+            <div className="relative">
+              <input type="checkbox" className="sr-only" checked={form.published} onChange={(e) => setForm((f) => ({ ...f, published: e.target.checked }))} />
+              <div className={`w-10 h-6 rounded-full transition-colors ${form.published ? 'bg-violet-600' : 'bg-slate-200 dark:bg-slate-700'}`} />
+              <div className={`absolute top-1 left-1 w-4 h-4 rounded-full bg-white shadow transition-transform ${form.published ? 'translate-x-4' : ''}`} />
+            </div>
+            <span className="text-sm font-medium text-slate-700 dark:text-slate-300">{form.published ? 'Published — visible to everyone' : 'Draft — not publicly visible'}</span>
+          </label>
+          <div className="flex gap-3 pt-2">
+            <button type="button" onClick={onClose} className="flex-1 py-2.5 border border-slate-200 dark:border-[#1e2d45] text-slate-500 dark:text-slate-400 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 transition-colors text-sm font-medium">Cancel</button>
+            <button type="submit" disabled={saving} className="flex-1 py-2.5 bg-gradient-to-r from-blue-600 to-violet-600 text-white rounded-xl hover:opacity-90 transition-opacity text-sm font-semibold disabled:opacity-50">{saving ? 'Saving...' : post ? 'Save Changes' : 'Create Post'}</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
+
+// ─── Sponsor Modal ────────────────────────────────────────────────────────────
+interface SponsorForm { name: string; logoUrl: string; website: string; tier: string; }
+function SponsorModal({ sponsor, onSave, onClose }: { sponsor: Sponsor | null; onSave: (d: SponsorForm) => void; onClose: () => void }) {
+  const [form, setForm] = useState<SponsorForm>(sponsor ? { name: sponsor.name, logoUrl: sponsor.logoUrl, website: sponsor.website, tier: sponsor.tier } : { name: '', logoUrl: '', website: '', tier: '' });
+  const inputCls = 'w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all';
+  return (
+    <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={onClose}>
+      <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl w-full max-w-md" onClick={(e) => e.stopPropagation()}>
+        <div className="flex items-center justify-between p-6 border-b border-slate-200 dark:border-[#1e2d45]">
+          <h2 className="text-slate-900 dark:text-white font-semibold text-lg">{sponsor ? 'Edit Sponsor' : 'Add Sponsor'}</h2>
+          <button onClick={onClose} className="text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors">
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+          </button>
+        </div>
+        <form onSubmit={(e) => { e.preventDefault(); onSave(form); }} className="p-6 space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Company Name</label>
+            <input type="text" required value={form.name} onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))} placeholder="Acme Corp" className={inputCls} />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Logo URL <span className="text-slate-400 font-normal">(optional — shows name badge if empty)</span></label>
+            <input type="url" value={form.logoUrl} onChange={(e) => setForm((f) => ({ ...f, logoUrl: e.target.value }))} placeholder="https://example.com/logo.png" className={inputCls} />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Website URL <span className="text-slate-400 font-normal">(optional)</span></label>
+            <input type="url" value={form.website} onChange={(e) => setForm((f) => ({ ...f, website: e.target.value }))} placeholder="https://example.com" className={inputCls} />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Tier <span className="text-slate-400 font-normal">(optional)</span></label>
+            <input type="text" value={form.tier} onChange={(e) => setForm((f) => ({ ...f, tier: e.target.value }))} placeholder="Gold / Silver / Community Partner" className={inputCls} />
+          </div>
+          <div className="flex gap-3 pt-2">
+            <button type="button" onClick={onClose} className="flex-1 py-2.5 border border-slate-200 dark:border-[#1e2d45] text-slate-500 dark:text-slate-400 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 transition-colors text-sm font-medium">Cancel</button>
+            <button type="submit" className="flex-1 py-2.5 bg-gradient-to-r from-blue-600 to-violet-600 text-white rounded-xl hover:opacity-90 transition-opacity text-sm font-semibold">{sponsor ? 'Save Changes' : 'Add Sponsor'}</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
+
+type TabId = 'members' | 'events' | 'contacts' | 'partners' | 'projects' | 'stats' | 'settings' | 'about' | 'posts' | 'sponsors';
 
 // ─── Dashboard ───────────────────────────────────────────────────────────────
 function Dashboard() {
@@ -589,6 +700,10 @@ function Dashboard() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [stats, setStats] = useState<Stats>({ activeMembers: '', eventsHosted: '', projectsBuilt: '', yearsActive: '' });
   const [siteSettings, setSiteSettings] = useState<SiteSettings>({ recruitingBanner: '', meetingDay: '', meetingTime: '', meetingLocation: '' });
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [sponsorsConfig, setSponsorsConfig] = useState<SponsorsConfig>({ live: false, sectionTitle: 'Supported By', sponsors: [] });
+  const [postModal, setPostModal] = useState<{ open: boolean; post: Post | null }>({ open: false, post: null });
+  const [sponsorModal, setSponsorModal] = useState<{ open: boolean; sponsor: Sponsor | null }>({ open: false, sponsor: null });
   const [aboutContent, setAboutContent] = useState<AboutContent>({
     heroTagline: '', heroDescription: '', mission: '',
     valuesTitle: '', valuesSubtitle: '', values: [],
@@ -640,7 +755,7 @@ function Dashboard() {
 
   const fetchData = useCallback(async () => {
     setLoading(true);
-    const [m, e, c, pt, p, s, st, ab] = await Promise.all([
+    const [m, e, c, pt, p, s, st, ab, po, sp] = await Promise.all([
       fetch('/api/members').then((r) => r.json()),
       fetch('/api/events').then((r) => r.json()),
       fetch('/api/contact').then((r) => r.json()),
@@ -649,6 +764,8 @@ function Dashboard() {
       fetch('/api/stats').then((r) => r.json()),
       fetch('/api/settings').then((r) => r.json()),
       fetch('/api/about').then((r) => r.json()),
+      fetch('/api/posts').then((r) => r.json()),
+      fetch('/api/sponsors').then((r) => r.json()),
     ]);
     setMembers(m);
     setEvents(e);
@@ -658,6 +775,8 @@ function Dashboard() {
     setStats(s);
     setSiteSettings(st);
     setAboutContent(ab);
+    setPosts(Array.isArray(po) ? po : []);
+    setSponsorsConfig(sp);
     setLoading(false);
   }, []);
 
@@ -714,12 +833,56 @@ function Dashboard() {
     fetchData();
   };
 
+  // Post CRUD
+  const savePost = async (data: { title: string; excerpt: string; content: string; published: boolean }) => {
+    if (postModal.post) {
+      await fetch(`/api/posts/${postModal.post.id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+    } else {
+      await fetch('/api/posts', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+    }
+    setPostModal({ open: false, post: null });
+    fetchData();
+  };
+
+  const deletePost = async (id: string) => {
+    if (!confirm('Delete this post? This cannot be undone.')) return;
+    await fetch(`/api/posts/${id}`, { method: 'DELETE' });
+    fetchData();
+  };
+
+  const togglePostPublished = async (post: Post) => {
+    await fetch(`/api/posts/${post.id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ published: !post.published }) });
+    fetchData();
+  };
+
+  // Sponsor helpers
+  const saveSponsor = (data: { name: string; logoUrl: string; website: string; tier: string }) => {
+    let updated: Sponsor[];
+    if (sponsorModal.sponsor) {
+      updated = sponsorsConfig.sponsors.map((s) => s.id === sponsorModal.sponsor!.id ? { ...s, ...data } : s);
+    } else {
+      updated = [...sponsorsConfig.sponsors, { id: Date.now().toString(), ...data }];
+    }
+    const newConfig = { ...sponsorsConfig, sponsors: updated };
+    setSponsorsConfig(newConfig);
+    fetch('/api/sponsors', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(newConfig) });
+    setSponsorModal({ open: false, sponsor: null });
+  };
+
+  const deleteSponsor = (id: string) => {
+    const updated = { ...sponsorsConfig, sponsors: sponsorsConfig.sponsors.filter((s) => s.id !== id) };
+    setSponsorsConfig(updated);
+    fetch('/api/sponsors', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(updated) });
+  };
+
   const tabs = [
     { id: 'members' as const, label: 'Members', count: members.length, unread: 0 },
     { id: 'events' as const, label: 'Events', count: events.length, unread: 0 },
     { id: 'projects' as const, label: 'Projects', count: projects.length, unread: 0 },
     { id: 'contacts' as const, label: 'Contacts', count: contacts.length, unread: unreadContacts },
     { id: 'partners' as const, label: 'Partners', count: partners.length, unread: unreadPartners },
+    { id: 'posts' as const, label: 'Blog', count: posts.length, unread: 0 },
+    { id: 'sponsors' as const, label: 'Sponsors', count: sponsorsConfig.sponsors.length, unread: 0 },
     { id: 'stats' as const, label: 'Stats', count: null, unread: 0 },
     { id: 'about' as const, label: 'About Page', count: null, unread: 0 },
     { id: 'settings' as const, label: 'Settings', count: null, unread: 0 },
@@ -1196,6 +1359,175 @@ function Dashboard() {
             </div>
           )}
 
+          {/* Blog / Posts Tab */}
+          {tab === 'posts' && (
+            <div>
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Blog Posts</h2>
+                  <p className="text-slate-500 text-xs mt-0.5">{posts.filter((p) => p.published).length} published · {posts.filter((p) => !p.published).length} draft</p>
+                </div>
+                <button
+                  onClick={() => setPostModal({ open: true, post: null })}
+                  className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-violet-600 text-white text-sm font-semibold rounded-xl hover:opacity-90 transition-opacity"
+                >
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
+                  New Post
+                </button>
+              </div>
+
+              {posts.length === 0 ? (
+                <div className="text-center py-16 text-slate-400">No posts yet. Create your first announcement!</div>
+              ) : (
+                <div className="space-y-3">
+                  {posts.map((post) => (
+                    <div key={post.id} className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-xl p-4 flex items-start gap-4">
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${post.published ? 'bg-green-50 border border-green-200 text-green-600 dark:bg-green-500/10 dark:border-green-500/20 dark:text-green-400' : 'bg-slate-100 border border-slate-200 text-slate-500 dark:bg-white/5 dark:border-white/10 dark:text-slate-400'}`}>
+                            {post.published ? 'Published' : 'Draft'}
+                          </span>
+                          <span className="text-xs text-slate-400">
+                            {new Date(post.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                          </span>
+                        </div>
+                        <h3 className="text-slate-900 dark:text-white font-medium truncate">{post.title}</h3>
+                        {post.excerpt && <p className="text-slate-500 text-sm mt-0.5 line-clamp-1">{post.excerpt}</p>}
+                      </div>
+                      <div className="flex items-center gap-1 flex-shrink-0">
+                        <button
+                          onClick={() => togglePostPublished(post)}
+                          className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-all ${post.published ? 'text-slate-500 hover:bg-slate-100 dark:hover:bg-white/5' : 'text-violet-600 dark:text-violet-400 hover:bg-violet-50 dark:hover:bg-violet-500/10'}`}
+                          title={post.published ? 'Unpublish' : 'Publish'}
+                        >
+                          {post.published ? 'Unpublish' : 'Publish'}
+                        </button>
+                        <button onClick={() => setPostModal({ open: true, post })}
+                          className="flex items-center justify-center w-8 h-8 rounded-lg text-slate-400 hover:text-violet-600 dark:hover:text-violet-400 hover:bg-violet-50 dark:hover:bg-violet-500/10 transition-all">
+                          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+                        </button>
+                        <button onClick={() => deletePost(post.id)}
+                          className="flex items-center justify-center w-8 h-8 rounded-lg text-slate-400 hover:text-red-400 hover:bg-red-500/10 transition-all">
+                          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                        </button>
+                        {post.published && (
+                          <a href={`/blog/${post.slug}`} target="_blank" rel="noopener noreferrer"
+                            className="flex items-center justify-center w-8 h-8 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5 transition-all">
+                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Sponsors Tab */}
+          {tab === 'sponsors' && (
+            <div className="space-y-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Sponsors</h2>
+                  <p className="text-slate-500 text-sm mt-1">Manage sponsor logos shown on the homepage.</p>
+                </div>
+              </div>
+
+              {/* Live Toggle — prominent */}
+              <div className={`rounded-2xl border-2 p-6 flex items-center justify-between gap-6 transition-all ${sponsorsConfig.live ? 'border-green-400/50 bg-green-50 dark:bg-green-500/5' : 'border-slate-200 dark:border-[#1e2d45] bg-white dark:bg-[#0d1424]'}`}>
+                <div>
+                  <p className={`font-semibold text-lg ${sponsorsConfig.live ? 'text-green-700 dark:text-green-400' : 'text-slate-900 dark:text-white'}`}>
+                    Sponsors section is {sponsorsConfig.live ? 'LIVE' : 'hidden'}
+                  </p>
+                  <p className="text-slate-500 text-sm mt-0.5">
+                    {sponsorsConfig.live ? 'The sponsors strip is visible on the public homepage.' : 'Toggle on to show the sponsors section publicly.'}
+                  </p>
+                </div>
+                <button
+                  onClick={async () => {
+                    const updated = { ...sponsorsConfig, live: !sponsorsConfig.live };
+                    setSponsorsConfig(updated);
+                    await fetch('/api/sponsors', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(updated) });
+                  }}
+                  className={`relative flex-shrink-0 w-14 h-8 rounded-full transition-colors focus:outline-none ${sponsorsConfig.live ? 'bg-green-500' : 'bg-slate-300 dark:bg-slate-600'}`}
+                >
+                  <div className={`absolute top-1 left-1 w-6 h-6 rounded-full bg-white shadow-md transition-transform ${sponsorsConfig.live ? 'translate-x-6' : ''}`} />
+                </button>
+              </div>
+
+              {/* Section title + sponsor list */}
+              <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl p-6 space-y-5">
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Section Label <span className="text-slate-400 font-normal">(shown above logos)</span></label>
+                  <div className="flex gap-3">
+                    <input
+                      type="text"
+                      value={sponsorsConfig.sectionTitle}
+                      onChange={(e) => setSponsorsConfig((c) => ({ ...c, sectionTitle: e.target.value }))}
+                      placeholder="Supported By"
+                      className="flex-1 bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                    />
+                    <button
+                      onClick={async () => {
+                        await fetch('/api/sponsors', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(sponsorsConfig) });
+                      }}
+                      className="px-4 py-2.5 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-[#1e2d45] text-slate-700 dark:text-slate-300 text-sm font-medium rounded-xl hover:bg-slate-200 dark:hover:bg-white/10 transition-all"
+                    >
+                      Save
+                    </button>
+                  </div>
+                </div>
+
+                <div>
+                  <div className="flex items-center justify-between mb-3">
+                    <p className="text-xs text-slate-500 font-medium uppercase tracking-wider">Sponsors ({sponsorsConfig.sponsors.length})</p>
+                    <button
+                      onClick={() => setSponsorModal({ open: true, sponsor: null })}
+                      className="flex items-center gap-1 text-xs text-violet-600 dark:text-violet-400 hover:text-violet-700 dark:hover:text-violet-300 font-medium transition-colors"
+                    >
+                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
+                      Add Sponsor
+                    </button>
+                  </div>
+
+                  {sponsorsConfig.sponsors.length === 0 ? (
+                    <p className="text-center py-8 text-slate-400 text-sm">No sponsors yet. Add one above.</p>
+                  ) : (
+                    <div className="space-y-2">
+                      {sponsorsConfig.sponsors.map((s) => (
+                        <div key={s.id} className="flex items-center gap-4 bg-slate-50 dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] rounded-xl px-4 py-3">
+                          {s.logoUrl ? (
+                            /* eslint-disable-next-line @next/next/no-img-element */
+                            <img src={s.logoUrl} alt={s.name} className="h-8 object-contain flex-shrink-0" />
+                          ) : (
+                            <div className="w-8 h-8 rounded-lg bg-violet-100 dark:bg-violet-500/10 flex items-center justify-center flex-shrink-0">
+                              <span className="text-xs font-bold text-violet-600 dark:text-violet-400">{s.name[0]}</span>
+                            </div>
+                          )}
+                          <div className="flex-1 min-w-0">
+                            <p className="text-slate-900 dark:text-white font-medium text-sm truncate">{s.name}</p>
+                            {s.tier && <p className="text-slate-400 text-xs">{s.tier}</p>}
+                          </div>
+                          <div className="flex items-center gap-1 flex-shrink-0">
+                            <button onClick={() => setSponsorModal({ open: true, sponsor: s })}
+                              className="w-7 h-7 flex items-center justify-center rounded-lg text-slate-400 hover:text-violet-600 dark:hover:text-violet-400 hover:bg-violet-50 dark:hover:bg-violet-500/10 transition-all">
+                              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+                            </button>
+                            <button onClick={() => deleteSponsor(s.id)}
+                              className="w-7 h-7 flex items-center justify-center rounded-lg text-slate-400 hover:text-red-400 hover:bg-red-500/10 transition-all">
+                              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* About Page Tab */}
           {tab === 'about' && (
             <div className="space-y-6">
@@ -1661,6 +1993,16 @@ function Dashboard() {
           onSave={saveProject}
           onClose={() => setProjectModal({ open: false, project: null })}
         />
+      )}
+
+      {/* Post Modal */}
+      {postModal.open && (
+        <PostModal post={postModal.post} onSave={savePost} onClose={() => setPostModal({ open: false, post: null })} />
+      )}
+
+      {/* Sponsor Modal */}
+      {sponsorModal.open && (
+        <SponsorModal sponsor={sponsorModal.sponsor} onSave={saveSponsor} onClose={() => setSponsorModal({ open: false, sponsor: null })} />
       )}
 
       {/* Delete Confirm Modal */}

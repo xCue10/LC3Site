@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { readJSON, Event, Project, Stats, SiteSettings } from '@/lib/data';
+import { readJSON, Event, Project, Stats, SiteSettings, Post, SponsorsConfig } from '@/lib/data';
 import ScrollReveal from './components/ScrollReveal';
 import type { Metadata } from 'next';
 
@@ -16,6 +16,8 @@ export default function HomePage() {
   const stats = readJSON<Stats>('stats.json', { activeMembers: '0', eventsHosted: '0', projectsBuilt: '0', yearsActive: '0' });
   const settings = readJSON<SiteSettings>('settings.json', { recruitingBanner: '', meetingDay: '', meetingTime: '', meetingLocation: '' });
   const upcomingEvents = events.filter((e) => e.type === 'upcoming').slice(0, 2);
+  const latestPosts = readJSON<Post[]>('posts.json').filter((p) => p.published).slice(0, 3);
+  const sponsorsConfig = readJSON<SponsorsConfig>('sponsors.json', { live: false, sectionTitle: 'Supported By', sponsors: [] });
 
   const missionItems = [
     {
@@ -309,6 +311,71 @@ export default function HomePage() {
                 </div>
               </div>
             ))}
+          </div>
+          </ScrollReveal>
+        </section>
+      )}
+
+      {/* Latest Posts */}
+      {latestPosts.length > 0 && (
+        <section className="py-20 max-w-6xl mx-auto px-4 sm:px-6">
+          <ScrollReveal>
+          <div className="flex items-end justify-between mb-10">
+            <div>
+              <p className="text-violet-600 dark:text-violet-400 text-sm font-medium mb-1">What&apos;s new</p>
+              <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white">Latest Updates</h2>
+            </div>
+            <Link href="/blog" className="text-slate-500 hover:text-slate-700 dark:hover:text-white text-sm transition-colors hidden sm:block">
+              All posts →
+            </Link>
+          </div>
+          <div className="grid md:grid-cols-3 gap-6">
+            {latestPosts.map((post) => (
+              <Link
+                key={post.id}
+                href={`/blog/${post.slug}`}
+                className="block bg-white border border-slate-200 rounded-2xl p-6 hover:border-violet-200 hover:shadow-sm transition-all group dark:bg-[#0d1424] dark:border-[#1e2d45] dark:hover:border-violet-500/30"
+              >
+                <p className="text-xs text-slate-400 mb-3">
+                  {new Date(post.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                </p>
+                <h3 className="font-semibold text-slate-900 dark:text-white mb-2 group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors line-clamp-2">
+                  {post.title}
+                </h3>
+                {post.excerpt && (
+                  <p className="text-slate-500 text-sm leading-relaxed line-clamp-2">{post.excerpt}</p>
+                )}
+              </Link>
+            ))}
+          </div>
+          </ScrollReveal>
+        </section>
+      )}
+
+      {/* Sponsors */}
+      {sponsorsConfig.live && sponsorsConfig.sponsors.length > 0 && (
+        <section className="border-t border-slate-200 dark:border-[#1e2d45] py-14">
+          <ScrollReveal>
+          <div className="max-w-6xl mx-auto px-4 sm:px-6">
+            <p className="text-center text-xs font-medium text-slate-400 uppercase tracking-widest mb-10">
+              {sponsorsConfig.sectionTitle}
+            </p>
+            <div className="flex flex-wrap justify-center items-center gap-8">
+              {sponsorsConfig.sponsors.map((s) => (
+                s.logoUrl ? (
+                  <a key={s.id} href={s.website || undefined} target="_blank" rel="noopener noreferrer"
+                    className="opacity-60 hover:opacity-100 transition-opacity grayscale hover:grayscale-0">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={s.logoUrl} alt={s.name} className="h-10 object-contain" />
+                  </a>
+                ) : (
+                  <a key={s.id} href={s.website || undefined} target="_blank" rel="noopener noreferrer"
+                    className="text-slate-400 hover:text-slate-700 dark:hover:text-white font-semibold text-lg transition-colors">
+                    {s.name}
+                  </a>
+                )
+              ))}
+            </div>
           </div>
           </ScrollReveal>
         </section>
