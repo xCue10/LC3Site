@@ -91,7 +91,11 @@ function MemberCard({ member, index }: { member: Member; index: number }) {
         </div>
         <div className="min-w-0">
           <h3 className="text-white font-semibold truncate">{member.name}</h3>
-          <p className="text-slate-500 text-sm truncate">{member.major}</p>
+          <div className="flex flex-wrap gap-1 mt-0.5">
+            {(member.majors ?? []).map((m) => (
+              <span key={m} className="text-xs bg-slate-700/40 text-slate-400 px-2 py-0.5 rounded-md">{m}</span>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -138,7 +142,13 @@ function AdvisorCard({ member, index }: { member: Member; index: number }) {
               {member.role}
             </span>
           )}
-          {member.major && <p className="text-slate-500 text-sm mt-1 truncate">{member.major}</p>}
+          {(member.majors ?? []).length > 0 && (
+            <div className="flex flex-wrap gap-1 mt-1">
+              {(member.majors ?? []).map((m) => (
+                <span key={m} className="text-xs bg-slate-700/40 text-slate-400 px-2 py-0.5 rounded-md">{m}</span>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
@@ -172,7 +182,13 @@ function OfficerCard({ member, index }: { member: Member; index: number }) {
               {member.role}
             </span>
           )}
-          {member.major && <p className="text-slate-500 text-sm mt-1 truncate">{member.major}</p>}
+          {(member.majors ?? []).length > 0 && (
+            <div className="flex flex-wrap gap-1 mt-1">
+              {(member.majors ?? []).map((m) => (
+                <span key={m} className="text-xs bg-slate-700/40 text-slate-400 px-2 py-0.5 rounded-md">{m}</span>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 

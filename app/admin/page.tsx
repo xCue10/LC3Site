@@ -21,7 +21,7 @@ interface Member {
   name: string;
   role: string;
   memberType: 'advisor' | 'officer' | 'member';
-  major: string;
+  majors: string[];
   focusArea: string;
   skills: string[];
   projects: string[];
@@ -89,7 +89,7 @@ const emptyProject: Omit<Project, 'id'> = {
 };
 
 const emptyMember: Omit<Member, 'id'> = {
-  name: '', role: '', memberType: 'member', major: '', focusArea: '', skills: [], projects: [], github: '', linkedin: '', twitter: '',
+  name: '', role: '', memberType: 'member', majors: [], focusArea: '', skills: [], projects: [], github: '', linkedin: '', twitter: '',
 };
 
 const emptyEvent: Omit<Event, 'id'> = {
@@ -164,6 +164,7 @@ function MemberModal({
   const [form, setForm] = useState<Omit<Member, 'id'>>(
     member ? { ...member } : { ...emptyMember }
   );
+  const [majorsStr, setMajorsStr] = useState((member?.majors ?? []).join(', '));
   const [skillsStr, setSkillsStr] = useState((member?.skills ?? []).join(', '));
   const [projectsStr, setProjectsStr] = useState((member?.projects ?? []).join(', '));
   const [saving, setSaving] = useState(false);
@@ -177,6 +178,7 @@ function MemberModal({
     setSaving(true);
     await onSave({
       ...form,
+      majors: majorsStr.split(',').map((s) => s.trim()).filter(Boolean),
       skills: skillsStr.split(',').map((s) => s.trim()).filter(Boolean),
       projects: projectsStr.split(',').map((s) => s.trim()).filter(Boolean),
     });
@@ -230,7 +232,6 @@ function MemberModal({
 
           {[
             { name: 'name', label: 'Full Name', placeholder: 'Alex Johnson' },
-            { name: 'major', label: 'Major', placeholder: 'Computer Science' },
             { name: 'focusArea', label: 'Focus Area', placeholder: 'Web Development' },
           ].map(({ name, label, placeholder }) => (
             <div key={name}>
@@ -246,6 +247,19 @@ function MemberModal({
               />
             </div>
           ))}
+
+          <div>
+            <label className="block text-sm font-medium text-slate-300 mb-1.5">
+              Majors <span className="text-slate-500 font-normal">(comma-separated)</span>
+            </label>
+            <input
+              type="text"
+              value={majorsStr}
+              onChange={(e) => setMajorsStr(e.target.value)}
+              placeholder="Cybersecurity Digital Forensics, Criminology"
+              className="w-full bg-[#111a2e] border border-[#1e2d45] text-white placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+            />
+          </div>
 
           <div>
             <label className="block text-sm font-medium text-slate-300 mb-1.5">
@@ -738,7 +752,7 @@ function Dashboard() {
                   {members.filter((m) => {
                     if (!membersSearch.trim()) return true;
                     const q = membersSearch.toLowerCase();
-                    return m.name.toLowerCase().includes(q) || m.major.toLowerCase().includes(q) || m.role.toLowerCase().includes(q) || m.focusArea.toLowerCase().includes(q);
+                    return m.name.toLowerCase().includes(q) || (m.majors ?? []).join(' ').toLowerCase().includes(q) || m.role.toLowerCase().includes(q) || m.focusArea.toLowerCase().includes(q);
                   }).map((m) => (
                     <div key={m.id} className="bg-[#0d1424] border border-[#1e2d45] rounded-xl p-4 flex items-center gap-4">
                       <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-violet-600 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
@@ -754,7 +768,7 @@ function Dashboard() {
                             <span className="text-xs bg-violet-500/10 border border-violet-500/20 text-violet-400 px-2 py-0.5 rounded-full flex-shrink-0">{m.role || 'Officer'}</span>
                           )}
                         </div>
-                        <div className="text-slate-500 text-sm truncate">{m.major}{m.focusArea ? ` · ${m.focusArea}` : ''}</div>
+                        <div className="text-slate-500 text-sm truncate">{(m.majors ?? []).join(', ')}{m.focusArea ? ` · ${m.focusArea}` : ''}</div>
                       </div>
                       <div className="hidden md:flex flex-wrap gap-1.5 max-w-xs">
                         {m.projects.map((p) => (

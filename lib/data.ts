@@ -37,7 +37,7 @@ export interface Member {
   name: string;
   role: string;
   memberType: 'advisor' | 'officer' | 'member';
-  major: string;
+  majors: string[];
   focusArea: string;
   skills: string[];
   projects: string[];
