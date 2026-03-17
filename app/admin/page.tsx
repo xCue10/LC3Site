@@ -50,13 +50,18 @@ interface Contact {
 
 interface PartnerInquiry {
   id: string;
+  inquiryType: 'project' | 'internship';
   companyName: string;
   contactName: string;
   email: string;
-  projectType: string;
   description: string;
-  timeline: string;
   submittedAt: string;
+  projectType?: string;
+  timeline?: string;
+  positionTitle?: string;
+  duration?: string;
+  compensation?: string;
+  requiredSkills?: string;
 }
 
 interface Project {
@@ -1022,10 +1027,25 @@ function Dashboard() {
                           </button>
                         </div>
                       </div>
-                      <div className="flex gap-2 mb-3">
-                        <span className="text-xs bg-blue-500/10 border border-blue-500/20 text-blue-400 px-2.5 py-1 rounded-full">{p.projectType}</span>
-                        <span className="text-xs bg-white/5 border border-white/10 text-slate-400 px-2.5 py-1 rounded-full">{p.timeline}</span>
+                      <div className="flex flex-wrap gap-2 mb-3">
+                        {p.inquiryType === 'internship' ? (
+                          <>
+                            <span className="text-xs bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 px-2.5 py-1 rounded-full">🎓 Internship</span>
+                            {p.positionTitle && <span className="text-xs bg-white/5 border border-white/10 text-slate-300 px-2.5 py-1 rounded-full">{p.positionTitle}</span>}
+                            {p.duration && <span className="text-xs bg-white/5 border border-white/10 text-slate-400 px-2.5 py-1 rounded-full">{p.duration}</span>}
+                            {p.compensation && <span className="text-xs bg-white/5 border border-white/10 text-slate-400 px-2.5 py-1 rounded-full">{p.compensation}</span>}
+                          </>
+                        ) : (
+                          <>
+                            <span className="text-xs bg-blue-500/10 border border-blue-500/20 text-blue-400 px-2.5 py-1 rounded-full">🤝 Project</span>
+                            {p.projectType && <span className="text-xs bg-white/5 border border-white/10 text-slate-400 px-2.5 py-1 rounded-full">{p.projectType}</span>}
+                            {p.timeline && <span className="text-xs bg-white/5 border border-white/10 text-slate-400 px-2.5 py-1 rounded-full">{p.timeline}</span>}
+                          </>
+                        )}
                       </div>
+                      {p.inquiryType === 'internship' && p.requiredSkills && (
+                        <p className="text-slate-500 text-xs mb-2">Skills: {p.requiredSkills}</p>
+                      )}
                       <p className="text-slate-400 text-sm leading-relaxed bg-[#111a2e] rounded-lg p-3">{p.description}</p>
                     </div>
                   ))}

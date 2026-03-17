@@ -89,11 +89,18 @@ export interface Project {
 
 export interface PartnerInquiry {
   id: string;
+  inquiryType: 'project' | 'internship';
   companyName: string;
   contactName: string;
   email: string;
-  projectType: string;
   description: string;
-  timeline: string;
   submittedAt: string;
+  // Project fields
+  projectType?: string;
+  timeline?: string;
+  // Internship fields
+  positionTitle?: string;
+  duration?: string;
+  compensation?: string;
+  requiredSkills?: string;
 }
