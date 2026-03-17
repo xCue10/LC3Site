@@ -46,3 +46,11 @@ export interface Contact {
   reason: string;
   submittedAt: string;
 }
+
+export interface Project {
+  id: string;
+  name: string;
+  description: string;
+  tags: string[];
+  gradient: string;
+}

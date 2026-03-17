@@ -1,30 +1,10 @@
 import Link from 'next/link';
-import { readJSON, Member, Event } from '@/lib/data';
-
-const featuredProjects = [
-  {
-    name: 'AI Study Bot',
-    description: 'A GPT-powered study assistant that helps students prep for exams through flashcards and Q&A.',
-    tags: ['Python', 'OpenAI', 'FastAPI'],
-    gradient: 'from-blue-500 to-cyan-500',
-  },
-  {
-    name: 'Campus Event Tracker',
-    description: 'Real-time dashboard aggregating campus events and club activities in one convenient place.',
-    tags: ['Next.js', 'PostgreSQL', 'Tailwind'],
-    gradient: 'from-violet-500 to-purple-600',
-  },
-  {
-    name: 'CTF Toolkit',
-    description: 'A collection of open-source scripts and tools used by our cybersecurity team in competitions.',
-    tags: ['Python', 'Bash', 'Cryptography'],
-    gradient: 'from-pink-500 to-rose-500',
-  },
-];
+import { readJSON, Member, Event, Project } from '@/lib/data';
 
 export default function HomePage() {
   const members = readJSON<Member[]>('members.json');
   const events = readJSON<Event[]>('events.json');
+  const featuredProjects = readJSON<Project[]>('projects.json');
   const upcomingEvents = events.filter((e) => e.type === 'upcoming').slice(0, 2);
 
   return (
