@@ -31,7 +31,29 @@ interface Contact {
   submittedAt: string;
 }
 
+interface Project {
+  id: string;
+  name: string;
+  description: string;
+  tags: string[];
+  gradient: string;
+  github: string;
+}
+
 const ADMIN_PASSWORD = 'admin123';
+
+const GRADIENTS = [
+  { label: 'Blue → Cyan', value: 'from-blue-500 to-cyan-500' },
+  { label: 'Violet → Purple', value: 'from-violet-500 to-purple-600' },
+  { label: 'Pink → Rose', value: 'from-pink-500 to-rose-500' },
+  { label: 'Green → Emerald', value: 'from-green-500 to-emerald-500' },
+  { label: 'Orange → Amber', value: 'from-orange-500 to-amber-500' },
+  { label: 'Sky → Indigo', value: 'from-sky-500 to-indigo-500' },
+];
+
+const emptyProject: Omit<Project, 'id'> = {
+  name: '', description: '', tags: [], gradient: GRADIENTS[0].value, github: '',
+};
 
 const emptyMember: Omit<Member, 'id'> = {
   name: '', major: '', focusArea: '', projects: [], github: '', linkedin: '', twitter: '',
@@ -278,28 +300,150 @@ function EventModal({
   );
 }
 
+// ─── Project Form Modal ──────────────────────────────────────────────────────
+function ProjectModal({
+  project,
+  onSave,
+  onClose,
+}: {
+  project: Project | null;
+  onSave: (data: Omit<Project, 'id'>) => Promise<void>;
+  onClose: () => void;
+}) {
+  const [form, setForm] = useState<Omit<Project, 'id'>>(
+    project ? { ...project } : { ...emptyProject }
+  );
+  const [tagsStr, setTagsStr] = useState((project?.tags ?? []).join(', '));
+  const [saving, setSaving] = useState(false);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    setForm((p) => ({ ...p, [e.target.name]: e.target.value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSaving(true);
+    await onSave({ ...form, tags: tagsStr.split(',').map((t) => t.trim()).filter(Boolean) });
+    setSaving(false);
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={onClose}>
+      <div className="bg-[#0f0f1a] border border-[#1e1e2e] rounded-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+        <div className="flex items-center justify-between p-6 border-b border-[#1e1e2e]">
+          <h2 className="text-white font-semibold text-lg">{project ? 'Edit Project' : 'Add Project'}</h2>
+          <button onClick={onClose} className="text-slate-500 hover:text-white transition-colors">
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        <form onSubmit={handleSubmit} className="p-6 space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-slate-300 mb-1.5">Project Name</label>
+            <input
+              name="name"
+              type="text"
+              required
+              value={form.name}
+              onChange={handleChange}
+              placeholder="My Awesome Project"
+              className="w-full bg-[#13131f] border border-[#1e1e2e] text-white placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-slate-300 mb-1.5">Description</label>
+            <textarea
+              name="description"
+              required
+              rows={3}
+              value={form.description}
+              onChange={handleChange}
+              placeholder="What does this project do?"
+              className="w-full bg-[#13131f] border border-[#1e1e2e] text-white placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all resize-none"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-slate-300 mb-1.5">Tags <span className="text-slate-500 font-normal">(comma-separated)</span></label>
+            <input
+              type="text"
+              value={tagsStr}
+              onChange={(e) => setTagsStr(e.target.value)}
+              placeholder="Python, React, FastAPI"
+              className="w-full bg-[#13131f] border border-[#1e1e2e] text-white placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-slate-300 mb-1.5">Color</label>
+            <select
+              name="gradient"
+              value={form.gradient}
+              onChange={handleChange}
+              className="w-full bg-[#13131f] border border-[#1e1e2e] text-white rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+            >
+              {GRADIENTS.map((g) => (
+                <option key={g.value} value={g.value}>{g.label}</option>
+              ))}
+            </select>
+            <div className={`mt-2 h-1.5 rounded-full bg-gradient-to-r ${form.gradient}`} />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-slate-300 mb-1.5">GitHub URL <span className="text-slate-500 font-normal">(optional)</span></label>
+            <input
+              name="github"
+              type="url"
+              value={form.github}
+              onChange={handleChange}
+              placeholder="https://github.com/org/repo"
+              className="w-full bg-[#13131f] border border-[#1e1e2e] text-white placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+            />
+          </div>
+
+          <div className="flex gap-3 pt-2">
+            <button type="button" onClick={onClose} className="flex-1 py-2.5 border border-[#1e1e2e] text-slate-400 rounded-xl hover:bg-white/5 transition-colors text-sm font-medium">
+              Cancel
+            </button>
+            <button type="submit" disabled={saving} className="flex-1 py-2.5 bg-gradient-to-r from-blue-600 to-violet-600 text-white rounded-xl hover:opacity-90 transition-opacity text-sm font-semibold disabled:opacity-50">
+              {saving ? 'Saving...' : project ? 'Save Changes' : 'Add Project'}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
+
 // ─── Dashboard ───────────────────────────────────────────────────────────────
 function Dashboard() {
-  const [tab, setTab] = useState<'members' | 'events' | 'contacts'>('members');
+  const [tab, setTab] = useState<'members' | 'events' | 'contacts' | 'projects'>('members');
   const [members, setMembers] = useState<Member[]>([]);
   const [events, setEvents] = useState<Event[]>([]);
   const [contacts, setContacts] = useState<Contact[]>([]);
+  const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
 
   const [memberModal, setMemberModal] = useState<{ open: boolean; member: Member | null }>({ open: false, member: null });
   const [eventModal, setEventModal] = useState(false);
-  const [deleteConfirm, setDeleteConfirm] = useState<{ type: 'member' | 'event'; id: string } | null>(null);
+  const [projectModal, setProjectModal] = useState<{ open: boolean; project: Project | null }>({ open: false, project: null });
+  const [deleteConfirm, setDeleteConfirm] = useState<{ type: 'member' | 'event' | 'project'; id: string } | null>(null);
 
   const fetchData = useCallback(async () => {
     setLoading(true);
-    const [m, e, c] = await Promise.all([
+    const [m, e, c, p] = await Promise.all([
       fetch('/api/members').then((r) => r.json()),
       fetch('/api/events').then((r) => r.json()),
       fetch('/api/contact').then((r) => r.json()),
+      fetch('/api/projects').then((r) => r.json()),
     ]);
     setMembers(m);
     setEvents(e);
     setContacts(c);
+    setProjects(p);
     setLoading(false);
   }, []);
 
@@ -335,9 +479,27 @@ function Dashboard() {
     fetchData();
   };
 
+  // Project CRUD
+  const saveProject = async (data: Omit<Project, 'id'>) => {
+    if (projectModal.project) {
+      await fetch(`/api/projects/${projectModal.project.id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+    } else {
+      await fetch('/api/projects', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+    }
+    setProjectModal({ open: false, project: null });
+    fetchData();
+  };
+
+  const deleteProject = async (id: string) => {
+    await fetch(`/api/projects/${id}`, { method: 'DELETE' });
+    setDeleteConfirm(null);
+    fetchData();
+  };
+
   const tabs = [
     { id: 'members' as const, label: 'Members', count: members.length },
     { id: 'events' as const, label: 'Events', count: events.length },
+    { id: 'projects' as const, label: 'Projects', count: projects.length },
     { id: 'contacts' as const, label: 'Contacts', count: contacts.length },
   ];
 
@@ -356,7 +518,7 @@ function Dashboard() {
       </div>
 
       {/* Stats Row */}
-      <div className="grid grid-cols-3 gap-4 mb-8">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
         {tabs.map(({ id, label, count }) => (
           <div key={id} className="bg-[#0f0f1a] border border-[#1e1e2e] rounded-xl p-4 text-center">
             <div className="text-2xl font-bold text-white">{count}</div>
@@ -504,6 +666,69 @@ function Dashboard() {
             </div>
           )}
 
+          {/* Projects Tab */}
+          {tab === 'projects' && (
+            <div>
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-lg font-semibold text-white">Featured Projects</h2>
+                <button
+                  onClick={() => setProjectModal({ open: true, project: null })}
+                  className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-violet-600 text-white text-sm font-medium rounded-xl hover:opacity-90 transition-opacity"
+                >
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                  </svg>
+                  Add Project
+                </button>
+              </div>
+
+              {projects.length === 0 ? (
+                <div className="text-center py-16 text-slate-500 border border-[#1e1e2e] rounded-2xl">No projects yet. Add one to feature it on the home page.</div>
+              ) : (
+                <div className="space-y-3">
+                  {projects.map((proj) => (
+                    <div key={proj.id} className="bg-[#0f0f1a] border border-[#1e1e2e] rounded-xl overflow-hidden">
+                      <div className={`h-1 bg-gradient-to-r ${proj.gradient}`} />
+                      <div className="p-4 flex items-center gap-4">
+                        <div className="flex-1 min-w-0">
+                          <div className="text-white font-medium">{proj.name}</div>
+                          <div className="text-slate-500 text-sm truncate mt-0.5">{proj.description}</div>
+                          <div className="flex flex-wrap gap-1.5 mt-2">
+                            {proj.tags.map((t) => (
+                              <span key={t} className="text-xs bg-white/5 border border-white/10 text-slate-400 px-2 py-0.5 rounded">
+                                {t}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2 flex-shrink-0">
+                          <button
+                            onClick={() => setProjectModal({ open: true, project: proj })}
+                            className="p-2 text-slate-400 hover:text-blue-400 hover:bg-blue-500/10 rounded-lg transition-all"
+                            title="Edit"
+                          >
+                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                            </svg>
+                          </button>
+                          <button
+                            onClick={() => setDeleteConfirm({ type: 'project', id: proj.id })}
+                            className="p-2 text-slate-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-all"
+                            title="Delete"
+                          >
+                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
           {/* Contacts Tab */}
           {tab === 'contacts' && (
             <div>
@@ -547,6 +772,15 @@ function Dashboard() {
         <EventModal onSave={saveEvent} onClose={() => setEventModal(false)} />
       )}
 
+      {/* Project Modal */}
+      {projectModal.open && (
+        <ProjectModal
+          project={projectModal.project}
+          onSave={saveProject}
+          onClose={() => setProjectModal({ open: false, project: null })}
+        />
+      )}
+
       {/* Delete Confirm Modal */}
       {deleteConfirm && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
@@ -568,7 +802,11 @@ function Dashboard() {
                 Cancel
               </button>
               <button
-                onClick={() => deleteConfirm.type === 'member' ? deleteMember(deleteConfirm.id) : deleteEvent(deleteConfirm.id)}
+                onClick={() => {
+                  if (deleteConfirm.type === 'member') deleteMember(deleteConfirm.id);
+                  else if (deleteConfirm.type === 'event') deleteEvent(deleteConfirm.id);
+                  else deleteProject(deleteConfirm.id);
+                }}
                 className="flex-1 py-2.5 bg-red-600 text-white rounded-xl hover:bg-red-700 transition-colors text-sm font-semibold"
               >
                 Delete
