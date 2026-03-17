@@ -155,6 +155,14 @@ export interface AboutContent {
   ctaDescription: string;
 }
 
+export interface Resource {
+  id: string;
+  title: string;
+  description: string;
+  url: string;
+  category: string;
+}
+
 export interface PartnerInquiry {
   id: string;
   inquiryType: 'project' | 'internship';

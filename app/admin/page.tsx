@@ -648,7 +648,68 @@ function SponsorModal({ sponsor, onSave, onClose }: { sponsor: Sponsor | null; o
   );
 }
 
-type TabId = 'members' | 'events' | 'contacts' | 'partners' | 'projects' | 'stats' | 'settings' | 'about' | 'posts' | 'sponsors';
+// ─── Resource Form Modal ─────────────────────────────────────────────────────
+function ResourceModal({
+  resource,
+  onSave,
+  onClose,
+}: {
+  resource: { id: string; title: string; description: string; url: string; category: string } | null;
+  onSave: (data: { title: string; description: string; url: string; category: string }) => Promise<void>;
+  onClose: () => void;
+}) {
+  const [form, setForm] = useState({ title: resource?.title ?? '', description: resource?.description ?? '', url: resource?.url ?? '', category: resource?.category ?? '' });
+  const [saving, setSaving] = useState(false);
+  const inputCls = 'w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all';
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSaving(true);
+    await onSave(form);
+    setSaving(false);
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={onClose}>
+      <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl w-full max-w-md" onClick={(e) => e.stopPropagation()}>
+        <div className="flex items-center justify-between p-6 border-b border-slate-200 dark:border-[#1e2d45]">
+          <h2 className="text-slate-900 dark:text-white font-semibold text-lg">{resource ? 'Edit Resource' : 'Add Resource'}</h2>
+          <button onClick={onClose} className="text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors">
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+        <form onSubmit={handleSubmit} className="p-6 space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Title</label>
+            <input type="text" required value={form.title} onChange={(e) => setForm((f) => ({ ...f, title: e.target.value }))} placeholder="React Documentation" className={inputCls} />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">URL</label>
+            <input type="url" required value={form.url} onChange={(e) => setForm((f) => ({ ...f, url: e.target.value }))} placeholder="https://react.dev" className={inputCls} />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Category</label>
+            <input type="text" required value={form.category} onChange={(e) => setForm((f) => ({ ...f, category: e.target.value }))} placeholder="Frontend / Backend / Tools / General" className={inputCls} />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Description <span className="text-slate-400 font-normal">(optional)</span></label>
+            <textarea value={form.description} onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))} placeholder="Short description of this resource" rows={2} className={inputCls} />
+          </div>
+          <div className="flex gap-3 pt-2">
+            <button type="button" onClick={onClose} className="flex-1 py-2.5 border border-slate-200 dark:border-[#1e2d45] text-slate-500 dark:text-slate-400 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 transition-colors text-sm font-medium">Cancel</button>
+            <button type="submit" disabled={saving} className="flex-1 py-2.5 bg-gradient-to-r from-blue-600 to-violet-600 text-white rounded-xl hover:opacity-90 transition-opacity text-sm font-semibold disabled:opacity-60">
+              {saving ? 'Saving…' : resource ? 'Save Changes' : 'Add Resource'}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
+
+type TabId = 'members' | 'events' | 'contacts' | 'partners' | 'projects' | 'stats' | 'settings' | 'about' | 'posts' | 'sponsors' | 'resources';
 
 // ─── Dashboard ───────────────────────────────────────────────────────────────
 function Dashboard() {
@@ -662,6 +723,8 @@ function Dashboard() {
   const [siteSettings, setSiteSettings] = useState<SiteSettings>({ recruitingBanner: '', meetingDay: '', meetingTime: '', meetingLocation: '' });
   const [posts, setPosts] = useState<Post[]>([]);
   const [sponsorsConfig, setSponsorsConfig] = useState<SponsorsConfig>({ live: false, sectionTitle: 'Supported By', sponsors: [] });
+  const [resources, setResources] = useState<Array<{ id: string; title: string; description: string; url: string; category: string }>>([]);
+  const [resourceModal, setResourceModal] = useState<{ open: boolean; resource: { id: string; title: string; description: string; url: string; category: string } | null }>({ open: false, resource: null });
   const [rsvps, setRsvps] = useState<Array<{ id: string; eventId: string; name: string; email: string; submittedAt: string }>>([]);
   const [expandedRsvpEvent, setExpandedRsvpEvent] = useState<string | null>(null);
   const [postModal, setPostModal] = useState<{ open: boolean; post: Post | null }>({ open: false, post: null });
@@ -720,7 +783,7 @@ function Dashboard() {
     const safe = <T,>(url: string, fallback: T) =>
       fetch(url).then((r) => r.ok ? r.json() as Promise<T> : fallback).catch(() => fallback);
 
-    const [m, e, c, pt, p, s, st, ab, po, sp, rv] = await Promise.all([
+    const [m, e, c, pt, p, s, st, ab, po, sp, rv, rs] = await Promise.all([
       safe('/api/members', []),
       safe('/api/events', []),
       safe('/api/contact', []),
@@ -732,6 +795,7 @@ function Dashboard() {
       safe('/api/posts', []),
       safe('/api/sponsors', { live: false, sectionTitle: 'Supported By', sponsors: [] }),
       safe('/api/rsvps', []),
+      safe('/api/resources', []),
     ]);
     setMembers(m as Member[]);
     setEvents(e as Event[]);
@@ -744,6 +808,7 @@ function Dashboard() {
     setPosts(Array.isArray(po) ? po as Post[] : []);
     setSponsorsConfig(sp as SponsorsConfig);
     setRsvps(Array.isArray(rv) ? rv as Array<{ id: string; eventId: string; name: string; email: string; submittedAt: string }> : []);
+    setResources(Array.isArray(rs) ? rs as Array<{ id: string; title: string; description: string; url: string; category: string }> : []);
     setLoading(false);
   }, []);
 
@@ -852,6 +917,23 @@ function Dashboard() {
     await persistSponsors(next);
   };
 
+  // Resource CRUD
+  const saveResource = async (data: { title: string; description: string; url: string; category: string }) => {
+    if (resourceModal.resource) {
+      await fetch(`/api/resources/${resourceModal.resource.id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+    } else {
+      await fetch('/api/resources', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+    }
+    setResourceModal({ open: false, resource: null });
+    fetchData();
+  };
+
+  const deleteResource = async (id: string) => {
+    if (!confirm('Delete this resource?')) return;
+    await fetch(`/api/resources/${id}`, { method: 'DELETE' });
+    fetchData();
+  };
+
   const tabs = [
     { id: 'members' as const, label: 'Members', count: members.length, unread: 0 },
     { id: 'events' as const, label: 'Events', count: events.length, unread: 0 },
@@ -860,6 +942,7 @@ function Dashboard() {
     { id: 'partners' as const, label: 'Partners', count: partners.length, unread: unreadPartners },
     { id: 'posts' as const, label: 'Blog', count: posts.length, unread: 0 },
     { id: 'sponsors' as const, label: 'Sponsors', count: sponsorsConfig.sponsors.length, unread: 0 },
+    { id: 'resources' as const, label: 'Resources', count: resources.length, unread: 0 },
     { id: 'stats' as const, label: 'Stats', count: null, unread: 0 },
     { id: 'about' as const, label: 'About Page', count: null, unread: 0 },
     { id: 'settings' as const, label: 'Settings', count: null, unread: 0 },
@@ -2017,7 +2100,72 @@ function Dashboard() {
               )}
             </div>
           )}
+
+          {/* Resources Tab */}
+          {tab === 'resources' && (
+            <div>
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Resources</h2>
+                <button
+                  onClick={() => setResourceModal({ open: true, resource: null })}
+                  className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-violet-600 text-white text-sm font-semibold rounded-xl hover:opacity-90 transition-opacity"
+                >
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                  </svg>
+                  Add Resource
+                </button>
+              </div>
+              {resources.length === 0 ? (
+                <div className="text-center py-16 text-slate-500 border border-slate-200 dark:border-[#1e2d45] rounded-2xl">No resources yet.</div>
+              ) : (
+                <div className="space-y-2">
+                  {resources.map((r) => (
+                    <div key={r.id} className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-xl p-4 flex items-start justify-between gap-4">
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-0.5">
+                          <span className="text-slate-900 dark:text-white font-medium text-sm">{r.title}</span>
+                          <span className="text-xs bg-violet-500/10 text-violet-400 border border-violet-500/20 px-2 py-0.5 rounded-full">{r.category}</span>
+                        </div>
+                        {r.description && <p className="text-slate-500 text-sm truncate">{r.description}</p>}
+                        <a href={r.url} target="_blank" rel="noopener noreferrer" className="text-blue-400 text-xs hover:underline truncate block">{r.url}</a>
+                      </div>
+                      <div className="flex items-center gap-2 flex-shrink-0">
+                        <button
+                          onClick={() => setResourceModal({ open: true, resource: r })}
+                          className="flex items-center justify-center w-8 h-8 rounded-lg text-slate-500 hover:text-violet-400 hover:bg-violet-500/10 transition-all"
+                          title="Edit"
+                        >
+                          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                          </svg>
+                        </button>
+                        <button
+                          onClick={() => deleteResource(r.id)}
+                          className="flex items-center justify-center w-8 h-8 rounded-lg text-slate-500 hover:text-red-400 hover:bg-red-500/10 transition-all"
+                          title="Delete"
+                        >
+                          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
         </>
+      )}
+
+      {/* Resource Modal */}
+      {resourceModal.open && (
+        <ResourceModal
+          resource={resourceModal.resource}
+          onSave={saveResource}
+          onClose={() => setResourceModal({ open: false, resource: null })}
+        />
       )}
 
       {/* Member Modal */}

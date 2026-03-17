@@ -108,7 +108,17 @@ export default function EventsPage() {
                         {event.location}
                       </span>
                     </div>
-                    <EventRSVPForm eventId={event.id} initialCount={rsvpCounts[event.id] ?? 0} />
+                    <div className="flex flex-wrap items-center gap-3">
+                      <EventRSVPForm eventId={event.id} initialCount={rsvpCounts[event.id] ?? 0} />
+                      <a
+                        href={`/api/events/${event.id}/ics`}
+                        download
+                        className="flex items-center gap-1.5 text-xs text-slate-400 hover:text-violet-600 dark:hover:text-violet-400 transition-colors"
+                      >
+                        <CalendarIcon />
+                        Add to Calendar
+                      </a>
+                    </div>
                   </div>
                 </div>
               </div>
