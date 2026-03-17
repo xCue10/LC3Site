@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import { readJSON, Member, Event, Project } from '@/lib/data';
 
+export const dynamic = 'force-dynamic';
+
 export default function HomePage() {
   const members = readJSON<Member[]>('members.json');
   const events = readJSON<Event[]>('events.json');
