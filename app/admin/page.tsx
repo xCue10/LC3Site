@@ -124,20 +124,20 @@ function AuthGate({ onAuth }: { onAuth: () => void }) {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
             </svg>
           </div>
-          <h1 className="text-2xl font-bold text-white">Admin Dashboard</h1>
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-white">Admin Dashboard</h1>
           <p className="text-slate-500 text-sm mt-1">Enter the admin password to continue</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="bg-[#0d1424] border border-[#1e2d45] rounded-2xl p-6 space-y-4">
+        <form onSubmit={handleSubmit} className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl p-6 space-y-4">
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">Password</label>
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Password</label>
             <input
               type="password"
               value={pw}
               onChange={(e) => { setPw(e.target.value); setError(false); }}
               placeholder="Enter password"
               autoFocus
-              className="w-full bg-[#111a2e] border border-[#1e2d45] text-white placeholder:text-slate-600 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-violet-500/50 focus:ring-1 focus:ring-violet-500/30 transition-all"
+              className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-violet-500/50 focus:ring-1 focus:ring-violet-500/30 transition-all"
             />
             {error && (
               <p className="text-red-400 text-xs mt-2">Incorrect password. Try again.</p>
@@ -191,10 +191,10 @@ function MemberModal({
 
   return (
     <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={onClose}>
-      <div className="bg-[#0d1424] border border-[#1e2d45] rounded-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
-        <div className="flex items-center justify-between p-6 border-b border-[#1e2d45]">
-          <h2 className="text-white font-semibold text-lg">{member ? 'Edit Member' : 'Add Member'}</h2>
-          <button onClick={onClose} className="text-slate-500 hover:text-white transition-colors">
+      <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+        <div className="flex items-center justify-between p-6 border-b border-slate-200 dark:border-[#1e2d45]">
+          <h2 className="text-slate-900 dark:text-white font-semibold text-lg">{member ? 'Edit Member' : 'Add Member'}</h2>
+          <button onClick={onClose} className="text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors">
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
@@ -204,12 +204,12 @@ function MemberModal({
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           {/* Member Type */}
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1.5">Member Type</label>
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Member Type</label>
             <select
               name="memberType"
               value={form.memberType}
               onChange={handleChange}
-              className="w-full bg-[#111a2e] border border-[#1e2d45] text-white rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+              className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 dark:text-white rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
             >
               <option value="member">Member</option>
               <option value="officer">Club Officer</option>
@@ -220,7 +220,7 @@ function MemberModal({
           {/* Role (shown for officers and advisors) */}
           {(form.memberType === 'officer' || form.memberType === 'advisor') && (
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-1.5">
+              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
                 Role <span className="text-slate-500 font-normal">(e.g. President, Faculty Advisor)</span>
               </label>
               <input
@@ -229,7 +229,7 @@ function MemberModal({
                 value={form.role}
                 onChange={handleChange}
                 placeholder={form.memberType === 'advisor' ? 'Faculty Advisor' : 'President'}
-                className="w-full bg-[#111a2e] border border-[#1e2d45] text-white placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
               />
             </div>
           )}
@@ -241,7 +241,7 @@ function MemberModal({
             { name: 'avatarUrl', label: 'Photo URL', placeholder: 'https://example.com/photo.jpg (optional)' },
           ].map(({ name, label, placeholder }) => (
             <div key={name}>
-              <label className="block text-sm font-medium text-slate-300 mb-1.5">{label}</label>
+              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">{label}</label>
               <input
                 name={name}
                 type="text"
@@ -249,13 +249,13 @@ function MemberModal({
                 value={(form as Record<string, string | string[]>)[name] as string}
                 onChange={handleChange}
                 placeholder={placeholder}
-                className="w-full bg-[#111a2e] border border-[#1e2d45] text-white placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
               />
             </div>
           ))}
 
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1.5">
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
               Majors <span className="text-slate-500 font-normal">(comma-separated)</span>
             </label>
             <input
@@ -263,12 +263,12 @@ function MemberModal({
               value={majorsStr}
               onChange={(e) => setMajorsStr(e.target.value)}
               placeholder="Cybersecurity Digital Forensics, Criminology"
-              className="w-full bg-[#111a2e] border border-[#1e2d45] text-white placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+              className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1.5">
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
               Skills <span className="text-slate-500 font-normal">(comma-separated)</span>
             </label>
             <input
@@ -276,18 +276,18 @@ function MemberModal({
               value={skillsStr}
               onChange={(e) => setSkillsStr(e.target.value)}
               placeholder="Canvas Apps, Power Automate, React, Python"
-              className="w-full bg-[#111a2e] border border-[#1e2d45] text-white placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+              className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1.5">Projects <span className="text-slate-500 font-normal">(comma-separated)</span></label>
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Projects <span className="text-slate-500 font-normal">(comma-separated)</span></label>
             <input
               type="text"
               value={projectsStr}
               onChange={(e) => setProjectsStr(e.target.value)}
               placeholder="Project A, Project B"
-              className="w-full bg-[#111a2e] border border-[#1e2d45] text-white placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+              className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
             />
           </div>
 
@@ -306,14 +306,14 @@ function MemberModal({
                   value={(form as Record<string, string | string[]>)[name] as string}
                   onChange={handleChange}
                   placeholder={placeholder}
-                  className="w-full bg-[#111a2e] border border-[#1e2d45] text-white placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                  className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
                 />
               </div>
             ))}
           </div>
 
           <div className="flex gap-3 pt-2">
-            <button type="button" onClick={onClose} className="flex-1 py-2.5 border border-[#1e2d45] text-slate-400 rounded-xl hover:bg-white/5 transition-colors text-sm font-medium">
+            <button type="button" onClick={onClose} className="flex-1 py-2.5 border border-slate-200 dark:border-[#1e2d45] text-slate-500 dark:text-slate-400 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 transition-colors text-sm font-medium">
               Cancel
             </button>
             <button type="submit" disabled={saving} className="flex-1 py-2.5 bg-gradient-to-r from-blue-600 to-violet-600 text-white rounded-xl hover:opacity-90 transition-opacity text-sm font-semibold disabled:opacity-50">
@@ -354,10 +354,10 @@ function EventModal({
 
   return (
     <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={onClose}>
-      <div className="bg-[#0d1424] border border-[#1e2d45] rounded-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
-        <div className="flex items-center justify-between p-6 border-b border-[#1e2d45]">
-          <h2 className="text-white font-semibold text-lg">{event ? 'Edit Event' : 'Add Event'}</h2>
-          <button onClick={onClose} className="text-slate-500 hover:text-white transition-colors">
+      <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+        <div className="flex items-center justify-between p-6 border-b border-slate-200 dark:border-[#1e2d45]">
+          <h2 className="text-slate-900 dark:text-white font-semibold text-lg">{event ? 'Edit Event' : 'Add Event'}</h2>
+          <button onClick={onClose} className="text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors">
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
@@ -366,42 +366,42 @@ function EventModal({
 
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1.5">Event Title</label>
-            <input name="title" type="text" required value={form.title} onChange={handleChange} placeholder="Spring Hackathon 2026" className="w-full bg-[#111a2e] border border-[#1e2d45] text-white placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all" />
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Event Title</label>
+            <input name="title" type="text" required value={form.title} onChange={handleChange} placeholder="Spring Hackathon 2026" className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all" />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1.5">Date</label>
-            <input name="date" type="date" required value={form.date} onChange={handleChange} className="w-full bg-[#111a2e] border border-[#1e2d45] text-white rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all [color-scheme:dark]" />
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Date</label>
+            <input name="date" type="date" required value={form.date} onChange={handleChange} className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 dark:text-white rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all [color-scheme:dark]" />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1.5">Location</label>
-            <input name="location" type="text" required value={form.location} onChange={handleChange} placeholder="Engineering Building, Room 101" className="w-full bg-[#111a2e] border border-[#1e2d45] text-white placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all" />
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Location</label>
+            <input name="location" type="text" required value={form.location} onChange={handleChange} placeholder="Engineering Building, Room 101" className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all" />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1.5">Type</label>
-            <select name="type" value={form.type} onChange={handleChange} className="w-full bg-[#111a2e] border border-[#1e2d45] text-white rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all">
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Type</label>
+            <select name="type" value={form.type} onChange={handleChange} className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 dark:text-white rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all">
               <option value="upcoming">Upcoming</option>
               <option value="past">Past</option>
             </select>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1.5">Description</label>
-            <textarea name="description" required rows={4} value={form.description} onChange={handleChange} placeholder="Describe the event..." className="w-full bg-[#111a2e] border border-[#1e2d45] text-white placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all resize-none" />
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Description</label>
+            <textarea name="description" required rows={4} value={form.description} onChange={handleChange} placeholder="Describe the event..." className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all resize-none" />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1.5">
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
               RSVP Link <span className="text-slate-500 font-normal">(optional — Google Form, etc.)</span>
             </label>
-            <input name="rsvpUrl" type="url" value={form.rsvpUrl ?? ''} onChange={handleChange} placeholder="https://forms.google.com/..." className="w-full bg-[#111a2e] border border-[#1e2d45] text-white placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all" />
+            <input name="rsvpUrl" type="url" value={form.rsvpUrl ?? ''} onChange={handleChange} placeholder="https://forms.google.com/..." className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all" />
           </div>
 
           <div className="flex gap-3 pt-2">
-            <button type="button" onClick={onClose} className="flex-1 py-2.5 border border-[#1e2d45] text-slate-400 rounded-xl hover:bg-white/5 transition-colors text-sm font-medium">
+            <button type="button" onClick={onClose} className="flex-1 py-2.5 border border-slate-200 dark:border-[#1e2d45] text-slate-500 dark:text-slate-400 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 transition-colors text-sm font-medium">
               Cancel
             </button>
             <button type="submit" disabled={saving} className="flex-1 py-2.5 bg-gradient-to-r from-blue-600 to-violet-600 text-white rounded-xl hover:opacity-90 transition-opacity text-sm font-semibold disabled:opacity-50">
@@ -443,10 +443,10 @@ function ProjectModal({
 
   return (
     <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={onClose}>
-      <div className="bg-[#0d1424] border border-[#1e2d45] rounded-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
-        <div className="flex items-center justify-between p-6 border-b border-[#1e2d45]">
-          <h2 className="text-white font-semibold text-lg">{project ? 'Edit Project' : 'Add Project'}</h2>
-          <button onClick={onClose} className="text-slate-500 hover:text-white transition-colors">
+      <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+        <div className="flex items-center justify-between p-6 border-b border-slate-200 dark:border-[#1e2d45]">
+          <h2 className="text-slate-900 dark:text-white font-semibold text-lg">{project ? 'Edit Project' : 'Add Project'}</h2>
+          <button onClick={onClose} className="text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors">
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
@@ -455,7 +455,7 @@ function ProjectModal({
 
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1.5">Project Name</label>
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Project Name</label>
             <input
               name="name"
               type="text"
@@ -463,12 +463,12 @@ function ProjectModal({
               value={form.name}
               onChange={handleChange}
               placeholder="My Awesome Project"
-              className="w-full bg-[#111a2e] border border-[#1e2d45] text-white placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+              className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1.5">Description</label>
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Description</label>
             <textarea
               name="description"
               required
@@ -476,28 +476,28 @@ function ProjectModal({
               value={form.description}
               onChange={handleChange}
               placeholder="What does this project do?"
-              className="w-full bg-[#111a2e] border border-[#1e2d45] text-white placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all resize-none"
+              className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all resize-none"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1.5">Tags <span className="text-slate-500 font-normal">(comma-separated)</span></label>
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Tags <span className="text-slate-500 font-normal">(comma-separated)</span></label>
             <input
               type="text"
               value={tagsStr}
               onChange={(e) => setTagsStr(e.target.value)}
               placeholder="Python, React, FastAPI"
-              className="w-full bg-[#111a2e] border border-[#1e2d45] text-white placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+              className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1.5">Color</label>
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Color</label>
             <select
               name="gradient"
               value={form.gradient}
               onChange={handleChange}
-              className="w-full bg-[#111a2e] border border-[#1e2d45] text-white rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+              className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 dark:text-white rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
             >
               {GRADIENTS.map((g) => (
                 <option key={g.value} value={g.value}>{g.label}</option>
@@ -507,19 +507,19 @@ function ProjectModal({
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1.5">GitHub URL <span className="text-slate-500 font-normal">(optional)</span></label>
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">GitHub URL <span className="text-slate-500 font-normal">(optional)</span></label>
             <input
               name="github"
               type="url"
               value={form.github}
               onChange={handleChange}
               placeholder="https://github.com/org/repo"
-              className="w-full bg-[#111a2e] border border-[#1e2d45] text-white placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+              className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
             />
           </div>
 
           <div className="flex gap-3 pt-2">
-            <button type="button" onClick={onClose} className="flex-1 py-2.5 border border-[#1e2d45] text-slate-400 rounded-xl hover:bg-white/5 transition-colors text-sm font-medium">
+            <button type="button" onClick={onClose} className="flex-1 py-2.5 border border-slate-200 dark:border-[#1e2d45] text-slate-500 dark:text-slate-400 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 transition-colors text-sm font-medium">
               Cancel
             </button>
             <button type="submit" disabled={saving} className="flex-1 py-2.5 bg-gradient-to-r from-blue-600 to-violet-600 text-white rounded-xl hover:opacity-90 transition-opacity text-sm font-semibold disabled:opacity-50">
@@ -675,10 +675,10 @@ function Dashboard() {
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-white">Admin Dashboard</h1>
+          <h1 className="text-3xl font-bold text-slate-900 dark:text-white">Admin Dashboard</h1>
           <p className="text-slate-500 text-sm mt-1">Manage members, events, and contact submissions</p>
         </div>
-        <div className="flex items-center gap-2 bg-green-500/10 border border-green-500/20 text-green-400 text-xs px-3 py-1.5 rounded-full">
+        <div className="flex items-center gap-2 bg-green-50 border border-green-200 text-green-600 dark:bg-green-500/10 dark:border-green-500/20 dark:text-green-400 text-xs px-3 py-1.5 rounded-full">
           <span className="w-1.5 h-1.5 bg-green-400 rounded-full" />
           Authenticated
         </div>
@@ -690,14 +690,14 @@ function Dashboard() {
           <button
             key={id}
             onClick={() => setTab(id)}
-            className={`relative bg-[#0d1424] border rounded-xl p-4 text-center transition-all hover:-translate-y-0.5 hover:border-violet-500/40 ${
-              tab === id ? 'border-violet-500/50 shadow-lg shadow-violet-500/10' : 'border-[#1e2d45]'
+            className={`relative bg-white dark:bg-[#0d1424] border rounded-xl p-4 text-center transition-all hover:-translate-y-0.5 hover:border-violet-500/40 ${
+              tab === id ? 'border-violet-500/50 shadow-lg shadow-violet-500/10' : 'border-slate-200 dark:border-[#1e2d45]'
             }`}
           >
             {unread > 0 && (
-              <span className="absolute top-2 right-2 w-2 h-2 bg-violet-400 rounded-full animate-pulse" />
+              <span className="absolute top-2 right-2 w-2 h-2 bg-violet-500 rounded-full animate-pulse dark:bg-violet-400" />
             )}
-            <div className="text-2xl font-bold text-white">{count}</div>
+            <div className="text-2xl font-bold text-slate-900 dark:text-white">{count}</div>
             <div className="text-slate-500 text-sm">{label}</div>
           </button>
         ))}
@@ -705,7 +705,7 @@ function Dashboard() {
 
       {/* Tabs */}
       <div className="overflow-x-auto mb-6 pb-1">
-        <div className="flex gap-1 bg-[#0d1424] border border-[#1e2d45] rounded-xl p-1 w-fit min-w-full sm:min-w-0">
+        <div className="flex gap-1 bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-xl p-1 w-fit min-w-full sm:min-w-0">
           {tabs.map(({ id, label, unread }) => (
             <button
               key={id}
@@ -713,7 +713,7 @@ function Dashboard() {
               className={`relative flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap ${
                 tab === id
                   ? 'bg-gradient-to-r from-blue-600 to-violet-600 text-white shadow'
-                  : 'text-slate-400 hover:text-white'
+                  : 'text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
               {label}
@@ -738,7 +738,7 @@ function Dashboard() {
             <div>
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
                 <div>
-                  <h2 className="text-lg font-semibold text-white">All Members</h2>
+                  <h2 className="text-lg font-semibold text-slate-900 dark:text-white">All Members</h2>
                   {members.length > 0 && (
                     <p className="text-slate-500 text-xs mt-0.5">
                       {members.filter(m => m.memberType === 'advisor').length} Advisor{members.filter(m => m.memberType === 'advisor').length !== 1 ? 's' : ''} · {members.filter(m => m.memberType === 'officer').length} Officer{members.filter(m => m.memberType === 'officer').length !== 1 ? 's' : ''} · {members.filter(m => m.memberType === 'member' || !m.memberType).length} Member{members.filter(m => m.memberType === 'member' || !m.memberType).length !== 1 ? 's' : ''}
@@ -755,7 +755,7 @@ function Dashboard() {
                       value={membersSearch}
                       onChange={(e) => setMembersSearch(e.target.value)}
                       placeholder="Search members..."
-                      className="bg-[#111a2e] border border-[#1e2d45] text-white placeholder:text-slate-600 rounded-xl pl-9 pr-4 py-2 text-sm focus:outline-none focus:border-violet-500/50 transition-all w-48"
+                      className="bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl pl-9 pr-4 py-2 text-sm focus:outline-none focus:border-violet-500/50 transition-all w-48"
                     />
                   </div>
                   <button
@@ -771,7 +771,7 @@ function Dashboard() {
               </div>
 
               {members.length === 0 ? (
-                <div className="text-center py-16 text-slate-500 border border-[#1e2d45] rounded-2xl">No members yet.</div>
+                <div className="text-center py-16 text-slate-500 border border-slate-200 dark:border-[#1e2d45] rounded-2xl">No members yet.</div>
               ) : (
                 <div className="space-y-3">
                   {members.filter((m) => {
@@ -779,13 +779,13 @@ function Dashboard() {
                     const q = membersSearch.toLowerCase();
                     return m.name.toLowerCase().includes(q) || (m.majors ?? []).join(' ').toLowerCase().includes(q) || m.role.toLowerCase().includes(q) || m.focusArea.toLowerCase().includes(q);
                   }).map((m) => (
-                    <div key={m.id} className="bg-[#0d1424] border border-[#1e2d45] rounded-xl p-4 flex items-center gap-4">
+                    <div key={m.id} className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-xl p-4 flex items-center gap-4">
                       <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-violet-600 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
                         {m.name.split(' ').map((n) => n[0]).join('').slice(0, 2).toUpperCase()}
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2">
-                          <span className="text-white font-medium">{m.name}</span>
+                          <span className="text-slate-900 dark:text-white font-medium">{m.name}</span>
                           {m.memberType === 'advisor' && (
                             <span className="text-xs bg-amber-500/10 border border-amber-500/20 text-amber-400 px-2 py-0.5 rounded-full flex-shrink-0">Advisor</span>
                           )}
@@ -797,7 +797,7 @@ function Dashboard() {
                       </div>
                       <div className="hidden md:flex flex-wrap gap-1.5 max-w-xs">
                         {m.projects.map((p) => (
-                          <span key={p} className="text-xs bg-white/5 border border-white/10 text-slate-400 px-2 py-0.5 rounded">
+                          <span key={p} className="text-xs bg-slate-100 dark:bg-white/5 border border-white/10 text-slate-400 px-2 py-0.5 rounded">
                             {p}
                           </span>
                         ))}
@@ -833,7 +833,7 @@ function Dashboard() {
           {tab === 'events' && (
             <div>
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-semibold text-white">All Events</h2>
+                <h2 className="text-lg font-semibold text-slate-900 dark:text-white">All Events</h2>
                 <button
                   onClick={() => setEventModal({ open: true, event: null })}
                   className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-violet-600 text-white text-sm font-medium rounded-xl hover:opacity-90 transition-opacity"
@@ -846,22 +846,22 @@ function Dashboard() {
               </div>
 
               {events.length === 0 ? (
-                <div className="text-center py-16 text-slate-500 border border-[#1e2d45] rounded-2xl">No events yet.</div>
+                <div className="text-center py-16 text-slate-500 border border-slate-200 dark:border-[#1e2d45] rounded-2xl">No events yet.</div>
               ) : (
                 <div className="space-y-3">
                   {events.map((ev) => (
-                    <div key={ev.id} className="bg-[#0d1424] border border-[#1e2d45] rounded-xl p-4 flex items-center gap-4">
+                    <div key={ev.id} className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-xl p-4 flex items-center gap-4">
                       <div className={`flex-shrink-0 px-3 py-2 rounded-lg text-center min-w-[52px] ${ev.type === 'upcoming' ? 'bg-blue-500/10 border border-blue-500/20' : 'bg-slate-700/20 border border-slate-700/30'}`}>
                         <div className={`text-xs font-semibold ${ev.type === 'upcoming' ? 'text-blue-400' : 'text-slate-500'}`}>
                           {new Date(ev.date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short' }).toUpperCase()}
                         </div>
-                        <div className={`text-xl font-bold ${ev.type === 'upcoming' ? 'text-white' : 'text-slate-400'}`}>
+                        <div className={`text-xl font-bold ${ev.type === 'upcoming' ? 'text-slate-900 dark:text-white' : 'text-slate-400'}`}>
                           {new Date(ev.date + 'T00:00:00').getDate()}
                         </div>
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2">
-                          <span className="text-white font-medium truncate">{ev.title}</span>
+                          <span className="text-slate-900 dark:text-white font-medium truncate">{ev.title}</span>
                           <span className={`text-xs px-2 py-0.5 rounded-full flex-shrink-0 ${ev.type === 'upcoming' ? 'bg-blue-500/10 text-blue-400' : 'bg-slate-700/30 text-slate-500'}`}>
                             {ev.type}
                           </span>
@@ -897,7 +897,7 @@ function Dashboard() {
           {tab === 'projects' && (
             <div>
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-semibold text-white">Featured Projects</h2>
+                <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Featured Projects</h2>
                 <button
                   onClick={() => setProjectModal({ open: true, project: null })}
                   className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-violet-600 text-white text-sm font-medium rounded-xl hover:opacity-90 transition-opacity"
@@ -910,19 +910,19 @@ function Dashboard() {
               </div>
 
               {projects.length === 0 ? (
-                <div className="text-center py-16 text-slate-500 border border-[#1e2d45] rounded-2xl">No projects yet. Add one to feature it on the home page.</div>
+                <div className="text-center py-16 text-slate-500 border border-slate-200 dark:border-[#1e2d45] rounded-2xl">No projects yet. Add one to feature it on the home page.</div>
               ) : (
                 <div className="space-y-3">
                   {projects.map((proj) => (
-                    <div key={proj.id} className="bg-[#0d1424] border border-[#1e2d45] rounded-xl overflow-hidden">
+                    <div key={proj.id} className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-xl overflow-hidden">
                       <div className={`h-1 bg-gradient-to-r ${proj.gradient}`} />
                       <div className="p-4 flex items-center gap-4">
                         <div className="flex-1 min-w-0">
-                          <div className="text-white font-medium">{proj.name}</div>
+                          <div className="text-slate-900 dark:text-white font-medium">{proj.name}</div>
                           <div className="text-slate-500 text-sm truncate mt-0.5">{proj.description}</div>
                           <div className="flex flex-wrap gap-1.5 mt-2">
                             {proj.tags.map((t) => (
-                              <span key={t} className="text-xs bg-white/5 border border-white/10 text-slate-400 px-2 py-0.5 rounded">
+                              <span key={t} className="text-xs bg-slate-100 dark:bg-white/5 border border-white/10 text-slate-400 px-2 py-0.5 rounded">
                                 {t}
                               </span>
                             ))}
@@ -960,10 +960,10 @@ function Dashboard() {
           {tab === 'stats' && (
             <div>
               <div className="mb-4">
-                <h2 className="text-lg font-semibold text-white">Homepage Stats</h2>
+                <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Homepage Stats</h2>
                 <p className="text-slate-500 text-sm mt-1">These values appear in the stats bar on the home page.</p>
               </div>
-              <div className="bg-[#0d1424] border border-[#1e2d45] rounded-2xl p-6">
+              <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl p-6">
                 <div className="grid sm:grid-cols-2 gap-4 mb-6">
                   {[
                     { key: 'activeMembers' as const, label: 'Active Members', placeholder: '25+' },
@@ -972,13 +972,13 @@ function Dashboard() {
                     { key: 'yearsActive' as const, label: 'Years Active', placeholder: '3+' },
                   ].map(({ key, label, placeholder }) => (
                     <div key={key}>
-                      <label className="block text-sm font-medium text-slate-300 mb-1.5">{label}</label>
+                      <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">{label}</label>
                       <input
                         type="text"
                         value={stats[key]}
                         onChange={(e) => setStats((s) => ({ ...s, [key]: e.target.value }))}
                         placeholder={placeholder}
-                        className="w-full bg-[#111a2e] border border-[#1e2d45] text-white placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                        className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
                       />
                     </div>
                   ))}
@@ -1001,11 +1001,11 @@ function Dashboard() {
             <div>
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
-                  <h2 className="text-lg font-semibold text-white">Partner Inquiries</h2>
-                  <div className="flex rounded-lg border border-[#1e2d45] overflow-hidden text-xs">
+                  <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Partner Inquiries</h2>
+                  <div className="flex rounded-lg border border-slate-200 dark:border-[#1e2d45] overflow-hidden text-xs">
                     {(['newest', 'oldest'] as const).map((s) => (
                       <button key={s} onClick={() => setPartnersSort(s)}
-                        className={`px-3 py-1.5 font-medium transition-colors capitalize ${partnersSort === s ? 'bg-violet-600 text-white' : 'text-slate-400 hover:text-white'}`}>
+                        className={`px-3 py-1.5 font-medium transition-colors capitalize ${partnersSort === s ? 'bg-violet-600 text-white' : 'text-slate-400 hover:text-slate-900 dark:hover:text-white'}`}>
                         {s}
                       </button>
                     ))}
@@ -1049,7 +1049,7 @@ function Dashboard() {
                       a.click();
                       URL.revokeObjectURL(url);
                     }}
-                    className="flex items-center gap-2 px-4 py-2 bg-[#0d1424] border border-[#1e2d45] text-slate-300 text-sm font-medium rounded-xl hover:border-violet-500/40 hover:text-white transition-all"
+                    className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] text-slate-300 text-sm font-medium rounded-xl hover:border-violet-500/40 hover:text-slate-900 dark:hover:text-white transition-all"
                   >
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
@@ -1059,7 +1059,7 @@ function Dashboard() {
                 )}
               </div>
               {partners.length === 0 ? (
-                <div className="text-center py-16 text-slate-500 border border-[#1e2d45] rounded-2xl">No inquiries yet.</div>
+                <div className="text-center py-16 text-slate-500 border border-slate-200 dark:border-[#1e2d45] rounded-2xl">No inquiries yet.</div>
               ) : (
                 <>
                   <div className="flex items-center gap-2 mb-2">
@@ -1079,7 +1079,7 @@ function Dashboard() {
                     const diff = new Date(b.submittedAt).getTime() - new Date(a.submittedAt).getTime();
                     return partnersSort === 'newest' ? diff : -diff;
                   }).map((p) => (
-                    <div key={p.id} className={`bg-[#0d1424] border rounded-xl p-5 transition-colors ${selectedPartners.includes(p.id) ? 'border-violet-500/40' : 'border-[#1e2d45]'}`}>
+                    <div key={p.id} className={`bg-white dark:bg-[#0d1424] border rounded-xl p-5 transition-colors ${selectedPartners.includes(p.id) ? 'border-violet-500/40' : 'border-slate-200 dark:border-[#1e2d45]'}`}>
                       <div className="flex items-start justify-between gap-4 mb-3">
                         <div className="flex items-start gap-3">
                           <input
@@ -1089,7 +1089,7 @@ function Dashboard() {
                             className="w-4 h-4 accent-violet-500 cursor-pointer mt-0.5"
                           />
                           <div>
-                            <div className="text-white font-medium">{p.companyName}</div>
+                            <div className="text-slate-900 dark:text-white font-medium">{p.companyName}</div>
                             <div className="text-slate-500 text-sm">{p.contactName} · {p.email}</div>
                           </div>
                         </div>
@@ -1117,22 +1117,22 @@ function Dashboard() {
                         {p.inquiryType === 'internship' ? (
                           <>
                             <span className="text-xs bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 px-2.5 py-1 rounded-full">🎓 Internship</span>
-                            {p.positionTitle && <span className="text-xs bg-white/5 border border-white/10 text-slate-300 px-2.5 py-1 rounded-full">{p.positionTitle}</span>}
-                            {p.duration && <span className="text-xs bg-white/5 border border-white/10 text-slate-400 px-2.5 py-1 rounded-full">{p.duration}</span>}
-                            {p.compensation && <span className="text-xs bg-white/5 border border-white/10 text-slate-400 px-2.5 py-1 rounded-full">{p.compensation}</span>}
+                            {p.positionTitle && <span className="text-xs bg-slate-100 dark:bg-white/5 border border-white/10 text-slate-300 px-2.5 py-1 rounded-full">{p.positionTitle}</span>}
+                            {p.duration && <span className="text-xs bg-slate-100 dark:bg-white/5 border border-white/10 text-slate-400 px-2.5 py-1 rounded-full">{p.duration}</span>}
+                            {p.compensation && <span className="text-xs bg-slate-100 dark:bg-white/5 border border-white/10 text-slate-400 px-2.5 py-1 rounded-full">{p.compensation}</span>}
                           </>
                         ) : (
                           <>
                             <span className="text-xs bg-blue-500/10 border border-blue-500/20 text-blue-400 px-2.5 py-1 rounded-full">🤝 Project</span>
-                            {p.projectType && <span className="text-xs bg-white/5 border border-white/10 text-slate-400 px-2.5 py-1 rounded-full">{p.projectType}</span>}
-                            {p.timeline && <span className="text-xs bg-white/5 border border-white/10 text-slate-400 px-2.5 py-1 rounded-full">{p.timeline}</span>}
+                            {p.projectType && <span className="text-xs bg-slate-100 dark:bg-white/5 border border-white/10 text-slate-400 px-2.5 py-1 rounded-full">{p.projectType}</span>}
+                            {p.timeline && <span className="text-xs bg-slate-100 dark:bg-white/5 border border-white/10 text-slate-400 px-2.5 py-1 rounded-full">{p.timeline}</span>}
                           </>
                         )}
                       </div>
                       {p.inquiryType === 'internship' && p.requiredSkills && (
                         <p className="text-slate-500 text-xs mb-2">Skills: {p.requiredSkills}</p>
                       )}
-                      <p className="text-slate-400 text-sm leading-relaxed bg-[#111a2e] rounded-lg p-3">{p.description}</p>
+                      <p className="text-slate-400 text-sm leading-relaxed bg-white dark:bg-[#111a2e] rounded-lg p-3">{p.description}</p>
                     </div>
                   ))}
                   </div>
@@ -1146,7 +1146,7 @@ function Dashboard() {
             <div>
               <div className="flex items-start justify-between mb-4">
                 <div>
-                  <h2 className="text-lg font-semibold text-white">Site Settings</h2>
+                  <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Site Settings</h2>
                   <p className="text-slate-500 text-sm mt-1">Control site-wide content like the recruiting banner and meeting details.</p>
                 </div>
                 {siteSettings.lastUpdated && (
@@ -1160,9 +1160,9 @@ function Dashboard() {
                   </div>
                 )}
               </div>
-              <div className="bg-[#0d1424] border border-[#1e2d45] rounded-2xl p-6 space-y-5">
+              <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl p-6 space-y-5">
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-1.5">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
                     Recruiting Banner <span className="text-slate-500 font-normal">(leave blank to hide)</span>
                   </label>
                   <input
@@ -1170,7 +1170,7 @@ function Dashboard() {
                     value={siteSettings.recruitingBanner}
                     onChange={(e) => setSiteSettings((s) => ({ ...s, recruitingBanner: e.target.value }))}
                     placeholder="Now recruiting for Spring 2026"
-                    className="w-full bg-[#111a2e] border border-[#1e2d45] text-white placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                    className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
                   />
                 </div>
 
@@ -1189,7 +1189,7 @@ function Dashboard() {
                           value={siteSettings[key]}
                           onChange={(e) => setSiteSettings((s) => ({ ...s, [key]: e.target.value }))}
                           placeholder={placeholder}
-                          className="w-full bg-[#111a2e] border border-[#1e2d45] text-white placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                          className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
                         />
                       </div>
                     ))}
@@ -1214,11 +1214,11 @@ function Dashboard() {
             <div>
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
-                  <h2 className="text-lg font-semibold text-white">Contact Submissions</h2>
-                  <div className="flex rounded-lg border border-[#1e2d45] overflow-hidden text-xs">
+                  <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Contact Submissions</h2>
+                  <div className="flex rounded-lg border border-slate-200 dark:border-[#1e2d45] overflow-hidden text-xs">
                     {(['newest', 'oldest'] as const).map((s) => (
                       <button key={s} onClick={() => setContactsSort(s)}
-                        className={`px-3 py-1.5 font-medium transition-colors capitalize ${contactsSort === s ? 'bg-violet-600 text-white' : 'text-slate-400 hover:text-white'}`}>
+                        className={`px-3 py-1.5 font-medium transition-colors capitalize ${contactsSort === s ? 'bg-violet-600 text-white' : 'text-slate-400 hover:text-slate-900 dark:hover:text-white'}`}>
                         {s}
                       </button>
                     ))}
@@ -1260,7 +1260,7 @@ function Dashboard() {
                       a.click();
                       URL.revokeObjectURL(url);
                     }}
-                    className="flex items-center gap-2 px-4 py-2 bg-[#0d1424] border border-[#1e2d45] text-slate-300 text-sm font-medium rounded-xl hover:border-violet-500/40 hover:text-white transition-all"
+                    className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] text-slate-300 text-sm font-medium rounded-xl hover:border-violet-500/40 hover:text-slate-900 dark:hover:text-white transition-all"
                   >
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
@@ -1270,7 +1270,7 @@ function Dashboard() {
                 )}
               </div>
               {contacts.length === 0 ? (
-                <div className="text-center py-16 text-slate-500 border border-[#1e2d45] rounded-2xl">No submissions yet.</div>
+                <div className="text-center py-16 text-slate-500 border border-slate-200 dark:border-[#1e2d45] rounded-2xl">No submissions yet.</div>
               ) : (
                 <>
                   <div className="flex items-center gap-2 mb-2">
@@ -1290,7 +1290,7 @@ function Dashboard() {
                       const diff = new Date(b.submittedAt).getTime() - new Date(a.submittedAt).getTime();
                       return contactsSort === 'newest' ? diff : -diff;
                     }).map((c) => (
-                      <div key={c.id} className={`bg-[#0d1424] border rounded-xl p-5 transition-colors ${selectedContacts.includes(c.id) ? 'border-violet-500/40' : 'border-[#1e2d45]'}`}>
+                      <div key={c.id} className={`bg-white dark:bg-[#0d1424] border rounded-xl p-5 transition-colors ${selectedContacts.includes(c.id) ? 'border-violet-500/40' : 'border-slate-200 dark:border-[#1e2d45]'}`}>
                         <div className="flex items-start justify-between gap-4 mb-3">
                           <div className="flex items-start gap-3">
                             <input
@@ -1300,7 +1300,7 @@ function Dashboard() {
                               className="w-4 h-4 accent-violet-500 cursor-pointer mt-0.5"
                             />
                             <div>
-                              <div className="text-white font-medium">{c.name}</div>
+                              <div className="text-slate-900 dark:text-white font-medium">{c.name}</div>
                               <div className="text-slate-500 text-sm">{c.email} · {c.major}</div>
                             </div>
                           </div>
@@ -1324,7 +1324,7 @@ function Dashboard() {
                             </button>
                           </div>
                         </div>
-                        <p className="text-slate-400 text-sm leading-relaxed bg-[#111a2e] rounded-lg p-3">{c.reason}</p>
+                        <p className="text-slate-400 text-sm leading-relaxed bg-white dark:bg-[#111a2e] rounded-lg p-3">{c.reason}</p>
                       </div>
                     ))}
                   </div>
@@ -1361,20 +1361,20 @@ function Dashboard() {
       {/* Delete Confirm Modal */}
       {deleteConfirm && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-[#0d1424] border border-[#1e2d45] rounded-2xl p-6 w-full max-w-sm text-center">
+          <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl p-6 w-full max-w-sm text-center">
             <div className="w-12 h-12 bg-red-500/10 border border-red-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
               <svg className="w-6 h-6 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
               </svg>
             </div>
-            <h3 className="text-white font-semibold mb-2">Confirm Delete</h3>
+            <h3 className="text-slate-900 dark:text-white font-semibold mb-2">Confirm Delete</h3>
             <p className="text-slate-400 text-sm mb-6">
               Are you sure you want to delete this {deleteConfirm.type}? This action cannot be undone.
             </p>
             <div className="flex gap-3">
               <button
                 onClick={() => setDeleteConfirm(null)}
-                className="flex-1 py-2.5 border border-[#1e2d45] text-slate-400 rounded-xl hover:bg-white/5 transition-colors text-sm font-medium"
+                className="flex-1 py-2.5 border border-slate-200 dark:border-[#1e2d45] text-slate-500 dark:text-slate-400 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 transition-colors text-sm font-medium"
               >
                 Cancel
               </button>
