@@ -15,6 +15,9 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     memberType: body.memberType ?? members[index].memberType,
     major: body.major ?? members[index].major,
     focusArea: body.focusArea ?? members[index].focusArea,
+    skills: Array.isArray(body.skills)
+      ? body.skills
+      : (body.skills || '').split(',').map((s: string) => s.trim()).filter(Boolean),
     projects: Array.isArray(body.projects)
       ? body.projects
       : (body.projects || '').split(',').map((p: string) => p.trim()).filter(Boolean),
