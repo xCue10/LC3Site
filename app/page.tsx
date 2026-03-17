@@ -25,7 +25,7 @@ export default function HomePage() {
           <h1 className="text-5xl sm:text-7xl font-bold text-white mb-6 tracking-tight">
             Welcome to{' '}
             <span className="bg-gradient-to-r from-blue-400 to-violet-500 bg-clip-text text-transparent">
-              Tech Club
+              LC3
             </span>
           </h1>
 
@@ -76,7 +76,7 @@ export default function HomePage() {
           <div>
             <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">Our Mission</h2>
             <p className="text-slate-400 leading-relaxed mb-4">
-              Tech Club exists to bridge the gap between classroom theory and real-world application. We provide
+              LC3 - Lowcode Cloud Club exists to bridge the gap between classroom theory and real-world application. We provide
               students with hands-on experience, mentorship from industry professionals, and a collaborative community
               to grow in.
             </p>
@@ -227,7 +227,7 @@ export default function HomePage() {
             href="/contact"
             className="px-10 py-4 bg-gradient-to-r from-blue-600 to-violet-600 text-white font-semibold rounded-xl hover:opacity-90 transition-all shadow-lg shadow-violet-500/25 inline-block"
           >
-            Apply to Join Tech Club
+            Apply to Join LC3
           </Link>
         </div>
       </section>

@@ -8,9 +8,9 @@ export default function Footer() {
           <div>
             <div className="flex items-center gap-2 mb-3">
               <div className="w-7 h-7 rounded-md bg-gradient-to-br from-blue-500 to-violet-600 flex items-center justify-center text-white font-bold text-xs">
-                TC
+                LC3
               </div>
-              <span className="font-semibold text-white">Tech Club</span>
+              <span className="font-semibold text-white">LC3 - Lowcode Cloud Club</span>
             </div>
             <p className="text-slate-400 text-sm leading-relaxed">
               Building the future through code, collaboration, and curiosity.
@@ -50,7 +50,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-[#1e1e2e] mt-8 pt-6 text-center text-slate-500 text-sm">
-          © {new Date().getFullYear()} Tech Club. All rights reserved.
+          © {new Date().getFullYear()} LC3 - Lowcode Cloud Club. All rights reserved.
         </div>
       </div>
     </footer>

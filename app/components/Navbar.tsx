@@ -18,9 +18,9 @@ export default function Navbar() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2 group">
           <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-violet-600 flex items-center justify-center text-white font-bold text-sm shadow-lg shadow-violet-500/20 group-hover:shadow-violet-500/40 transition-shadow">
-            TC
+            LC3
           </div>
-          <span className="font-semibold text-white text-lg tracking-tight">Tech Club</span>
+          <span className="font-semibold text-white text-lg tracking-tight">LC3 - Lowcode Cloud Club</span>
         </Link>
 
         <nav className="flex items-center gap-1">
