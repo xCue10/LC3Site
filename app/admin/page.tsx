@@ -39,7 +39,7 @@ interface Project {
   gradient: string;
 }
 
-const ADMIN_PASSWORD = 'admin123';
+const ADMIN_PASSWORD = process.env.NEXT_PUBLIC_ADMIN_PASSWORD ?? 'admin123';
 
 const emptyMember: Omit<Member, 'id'> = {
   name: '', major: '', focusArea: '', projects: [], github: '', linkedin: '', twitter: '',
