@@ -3,7 +3,17 @@ import { readJSON, writeJSON, Event } from '@/lib/data';
 
 export async function GET() {
   const events = readJSON<Event[]>('events.json');
-  return NextResponse.json(events);
+  const today = new Date().toISOString().slice(0, 10);
+  let changed = false;
+  const updated = events.map((e) => {
+    if (e.type === 'upcoming' && e.date && e.date < today) {
+      changed = true;
+      return { ...e, type: 'past' as const };
+    }
+    return e;
+  });
+  if (changed) writeJSON('events.json', updated);
+  return NextResponse.json(updated);
 }
 
 export async function POST(req: NextRequest) {

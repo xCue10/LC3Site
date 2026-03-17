@@ -662,7 +662,8 @@ function Dashboard() {
   const [siteSettings, setSiteSettings] = useState<SiteSettings>({ recruitingBanner: '', meetingDay: '', meetingTime: '', meetingLocation: '' });
   const [posts, setPosts] = useState<Post[]>([]);
   const [sponsorsConfig, setSponsorsConfig] = useState<SponsorsConfig>({ live: false, sectionTitle: 'Supported By', sponsors: [] });
-  const [rsvpCounts, setRsvpCounts] = useState<Record<string, number>>({});
+  const [rsvps, setRsvps] = useState<Array<{ id: string; eventId: string; name: string; email: string; submittedAt: string }>>([]);
+  const [expandedRsvpEvent, setExpandedRsvpEvent] = useState<string | null>(null);
   const [postModal, setPostModal] = useState<{ open: boolean; post: Post | null }>({ open: false, post: null });
   const [sponsorModal, setSponsorModal] = useState<{ open: boolean; sponsor: Sponsor | null }>({ open: false, sponsor: null });
   const [aboutContent, setAboutContent] = useState<AboutContent>({
@@ -742,9 +743,7 @@ function Dashboard() {
     setAboutContent(ab as AboutContent);
     setPosts(Array.isArray(po) ? po as Post[] : []);
     setSponsorsConfig(sp as SponsorsConfig);
-    const counts: Record<string, number> = {};
-    (rv as Array<{ eventId: string }>).forEach((r) => { counts[r.eventId] = (counts[r.eventId] ?? 0) + 1; });
-    setRsvpCounts(counts);
+    setRsvps(Array.isArray(rv) ? rv as Array<{ id: string; eventId: string; name: string; email: string; submittedAt: string }> : []);
     setLoading(false);
   }, []);
 
@@ -1088,50 +1087,86 @@ function Dashboard() {
                 <div className="text-center py-16 text-slate-500 border border-slate-200 dark:border-[#1e2d45] rounded-2xl">No events yet.</div>
               ) : (
                 <div className="space-y-3">
-                  {events.map((ev) => (
-                    <div key={ev.id} className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-xl p-4 flex items-center gap-4">
-                      <div className={`flex-shrink-0 px-3 py-2 rounded-lg text-center min-w-[52px] ${ev.type === 'upcoming' ? 'bg-blue-500/10 border border-blue-500/20' : 'bg-slate-700/20 border border-slate-700/30'}`}>
-                        <div className={`text-xs font-semibold ${ev.type === 'upcoming' ? 'text-blue-400' : 'text-slate-500'}`}>
-                          {new Date(ev.date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short' }).toUpperCase()}
+                  {events.map((ev) => {
+                    const evRsvps = rsvps.filter((r) => r.eventId === ev.id).sort((a, b) => new Date(a.submittedAt).getTime() - new Date(b.submittedAt).getTime());
+                    return (
+                      <div key={ev.id} className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-xl overflow-hidden">
+                        <div className="p-4 flex items-center gap-4">
+                          <div className={`flex-shrink-0 px-3 py-2 rounded-lg text-center min-w-[52px] ${ev.type === 'upcoming' ? 'bg-blue-500/10 border border-blue-500/20' : 'bg-slate-700/20 border border-slate-700/30'}`}>
+                            <div className={`text-xs font-semibold ${ev.type === 'upcoming' ? 'text-blue-400' : 'text-slate-500'}`}>
+                              {new Date(ev.date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short' }).toUpperCase()}
+                            </div>
+                            <div className={`text-xl font-bold ${ev.type === 'upcoming' ? 'text-slate-900 dark:text-white' : 'text-slate-400'}`}>
+                              {new Date(ev.date + 'T00:00:00').getDate()}
+                            </div>
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2">
+                              <span className="text-slate-900 dark:text-white font-medium truncate">{ev.title}</span>
+                              <span className={`text-xs px-2 py-0.5 rounded-full flex-shrink-0 ${ev.type === 'upcoming' ? 'bg-blue-500/10 text-blue-400' : 'bg-slate-700/30 text-slate-500'}`}>
+                                {ev.type}
+                              </span>
+                              {evRsvps.length > 0 && (
+                                <button
+                                  onClick={() => setExpandedRsvpEvent(expandedRsvpEvent === ev.id ? null : ev.id)}
+                                  className="text-xs px-2 py-0.5 rounded-full flex-shrink-0 bg-green-500/10 text-green-400 border border-green-500/20 hover:bg-green-500/20 transition-colors"
+                                >
+                                  {evRsvps.length} RSVP{evRsvps.length !== 1 ? 's' : ''} {expandedRsvpEvent === ev.id ? '▲' : '▼'}
+                                </button>
+                              )}
+                            </div>
+                            <div className="text-slate-500 text-sm truncate">{ev.location}</div>
+                          </div>
+                          <button
+                            onClick={() => setEventModal({ open: true, event: ev })}
+                            className="p-2 text-slate-400 hover:text-blue-400 hover:bg-blue-500/10 rounded-lg transition-all flex-shrink-0"
+                            title="Edit"
+                          >
+                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                            </svg>
+                          </button>
+                          <button
+                            onClick={() => setDeleteConfirm({ type: 'event', id: ev.id })}
+                            className="p-2 text-slate-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-all flex-shrink-0"
+                            title="Delete"
+                          >
+                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                          </button>
                         </div>
-                        <div className={`text-xl font-bold ${ev.type === 'upcoming' ? 'text-slate-900 dark:text-white' : 'text-slate-400'}`}>
-                          {new Date(ev.date + 'T00:00:00').getDate()}
-                        </div>
+                        {expandedRsvpEvent === ev.id && (
+                          <div className="px-4 pb-4 border-t border-slate-100 dark:border-[#1e2d45] pt-3">
+                            <div className="flex items-center justify-between mb-2">
+                              <p className="text-xs font-medium text-slate-500 uppercase tracking-wide">{evRsvps.length} attending</p>
+                              <button
+                                onClick={() => {
+                                  const csv = ['Name,Email,Submitted', ...evRsvps.map((r) => `${r.name},${r.email},${new Date(r.submittedAt).toLocaleString()}`)].join('\n');
+                                  const a = document.createElement('a');
+                                  a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' }));
+                                  a.download = `rsvps-${ev.title.replace(/\s+/g, '-').toLowerCase()}.csv`;
+                                  a.click();
+                                }}
+                                className="text-xs text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors flex items-center gap-1"
+                              >
+                                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+                                Export CSV
+                              </button>
+                            </div>
+                            <div className="space-y-1.5">
+                              {evRsvps.map((r) => (
+                                <div key={r.id} className="flex items-center justify-between text-sm px-3 py-2 bg-slate-50 dark:bg-white/5 rounded-lg">
+                                  <span className="text-slate-900 dark:text-white font-medium">{r.name}</span>
+                                  <span className="text-slate-500 text-xs">{r.email}</span>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
                       </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2">
-                          <span className="text-slate-900 dark:text-white font-medium truncate">{ev.title}</span>
-                          <span className={`text-xs px-2 py-0.5 rounded-full flex-shrink-0 ${ev.type === 'upcoming' ? 'bg-blue-500/10 text-blue-400' : 'bg-slate-700/30 text-slate-500'}`}>
-                            {ev.type}
-                          </span>
-                          {(rsvpCounts[ev.id] ?? 0) > 0 && (
-                            <span className="text-xs px-2 py-0.5 rounded-full flex-shrink-0 bg-green-500/10 text-green-400 border border-green-500/20">
-                              {rsvpCounts[ev.id]} RSVP{rsvpCounts[ev.id] !== 1 ? 's' : ''}
-                            </span>
-                          )}
-                        </div>
-                        <div className="text-slate-500 text-sm truncate">{ev.location}</div>
-                      </div>
-                      <button
-                        onClick={() => setEventModal({ open: true, event: ev })}
-                        className="p-2 text-slate-400 hover:text-blue-400 hover:bg-blue-500/10 rounded-lg transition-all flex-shrink-0"
-                        title="Edit"
-                      >
-                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                        </svg>
-                      </button>
-                      <button
-                        onClick={() => setDeleteConfirm({ type: 'event', id: ev.id })}
-                        className="p-2 text-slate-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-all flex-shrink-0"
-                        title="Delete"
-                      >
-                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                        </svg>
-                      </button>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               )}
             </div>
