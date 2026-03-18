@@ -1109,7 +1109,7 @@ function Dashboard() {
         <nav className="w-52 flex-shrink-0 bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl p-3 sticky top-6">
           {navGroups.map((group) => (
             <div key={group.label} className="mb-4 last:mb-0">
-              <p className="text-[10px] font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-600 px-2 mb-1">{group.label}</p>
+              <p className="text-[11px] font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 px-2 mb-1">{group.label}</p>
               {group.items.map(({ id, label, count, unread }) => (
                 <button
                   key={id}
