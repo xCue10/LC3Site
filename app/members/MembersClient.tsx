@@ -140,9 +140,13 @@ function AdvisorCard({ member, index }: { member: Member; index: number }) {
         <div className="min-w-0">
           <h3 className="text-slate-900 dark:text-white font-semibold text-lg truncate group-hover:text-amber-600 dark:group-hover:text-amber-300 transition-colors">{member.name}</h3>
           {member.role && (
-            <span className="inline-block mt-1 text-xs font-medium bg-amber-50 border border-amber-200 text-amber-600 px-2.5 py-0.5 rounded-full dark:bg-amber-500/10 dark:border-amber-500/20 dark:text-amber-400">
-              {member.role}
-            </span>
+            <div className="flex flex-wrap gap-1 mt-1">
+              {member.role.split(/[,/]/).map((r) => r.trim()).filter(Boolean).map((r) => (
+                <span key={r} className="inline-block text-xs font-medium bg-amber-50 border border-amber-200 text-amber-600 px-2.5 py-0.5 rounded-full dark:bg-amber-500/10 dark:border-amber-500/20 dark:text-amber-400">
+                  {r}
+                </span>
+              ))}
+            </div>
           )}
           {(member.majors ?? []).length > 0 && (
             <div className="flex flex-wrap gap-1 mt-1">
@@ -184,9 +188,13 @@ function OfficerCard({ member, index }: { member: Member; index: number }) {
         <div className="min-w-0">
           <h3 className="text-slate-900 dark:text-white font-semibold truncate group-hover:text-violet-600 dark:group-hover:text-violet-300 transition-colors">{member.name}</h3>
           {member.role && (
-            <span className="inline-block mt-1 text-xs font-medium bg-violet-50 border border-violet-200 text-violet-600 px-2.5 py-0.5 rounded-full dark:bg-violet-500/10 dark:border-violet-500/20 dark:text-violet-400">
-              {member.role}
-            </span>
+            <div className="flex flex-wrap gap-1 mt-1">
+              {member.role.split(/[,/]/).map((r) => r.trim()).filter(Boolean).map((r) => (
+                <span key={r} className="inline-block text-xs font-medium bg-violet-50 border border-violet-200 text-violet-600 px-2.5 py-0.5 rounded-full dark:bg-violet-500/10 dark:border-violet-500/20 dark:text-violet-400">
+                  {r}
+                </span>
+              ))}
+            </div>
           )}
           {(member.majors ?? []).length > 0 && (
             <div className="flex flex-wrap gap-1 mt-1">

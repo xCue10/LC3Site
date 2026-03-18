@@ -100,9 +100,18 @@ export default async function MemberProfilePage({ params }: { params: Promise<{ 
             <div className="min-w-0 flex-1">
               <h1 className="text-3xl font-bold text-slate-900 dark:text-white mb-2">{member.name}</h1>
               <div className="flex flex-wrap items-center gap-2">
-                <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${memberTypeBadgeClass[member.memberType] ?? memberTypeBadgeClass.member}`}>
-                  {member.role || memberTypeLabel[member.memberType] || 'Member'}
-                </span>
+                {member.role
+                  ? member.role.split(/[,/]/).map((r) => r.trim()).filter(Boolean).map((r) => (
+                      <span key={r} className={`text-xs font-medium px-2.5 py-1 rounded-full ${memberTypeBadgeClass[member.memberType] ?? memberTypeBadgeClass.member}`}>
+                        {r}
+                      </span>
+                    ))
+                  : (
+                      <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${memberTypeBadgeClass[member.memberType] ?? memberTypeBadgeClass.member}`}>
+                        {memberTypeLabel[member.memberType] || 'Member'}
+                      </span>
+                    )
+                }
                 {member.focusArea && (
                   <span className="inline-flex items-center gap-1.5 bg-blue-50 border border-blue-200 text-blue-600 text-xs px-3 py-1 rounded-full dark:bg-blue-500/10 dark:border-blue-500/20 dark:text-blue-400">
                     <span className="w-1.5 h-1.5 bg-blue-500 rounded-full dark:bg-blue-400" />
