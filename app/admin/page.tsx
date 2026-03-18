@@ -80,6 +80,22 @@ interface SponsorsConfig {
   sponsors: Sponsor[];
 }
 
+interface CaseStudy {
+  id: string;
+  client: string;
+  title: string;
+  description: string;
+  outcome: string;
+  tags: string[];
+  link?: string;
+}
+
+interface CaseStudiesConfig {
+  live: boolean;
+  sectionTitle: string;
+  caseStudies: CaseStudy[];
+}
+
 interface AboutValue {
   title: string;
   desc: string;
@@ -607,6 +623,54 @@ function PostModal({ post, onSave, onClose }: { post: Post | null; onSave: (d: P
   );
 }
 
+// ─── Case Study Modal ─────────────────────────────────────────────────────────
+function CaseStudyModal({ caseStudy, onSave, onClose }: { caseStudy: CaseStudy | null; onSave: (d: Omit<CaseStudy, 'id'>) => void; onClose: () => void }) {
+  const [form, setForm] = useState({ client: caseStudy?.client ?? '', title: caseStudy?.title ?? '', description: caseStudy?.description ?? '', outcome: caseStudy?.outcome ?? '', tagsStr: (caseStudy?.tags ?? []).join(', '), link: caseStudy?.link ?? '' });
+  const inputCls = 'w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all';
+  return (
+    <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={onClose}>
+      <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl w-full max-w-md max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+        <div className="flex items-center justify-between p-6 border-b border-slate-200 dark:border-[#1e2d45]">
+          <h2 className="text-slate-900 dark:text-white font-semibold text-lg">{caseStudy ? 'Edit Case Study' : 'Add Case Study'}</h2>
+          <button onClick={onClose} className="text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors">
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+          </button>
+        </div>
+        <form onSubmit={(e) => { e.preventDefault(); onSave({ client: form.client, title: form.title, description: form.description, outcome: form.outcome, tags: form.tagsStr.split(',').map((t) => t.trim()).filter(Boolean), link: form.link || undefined }); }} className="p-6 space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Client / Company</label>
+            <input type="text" required value={form.client} onChange={(e) => setForm((f) => ({ ...f, client: e.target.value }))} placeholder="Acme Corp" className={inputCls} />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Project Title</label>
+            <input type="text" required value={form.title} onChange={(e) => setForm((f) => ({ ...f, title: e.target.value }))} placeholder="Built a Power Apps inventory system" className={inputCls} />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Description</label>
+            <textarea rows={3} required value={form.description} onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))} placeholder="What was built and what problem it solved..." className={`${inputCls} resize-none`} />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Outcome <span className="text-slate-400 font-normal">(result or impact)</span></label>
+            <input type="text" value={form.outcome} onChange={(e) => setForm((f) => ({ ...f, outcome: e.target.value }))} placeholder="Reduced manual data entry by 80%" className={inputCls} />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Tags <span className="text-slate-400 font-normal">(comma-separated)</span></label>
+            <input type="text" value={form.tagsStr} onChange={(e) => setForm((f) => ({ ...f, tagsStr: e.target.value }))} placeholder="Power Apps, Azure, React" className={inputCls} />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Link <span className="text-slate-400 font-normal">(optional)</span></label>
+            <input type="url" value={form.link} onChange={(e) => setForm((f) => ({ ...f, link: e.target.value }))} placeholder="https://github.com/..." className={inputCls} />
+          </div>
+          <div className="flex gap-3 pt-2">
+            <button type="button" onClick={onClose} className="flex-1 py-2.5 border border-slate-200 dark:border-[#1e2d45] text-slate-500 dark:text-slate-400 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 transition-colors text-sm font-medium">Cancel</button>
+            <button type="submit" className="flex-1 py-2.5 bg-gradient-to-r from-blue-600 to-violet-600 text-white rounded-xl hover:opacity-90 transition-opacity text-sm font-semibold">{caseStudy ? 'Save Changes' : 'Add Case Study'}</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
+
 // ─── Sponsor Modal ────────────────────────────────────────────────────────────
 interface SponsorForm { name: string; logoUrl: string; website: string; tier: string; }
 function SponsorModal({ sponsor, onSave, onClose }: { sponsor: Sponsor | null; onSave: (d: SponsorForm) => void; onClose: () => void }) {
@@ -709,7 +773,7 @@ function ResourceModal({
   );
 }
 
-type TabId = 'members' | 'events' | 'contacts' | 'partners' | 'projects' | 'stats' | 'settings' | 'about' | 'posts' | 'sponsors' | 'resources';
+type TabId = 'members' | 'events' | 'contacts' | 'partners' | 'projects' | 'stats' | 'settings' | 'about' | 'posts' | 'sponsors' | 'resources' | 'past-work';
 
 // ─── Dashboard ───────────────────────────────────────────────────────────────
 function Dashboard() {
@@ -729,6 +793,8 @@ function Dashboard() {
   const [expandedRsvpEvent, setExpandedRsvpEvent] = useState<string | null>(null);
   const [postModal, setPostModal] = useState<{ open: boolean; post: Post | null }>({ open: false, post: null });
   const [sponsorModal, setSponsorModal] = useState<{ open: boolean; sponsor: Sponsor | null }>({ open: false, sponsor: null });
+  const [caseStudiesConfig, setCaseStudiesConfig] = useState<CaseStudiesConfig>({ live: false, sectionTitle: 'Past Work', caseStudies: [] });
+  const [caseStudyModal, setCaseStudyModal] = useState<{ open: boolean; caseStudy: CaseStudy | null }>({ open: false, caseStudy: null });
   const [aboutContent, setAboutContent] = useState<AboutContent>({
     heroTagline: '', heroDescription: '', mission: '',
     valuesTitle: '', valuesSubtitle: '', values: [],
@@ -783,7 +849,7 @@ function Dashboard() {
     const safe = <T,>(url: string, fallback: T) =>
       fetch(url).then((r) => r.ok ? r.json() as Promise<T> : fallback).catch(() => fallback);
 
-    const [m, e, c, pt, p, s, st, ab, po, sp, rv, rs] = await Promise.all([
+    const [m, e, c, pt, p, s, st, ab, po, sp, rv, rs, cs] = await Promise.all([
       safe('/api/members', []),
       safe('/api/events', []),
       safe('/api/contact', []),
@@ -796,6 +862,7 @@ function Dashboard() {
       safe('/api/sponsors', { live: false, sectionTitle: 'Supported By', sponsors: [] }),
       safe('/api/rsvps', []),
       safe('/api/resources', []),
+      safe('/api/case-studies', { live: false, sectionTitle: 'Past Work', caseStudies: [] }),
     ]);
     setMembers(m as Member[]);
     setEvents(e as Event[]);
@@ -809,6 +876,7 @@ function Dashboard() {
     setSponsorsConfig(sp as SponsorsConfig);
     setRsvps(Array.isArray(rv) ? rv as Array<{ id: string; eventId: string; name: string; email: string; submittedAt: string }> : []);
     setResources(Array.isArray(rs) ? rs as Array<{ id: string; title: string; description: string; url: string; category: string }> : []);
+    setCaseStudiesConfig(cs as CaseStudiesConfig);
     setLoading(false);
   }, []);
 
@@ -934,6 +1002,36 @@ function Dashboard() {
     fetchData();
   };
 
+  // Case Studies helpers
+  const persistCaseStudies = async (config: CaseStudiesConfig) => {
+    await fetch('/api/case-studies', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(config) });
+  };
+
+  const saveCaseStudy = async (data: Omit<CaseStudy, 'id'>) => {
+    let updated: CaseStudy[];
+    if (caseStudyModal.caseStudy) {
+      updated = caseStudiesConfig.caseStudies.map((cs) => cs.id === caseStudyModal.caseStudy!.id ? { ...cs, ...data } : cs);
+    } else {
+      updated = [...caseStudiesConfig.caseStudies, { id: Date.now().toString(), ...data }];
+    }
+    const next = { ...caseStudiesConfig, caseStudies: updated };
+    setCaseStudiesConfig(next);
+    setCaseStudyModal({ open: false, caseStudy: null });
+    await persistCaseStudies(next);
+  };
+
+  const deleteCaseStudy = async (id: string) => {
+    const next = { ...caseStudiesConfig, caseStudies: caseStudiesConfig.caseStudies.filter((cs) => cs.id !== id) };
+    setCaseStudiesConfig(next);
+    await persistCaseStudies(next);
+  };
+
+  const toggleCaseStudiesLive = async () => {
+    const next = { ...caseStudiesConfig, live: !caseStudiesConfig.live };
+    setCaseStudiesConfig(next);
+    await persistCaseStudies(next);
+  };
+
   const tabs = [
     { id: 'members' as const, label: 'Members', count: members.length, unread: 0 },
     { id: 'events' as const, label: 'Events', count: events.length, unread: 0 },
@@ -943,6 +1041,7 @@ function Dashboard() {
     { id: 'posts' as const, label: 'Blog', count: posts.length, unread: 0 },
     { id: 'sponsors' as const, label: 'Sponsors', count: sponsorsConfig.sponsors.length, unread: 0 },
     { id: 'resources' as const, label: 'Resources', count: resources.length, unread: 0 },
+    { id: 'past-work' as const, label: 'Past Work', count: caseStudiesConfig.caseStudies.length, unread: 0 },
     { id: 'stats' as const, label: 'Stats', count: null, unread: 0 },
     { id: 'about' as const, label: 'About Page', count: null, unread: 0 },
     { id: 'settings' as const, label: 'Settings', count: null, unread: 0 },
@@ -1659,6 +1758,92 @@ function Dashboard() {
             </div>
           )}
 
+          {/* Past Work Tab */}
+          {tab === 'past-work' && (
+            <div className="space-y-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Past Work</h2>
+                  <p className="text-slate-500 text-sm mt-1">Showcase completed client or partner projects on the homepage.</p>
+                </div>
+              </div>
+
+              {/* Live Toggle */}
+              <div className={`rounded-2xl border-2 p-6 flex items-center justify-between gap-6 transition-all ${caseStudiesConfig.live ? 'border-green-400/50 bg-green-50 dark:bg-green-500/5' : 'border-slate-200 dark:border-[#1e2d45] bg-white dark:bg-[#0d1424]'}`}>
+                <div>
+                  <p className={`font-semibold text-lg ${caseStudiesConfig.live ? 'text-green-700 dark:text-green-400' : 'text-slate-900 dark:text-white'}`}>
+                    Past Work section is {caseStudiesConfig.live ? 'LIVE' : 'hidden'}
+                  </p>
+                  <p className="text-slate-500 text-sm mt-0.5">
+                    {caseStudiesConfig.live ? 'The past work section is visible on the public homepage.' : 'Toggle on to show past work publicly.'}
+                  </p>
+                </div>
+                <button
+                  onClick={toggleCaseStudiesLive}
+                  className={`relative flex-shrink-0 w-14 h-8 rounded-full transition-colors focus:outline-none ${caseStudiesConfig.live ? 'bg-green-500' : 'bg-slate-300 dark:bg-slate-600'}`}
+                >
+                  <div className={`absolute top-1 left-1 w-6 h-6 rounded-full bg-white shadow-md transition-transform ${caseStudiesConfig.live ? 'translate-x-6' : ''}`} />
+                </button>
+              </div>
+
+              {/* Section title + case study list */}
+              <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl p-6 space-y-5">
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Section Title <span className="text-slate-400 font-normal">(shown on homepage)</span></label>
+                  <input
+                    type="text"
+                    value={caseStudiesConfig.sectionTitle}
+                    onChange={(e) => setCaseStudiesConfig((c) => ({ ...c, sectionTitle: e.target.value }))}
+                    onBlur={() => persistCaseStudies(caseStudiesConfig)}
+                    placeholder="Past Work"
+                    className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                  />
+                </div>
+
+                <div>
+                  <div className="flex items-center justify-between mb-3">
+                    <p className="text-xs text-slate-500 font-medium uppercase tracking-wider">Case Studies ({caseStudiesConfig.caseStudies.length})</p>
+                    <button
+                      onClick={() => setCaseStudyModal({ open: true, caseStudy: null })}
+                      className="flex items-center gap-1 text-xs text-violet-600 dark:text-violet-400 hover:text-violet-700 dark:hover:text-violet-300 font-medium transition-colors"
+                    >
+                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
+                      Add Case Study
+                    </button>
+                  </div>
+
+                  {caseStudiesConfig.caseStudies.length === 0 ? (
+                    <p className="text-center py-8 text-slate-400 text-sm">No case studies yet. Add one above.</p>
+                  ) : (
+                    <div className="space-y-2">
+                      {caseStudiesConfig.caseStudies.map((cs) => (
+                        <div key={cs.id} className="flex items-center gap-4 bg-slate-50 dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] rounded-xl px-4 py-3">
+                          <div className="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-500/10 flex items-center justify-center flex-shrink-0">
+                            <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400">{cs.client[0]}</span>
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-slate-900 dark:text-white font-medium text-sm truncate">{cs.title}</p>
+                            <p className="text-slate-400 text-xs truncate">{cs.client}</p>
+                          </div>
+                          <div className="flex items-center gap-1 flex-shrink-0">
+                            <button onClick={() => setCaseStudyModal({ open: true, caseStudy: cs })}
+                              className="w-7 h-7 flex items-center justify-center rounded-lg text-slate-400 hover:text-violet-600 dark:hover:text-violet-400 hover:bg-violet-50 dark:hover:bg-violet-500/10 transition-all">
+                              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+                            </button>
+                            <button onClick={() => deleteCaseStudy(cs.id)}
+                              className="w-7 h-7 flex items-center justify-center rounded-lg text-slate-400 hover:text-red-400 hover:bg-red-500/10 transition-all">
+                              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* About Page Tab */}
           {tab === 'about' && (
             <div className="space-y-6">
@@ -2200,6 +2385,8 @@ function Dashboard() {
       {sponsorModal.open && (
         <SponsorModal sponsor={sponsorModal.sponsor} onSave={saveSponsor} onClose={() => setSponsorModal({ open: false, sponsor: null })} />
       )}
+
+      {caseStudyModal.open && <CaseStudyModal caseStudy={caseStudyModal.caseStudy} onSave={saveCaseStudy} onClose={() => setCaseStudyModal({ open: false, caseStudy: null })} />}
 
       {/* Delete Confirm Modal */}
       {deleteConfirm && (

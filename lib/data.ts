@@ -183,3 +183,19 @@ export interface PartnerInquiry {
   topic?: string;
   availability?: string;
 }
+
+export interface CaseStudy {
+  id: string;
+  client: string;
+  title: string;
+  description: string;
+  outcome: string;
+  tags: string[];
+  link?: string;
+}
+
+export interface CaseStudiesConfig {
+  live: boolean;
+  sectionTitle: string;
+  caseStudies: CaseStudy[];
+}

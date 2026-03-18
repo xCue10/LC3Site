@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { readJSON, Event, Project, Member, Stats, SiteSettings, Post, SponsorsConfig } from '@/lib/data';
+import { readJSON, Event, Project, Member, Stats, SiteSettings, Post, SponsorsConfig, CaseStudiesConfig } from '@/lib/data';
 import ScrollReveal from './components/ScrollReveal';
 import type { Metadata } from 'next';
 
@@ -19,6 +19,7 @@ export default function HomePage() {
   const upcomingEvents = events.filter((e) => e.type === 'upcoming').slice(0, 2);
   const latestPosts = readJSON<Post[]>('posts.json').filter((p) => p.published).slice(0, 3);
   const sponsorsConfig = readJSON<SponsorsConfig>('sponsors.json', { live: false, sectionTitle: 'Supported By', sponsors: [] });
+  const caseStudiesConfig = readJSON<CaseStudiesConfig>('case-studies.json', { live: false, sectionTitle: 'Past Work', caseStudies: [] });
 
   const stats = {
     activeMembers: statsOverrides.activeMembers || String(members.length),
@@ -365,6 +366,56 @@ export default function HomePage() {
                 )}
               </Link>
             ))}
+          </div>
+          </ScrollReveal>
+        </section>
+      )}
+
+      {/* Past Work */}
+      {caseStudiesConfig.live && caseStudiesConfig.caseStudies.length > 0 && (
+        <section className="py-20 bg-slate-50 border-t border-slate-200 dark:bg-[#0d1424] dark:border-[#1e2d45]">
+          <ScrollReveal>
+          <div className="max-w-6xl mx-auto px-4 sm:px-6">
+            <div className="flex items-end justify-between mb-10">
+              <div>
+                <p className="text-emerald-600 dark:text-emerald-400 text-sm font-medium mb-1">What we&apos;ve delivered</p>
+                <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white">{caseStudiesConfig.sectionTitle}</h2>
+              </div>
+            </div>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {caseStudiesConfig.caseStudies.map((cs) => (
+                <div key={cs.id} className="bg-white border border-slate-200 rounded-2xl overflow-hidden hover:border-emerald-200 hover:shadow-md transition-all hover:-translate-y-0.5 dark:bg-[#111a2e] dark:border-[#1e2d45] dark:hover:border-emerald-500/30 dark:hover:shadow-none">
+                  <div className="h-1.5 bg-gradient-to-r from-emerald-500 to-teal-500" />
+                  <div className="p-6">
+                    <p className="text-xs font-medium text-emerald-600 dark:text-emerald-400 mb-2">{cs.client}</p>
+                    <h3 className="text-slate-900 dark:text-white font-semibold text-lg mb-2">{cs.title}</h3>
+                    <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-4">{cs.description}</p>
+                    {cs.outcome && (
+                      <div className="bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-100 dark:border-emerald-500/20 rounded-xl px-3 py-2 mb-4">
+                        <p className="text-emerald-700 dark:text-emerald-400 text-xs font-medium">Outcome</p>
+                        <p className="text-emerald-800 dark:text-emerald-300 text-sm mt-0.5">{cs.outcome}</p>
+                      </div>
+                    )}
+                    <div className="flex flex-wrap gap-2">
+                      {cs.tags.map((tag) => (
+                        <span key={tag} className="text-xs bg-slate-100 border border-slate-200 text-slate-600 px-2.5 py-1 rounded-md dark:bg-white/5 dark:border-white/10 dark:text-slate-400">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                    {cs.link && (
+                      <a href={cs.link} target="_blank" rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 mt-4 text-xs text-slate-400 hover:text-slate-700 dark:hover:text-white transition-colors">
+                        <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                        </svg>
+                        View project
+                      </a>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
           </ScrollReveal>
         </section>
