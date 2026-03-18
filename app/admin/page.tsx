@@ -1187,7 +1187,7 @@ function Dashboard() {
                   {members.filter((m) => {
                     if (!membersSearch.trim()) return true;
                     const q = membersSearch.toLowerCase();
-                    return m.name.toLowerCase().includes(q) || (m.majors ?? []).join(' ').toLowerCase().includes(q) || m.role.toLowerCase().includes(q) || m.focusArea.toLowerCase().includes(q);
+                    return m.name.toLowerCase().includes(q) || (m.majors ?? []).join(' ').toLowerCase().includes(q) || (m.role ?? '').toLowerCase().includes(q) || (m.focusArea ?? '').toLowerCase().includes(q);
                   }).map((m) => (
                     <div key={m.id} className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-xl p-4 flex items-center gap-4">
                       <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-violet-600 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
