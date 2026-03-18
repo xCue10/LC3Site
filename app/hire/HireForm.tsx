@@ -172,6 +172,29 @@ export default function HireForm() {
 
         {/* Left: Value Props */}
         <div>
+          <svg width="72" height="72" viewBox="0 0 72 72" className="mb-5 opacity-85 dark:opacity-75" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <style>{`
+                @keyframes hire-spark { 0%,100%{opacity:0.3} 50%{opacity:0.9} }
+                @keyframes hire-clasp { 0%,100%{opacity:0.5} 50%{opacity:1} }
+              `}</style>
+            </defs>
+            <circle cx="36" cy="36" r="33" fill="#3b82f6" fillOpacity="0.07" stroke="#3b82f6" strokeWidth="1" strokeOpacity="0.3"/>
+            {/* Briefcase body */}
+            <rect x="13" y="30" width="46" height="28" rx="5" fill="none" stroke="#3b82f6" strokeWidth="1.5" strokeOpacity="0.7"/>
+            {/* Handle */}
+            <path d="M25 30 L25 24 Q25 19 30 19 L42 19 Q47 19 47 24 L47 30" fill="none" stroke="#3b82f6" strokeWidth="1.5" strokeOpacity="0.7" strokeLinecap="round"/>
+            {/* Middle divider */}
+            <line x1="13" y1="43" x2="59" y2="43" stroke="#3b82f6" strokeWidth="1" strokeOpacity="0.35"/>
+            {/* Clasp */}
+            <rect x="29" y="39" width="14" height="8" rx="3" fill="#3b82f6" fillOpacity="0.12" stroke="#3b82f6" strokeWidth="1.2" strokeOpacity="0.6"/>
+            <circle cx="36" cy="43" r="2.2" fill="#3b82f6" fillOpacity="0.55" style={{animation:'hire-clasp 2s ease-in-out infinite'}}/>
+            {/* Sparkle dots */}
+            <circle cx="8" cy="12" r="2.5" fill="#3b82f6" fillOpacity="0.7" style={{animation:'hire-spark 2.2s ease-in-out infinite'}}/>
+            <circle cx="62" cy="14" r="2" fill="#6366f1" fillOpacity="0.65" style={{animation:'hire-spark 2.2s ease-in-out infinite 0.55s'}}/>
+            <circle cx="10" cy="60" r="2" fill="#0891b2" fillOpacity="0.65" style={{animation:'hire-spark 2.2s ease-in-out infinite 1.1s'}}/>
+            <circle cx="62" cy="60" r="2.5" fill="#3b82f6" fillOpacity="0.7" style={{animation:'hire-spark 2.2s ease-in-out infinite 1.65s'}}/>
+          </svg>
           <p className="text-blue-600 dark:text-blue-400 text-sm font-medium mb-2">Work with student talent</p>
           <h1 className="text-4xl sm:text-5xl font-bold text-slate-900 dark:text-white mb-6">Partner with LC3</h1>
           <p className="text-slate-600 dark:text-slate-300 leading-relaxed mb-8">

@@ -19,6 +19,34 @@ export default function BlogPage() {
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 py-16">
       <div className="mb-12">
+        <svg width="72" height="72" viewBox="0 0 72 72" className="mx-auto mb-5 opacity-85 dark:opacity-75" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <style>{`
+              @keyframes blog-wave { 0%,100%{opacity:0.15;transform:scale(0.95)} 50%{opacity:0.55;transform:scale(1.05)} }
+              @keyframes blog-spark { 0%,100%{opacity:0.3} 50%{opacity:0.9} }
+            `}</style>
+          </defs>
+          <circle cx="36" cy="36" r="33" fill="#7c3aed" fillOpacity="0.07" stroke="#7c3aed" strokeWidth="1" strokeOpacity="0.3"/>
+          {/* Signal waves */}
+          <circle cx="36" cy="36" r="28" fill="none" stroke="#6366f1" strokeWidth="0.8" strokeOpacity="0.2" style={{animation:'blog-wave 2.8s ease-in-out infinite'}}/>
+          <circle cx="36" cy="36" r="20" fill="none" stroke="#6366f1" strokeWidth="1" strokeOpacity="0.25" style={{animation:'blog-wave 2.8s ease-in-out infinite 0.7s'}}/>
+          {/* Document */}
+          <rect x="22" y="18" width="28" height="36" rx="4" fill="none" stroke="#6366f1" strokeWidth="1.5" strokeOpacity="0.7"/>
+          <rect x="22" y="18" width="28" height="10" rx="4" fill="#6366f1" fillOpacity="0.15"/>
+          <rect x="22" y="23" width="28" height="5" fill="#6366f1" fillOpacity="0.12"/>
+          {/* Text lines */}
+          <rect x="27" y="35" width="18" height="2" rx="1" fill="#6366f1" fillOpacity="0.5"/>
+          <rect x="27" y="40" width="14" height="2" rx="1" fill="#818cf8" fillOpacity="0.4"/>
+          <rect x="27" y="45" width="10" height="2" rx="1" fill="#0891b2" fillOpacity="0.4"/>
+          {/* Pen nib */}
+          <circle cx="54" cy="20" r="6" fill="#818cf8" fillOpacity="0.1" stroke="#818cf8" strokeWidth="1.2" strokeOpacity="0.5"/>
+          <path d="M51 23 L54 17 L57 23 L54 22 Z" fill="none" stroke="#818cf8" strokeWidth="1.2" strokeOpacity="0.6" strokeLinejoin="round"/>
+          {/* Sparkle dots */}
+          <circle cx="8" cy="12" r="2.5" fill="#6366f1" fillOpacity="0.7" style={{animation:'blog-spark 2s ease-in-out infinite'}}/>
+          <circle cx="62" cy="14" r="2" fill="#818cf8" fillOpacity="0.65" style={{animation:'blog-spark 2s ease-in-out infinite 0.6s'}}/>
+          <circle cx="10" cy="58" r="2" fill="#0891b2" fillOpacity="0.65" style={{animation:'blog-spark 2s ease-in-out infinite 1.2s'}}/>
+          <circle cx="60" cy="60" r="2.5" fill="#6366f1" fillOpacity="0.7" style={{animation:'blog-spark 2s ease-in-out infinite 1.8s'}}/>
+        </svg>
         <p className="text-violet-600 dark:text-violet-400 text-sm font-medium mb-2">What&apos;s new</p>
         <h1 className="text-4xl font-bold text-slate-900 dark:text-white mb-3">Club Updates</h1>
         <p className="text-slate-500 leading-relaxed">Announcements, recaps, and news from the LC3 community.</p>

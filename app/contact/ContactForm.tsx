@@ -114,6 +114,30 @@ export default function ContactForm({ settings }: { settings: SiteSettings }) {
       <div className="grid lg:grid-cols-2 gap-16 items-start">
         {/* Left: Info */}
         <div>
+          <svg width="72" height="72" viewBox="0 0 72 72" className="mb-5 opacity-85 dark:opacity-75" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <style>{`
+                @keyframes cont-spark { 0%,100%{opacity:0.3} 50%{opacity:0.9} }
+                @keyframes cont-arrow { 0%,100%{opacity:0.5;transform:translateX(0)} 50%{opacity:1;transform:translateX(2px)} }
+              `}</style>
+            </defs>
+            <circle cx="36" cy="36" r="33" fill="#7c3aed" fillOpacity="0.07" stroke="#7c3aed" strokeWidth="1" strokeOpacity="0.3"/>
+            {/* Envelope body */}
+            <rect x="13" y="23" width="46" height="30" rx="5" fill="none" stroke="#6366f1" strokeWidth="1.5" strokeOpacity="0.7"/>
+            {/* Envelope flap */}
+            <path d="M13 27 L36 43 L59 27" fill="none" stroke="#6366f1" strokeWidth="1.5" strokeOpacity="0.7" strokeLinejoin="round"/>
+            {/* Bottom fold lines */}
+            <path d="M13 53 L29 39" stroke="#6366f1" strokeWidth="0.8" strokeOpacity="0.3"/>
+            <path d="M59 53 L43 39" stroke="#6366f1" strokeWidth="0.8" strokeOpacity="0.3"/>
+            {/* Send arrow badge */}
+            <circle cx="55" cy="19" r="6" fill="#6366f1" fillOpacity="0.12" stroke="#6366f1" strokeWidth="1.2" strokeOpacity="0.55"/>
+            <path d="M52 19 L58 19 M55 16 L58 19 L55 22" fill="none" stroke="#6366f1" strokeWidth="1.3" strokeOpacity="0.75" strokeLinecap="round" strokeLinejoin="round" style={{animation:'cont-arrow 2s ease-in-out infinite'}}/>
+            {/* Sparkle dots */}
+            <circle cx="8" cy="12" r="2.5" fill="#6366f1" fillOpacity="0.7" style={{animation:'cont-spark 2.2s ease-in-out infinite'}}/>
+            <circle cx="62" cy="14" r="2" fill="#818cf8" fillOpacity="0.65" style={{animation:'cont-spark 2.2s ease-in-out infinite 0.55s'}}/>
+            <circle cx="10" cy="60" r="2" fill="#0891b2" fillOpacity="0.65" style={{animation:'cont-spark 2.2s ease-in-out infinite 1.1s'}}/>
+            <circle cx="62" cy="60" r="2.5" fill="#6366f1" fillOpacity="0.7" style={{animation:'cont-spark 2.2s ease-in-out infinite 1.65s'}}/>
+          </svg>
           <p className="text-violet-600 dark:text-violet-400 text-sm font-medium mb-2">Get involved</p>
           <h1 className="text-4xl sm:text-5xl font-bold text-slate-900 dark:text-white mb-6">Join LC3</h1>
           <p className="text-slate-600 dark:text-slate-400 leading-relaxed mb-8">
