@@ -126,7 +126,7 @@ interface AboutContent {
 
 interface PartnerInquiry {
   id: string;
-  inquiryType: 'project' | 'internship';
+  inquiryType: 'project' | 'internship' | 'speaker';
   companyName: string;
   contactName: string;
   email: string;
@@ -138,6 +138,8 @@ interface PartnerInquiry {
   duration?: string;
   compensation?: string;
   requiredSkills?: string;
+  topic?: string;
+  availability?: string;
 }
 
 interface Project {
@@ -782,7 +784,7 @@ function ResourceModal({
   );
 }
 
-type TabId = 'members' | 'events' | 'contacts' | 'partners' | 'projects' | 'stats' | 'settings' | 'about' | 'posts' | 'sponsors' | 'resources' | 'past-work';
+type TabId = 'members' | 'events' | 'contacts' | 'partners' | 'projects' | 'stats' | 'settings' | 'about' | 'posts' | 'sponsors' | 'resources' | 'past-work' | 'rsvps';
 
 // ─── Dashboard ───────────────────────────────────────────────────────────────
 function Dashboard() {
@@ -1041,23 +1043,44 @@ function Dashboard() {
     await persistCaseStudies(next);
   };
 
-  const tabs = [
-    { id: 'members' as const, label: 'Members', count: members.length, unread: 0 },
-    { id: 'events' as const, label: 'Events', count: events.length, unread: 0 },
-    { id: 'projects' as const, label: 'Projects', count: projects.length, unread: 0 },
-    { id: 'contacts' as const, label: 'Contacts', count: contacts.length, unread: unreadContacts },
-    { id: 'partners' as const, label: 'Partners', count: partners.length, unread: unreadPartners },
-    { id: 'posts' as const, label: 'Blog', count: posts.length, unread: 0 },
-    { id: 'sponsors' as const, label: 'Sponsors', count: sponsorsConfig.sponsors.length, unread: 0 },
-    { id: 'resources' as const, label: 'Resources', count: resources.length, unread: 0 },
-    { id: 'past-work' as const, label: 'Past Work', count: caseStudiesConfig.caseStudies.length, unread: 0 },
-    { id: 'stats' as const, label: 'Stats', count: null, unread: 0 },
-    { id: 'about' as const, label: 'About Page', count: null, unread: 0 },
-    { id: 'settings' as const, label: 'Settings', count: null, unread: 0 },
+  const navGroups = [
+    {
+      label: 'Content',
+      items: [
+        { id: 'members' as TabId, label: 'Members', count: members.length, unread: 0 },
+        { id: 'events' as TabId, label: 'Events', count: events.length, unread: 0 },
+        { id: 'projects' as TabId, label: 'Projects', count: projects.length, unread: 0 },
+        { id: 'posts' as TabId, label: 'Blog', count: posts.length, unread: 0 },
+      ],
+    },
+    {
+      label: 'Submissions',
+      items: [
+        { id: 'contacts' as TabId, label: 'Contacts', count: contacts.length, unread: unreadContacts },
+        { id: 'partners' as TabId, label: 'Partners', count: partners.length, unread: unreadPartners },
+        { id: 'rsvps' as TabId, label: 'RSVPs', count: rsvps.length, unread: 0 },
+      ],
+    },
+    {
+      label: 'Site',
+      items: [
+        { id: 'sponsors' as TabId, label: 'Sponsors', count: sponsorsConfig.sponsors.length, unread: 0 },
+        { id: 'resources' as TabId, label: 'Resources', count: resources.length, unread: 0 },
+        { id: 'past-work' as TabId, label: 'Past Work', count: caseStudiesConfig.caseStudies.length, unread: 0 },
+      ],
+    },
+    {
+      label: 'Settings',
+      items: [
+        { id: 'stats' as TabId, label: 'Stats', count: null, unread: 0 },
+        { id: 'about' as TabId, label: 'About Page', count: null, unread: 0 },
+        { id: 'settings' as TabId, label: 'Settings', count: null, unread: 0 },
+      ],
+    },
   ];
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
         <div>
@@ -1081,51 +1104,39 @@ function Dashboard() {
         </div>
       </div>
 
-      {/* Stats Row */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
-        {tabs.filter((t) => t.count !== null).map(({ id, label, count, unread }) => (
-          <button
-            key={id}
-            onClick={() => setTab(id)}
-            className={`relative bg-white dark:bg-[#0d1424] border rounded-xl p-4 text-center transition-all hover:-translate-y-0.5 hover:border-violet-500/40 ${
-              tab === id ? 'border-violet-500/50 shadow-lg shadow-violet-500/10' : 'border-slate-200 dark:border-[#1e2d45]'
-            }`}
-          >
-            {unread > 0 && (
-              <span className="absolute top-2 right-2 w-2 h-2 bg-violet-500 rounded-full animate-pulse dark:bg-violet-400" />
-            )}
-            <div className="text-2xl font-bold text-slate-900 dark:text-white">{count}</div>
-            <div className="text-slate-500 text-sm">{label}</div>
-          </button>
-        ))}
-      </div>
-
-      {/* Tabs */}
-      <div className="overflow-x-auto mb-6 pb-1">
-        <div className="flex gap-1 bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-xl p-1 w-fit min-w-full sm:min-w-0">
-          {tabs.map(({ id, label, unread }) => (
-            <button
-              key={id}
-              onClick={() => setTab(id)}
-              className={`relative flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap ${
-                tab === id
-                  ? 'bg-gradient-to-r from-blue-600 to-violet-600 text-white shadow'
-                  : 'text-slate-400 hover:text-slate-900 dark:hover:text-white'
-              }`}
-            >
-              {label}
-              {unread > 0 && (
-                <span className={`flex items-center justify-center w-4 h-4 rounded-full text-xs font-bold ${
-                  tab === id ? 'bg-white/20 text-white' : 'bg-violet-500/20 text-violet-300'
-                }`}>
-                  {unread}
-                </span>
-              )}
-            </button>
+      <div className="flex gap-6 items-start">
+        {/* Sidebar */}
+        <nav className="w-52 flex-shrink-0 bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl p-3 sticky top-6">
+          {navGroups.map((group) => (
+            <div key={group.label} className="mb-4 last:mb-0">
+              <p className="text-[10px] font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-600 px-2 mb-1">{group.label}</p>
+              {group.items.map(({ id, label, count, unread }) => (
+                <button
+                  key={id}
+                  onClick={() => setTab(id)}
+                  className={`relative w-full flex items-center justify-between px-2 py-1.5 rounded-lg text-sm transition-all ${
+                    tab === id
+                      ? 'bg-gradient-to-r from-blue-600 to-violet-600 text-white font-medium'
+                      : 'text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5 hover:text-slate-900 dark:hover:text-white'
+                  }`}
+                >
+                  <span>{label}</span>
+                  <span className={`flex items-center gap-1 ${tab === id ? 'text-white/70' : 'text-slate-400'}`}>
+                    {unread > 0 && (
+                      <span className="w-1.5 h-1.5 bg-violet-400 rounded-full animate-pulse" />
+                    )}
+                    {count !== null && (
+                      <span className="text-xs">{count}</span>
+                    )}
+                  </span>
+                </button>
+              ))}
+            </div>
           ))}
-        </div>
-      </div>
+        </nav>
 
+        {/* Main Content */}
+        <div className="flex-1 min-w-0">
       {loading ? (
         <div className="text-center py-16 text-slate-500">Loading...</div>
       ) : (
@@ -2350,8 +2361,66 @@ function Dashboard() {
               )}
             </div>
           )}
+          {/* RSVPs Tab */}
+          {tab === 'rsvps' && (() => {
+            const rsvpsByEvent = events.reduce<Record<string, typeof rsvps>>((acc, ev) => {
+              acc[ev.id] = rsvps.filter((r) => r.eventId === ev.id);
+              return acc;
+            }, {});
+            const eventsWithRsvps = events.filter((ev) => (rsvpsByEvent[ev.id]?.length ?? 0) > 0);
+            return (
+              <div>
+                <div className="mb-4">
+                  <h2 className="text-lg font-semibold text-slate-900 dark:text-white">RSVPs</h2>
+                  <p className="text-slate-500 text-xs mt-0.5">{rsvps.length} total RSVP{rsvps.length !== 1 ? 's' : ''} across {eventsWithRsvps.length} event{eventsWithRsvps.length !== 1 ? 's' : ''}</p>
+                </div>
+                {rsvps.length === 0 ? (
+                  <div className="text-center py-16 text-slate-500 border border-slate-200 dark:border-[#1e2d45] rounded-2xl">No RSVPs yet.</div>
+                ) : (
+                  <div className="space-y-3">
+                    {eventsWithRsvps.map((ev) => {
+                      const eventRsvps = rsvpsByEvent[ev.id] ?? [];
+                      const isOpen = expandedRsvpEvent === ev.id;
+                      return (
+                        <div key={ev.id} className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-xl overflow-hidden">
+                          <button
+                            onClick={() => setExpandedRsvpEvent(isOpen ? null : ev.id)}
+                            className="w-full flex items-center justify-between px-4 py-3 hover:bg-slate-50 dark:hover:bg-white/5 transition-colors"
+                          >
+                            <div className="flex items-center gap-3">
+                              <span className="text-slate-900 dark:text-white font-medium text-sm">{ev.title}</span>
+                              <span className="text-xs bg-violet-500/10 text-violet-500 dark:text-violet-400 border border-violet-500/20 px-2 py-0.5 rounded-full">{eventRsvps.length} RSVP{eventRsvps.length !== 1 ? 's' : ''}</span>
+                            </div>
+                            <svg className={`w-4 h-4 text-slate-400 transition-transform ${isOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                            </svg>
+                          </button>
+                          {isOpen && (
+                            <div className="border-t border-slate-200 dark:border-[#1e2d45]">
+                              {eventRsvps.map((r, i) => (
+                                <div key={r.id} className={`flex items-center gap-3 px-4 py-2.5 text-sm ${i > 0 ? 'border-t border-slate-100 dark:border-[#1e2d45]' : ''}`}>
+                                  <div className="w-7 h-7 rounded-full bg-gradient-to-br from-blue-500 to-violet-600 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+                                    {r.name.trim()[0]?.toUpperCase() ?? '?'}
+                                  </div>
+                                  <span className="text-slate-900 dark:text-white font-medium flex-1">{r.name}</span>
+                                  <span className="text-slate-500">{r.email}</span>
+                                  <span className="text-slate-400 text-xs">{new Date(r.submittedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            );
+          })()}
         </>
       )}
+        </div>{/* end main content */}
+      </div>{/* end sidebar wrapper */}
 
       {/* Resource Modal */}
       {resourceModal.open && (
