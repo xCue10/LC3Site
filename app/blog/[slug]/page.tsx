@@ -38,7 +38,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
       <article>
         {post.coverImage && (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={post.coverImage} alt={post.title} className="w-full h-72 sm:h-96 object-cover rounded-2xl mb-8" />
+          <img src={post.coverImage} alt={post.title} className="w-full object-contain rounded-2xl mb-8 bg-slate-100 dark:bg-[#111a2e]" />
         )}
         <div className="mb-8">
           <div className="flex items-center gap-2 mb-4">

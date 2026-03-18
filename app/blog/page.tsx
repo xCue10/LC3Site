@@ -41,7 +41,7 @@ export default function BlogPage() {
             >
               {post.coverImage && (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={post.coverImage} alt={post.title} className="w-full h-48 object-cover" />
+                <img src={post.coverImage} alt={post.title} className="w-full object-contain max-h-72 bg-slate-100 dark:bg-[#111a2e]" />
               )}
               <div className="p-6">
                 <div className="flex items-center gap-2 mb-3">
