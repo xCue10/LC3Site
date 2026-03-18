@@ -156,6 +156,40 @@ export interface AboutContent {
   ctaDescription: string;
 }
 
+export interface HomeMissionItem {
+  title: string;
+  desc: string;
+}
+
+export interface HomeContent {
+  // Hero buttons
+  primaryButtonLabel: string;
+  secondaryButtonLabel: string;
+  // Tech stack badge strip
+  techStack: string[];
+  // Company CTA card
+  companyCtaTitle: string;
+  companyCtaDesc: string;
+  // Mission items (icons are fixed in code)
+  missionItems: HomeMissionItem[];
+  // About section
+  aboutEyebrow: string;
+  aboutHeading: string;
+  aboutBody1: string;
+  aboutBody2: string;
+  // Section headings
+  projectsEyebrow: string;
+  projectsHeading: string;
+  eventsEyebrow: string;
+  eventsHeading: string;
+  blogEyebrow: string;
+  blogHeading: string;
+  // CTA section
+  ctaHeading: string;
+  ctaDescription: string;
+  ctaButtonLabel: string;
+}
+
 export interface Resource {
   id: string;
   title: string;

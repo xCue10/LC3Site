@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { readJSON, Event, Project, Member, Stats, SiteSettings, Post, SponsorsConfig, CaseStudiesConfig } from '@/lib/data';
+import { readJSON, Event, Project, Member, Stats, SiteSettings, Post, SponsorsConfig, CaseStudiesConfig, HomeContent } from '@/lib/data';
 import ScrollReveal from './components/ScrollReveal';
 import type { Metadata } from 'next';
 
@@ -26,6 +26,34 @@ export default function HomePage() {
   const latestPosts = readJSON<Post[]>('posts.json').filter((p) => p.published).slice(0, 3);
   const sponsorsConfig = readJSON<SponsorsConfig>('sponsors.json', { live: false, sectionTitle: 'Supported By', sponsors: [] });
   const caseStudiesConfig = readJSON<CaseStudiesConfig>('case-studies.json', { live: false, sectionTitle: 'Past Work', caseStudies: [] });
+  const homeDefaults: HomeContent = {
+    primaryButtonLabel: 'Join the Club',
+    secondaryButtonLabel: 'Meet the Team',
+    techStack: ['Power Apps', 'Power Automate', 'Azure', 'GitHub', 'React', 'Python', 'Node.js', 'Copilot Studio'],
+    companyCtaTitle: 'Are you a company?',
+    companyCtaDesc: 'Partner with us for projects or offer internships to our members.',
+    missionItems: [
+      { title: 'Build Projects', desc: 'Work on real-world software that matters' },
+      { title: 'Learn Skills', desc: 'Workshops, talks, and hands-on practice' },
+      { title: 'Network', desc: 'Connect with peers and industry mentors' },
+      { title: 'Compete', desc: 'Hackathons and CTF competitions' },
+    ],
+    aboutEyebrow: 'Who we are',
+    aboutHeading: 'About LC3',
+    aboutBody1: 'LC3 — Lowcode Cloud Club — is a student-run tech organization focused on low-code platforms, cloud technologies, and modern software development. We partner with tools like Microsoft Power Platform and Azure to give members hands-on experience that directly translates to industry skills.',
+    aboutBody2: "Whether you're building your first app or already working in tech, LC3 is a place to grow. We believe the best way to learn is by shipping real things — together.",
+    projectsEyebrow: "What we're building",
+    projectsHeading: 'Featured Projects',
+    eventsEyebrow: 'Mark your calendar',
+    eventsHeading: 'Upcoming Events',
+    blogEyebrow: "What's new",
+    blogHeading: 'Latest Updates',
+    ctaHeading: 'Ready to join?',
+    ctaDescription: "Fill out our quick interest form and we'll get back to you with details about our next meeting.",
+    ctaButtonLabel: 'Apply to Join LC3',
+  };
+  const home = readJSON<HomeContent>('home.json', homeDefaults);
+  const homeContent: HomeContent = { ...homeDefaults, ...home };
 
   const stats = {
     activeMembers: statsOverrides.activeMembers || String(members.length),
@@ -34,46 +62,12 @@ export default function HomePage() {
     yearsActive: statsOverrides.yearsActive || '1',
   };
 
-  const missionItems = [
-    {
-      title: 'Build Projects',
-      desc: 'Work on real-world software that matters',
-      icon: (
-        <svg className="w-5 h-5 text-violet-600 dark:text-violet-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-        </svg>
-      ),
-    },
-    {
-      title: 'Learn Skills',
-      desc: 'Workshops, talks, and hands-on practice',
-      icon: (
-        <svg className="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-        </svg>
-      ),
-    },
-    {
-      title: 'Network',
-      desc: 'Connect with peers and industry mentors',
-      icon: (
-        <svg className="w-5 h-5 text-emerald-600 dark:text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
-        </svg>
-      ),
-    },
-    {
-      title: 'Compete',
-      desc: 'Hackathons and CTF competitions',
-      icon: (
-        <svg className="w-5 h-5 text-amber-600 dark:text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
-        </svg>
-      ),
-    },
+  const missionIcons = [
+    <svg key="code" className="w-5 h-5 text-violet-600 dark:text-violet-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>,
+    <svg key="book" className="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>,
+    <svg key="team" className="w-5 h-5 text-emerald-600 dark:text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" /></svg>,
+    <svg key="award" className="w-5 h-5 text-amber-600 dark:text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" /></svg>,
   ];
-
-  const techStack = ['Power Apps', 'Power Automate', 'Azure', 'GitHub', 'React', 'Python', 'Node.js', 'Copilot Studio'];
 
   return (
     <div>
@@ -109,19 +103,19 @@ export default function HomePage() {
               href="/contact"
               className="px-8 py-3.5 bg-gradient-to-r from-blue-600 to-violet-600 text-white font-semibold rounded-xl hover:from-blue-500 hover:to-violet-500 transition-all shadow-lg shadow-violet-500/25 hover:shadow-violet-500/40 hover:-translate-y-0.5"
             >
-              Join the Club
+              {homeContent.primaryButtonLabel}
             </Link>
             <Link
               href="/members"
               className="px-8 py-3.5 bg-white border border-slate-200 text-slate-700 font-semibold rounded-xl hover:bg-slate-50 hover:border-slate-300 transition-all hover:-translate-y-0.5 shadow-sm dark:bg-white/5 dark:border-white/15 dark:text-white dark:hover:bg-white/10 dark:hover:border-white/25"
             >
-              Meet the Team
+              {homeContent.secondaryButtonLabel}
             </Link>
           </div>
 
           {/* Tech stack strip */}
           <div className="mt-8 flex flex-wrap justify-center gap-2">
-            {techStack.map((tech) => (
+            {homeContent.techStack.map((tech) => (
               <span
                 key={tech}
                 className="text-xs text-slate-500 bg-white border border-slate-200 px-3 py-1 rounded-full dark:bg-white/5 dark:border-white/10"
@@ -139,8 +133,8 @@ export default function HomePage() {
               </svg>
             </div>
             <div className="text-left">
-              <p className="text-slate-900 text-sm font-medium dark:text-white">Are you a company?</p>
-              <p className="text-slate-500 text-xs">Partner with us for projects or offer internships to our members.</p>
+              <p className="text-slate-900 text-sm font-medium dark:text-white">{homeContent.companyCtaTitle}</p>
+              <p className="text-slate-500 text-xs">{homeContent.companyCtaDesc}</p>
             </div>
             <Link
               href="/hire"
@@ -178,16 +172,13 @@ export default function HomePage() {
         <ScrollReveal>
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div>
-            <p className="text-violet-600 dark:text-violet-400 text-sm font-medium mb-2">Who we are</p>
-            <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white mb-4">About LC3</h2>
+            <p className="text-violet-600 dark:text-violet-400 text-sm font-medium mb-2">{homeContent.aboutEyebrow}</p>
+            <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white mb-4">{homeContent.aboutHeading}</h2>
             <p className="text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
-              LC3 — Lowcode Cloud Club — is a student-run tech organization focused on low-code platforms, cloud technologies,
-              and modern software development. We partner with tools like Microsoft Power Platform and Azure to give members
-              hands-on experience that directly translates to industry skills.
+              {homeContent.aboutBody1}
             </p>
             <p className="text-slate-600 dark:text-slate-300 leading-relaxed mb-6">
-              Whether you&apos;re building your first app or already working in tech, LC3 is a place to grow.
-              We believe the best way to learn is by shipping real things — together.
+              {homeContent.aboutBody2}
             </p>
             <div className="flex flex-wrap gap-3">
               <Link
@@ -223,13 +214,13 @@ export default function HomePage() {
           </div>
 
           <div className="grid grid-cols-2 gap-4">
-            {missionItems.map(({ icon, title, desc }) => (
+            {homeContent.missionItems.map(({ title, desc }, i) => (
               <div
-                key={title}
+                key={i}
                 className="bg-white border border-slate-200 rounded-xl p-5 hover:border-violet-200 hover:shadow-sm transition-all dark:bg-[#0d1424] dark:border-[#1e2d45] dark:hover:border-violet-500/30"
               >
                 <div className="w-9 h-9 rounded-lg bg-slate-50 border border-slate-100 flex items-center justify-center mb-3 dark:bg-white/5 dark:border-transparent">
-                  {icon}
+                  {missionIcons[i % missionIcons.length]}
                 </div>
                 <div className="text-slate-900 dark:text-white font-medium text-sm mb-1">{title}</div>
                 <div className="text-slate-500 text-xs leading-relaxed">{desc}</div>
@@ -247,8 +238,8 @@ export default function HomePage() {
           <div className="max-w-6xl mx-auto px-4 sm:px-6">
             <div className="flex items-end justify-between mb-10">
               <div>
-                <p className="text-violet-600 dark:text-violet-400 text-sm font-medium mb-1">What we&apos;re building</p>
-                <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white">Featured Projects</h2>
+                <p className="text-violet-600 dark:text-violet-400 text-sm font-medium mb-1">{homeContent.projectsEyebrow}</p>
+                <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white">{homeContent.projectsHeading}</h2>
               </div>
               <Link href="/members" className="text-slate-500 hover:text-slate-700 dark:hover:text-white text-sm transition-colors hidden sm:block">
                 View all members →
@@ -296,8 +287,8 @@ export default function HomePage() {
           <ScrollReveal>
           <div className="flex items-end justify-between mb-10">
             <div>
-              <p className="text-blue-600 dark:text-blue-400 text-sm font-medium mb-1">Mark your calendar</p>
-              <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white">Upcoming Events</h2>
+              <p className="text-blue-600 dark:text-blue-400 text-sm font-medium mb-1">{homeContent.eventsEyebrow}</p>
+              <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white">{homeContent.eventsHeading}</h2>
             </div>
             <Link href="/events" className="text-slate-500 hover:text-slate-700 dark:hover:text-white text-sm transition-colors hidden sm:block">
               All events →
@@ -341,8 +332,8 @@ export default function HomePage() {
           <ScrollReveal>
           <div className="flex items-end justify-between mb-10">
             <div>
-              <p className="text-violet-600 dark:text-violet-400 text-sm font-medium mb-1">What&apos;s new</p>
-              <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white">Latest Updates</h2>
+              <p className="text-violet-600 dark:text-violet-400 text-sm font-medium mb-1">{homeContent.blogEyebrow}</p>
+              <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white">{homeContent.blogHeading}</h2>
             </div>
             <Link href="/blog" className="text-slate-500 hover:text-slate-700 dark:hover:text-white text-sm transition-colors hidden sm:block">
               All posts →
@@ -454,15 +445,15 @@ export default function HomePage() {
       <section className="py-20 border-t border-slate-200 dark:border-[#1e2d45]">
         <ScrollReveal>
         <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white mb-4">Ready to join?</h2>
+          <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white mb-4">{homeContent.ctaHeading}</h2>
           <p className="text-slate-600 dark:text-slate-300 mb-8">
-            Fill out our quick interest form and we&apos;ll get back to you with details about our next meeting.
+            {homeContent.ctaDescription}
           </p>
           <Link
             href="/contact"
             className="px-10 py-4 bg-gradient-to-r from-blue-600 to-violet-600 text-white font-semibold rounded-xl hover:opacity-90 transition-all shadow-lg shadow-violet-500/20 inline-block"
           >
-            Apply to Join LC3
+            {homeContent.ctaButtonLabel}
           </Link>
         </div>
         </ScrollReveal>

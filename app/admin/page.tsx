@@ -124,6 +124,33 @@ interface AboutContent {
   ctaDescription: string;
 }
 
+interface HomeMissionItem {
+  title: string;
+  desc: string;
+}
+
+interface HomeContent {
+  primaryButtonLabel: string;
+  secondaryButtonLabel: string;
+  techStack: string[];
+  companyCtaTitle: string;
+  companyCtaDesc: string;
+  missionItems: HomeMissionItem[];
+  aboutEyebrow: string;
+  aboutHeading: string;
+  aboutBody1: string;
+  aboutBody2: string;
+  projectsEyebrow: string;
+  projectsHeading: string;
+  eventsEyebrow: string;
+  eventsHeading: string;
+  blogEyebrow: string;
+  blogHeading: string;
+  ctaHeading: string;
+  ctaDescription: string;
+  ctaButtonLabel: string;
+}
+
 interface PartnerInquiry {
   id: string;
   inquiryType: 'project' | 'internship' | 'speaker';
@@ -784,7 +811,7 @@ function ResourceModal({
   );
 }
 
-type TabId = 'members' | 'events' | 'contacts' | 'partners' | 'projects' | 'stats' | 'settings' | 'about' | 'posts' | 'sponsors' | 'resources' | 'past-work' | 'rsvps';
+type TabId = 'members' | 'events' | 'contacts' | 'partners' | 'projects' | 'stats' | 'settings' | 'about' | 'home' | 'posts' | 'sponsors' | 'resources' | 'past-work' | 'rsvps';
 
 // ─── Dashboard ───────────────────────────────────────────────────────────────
 function Dashboard() {
@@ -812,6 +839,27 @@ function Dashboard() {
     techStackTitle: '', techStackSubtitle: '', techStack: [],
     activitiesTitle: '', activitiesSubtitle: '', activities: [],
     ctaTitle: '', ctaDescription: '',
+  });
+  const [homeContent, setHomeContent] = useState<HomeContent>({
+    primaryButtonLabel: 'Join the Club',
+    secondaryButtonLabel: 'Meet the Team',
+    techStack: [],
+    companyCtaTitle: 'Are you a company?',
+    companyCtaDesc: 'Partner with us for projects or offer internships to our members.',
+    missionItems: [],
+    aboutEyebrow: 'Who we are',
+    aboutHeading: 'About LC3',
+    aboutBody1: '',
+    aboutBody2: '',
+    projectsEyebrow: "What we're building",
+    projectsHeading: 'Featured Projects',
+    eventsEyebrow: 'Mark your calendar',
+    eventsHeading: 'Upcoming Events',
+    blogEyebrow: "What's new",
+    blogHeading: 'Latest Updates',
+    ctaHeading: 'Ready to join?',
+    ctaDescription: '',
+    ctaButtonLabel: 'Apply to Join LC3',
   });
   const [loading, setLoading] = useState(true);
 
@@ -862,7 +910,7 @@ function Dashboard() {
     const safe = <T,>(url: string, fallback: T) =>
       fetch(url).then((r) => r.ok ? r.json() as Promise<T> : fallback).catch(() => fallback);
 
-    const [m, e, c, pt, p, s, st, ab, po, sp, rv, rs, cs] = await Promise.all([
+    const [m, e, c, pt, p, s, st, ab, po, sp, rv, rs, cs, hm] = await Promise.all([
       safe('/api/members', []),
       safe('/api/events', []),
       safe('/api/contact', []),
@@ -876,6 +924,7 @@ function Dashboard() {
       safe('/api/rsvps', []),
       safe('/api/resources', []),
       safe('/api/case-studies', { live: false, sectionTitle: 'Past Work', caseStudies: [] }),
+      safe('/api/home', {}),
     ]);
     setMembers(m as Member[]);
     setEvents(e as Event[]);
@@ -890,6 +939,7 @@ function Dashboard() {
     setRsvps(Array.isArray(rv) ? rv as Array<{ id: string; eventId: string; name: string; email: string; submittedAt: string }> : []);
     setResources(Array.isArray(rs) ? rs as Array<{ id: string; title: string; description: string; url: string; category: string }> : []);
     setCaseStudiesConfig(cs as CaseStudiesConfig);
+    setHomeContent(hm as HomeContent);
     setLoading(false);
   }, []);
 
@@ -1075,6 +1125,7 @@ function Dashboard() {
       label: 'Settings',
       items: [
         { id: 'stats' as TabId, label: 'Stats', count: null, unread: 0 },
+        { id: 'home' as TabId, label: 'Home Page', count: null, unread: 0 },
         { id: 'about' as TabId, label: 'About Page', count: null, unread: 0 },
         { id: 'settings' as TabId, label: 'Settings', count: null, unread: 0 },
       ],
@@ -1889,6 +1940,223 @@ function Dashboard() {
           )}
 
           {/* About Page Tab */}
+          {/* Home Page Tab */}
+          {tab === 'home' && (
+            <div className="space-y-6">
+              <div>
+                <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Home Page</h2>
+                <p className="text-slate-500 text-sm mt-1">Edit all content that appears on the public home page.</p>
+              </div>
+
+              {/* Hero Buttons */}
+              <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl p-6 space-y-4">
+                <p className="text-xs text-slate-500 font-medium uppercase tracking-wider">Hero Buttons</p>
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Primary Button</label>
+                    <input type="text" value={homeContent.primaryButtonLabel}
+                      onChange={(e) => setHomeContent((h) => ({ ...h, primaryButtonLabel: e.target.value }))}
+                      placeholder="Join the Club"
+                      className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Secondary Button</label>
+                    <input type="text" value={homeContent.secondaryButtonLabel}
+                      onChange={(e) => setHomeContent((h) => ({ ...h, secondaryButtonLabel: e.target.value }))}
+                      placeholder="Meet the Team"
+                      className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Tech Stack */}
+              <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl p-6 space-y-3">
+                <p className="text-xs text-slate-500 font-medium uppercase tracking-wider">Tech Stack Badges</p>
+                <input type="text"
+                  value={homeContent.techStack.join(', ')}
+                  onChange={(e) => setHomeContent((h) => ({ ...h, techStack: e.target.value.split(',').map((s) => s.trim()).filter(Boolean) }))}
+                  placeholder="Power Apps, Azure, React, Python..."
+                  className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                />
+                {homeContent.techStack.length > 0 && (
+                  <div className="flex flex-wrap gap-2">
+                    {homeContent.techStack.map((t, i) => (
+                      <span key={i} className="text-xs bg-slate-100 border border-slate-200 text-slate-600 dark:bg-white/5 dark:border-white/10 dark:text-slate-400 px-2.5 py-1 rounded-full">{t}</span>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Company CTA */}
+              <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl p-6 space-y-4">
+                <p className="text-xs text-slate-500 font-medium uppercase tracking-wider">Company CTA Card</p>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Title</label>
+                  <input type="text" value={homeContent.companyCtaTitle}
+                    onChange={(e) => setHomeContent((h) => ({ ...h, companyCtaTitle: e.target.value }))}
+                    placeholder="Are you a company?"
+                    className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Description</label>
+                  <input type="text" value={homeContent.companyCtaDesc}
+                    onChange={(e) => setHomeContent((h) => ({ ...h, companyCtaDesc: e.target.value }))}
+                    placeholder="Partner with us for projects or offer internships..."
+                    className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                  />
+                </div>
+              </div>
+
+              {/* Mission Items */}
+              <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl p-6 space-y-4">
+                <div className="flex items-center justify-between">
+                  <p className="text-xs text-slate-500 font-medium uppercase tracking-wider">Mission Items</p>
+                  <button
+                    onClick={() => setHomeContent((h) => ({ ...h, missionItems: [...h.missionItems, { title: '', desc: '' }] }))}
+                    className="flex items-center gap-1 text-xs text-violet-600 dark:text-violet-400 hover:text-violet-700 dark:hover:text-violet-300 font-medium transition-colors"
+                  >
+                    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
+                    Add Item
+                  </button>
+                </div>
+                <div className="grid sm:grid-cols-2 gap-3">
+                  {homeContent.missionItems.map((item, i) => (
+                    <div key={i} className="bg-slate-50 dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] rounded-xl p-4 space-y-2">
+                      <div className="flex items-center justify-between gap-2">
+                        <input type="text" value={item.title}
+                          onChange={(e) => setHomeContent((h) => { const items = [...h.missionItems]; items[i] = { ...items[i], title: e.target.value }; return { ...h, missionItems: items }; })}
+                          placeholder="Item title"
+                          className="flex-1 bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#253650] text-slate-900 dark:text-white placeholder:text-slate-400 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all font-medium"
+                        />
+                        <button onClick={() => setHomeContent((h) => ({ ...h, missionItems: h.missionItems.filter((_, j) => j !== i) }))}
+                          className="flex-shrink-0 w-6 h-6 flex items-center justify-center rounded-md text-slate-400 hover:text-red-400 hover:bg-red-500/10 transition-all">
+                          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                        </button>
+                      </div>
+                      <input type="text" value={item.desc}
+                        onChange={(e) => setHomeContent((h) => { const items = [...h.missionItems]; items[i] = { ...items[i], desc: e.target.value }; return { ...h, missionItems: items }; })}
+                        placeholder="Short description..."
+                        className="w-full bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#253650] text-slate-900 dark:text-white placeholder:text-slate-400 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* About Section */}
+              <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl p-6 space-y-4">
+                <p className="text-xs text-slate-500 font-medium uppercase tracking-wider">About Section</p>
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-slate-400 mb-1.5">Eyebrow</label>
+                    <input type="text" value={homeContent.aboutEyebrow}
+                      onChange={(e) => setHomeContent((h) => ({ ...h, aboutEyebrow: e.target.value }))}
+                      placeholder="Who we are"
+                      className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-400 mb-1.5">Heading</label>
+                    <input type="text" value={homeContent.aboutHeading}
+                      onChange={(e) => setHomeContent((h) => ({ ...h, aboutHeading: e.target.value }))}
+                      placeholder="About LC3"
+                      className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Paragraph 1</label>
+                  <textarea rows={3} value={homeContent.aboutBody1}
+                    onChange={(e) => setHomeContent((h) => ({ ...h, aboutBody1: e.target.value }))}
+                    className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all resize-none"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Paragraph 2</label>
+                  <textarea rows={2} value={homeContent.aboutBody2}
+                    onChange={(e) => setHomeContent((h) => ({ ...h, aboutBody2: e.target.value }))}
+                    className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all resize-none"
+                  />
+                </div>
+              </div>
+
+              {/* Section Headings */}
+              <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl p-6 space-y-4">
+                <p className="text-xs text-slate-500 font-medium uppercase tracking-wider">Section Headings</p>
+                {([
+                  { eyebrowKey: 'projectsEyebrow', headingKey: 'projectsHeading', label: 'Featured Projects' },
+                  { eyebrowKey: 'eventsEyebrow', headingKey: 'eventsHeading', label: 'Upcoming Events' },
+                  { eyebrowKey: 'blogEyebrow', headingKey: 'blogHeading', label: 'Blog / Latest Updates' },
+                ] as { eyebrowKey: keyof HomeContent; headingKey: keyof HomeContent; label: string }[]).map(({ eyebrowKey, headingKey, label }) => (
+                  <div key={label}>
+                    <p className="text-xs text-slate-400 mb-2">{label}</p>
+                    <div className="grid sm:grid-cols-2 gap-3">
+                      <input type="text" value={homeContent[eyebrowKey] as string}
+                        onChange={(e) => setHomeContent((h) => ({ ...h, [eyebrowKey]: e.target.value }))}
+                        placeholder="Eyebrow text"
+                        className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                      />
+                      <input type="text" value={homeContent[headingKey] as string}
+                        onChange={(e) => setHomeContent((h) => ({ ...h, [headingKey]: e.target.value }))}
+                        placeholder="Heading"
+                        className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* CTA Section */}
+              <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl p-6 space-y-4">
+                <p className="text-xs text-slate-500 font-medium uppercase tracking-wider">CTA Section</p>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Heading</label>
+                  <input type="text" value={homeContent.ctaHeading}
+                    onChange={(e) => setHomeContent((h) => ({ ...h, ctaHeading: e.target.value }))}
+                    placeholder="Ready to join?"
+                    className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Description</label>
+                  <textarea rows={2} value={homeContent.ctaDescription}
+                    onChange={(e) => setHomeContent((h) => ({ ...h, ctaDescription: e.target.value }))}
+                    placeholder="Fill out our quick interest form..."
+                    className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all resize-none"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Button Label</label>
+                  <input type="text" value={homeContent.ctaButtonLabel}
+                    onChange={(e) => setHomeContent((h) => ({ ...h, ctaButtonLabel: e.target.value }))}
+                    placeholder="Apply to Join LC3"
+                    className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                  />
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between">
+                <a href="/" target="_blank" rel="noopener noreferrer"
+                  className="text-sm text-slate-500 hover:text-violet-600 dark:hover:text-violet-400 transition-colors flex items-center gap-1.5">
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+                  Preview Home page
+                </a>
+                <button
+                  onClick={async () => {
+                    await fetch('/api/home', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(homeContent) });
+                    fetchData();
+                  }}
+                  className="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-violet-600 text-white text-sm font-semibold rounded-xl hover:opacity-90 transition-opacity"
+                >
+                  Save Home Page
+                </button>
+              </div>
+            </div>
+          )}
+
           {tab === 'about' && (
             <div className="space-y-6">
               <div>
