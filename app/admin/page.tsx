@@ -832,6 +832,9 @@ function Dashboard() {
   const [postModal, setPostModal] = useState<{ open: boolean; post: Post | null }>({ open: false, post: null });
   const [sponsorModal, setSponsorModal] = useState<{ open: boolean; sponsor: Sponsor | null }>({ open: false, sponsor: null });
   const [caseStudiesConfig, setCaseStudiesConfig] = useState<CaseStudiesConfig>({ live: false, sectionTitle: 'Past Work', caseStudies: [] });
+  const [socialLinksOpen, setSocialLinksOpen] = useState(false);
+  const [homeTechRaw, setHomeTechRaw] = useState('');
+  const [aboutTechRaw, setAboutTechRaw] = useState('');
   const [caseStudyModal, setCaseStudyModal] = useState<{ open: boolean; caseStudy: CaseStudy | null }>({ open: false, caseStudy: null });
   const [aboutContent, setAboutContent] = useState<AboutContent>({
     heroTagline: '', heroDescription: '', mission: '',
@@ -940,6 +943,8 @@ function Dashboard() {
     setResources(Array.isArray(rs) ? rs as Array<{ id: string; title: string; description: string; url: string; category: string }> : []);
     setCaseStudiesConfig(cs as CaseStudiesConfig);
     setHomeContent(hm as HomeContent);
+    setHomeTechRaw(((hm as HomeContent).techStack ?? []).join(', '));
+    setAboutTechRaw(((ab as AboutContent).techStack ?? []).join(', '));
     setLoading(false);
   }, []);
 
@@ -1975,8 +1980,11 @@ function Dashboard() {
               <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl p-6 space-y-3">
                 <p className="text-xs text-slate-500 font-medium uppercase tracking-wider">Tech Stack Badges</p>
                 <input type="text"
-                  value={homeContent.techStack.join(', ')}
-                  onChange={(e) => setHomeContent((h) => ({ ...h, techStack: e.target.value.split(',').map((s) => s.trim()).filter(Boolean) }))}
+                  value={homeTechRaw}
+                  onChange={(e) => {
+                    setHomeTechRaw(e.target.value);
+                    setHomeContent((h) => ({ ...h, techStack: e.target.value.split(',').map((s) => s.trim()).filter(Boolean) }));
+                  }}
                   placeholder="Power Apps, Azure, React, Python..."
                   className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
                 />
@@ -2273,8 +2281,11 @@ function Dashboard() {
                 <div>
                   <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Technologies <span className="text-slate-400 font-normal">(comma-separated)</span></label>
                   <input type="text"
-                    value={aboutContent.techStack.join(', ')}
-                    onChange={(e) => setAboutContent((a) => ({ ...a, techStack: e.target.value.split(',').map((s) => s.trim()).filter(Boolean) }))}
+                    value={aboutTechRaw}
+                    onChange={(e) => {
+                      setAboutTechRaw(e.target.value);
+                      setAboutContent((a) => ({ ...a, techStack: e.target.value.split(',').map((s) => s.trim()).filter(Boolean) }));
+                    }}
                     placeholder="Power Apps, Power Automate, Azure, React, Python"
                     className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
                   />
@@ -2440,25 +2451,39 @@ function Dashboard() {
                 </div>
 
                 <div>
-                  <p className="text-xs text-slate-500 font-medium uppercase tracking-wider mb-3">Club Social Links</p>
-                  <div className="space-y-3">
-                    {[
-                      { key: 'discord' as const, label: 'Discord Invite URL', placeholder: 'https://discord.gg/...' },
-                      { key: 'github' as const, label: 'GitHub Organization URL', placeholder: 'https://github.com/your-org' },
-                      { key: 'linkedin' as const, label: 'LinkedIn Page URL', placeholder: 'https://linkedin.com/company/...' },
-                    ].map(({ key, label, placeholder }) => (
-                      <div key={key}>
-                        <label className="block text-sm font-medium text-slate-400 mb-1.5">{label}</label>
-                        <input
-                          type="url"
-                          value={siteSettings[key] ?? ''}
-                          onChange={(e) => setSiteSettings((s) => ({ ...s, [key]: e.target.value }))}
-                          placeholder={placeholder}
-                          className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
-                        />
-                      </div>
-                    ))}
-                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setSocialLinksOpen((o) => !o)}
+                    className="flex items-center justify-between w-full group"
+                  >
+                    <p className="text-xs text-slate-500 font-medium uppercase tracking-wider">Club Social Links</p>
+                    <svg
+                      className={`w-4 h-4 text-slate-400 transition-transform ${socialLinksOpen ? 'rotate-180' : ''}`}
+                      fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+                  {socialLinksOpen && (
+                    <div className="space-y-3 mt-3">
+                      {[
+                        { key: 'discord' as const, label: 'Discord Invite URL', placeholder: 'https://discord.gg/...' },
+                        { key: 'github' as const, label: 'GitHub Organization URL', placeholder: 'https://github.com/your-org' },
+                        { key: 'linkedin' as const, label: 'LinkedIn Page URL', placeholder: 'https://linkedin.com/company/...' },
+                      ].map(({ key, label, placeholder }) => (
+                        <div key={key}>
+                          <label className="block text-sm font-medium text-slate-400 mb-1.5">{label}</label>
+                          <input
+                            type="url"
+                            value={siteSettings[key] ?? ''}
+                            onChange={(e) => setSiteSettings((s) => ({ ...s, [key]: e.target.value }))}
+                            placeholder={placeholder}
+                            className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
 
                 <button
