@@ -67,6 +67,34 @@ export default function ProjectsPage() {
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-16">
       {/* Header */}
       <div className="text-center mb-16">
+        <svg width="72" height="72" viewBox="0 0 72 72" className="mx-auto mb-5 opacity-85 dark:opacity-75" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <style>{`
+              @keyframes proj-blink { 0%,49%{opacity:1} 50%,100%{opacity:0} }
+              @keyframes proj-spark { 0%,100%{opacity:0.3} 50%{opacity:0.9} }
+            `}</style>
+          </defs>
+          <circle cx="36" cy="36" r="33" fill="#7c3aed" fillOpacity="0.07" stroke="#7c3aed" strokeWidth="1" strokeOpacity="0.3"/>
+          {/* Terminal window */}
+          <rect x="14" y="20" width="44" height="34" rx="5" fill="none" stroke="#6366f1" strokeWidth="1.5" strokeOpacity="0.7"/>
+          <rect x="14" y="20" width="44" height="11" rx="5" fill="#6366f1" fillOpacity="0.15"/>
+          <rect x="14" y="26" width="44" height="5" fill="#6366f1" fillOpacity="0.12"/>
+          {/* Traffic dots */}
+          <circle cx="21" cy="25.5" r="2.2" fill="#6366f1" fillOpacity="0.55"/>
+          <circle cx="27.5" cy="25.5" r="2.2" fill="#818cf8" fillOpacity="0.5"/>
+          <circle cx="34" cy="25.5" r="2.2" fill="#0891b2" fillOpacity="0.5"/>
+          {/* Code lines */}
+          <rect x="19" y="37" width="22" height="2.5" rx="1.25" fill="#6366f1" fillOpacity="0.55"/>
+          <rect x="19" y="43" width="30" height="2.5" rx="1.25" fill="#818cf8" fillOpacity="0.45"/>
+          <rect x="19" y="49" width="16" height="2.5" rx="1.25" fill="#0891b2" fillOpacity="0.5"/>
+          {/* Blinking cursor */}
+          <rect x="36" y="49" width="7" height="2.5" rx="1.25" fill="#6366f1" fillOpacity="0.7" style={{animation:'proj-blink 1s step-end infinite'}}/>
+          {/* Sparkle dots */}
+          <circle cx="8" cy="12" r="2.5" fill="#6366f1" fillOpacity="0.7" style={{animation:'proj-spark 2s ease-in-out infinite'}}/>
+          <circle cx="63" cy="10" r="2" fill="#818cf8" fillOpacity="0.65" style={{animation:'proj-spark 2s ease-in-out infinite 0.5s'}}/>
+          <circle cx="10" cy="60" r="2" fill="#0891b2" fillOpacity="0.65" style={{animation:'proj-spark 2s ease-in-out infinite 1s'}}/>
+          <circle cx="62" cy="60" r="2.5" fill="#6366f1" fillOpacity="0.7" style={{animation:'proj-spark 2s ease-in-out infinite 1.5s'}}/>
+        </svg>
         <p className="text-violet-600 dark:text-violet-400 text-sm font-medium mb-2">Built by our members</p>
         <h1 className="text-4xl sm:text-5xl font-bold text-slate-900 dark:text-white mb-4">Projects</h1>
         <p className="text-slate-500 max-w-xl mx-auto">

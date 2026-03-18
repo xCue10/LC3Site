@@ -280,6 +280,46 @@ export default function MembersClient({ members }: { members: Member[] }) {
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-16">
       {/* Header */}
       <div className="text-center mb-12">
+        <svg width="72" height="72" viewBox="0 0 72 72" className="mx-auto mb-5 opacity-85 dark:opacity-75" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <style>{`
+              @keyframes mem-pulse { 0%,100%{opacity:0.15} 50%{opacity:0.28} }
+              @keyframes mem-dash { to { stroke-dashoffset: -14; } }
+              @keyframes mem-dot { 0%,100%{opacity:0.3} 50%{opacity:0.9} }
+            `}</style>
+          </defs>
+          <circle cx="36" cy="36" r="20" fill="#7c3aed" fillOpacity="0.12" style={{animation:'mem-pulse 3s ease-in-out infinite'}}/>
+          {/* Connection lines */}
+          <line x1="36" y1="36" x2="12" y2="18" stroke="#6366f1" strokeWidth="1" strokeOpacity="0.45" strokeDasharray="3 4" style={{animation:'mem-dash 1.6s linear infinite'}}/>
+          <line x1="36" y1="36" x2="60" y2="18" stroke="#0891b2" strokeWidth="1" strokeOpacity="0.45" strokeDasharray="3 4" style={{animation:'mem-dash 2s linear infinite 0.4s'}}/>
+          <line x1="36" y1="36" x2="8" y2="50" stroke="#818cf8" strokeWidth="1" strokeOpacity="0.4" strokeDasharray="3 4" style={{animation:'mem-dash 1.8s linear infinite 0.8s'}}/>
+          <line x1="36" y1="36" x2="64" y2="50" stroke="#0891b2" strokeWidth="1" strokeOpacity="0.4" strokeDasharray="3 4" style={{animation:'mem-dash 2.2s linear infinite 1.2s'}}/>
+          <line x1="36" y1="36" x2="36" y2="66" stroke="#6366f1" strokeWidth="1" strokeOpacity="0.35" strokeDasharray="3 4" style={{animation:'mem-dash 1.9s linear infinite 1.6s'}}/>
+          {/* Outer person nodes */}
+          <circle cx="12" cy="18" r="8" fill="#6366f1" fillOpacity="0.1" stroke="#6366f1" strokeWidth="1.5" strokeOpacity="0.55"/>
+          <circle cx="12" cy="15.5" r="2.5" fill="#6366f1" fillOpacity="0.5"/>
+          <path d="M7.5 21 Q12 18.5 16.5 21" fill="none" stroke="#6366f1" strokeWidth="1.2" strokeOpacity="0.5" strokeLinecap="round"/>
+          <circle cx="60" cy="18" r="8" fill="#0891b2" fillOpacity="0.1" stroke="#0891b2" strokeWidth="1.5" strokeOpacity="0.55"/>
+          <circle cx="60" cy="15.5" r="2.5" fill="#0891b2" fillOpacity="0.5"/>
+          <path d="M55.5 21 Q60 18.5 64.5 21" fill="none" stroke="#0891b2" strokeWidth="1.2" strokeOpacity="0.5" strokeLinecap="round"/>
+          <circle cx="8" cy="50" r="7" fill="#818cf8" fillOpacity="0.1" stroke="#818cf8" strokeWidth="1.5" strokeOpacity="0.5"/>
+          <circle cx="8" cy="47.5" r="2.2" fill="#818cf8" fillOpacity="0.5"/>
+          <path d="M4 52.5 Q8 50.5 12 52.5" fill="none" stroke="#818cf8" strokeWidth="1.2" strokeOpacity="0.5" strokeLinecap="round"/>
+          <circle cx="64" cy="50" r="7" fill="#0891b2" fillOpacity="0.1" stroke="#0891b2" strokeWidth="1.5" strokeOpacity="0.5"/>
+          <circle cx="64" cy="47.5" r="2.2" fill="#0891b2" fillOpacity="0.5"/>
+          <path d="M60 52.5 Q64 50.5 68 52.5" fill="none" stroke="#0891b2" strokeWidth="1.2" strokeOpacity="0.5" strokeLinecap="round"/>
+          <circle cx="36" cy="66" r="7" fill="#6366f1" fillOpacity="0.1" stroke="#6366f1" strokeWidth="1.5" strokeOpacity="0.45"/>
+          <circle cx="36" cy="63.5" r="2.2" fill="#6366f1" fillOpacity="0.45"/>
+          <path d="M32 69 Q36 67 40 69" fill="none" stroke="#6366f1" strokeWidth="1.2" strokeOpacity="0.45" strokeLinecap="round"/>
+          {/* Center node */}
+          <circle cx="36" cy="36" r="10" fill="#6366f1" fillOpacity="0.12" stroke="#6366f1" strokeWidth="1.8" strokeOpacity="0.6"/>
+          <circle cx="36" cy="33" r="3.5" fill="#6366f1" fillOpacity="0.6"/>
+          <path d="M29.5 40 Q36 37 42.5 40" fill="none" stroke="#6366f1" strokeWidth="1.5" strokeOpacity="0.6" strokeLinecap="round"/>
+          {/* Floating dots */}
+          <circle cx="24" cy="28" r="1.5" fill="#6366f1" fillOpacity="0.5" style={{animation:'mem-dot 2.5s ease-in-out infinite'}}/>
+          <circle cx="48" cy="26" r="1.5" fill="#0891b2" fillOpacity="0.5" style={{animation:'mem-dot 2.5s ease-in-out infinite 0.8s'}}/>
+          <circle cx="22" cy="48" r="1.5" fill="#818cf8" fillOpacity="0.5" style={{animation:'mem-dot 2.5s ease-in-out infinite 1.6s'}}/>
+        </svg>
         <p className="text-violet-600 dark:text-violet-400 text-sm font-medium mb-2">The people behind the code</p>
         <h1 className="text-4xl sm:text-5xl font-bold text-slate-900 dark:text-white mb-4">Meet Our Members</h1>
         <p className="text-slate-500 max-w-xl mx-auto mb-4">

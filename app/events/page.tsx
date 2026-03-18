@@ -46,6 +46,35 @@ export default function EventsPage() {
     <div className="max-w-4xl mx-auto px-4 sm:px-6 py-16">
       {/* Header */}
       <div className="text-center mb-14">
+        <svg width="72" height="72" viewBox="0 0 72 72" className="mx-auto mb-5 opacity-85 dark:opacity-75" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <style>{`
+              @keyframes ev-spark { 0%,100%{opacity:0.3;transform:scale(0.85)} 50%{opacity:0.95;transform:scale(1.15)} }
+              @keyframes ev-pulse { 0%,100%{opacity:0.5} 50%{opacity:1} }
+            `}</style>
+          </defs>
+          <circle cx="36" cy="36" r="33" fill="#3b82f6" fillOpacity="0.07" stroke="#3b82f6" strokeWidth="1" strokeOpacity="0.3"/>
+          {/* Calendar body */}
+          <rect x="16" y="24" width="40" height="32" rx="5" fill="none" stroke="#3b82f6" strokeWidth="1.5" strokeOpacity="0.7"/>
+          <rect x="16" y="24" width="40" height="11" rx="5" fill="#3b82f6" fillOpacity="0.18"/>
+          <rect x="16" y="30" width="40" height="5" fill="#3b82f6" fillOpacity="0.18"/>
+          {/* Pegs */}
+          <rect x="26" y="20" width="3" height="8" rx="1.5" fill="#6366f1" fillOpacity="0.7"/>
+          <rect x="43" y="20" width="3" height="8" rx="1.5" fill="#6366f1" fillOpacity="0.7"/>
+          {/* Day dots */}
+          <circle cx="26" cy="44" r="2.5" fill="#3b82f6" fillOpacity="0.55"/>
+          <circle cx="36" cy="44" r="2.5" fill="#3b82f6" fillOpacity="0.55"/>
+          <circle cx="46" cy="44" r="3" fill="#6366f1" fillOpacity="0.75" style={{animation:'ev-pulse 2s ease-in-out infinite'}}/>
+          <circle cx="26" cy="52" r="2" fill="#3b82f6" fillOpacity="0.4"/>
+          <circle cx="36" cy="52" r="2" fill="#818cf8" fillOpacity="0.45"/>
+          {/* Sparkle dots */}
+          <circle cx="8" cy="12" r="2.5" fill="#6366f1" fillOpacity="0.7" style={{animation:'ev-spark 2.2s ease-in-out infinite'}}/>
+          <circle cx="62" cy="10" r="2" fill="#0891b2" fillOpacity="0.65" style={{animation:'ev-spark 2.2s ease-in-out infinite 0.55s'}}/>
+          <circle cx="10" cy="60" r="2" fill="#818cf8" fillOpacity="0.65" style={{animation:'ev-spark 2.2s ease-in-out infinite 1.1s'}}/>
+          <circle cx="62" cy="60" r="2.5" fill="#0891b2" fillOpacity="0.7" style={{animation:'ev-spark 2.2s ease-in-out infinite 1.65s'}}/>
+          <circle cx="5" cy="36" r="1.5" fill="#6366f1" fillOpacity="0.5" style={{animation:'ev-spark 2.2s ease-in-out infinite 0.8s'}}/>
+          <circle cx="67" cy="36" r="1.5" fill="#0891b2" fillOpacity="0.5" style={{animation:'ev-spark 2.2s ease-in-out infinite 1.3s'}}/>
+        </svg>
         <p className="text-blue-600 dark:text-blue-400 text-sm font-medium mb-2">Stay in the loop</p>
         <h1 className="text-4xl sm:text-5xl font-bold text-slate-900 dark:text-white mb-4">Events</h1>
         <p className="text-slate-500 max-w-xl mx-auto">

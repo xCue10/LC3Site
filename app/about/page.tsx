@@ -81,18 +81,98 @@ export default function AboutPage() {
     <div className="max-w-5xl mx-auto px-4 sm:px-6 py-16">
 
       {/* Hero */}
-      <div className="text-center mb-20">
-        <p className="text-violet-600 dark:text-violet-400 text-sm font-medium mb-3">{about.heroTagline}</p>
-        <h1 className="text-4xl sm:text-6xl font-bold text-slate-900 dark:text-white mb-4 leading-tight">
-          About{' '}
-          <span className="bg-gradient-to-r from-blue-600 via-violet-600 to-violet-700 bg-clip-text text-transparent dark:from-blue-400 dark:via-violet-400 dark:to-violet-500">
-            LC3
-          </span>
-        </h1>
-        <p className="text-sm text-slate-400 dark:text-slate-500 mb-5">College of Southern Nevada</p>
-        <p className="text-lg text-slate-600 dark:text-slate-400 leading-relaxed max-w-2xl mx-auto">
-          {about.heroDescription}
-        </p>
+      <div className="flex flex-col md:flex-row items-center gap-10 md:gap-16 mb-20">
+        <div className="flex-1 text-center md:text-left">
+          <p className="text-violet-600 dark:text-violet-400 text-sm font-medium mb-3">{about.heroTagline}</p>
+          <h1 className="text-4xl sm:text-6xl font-bold text-slate-900 dark:text-white mb-4 leading-tight">
+            About{' '}
+            <span className="bg-gradient-to-r from-blue-600 via-violet-600 to-violet-700 bg-clip-text text-transparent dark:from-blue-400 dark:via-violet-400 dark:to-violet-500">
+              LC3
+            </span>
+          </h1>
+          <p className="text-sm text-slate-400 dark:text-slate-500 mb-5">College of Southern Nevada</p>
+          <p className="text-lg text-slate-600 dark:text-slate-400 leading-relaxed">
+            {about.heroDescription}
+          </p>
+        </div>
+
+        {/* Community network SVG */}
+        <div className="flex-shrink-0 w-full max-w-[280px]">
+          <svg width="280" height="260" viewBox="0 0 300 270" className="w-full opacity-85 dark:opacity-75" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <style>{`
+                @keyframes about-dash { to { stroke-dashoffset: -20; } }
+                @keyframes about-glow { 0%,100%{opacity:0.12} 50%{opacity:0.22} }
+                @keyframes about-dot { 0%,100%{opacity:0.3} 50%{opacity:0.85} }
+              `}</style>
+              <radialGradient id="about-cg" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stopColor="#6366f1" stopOpacity="0.25"/>
+                <stop offset="100%" stopColor="#6366f1" stopOpacity="0"/>
+              </radialGradient>
+              <linearGradient id="about-lg" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stopColor="#6366f1"/>
+                <stop offset="100%" stopColor="#0891b2"/>
+              </linearGradient>
+            </defs>
+
+            {/* Center ambient glow */}
+            <circle cx="150" cy="135" r="65" fill="url(#about-cg)" style={{animation:'about-glow 3s ease-in-out infinite'}}/>
+
+            {/* Connection lines */}
+            <line x1="150" y1="135" x2="55" y2="45" stroke="#6366f1" strokeWidth="1" strokeOpacity="0.45" strokeDasharray="5 5" style={{animation:'about-dash 1.8s linear infinite'}}/>
+            <line x1="150" y1="135" x2="248" y2="42" stroke="#0891b2" strokeWidth="1" strokeOpacity="0.45" strokeDasharray="5 5" style={{animation:'about-dash 2.1s linear infinite 0.3s'}}/>
+            <line x1="150" y1="135" x2="22" y2="155" stroke="#818cf8" strokeWidth="1" strokeOpacity="0.4" strokeDasharray="5 5" style={{animation:'about-dash 1.9s linear infinite 0.6s'}}/>
+            <line x1="150" y1="135" x2="278" y2="148" stroke="#0891b2" strokeWidth="1" strokeOpacity="0.4" strokeDasharray="5 5" style={{animation:'about-dash 2.3s linear infinite 0.9s'}}/>
+            <line x1="150" y1="135" x2="72" y2="238" stroke="#6366f1" strokeWidth="1" strokeOpacity="0.4" strokeDasharray="5 5" style={{animation:'about-dash 2.0s linear infinite 1.2s'}}/>
+            <line x1="150" y1="135" x2="232" y2="232" stroke="#818cf8" strokeWidth="1" strokeOpacity="0.4" strokeDasharray="5 5" style={{animation:'about-dash 2.2s linear infinite 1.5s'}}/>
+
+            {/* Cross connections */}
+            <line x1="55" y1="45" x2="248" y2="42" stroke="#6366f1" strokeWidth="0.5" strokeOpacity="0.15" strokeDasharray="3 8"/>
+            <line x1="22" y1="155" x2="72" y2="238" stroke="#818cf8" strokeWidth="0.5" strokeOpacity="0.15" strokeDasharray="3 8"/>
+            <line x1="278" y1="148" x2="232" y2="232" stroke="#0891b2" strokeWidth="0.5" strokeOpacity="0.15" strokeDasharray="3 8"/>
+
+            {/* Outer node: Top-left */}
+            <circle cx="55" cy="45" r="20" fill="#6366f1" fillOpacity="0.08" stroke="#6366f1" strokeWidth="1.5" strokeOpacity="0.5"/>
+            <circle cx="55" cy="40" r="5.5" fill="#6366f1" fillOpacity="0.45"/>
+            <path d="M46 53 Q55 48 64 53" fill="none" stroke="#6366f1" strokeWidth="1.5" strokeOpacity="0.45" strokeLinecap="round"/>
+
+            {/* Outer node: Top-right */}
+            <circle cx="248" cy="42" r="22" fill="#0891b2" fillOpacity="0.08" stroke="#0891b2" strokeWidth="1.5" strokeOpacity="0.5"/>
+            <circle cx="248" cy="37" r="6" fill="#0891b2" fillOpacity="0.45"/>
+            <path d="M238 51 Q248 46 258 51" fill="none" stroke="#0891b2" strokeWidth="1.5" strokeOpacity="0.45" strokeLinecap="round"/>
+
+            {/* Outer node: Left */}
+            <circle cx="22" cy="155" r="18" fill="#818cf8" fillOpacity="0.08" stroke="#818cf8" strokeWidth="1.5" strokeOpacity="0.45"/>
+            <circle cx="22" cy="150" r="5" fill="#818cf8" fillOpacity="0.45"/>
+            <path d="M14 162 Q22 157 30 162" fill="none" stroke="#818cf8" strokeWidth="1.5" strokeOpacity="0.45" strokeLinecap="round"/>
+
+            {/* Outer node: Right */}
+            <circle cx="278" cy="148" r="20" fill="#0891b2" fillOpacity="0.08" stroke="#0891b2" strokeWidth="1.5" strokeOpacity="0.45"/>
+            <circle cx="278" cy="143" r="5.5" fill="#0891b2" fillOpacity="0.45"/>
+            <path d="M269 156 Q278 151 287 156" fill="none" stroke="#0891b2" strokeWidth="1.5" strokeOpacity="0.45" strokeLinecap="round"/>
+
+            {/* Outer node: Bottom-left */}
+            <circle cx="72" cy="238" r="18" fill="#6366f1" fillOpacity="0.08" stroke="#6366f1" strokeWidth="1.5" strokeOpacity="0.4"/>
+            <circle cx="72" cy="233" r="5" fill="#6366f1" fillOpacity="0.4"/>
+            <path d="M64 245 Q72 240 80 245" fill="none" stroke="#6366f1" strokeWidth="1.5" strokeOpacity="0.4" strokeLinecap="round"/>
+
+            {/* Outer node: Bottom-right */}
+            <circle cx="232" cy="232" r="20" fill="#818cf8" fillOpacity="0.08" stroke="#818cf8" strokeWidth="1.5" strokeOpacity="0.4"/>
+            <circle cx="232" cy="227" r="5.5" fill="#818cf8" fillOpacity="0.4"/>
+            <path d="M223 240 Q232 235 241 240" fill="none" stroke="#818cf8" strokeWidth="1.5" strokeOpacity="0.4" strokeLinecap="round"/>
+
+            {/* Center node */}
+            <circle cx="150" cy="135" r="38" fill="#6366f1" fillOpacity="0.1" stroke="url(#about-lg)" strokeWidth="2"/>
+            <circle cx="150" cy="135" r="28" fill="#6366f1" fillOpacity="0.06"/>
+            <text x="150" y="140" textAnchor="middle" fontSize="16" fontWeight="700" fill="#6366f1" fillOpacity="0.9" fontFamily="system-ui, sans-serif" letterSpacing="-0.5">LC3</text>
+
+            {/* Floating accent dots */}
+            <circle cx="108" cy="82" r="2.5" fill="#6366f1" fillOpacity="0.5" style={{animation:'about-dot 2.5s ease-in-out infinite'}}/>
+            <circle cx="192" cy="78" r="2" fill="#0891b2" fillOpacity="0.5" style={{animation:'about-dot 2.5s ease-in-out infinite 0.8s'}}/>
+            <circle cx="98" cy="182" r="2" fill="#818cf8" fillOpacity="0.5" style={{animation:'about-dot 2.5s ease-in-out infinite 1.4s'}}/>
+            <circle cx="202" cy="178" r="2.5" fill="#0891b2" fillOpacity="0.5" style={{animation:'about-dot 2.5s ease-in-out infinite 0.4s'}}/>
+          </svg>
+        </div>
       </div>
 
       {/* Mission */}
