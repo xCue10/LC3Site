@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   description: 'Interested in joining LC3 - Lowcode Cloud Club? Fill out our interest form and we\'ll be in touch!',
 };
 
-const defaults: SiteSettings = { recruitingBanner: '', meetingDay: '', meetingTime: '', meetingLocation: '', discord: '', github: '', linkedin: '' };
+const defaults: SiteSettings = { recruitingBanner: '', meetingDay: '', meetingTime: '', meetingLocation: '', socialLinks: [], socialLinksLive: false };
 
 export default function ContactPage() {
   const settings = readJSON<SiteSettings>('settings.json', defaults);
