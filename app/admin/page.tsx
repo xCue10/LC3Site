@@ -9,15 +9,18 @@ interface Stats {
   yearsActive: string;
 }
 
+interface SocialLink {
+  label: string;
+  url: string;
+}
+
 interface SiteSettings {
   recruitingBanner: string;
   meetingDay: string;
   meetingTime: string;
   meetingLocation: string;
   lastUpdated?: string;
-  discord?: string;
-  github?: string;
-  linkedin?: string;
+  socialLinks?: SocialLink[];
   socialLinksLive?: boolean;
 }
 
@@ -2468,23 +2471,48 @@ function Dashboard() {
                       <div className={`absolute top-1 left-1 w-6 h-6 rounded-full bg-white shadow-md transition-transform ${siteSettings.socialLinksLive ? 'translate-x-6' : ''}`} />
                     </button>
                   </div>
-                  <div className="space-y-3">
-                    {[
-                      { key: 'discord' as const, label: 'Discord Invite URL', placeholder: 'https://discord.gg/...' },
-                      { key: 'github' as const, label: 'GitHub Organization URL', placeholder: 'https://github.com/your-org' },
-                      { key: 'linkedin' as const, label: 'LinkedIn Page URL', placeholder: 'https://linkedin.com/company/...' },
-                    ].map(({ key, label, placeholder }) => (
-                      <div key={key}>
-                        <label className="block text-sm font-medium text-slate-400 mb-1.5">{label}</label>
+                  <div className="space-y-2">
+                    {(siteSettings.socialLinks ?? []).map((link, i) => (
+                      <div key={i} className="flex items-center gap-2">
+                        <input
+                          type="text"
+                          value={link.label}
+                          onChange={(e) => setSiteSettings((s) => {
+                            const links = [...(s.socialLinks ?? [])];
+                            links[i] = { ...links[i], label: e.target.value };
+                            return { ...s, socialLinks: links };
+                          })}
+                          placeholder="Label (e.g. Discord)"
+                          className="w-32 flex-shrink-0 bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                        />
                         <input
                           type="url"
-                          value={siteSettings[key] ?? ''}
-                          onChange={(e) => setSiteSettings((s) => ({ ...s, [key]: e.target.value }))}
-                          placeholder={placeholder}
-                          className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                          value={link.url}
+                          onChange={(e) => setSiteSettings((s) => {
+                            const links = [...(s.socialLinks ?? [])];
+                            links[i] = { ...links[i], url: e.target.value };
+                            return { ...s, socialLinks: links };
+                          })}
+                          placeholder="https://..."
+                          className="flex-1 bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
                         />
+                        <button
+                          type="button"
+                          onClick={() => setSiteSettings((s) => ({ ...s, socialLinks: (s.socialLinks ?? []).filter((_, j) => j !== i) }))}
+                          className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-lg text-slate-400 hover:text-red-400 hover:bg-red-500/10 transition-all"
+                        >
+                          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                        </button>
                       </div>
                     ))}
+                    <button
+                      type="button"
+                      onClick={() => setSiteSettings((s) => ({ ...s, socialLinks: [...(s.socialLinks ?? []), { label: '', url: '' }] }))}
+                      className="flex items-center gap-1.5 text-xs text-violet-600 dark:text-violet-400 hover:text-violet-700 dark:hover:text-violet-300 font-medium transition-colors pt-1"
+                    >
+                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
+                      Add Social Link
+                    </button>
                   </div>
                 </div>
 

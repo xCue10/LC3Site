@@ -20,9 +20,7 @@ export async function PUT(req: NextRequest) {
     meetingDay: body.meetingDay ?? '',
     meetingTime: body.meetingTime ?? '',
     meetingLocation: body.meetingLocation ?? '',
-    discord: body.discord ?? '',
-    github: body.github ?? '',
-    linkedin: body.linkedin ?? '',
+    socialLinks: Array.isArray(body.socialLinks) ? body.socialLinks : [],
     socialLinksLive: body.socialLinksLive ?? false,
     lastUpdated: new Date().toISOString(),
   };

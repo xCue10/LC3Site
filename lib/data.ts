@@ -68,15 +68,18 @@ export interface Contact {
   submittedAt: string;
 }
 
+export interface SocialLink {
+  label: string;
+  url: string;
+}
+
 export interface SiteSettings {
   recruitingBanner: string;
   meetingDay: string;
   meetingTime: string;
   meetingLocation: string;
   lastUpdated?: string;
-  discord?: string;
-  github?: string;
-  linkedin?: string;
+  socialLinks?: SocialLink[];
   socialLinksLive?: boolean;
 }
 
