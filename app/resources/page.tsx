@@ -19,8 +19,13 @@ function ExternalLinkIcon() {
 export default function ResourcesPage() {
   const resources = readJSON<Resource[]>('resources.json');
 
-  // Group by category
-  const categories = Array.from(new Set(resources.map((r) => r.category))).sort();
+  // Group by category — preferred order, then any extras alphabetically
+  const categoryOrder = ['Microsoft', 'Cloud', 'Development', 'Tools', 'General'];
+  const allCategories = Array.from(new Set(resources.map((r) => r.category)));
+  const categories = [
+    ...categoryOrder.filter((c) => allCategories.includes(c)),
+    ...allCategories.filter((c) => !categoryOrder.includes(c)).sort(),
+  ];
   const grouped = categories.reduce<Record<string, Resource[]>>((acc, cat) => {
     acc[cat] = resources.filter((r) => r.category === cat);
     return acc;
