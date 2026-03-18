@@ -20,6 +20,9 @@ export async function PUT(req: NextRequest) {
     meetingDay: body.meetingDay ?? '',
     meetingTime: body.meetingTime ?? '',
     meetingLocation: body.meetingLocation ?? '',
+    discord: body.discord ?? '',
+    github: body.github ?? '',
+    linkedin: body.linkedin ?? '',
     lastUpdated: new Date().toISOString(),
   };
   writeJSON('settings.json', settings);

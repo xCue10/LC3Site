@@ -2450,22 +2450,22 @@ function Dashboard() {
                   </div>
                 </div>
 
-                <div>
+                <div className="border border-slate-200 dark:border-[#1e2d45] rounded-xl overflow-hidden">
                   <button
                     type="button"
                     onClick={() => setSocialLinksOpen((o) => !o)}
-                    className="flex items-center justify-between w-full group"
+                    className="flex items-center justify-between w-full px-4 py-3 bg-slate-50 dark:bg-[#111a2e] hover:bg-slate-100 dark:hover:bg-white/5 transition-colors"
                   >
-                    <p className="text-xs text-slate-500 font-medium uppercase tracking-wider">Club Social Links</p>
+                    <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Club Social Links</span>
                     <svg
-                      className={`w-4 h-4 text-slate-400 transition-transform ${socialLinksOpen ? 'rotate-180' : ''}`}
+                      className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${socialLinksOpen ? 'rotate-180' : ''}`}
                       fill="none" viewBox="0 0 24 24" stroke="currentColor"
                     >
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                     </svg>
                   </button>
                   {socialLinksOpen && (
-                    <div className="space-y-3 mt-3">
+                    <div className="space-y-3 p-4 border-t border-slate-200 dark:border-[#1e2d45]">
                       {[
                         { key: 'discord' as const, label: 'Discord Invite URL', placeholder: 'https://discord.gg/...' },
                         { key: 'github' as const, label: 'GitHub Organization URL', placeholder: 'https://github.com/your-org' },
