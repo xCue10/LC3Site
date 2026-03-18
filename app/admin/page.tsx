@@ -64,6 +64,7 @@ interface Post {
   content: string;
   publishedAt: string;
   published: boolean;
+  coverImage?: string;
 }
 
 interface Sponsor {
