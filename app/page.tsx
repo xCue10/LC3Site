@@ -98,9 +98,10 @@ export default function HomePage() {
             </div>
           )}
 
-          {/* Banner */}
-          <div className="max-w-3xl mx-auto rounded-2xl overflow-hidden shadow-2xl shadow-violet-500/10 border border-white/10 mb-10">
-            <img src="/banner.svg" alt="LC3 - Lowcode Cloud Club · College of Southern Nevada" className="w-full" />
+          {/* Banner — swaps with theme */}
+          <div className="max-w-3xl mx-auto rounded-2xl overflow-hidden shadow-2xl shadow-violet-500/10 border border-slate-200/60 dark:border-white/10 mb-10">
+            <img src="/banner-light.svg" alt="LC3 - Lowcode Cloud Club · College of Southern Nevada" className="w-full dark:hidden" />
+            <img src="/banner-dark.svg" alt="LC3 - Lowcode Cloud Club · College of Southern Nevada" className="w-full hidden dark:block" />
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
