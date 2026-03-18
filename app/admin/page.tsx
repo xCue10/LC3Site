@@ -817,6 +817,8 @@ function Dashboard() {
 
   // Search & sort
   const [membersSearch, setMembersSearch] = useState('');
+  const [contactsSearch, setContactsSearch] = useState('');
+  const [partnersSearch, setPartnersSearch] = useState('');
   const [contactsSort, setContactsSort] = useState<'newest' | 'oldest'>('newest');
   const [partnersSort, setPartnersSort] = useState<'newest' | 'oldest'>('newest');
 
@@ -1480,9 +1482,21 @@ function Dashboard() {
           {/* Partners Tab */}
           {tab === 'partners' && (
             <div>
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-3">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+                <div className="flex flex-wrap items-center gap-3">
                   <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Partner Inquiries</h2>
+                  <div className="relative">
+                    <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                    <input
+                      type="text"
+                      value={partnersSearch}
+                      onChange={(e) => setPartnersSearch(e.target.value)}
+                      placeholder="Search..."
+                      className="bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-lg pl-8 pr-3 py-1.5 text-xs focus:outline-none focus:border-violet-500/50 transition-all w-36"
+                    />
+                  </div>
                   <div className="flex rounded-lg border border-slate-200 dark:border-[#1e2d45] overflow-hidden text-xs">
                     {(['newest', 'oldest'] as const).map((s) => (
                       <button key={s} onClick={() => setPartnersSort(s)}
@@ -1556,7 +1570,11 @@ function Dashboard() {
                     </label>
                   </div>
                   <div className="space-y-3">
-                  {[...partners].sort((a, b) => {
+                  {[...partners].filter((p) => {
+                    if (!partnersSearch.trim()) return true;
+                    const q = partnersSearch.toLowerCase();
+                    return p.companyName.toLowerCase().includes(q) || p.contactName.toLowerCase().includes(q) || p.email.toLowerCase().includes(q) || p.description.toLowerCase().includes(q);
+                  }).sort((a, b) => {
                     const diff = new Date(b.submittedAt).getTime() - new Date(a.submittedAt).getTime();
                     return partnersSort === 'newest' ? diff : -diff;
                   }).map((p) => (
@@ -1601,6 +1619,12 @@ function Dashboard() {
                             {p.positionTitle && <span className="text-xs bg-slate-100 dark:bg-white/5 border border-white/10 text-slate-300 px-2.5 py-1 rounded-full">{p.positionTitle}</span>}
                             {p.duration && <span className="text-xs bg-slate-100 dark:bg-white/5 border border-white/10 text-slate-400 px-2.5 py-1 rounded-full">{p.duration}</span>}
                             {p.compensation && <span className="text-xs bg-slate-100 dark:bg-white/5 border border-white/10 text-slate-400 px-2.5 py-1 rounded-full">{p.compensation}</span>}
+                          </>
+                        ) : p.inquiryType === 'speaker' ? (
+                          <>
+                            <span className="text-xs bg-violet-500/10 border border-violet-500/20 text-violet-400 px-2.5 py-1 rounded-full">🎤 Guest Speaker</span>
+                            {p.topic && <span className="text-xs bg-slate-100 dark:bg-white/5 border border-white/10 text-slate-300 px-2.5 py-1 rounded-full">{p.topic}</span>}
+                            {p.availability && <span className="text-xs bg-slate-100 dark:bg-white/5 border border-white/10 text-slate-400 px-2.5 py-1 rounded-full">{p.availability}</span>}
                           </>
                         ) : (
                           <>
@@ -2185,9 +2209,21 @@ function Dashboard() {
           {/* Contacts Tab */}
           {tab === 'contacts' && (
             <div>
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-3">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+                <div className="flex flex-wrap items-center gap-3">
                   <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Contact Submissions</h2>
+                  <div className="relative">
+                    <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                    <input
+                      type="text"
+                      value={contactsSearch}
+                      onChange={(e) => setContactsSearch(e.target.value)}
+                      placeholder="Search..."
+                      className="bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-lg pl-8 pr-3 py-1.5 text-xs focus:outline-none focus:border-violet-500/50 transition-all w-36"
+                    />
+                  </div>
                   <div className="flex rounded-lg border border-slate-200 dark:border-[#1e2d45] overflow-hidden text-xs">
                     {(['newest', 'oldest'] as const).map((s) => (
                       <button key={s} onClick={() => setContactsSort(s)}
@@ -2259,7 +2295,11 @@ function Dashboard() {
                     </label>
                   </div>
                   <div className="space-y-3">
-                    {[...contacts].sort((a, b) => {
+                    {[...contacts].filter((c) => {
+                      if (!contactsSearch.trim()) return true;
+                      const q = contactsSearch.toLowerCase();
+                      return c.name.toLowerCase().includes(q) || c.email.toLowerCase().includes(q) || c.major.toLowerCase().includes(q) || c.reason.toLowerCase().includes(q);
+                    }).sort((a, b) => {
                       const diff = new Date(b.submittedAt).getTime() - new Date(a.submittedAt).getTime();
                       return contactsSort === 'newest' ? diff : -diff;
                     }).map((c) => (

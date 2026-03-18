@@ -1,5 +1,6 @@
 import { readJSON, Event, RSVP } from '@/lib/data';
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import EventRSVPForm from './EventRSVPForm';
 
 export const dynamic = 'force-dynamic';
@@ -94,10 +95,12 @@ export default function EventsPage() {
                       <span className="w-2 h-2 bg-blue-500 rounded-full animate-pulse dark:bg-blue-400" />
                       <span className="text-blue-600 dark:text-blue-400 text-xs font-medium uppercase tracking-wide">Upcoming</span>
                     </div>
-                    <h3 className="text-slate-900 dark:text-white text-xl font-semibold mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-300 transition-colors">
-                      {event.title}
-                    </h3>
-                    <p className="text-slate-600 dark:text-slate-400 leading-relaxed mb-4">{event.description}</p>
+                    <Link href={`/events/${event.id}`} className="hover:underline underline-offset-2 decoration-blue-400">
+                      <h3 className="text-slate-900 dark:text-white text-xl font-semibold mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-300 transition-colors">
+                        {event.title}
+                      </h3>
+                    </Link>
+                    <p className="text-slate-600 dark:text-slate-400 leading-relaxed mb-4 line-clamp-2">{event.description}</p>
                     <div className="flex flex-wrap gap-4 text-sm text-slate-400 mb-4">
                       <span className="flex items-center gap-1.5">
                         <CalendarIcon />
@@ -118,6 +121,9 @@ export default function EventsPage() {
                         <CalendarIcon />
                         Add to Calendar
                       </a>
+                      <Link href={`/events/${event.id}`} className="text-xs text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors ml-auto">
+                        View Details →
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -169,8 +175,10 @@ export default function EventsPage() {
                       <span className="w-2 h-2 bg-slate-400 dark:bg-slate-600 rounded-full" />
                       <span className="text-slate-400 dark:text-slate-500 text-xs font-medium uppercase tracking-wide">Past</span>
                     </div>
-                    <h3 className="text-slate-700 dark:text-slate-300 text-xl font-semibold mb-2">{event.title}</h3>
-                    <p className="text-slate-500 leading-relaxed mb-4">{event.description}</p>
+                    <Link href={`/events/${event.id}`} className="hover:underline underline-offset-2 decoration-slate-400">
+                      <h3 className="text-slate-700 dark:text-slate-300 text-xl font-semibold mb-2 hover:text-slate-900 dark:hover:text-white transition-colors">{event.title}</h3>
+                    </Link>
+                    <p className="text-slate-500 leading-relaxed mb-4 line-clamp-2">{event.description}</p>
                     <div className="flex flex-wrap gap-4 text-sm text-slate-400">
                       <span className="flex items-center gap-1.5">
                         <CalendarIcon />
