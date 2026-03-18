@@ -165,7 +165,7 @@ export interface Resource {
 
 export interface PartnerInquiry {
   id: string;
-  inquiryType: 'project' | 'internship';
+  inquiryType: 'project' | 'internship' | 'speaker';
   companyName: string;
   contactName: string;
   email: string;
@@ -179,4 +179,7 @@ export interface PartnerInquiry {
   duration?: string;
   compensation?: string;
   requiredSkills?: string;
+  // Speaker fields
+  topic?: string;
+  availability?: string;
 }

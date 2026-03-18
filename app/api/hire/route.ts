@@ -6,9 +6,11 @@ export async function POST(req: NextRequest) {
   const body = await req.json();
   const inquiries = readJSON<PartnerInquiry[]>('hire.json');
 
+  const inquiryType = body.inquiryType === 'internship' ? 'internship' : body.inquiryType === 'speaker' ? 'speaker' : 'project';
+
   const newInquiry: PartnerInquiry = {
     id: Date.now().toString(),
-    inquiryType: body.inquiryType === 'internship' ? 'internship' : 'project',
+    inquiryType,
     companyName: body.companyName || '',
     contactName: body.contactName || '',
     email: body.email || '',
@@ -22,23 +24,37 @@ export async function POST(req: NextRequest) {
     duration: body.duration || undefined,
     compensation: body.compensation || undefined,
     requiredSkills: body.requiredSkills || undefined,
+    // Speaker fields
+    topic: body.topic || undefined,
+    availability: body.availability || undefined,
   };
 
   inquiries.push(newInquiry);
   writeJSON('hire.json', inquiries);
 
   const isInternship = newInquiry.inquiryType === 'internship';
+  const isSpeaker = newInquiry.inquiryType === 'speaker';
 
   if (process.env.RESEND_API_KEY && process.env.NOTIFICATION_EMAIL) {
     try {
       const resend = new Resend(process.env.RESEND_API_KEY);
-      await resend.emails.send({
-        from: 'LC3 Club <onboarding@resend.dev>',
-        to: process.env.NOTIFICATION_EMAIL,
-        subject: isInternship
+      const subject = isSpeaker
+        ? `New Guest Speaker Request from ${newInquiry.companyName}`
+        : isInternship
           ? `New Internship Posting from ${newInquiry.companyName}`
-          : `New Project Inquiry from ${newInquiry.companyName}`,
-        html: isInternship ? `
+          : `New Project Inquiry from ${newInquiry.companyName}`;
+      const html = isSpeaker ? `
+          <h2>New Guest Speaker Request</h2>
+          <table cellpadding="8" style="border-collapse:collapse;width:100%;max-width:500px">
+            <tr><td style="color:#888;width:160px">Company</td><td><strong>${newInquiry.companyName}</strong></td></tr>
+            <tr><td style="color:#888">Contact</td><td>${newInquiry.contactName}</td></tr>
+            <tr><td style="color:#888">Email</td><td>${newInquiry.email}</td></tr>
+            <tr><td style="color:#888">Topic</td><td>${newInquiry.topic || 'Not specified'}</td></tr>
+            <tr><td style="color:#888">Availability</td><td>${newInquiry.availability || 'Not specified'}</td></tr>
+            <tr><td style="color:#888;vertical-align:top">Bio / Description</td><td>${newInquiry.description}</td></tr>
+            <tr><td style="color:#888">Submitted</td><td>${new Date(newInquiry.submittedAt).toLocaleString()}</td></tr>
+          </table>
+        ` : isInternship ? `
           <h2>New Internship Opportunity</h2>
           <table cellpadding="8" style="border-collapse:collapse;width:100%;max-width:500px">
             <tr><td style="color:#888;width:160px">Company</td><td><strong>${newInquiry.companyName}</strong></td></tr>
@@ -62,7 +78,12 @@ export async function POST(req: NextRequest) {
             <tr><td style="color:#888;vertical-align:top">Description</td><td>${newInquiry.description}</td></tr>
             <tr><td style="color:#888">Submitted</td><td>${new Date(newInquiry.submittedAt).toLocaleString()}</td></tr>
           </table>
-        `,
+        `;
+      await resend.emails.send({
+        from: 'LC3 Club <onboarding@resend.dev>',
+        to: process.env.NOTIFICATION_EMAIL,
+        subject,
+        html,
       });
     } catch (err) {
       console.error('Email notification failed:', err);
@@ -71,7 +92,14 @@ export async function POST(req: NextRequest) {
 
   if (process.env.DISCORD_PROJECT_WEBHOOK_URL) {
     try {
-      const fields = isInternship ? [
+      const fields = isSpeaker ? [
+        { name: 'Company', value: newInquiry.companyName, inline: true },
+        { name: 'Contact', value: newInquiry.contactName, inline: true },
+        { name: 'Email', value: newInquiry.email, inline: true },
+        { name: 'Topic', value: newInquiry.topic || '—', inline: true },
+        { name: 'Availability', value: newInquiry.availability || '—', inline: true },
+        { name: 'Bio / Description', value: newInquiry.description },
+      ] : isInternship ? [
         { name: 'Company', value: newInquiry.companyName, inline: true },
         { name: 'Contact', value: newInquiry.contactName, inline: true },
         { name: 'Email', value: newInquiry.email, inline: true },
@@ -94,8 +122,8 @@ export async function POST(req: NextRequest) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           embeds: [{
-            title: isInternship ? '🎓 New Internship Opportunity' : '🤝 New Project Inquiry',
-            color: isInternship ? 0x10b981 : 0x3b82f6,
+            title: isSpeaker ? '🎤 New Guest Speaker Request' : isInternship ? '🎓 New Internship Opportunity' : '🤝 New Project Inquiry',
+            color: isSpeaker ? 0x8b5cf6 : isInternship ? 0x10b981 : 0x3b82f6,
             fields,
             timestamp: new Date().toISOString(),
           }],

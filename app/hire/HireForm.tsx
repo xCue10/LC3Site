@@ -17,11 +17,12 @@ const selectClass = `${inputClass} appearance-none cursor-pointer`;
 const labelClass = 'block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2';
 
 export default function HireForm() {
-  const [inquiryType, setInquiryType] = useState<'project' | 'internship'>('project');
+  const [inquiryType, setInquiryType] = useState<'project' | 'internship' | 'speaker'>('project');
   const [form, setForm] = useState({
     companyName: '', contactName: '', email: '', description: '',
     projectType: '', timeline: '',
     positionTitle: '', duration: '', compensation: '', requiredSkills: '',
+    topic: '', availability: '',
   });
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [error, setError] = useState('');
@@ -57,11 +58,13 @@ export default function HireForm() {
           </svg>
         </div>
         <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-4">
-          {inquiryType === 'internship' ? 'Internship Posting Received!' : 'Inquiry Received!'}
+          {inquiryType === 'internship' ? 'Internship Posting Received!' : inquiryType === 'speaker' ? 'Speaker Request Received!' : 'Inquiry Received!'}
         </h2>
         <p className="text-slate-600 dark:text-slate-300 leading-relaxed mb-8">
           {inquiryType === 'internship'
             ? "Thanks for posting an internship opportunity. We'll share it with our members and follow up shortly."
+            : inquiryType === 'speaker'
+            ? "Thanks for offering to speak! We'll review your request and reach out to schedule a session."
             : "Thanks for reaching out. We'll review your project and get back to you within a few business days."}
         </p>
         <button
@@ -74,7 +77,32 @@ export default function HireForm() {
     );
   }
 
-  const valueProps = inquiryType === 'project' ? [
+  const valueProps = inquiryType === 'speaker' ? [
+    {
+      title: 'Engaged Audience',
+      desc: 'Present to students who are actively building skills and hungry for industry insights.',
+      colorClass: 'text-violet-600 dark:text-violet-400',
+      icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />,
+    },
+    {
+      title: 'Real-World Perspective',
+      desc: 'Share your experiences and give members a direct look at what careers in tech actually look like.',
+      colorClass: 'text-blue-600 dark:text-blue-400',
+      icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />,
+    },
+    {
+      title: 'Flexible Format',
+      desc: 'In-person or virtual — 30-minute talks, workshops, panels, Q&As, we can accommodate your style.',
+      colorClass: 'text-emerald-600 dark:text-emerald-400',
+      icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />,
+    },
+    {
+      title: 'Brand Visibility',
+      desc: "We'll promote your session to our members and feature your company in our club channels.",
+      colorClass: 'text-amber-600 dark:text-amber-400',
+      icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />,
+    },
+  ] : inquiryType === 'project' ? [
     {
       title: 'Vetted Student Teams',
       desc: 'Work with students who build projects, win hackathons, and learn on their own time.',
@@ -137,6 +165,8 @@ export default function HireForm() {
           <p className="text-slate-600 dark:text-slate-300 leading-relaxed mb-8">
             {inquiryType === 'project'
               ? 'LC3 connects companies with motivated students ready to build real-world solutions. Whether you need a prototype, a data pipeline, or a full product — our teams deliver.'
+              : inquiryType === 'speaker'
+              ? 'Share your expertise with the next generation of tech professionals. Guest speakers bring real-world context that no classroom can replicate — our members love hearing directly from people in the industry.'
               : 'Offer an internship to LC3 members and get motivated, skilled students who are hungry to learn and contribute. Many of our members are already working in the industry part-time.'}
           </p>
 
@@ -159,7 +189,7 @@ export default function HireForm() {
         <div className="bg-white border border-slate-200 rounded-2xl p-8 shadow-sm dark:bg-[#0d1424] dark:border-[#1e2d45] dark:shadow-none">
 
           {/* Type Toggle */}
-          <div className="grid grid-cols-2 gap-3 mb-7">
+          <div className="grid grid-cols-3 gap-3 mb-7">
             {([
               {
                 id: 'project' as const,
@@ -176,6 +206,15 @@ export default function HireForm() {
                 icon: (
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                ),
+              },
+              {
+                id: 'speaker' as const,
+                label: 'Guest Speaker',
+                icon: (
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
                   </svg>
                 ),
               },
@@ -264,16 +303,32 @@ export default function HireForm() {
               </>
             )}
 
+            {/* Speaker-specific fields */}
+            {inquiryType === 'speaker' && (
+              <>
+                <div>
+                  <label htmlFor="topic" className={labelClass}>Talk Topic / Title <span className="text-violet-600 dark:text-violet-400">*</span></label>
+                  <input id="topic" name="topic" type="text" required value={form.topic} onChange={handleChange} placeholder="e.g. Breaking into cloud engineering, Building with AI..." className={inputClass} />
+                </div>
+                <div>
+                  <label htmlFor="availability" className={labelClass}>Availability</label>
+                  <input id="availability" name="availability" type="text" value={form.availability} onChange={handleChange} placeholder="e.g. Weekday evenings, flexible, specific dates..." className={inputClass} />
+                </div>
+              </>
+            )}
+
             {/* Description */}
             <div>
               <label htmlFor="description" className={labelClass}>
-                {inquiryType === 'project' ? 'Project Description' : 'Role Description'} <span className="text-violet-600 dark:text-violet-400">*</span>
+                {inquiryType === 'project' ? 'Project Description' : inquiryType === 'speaker' ? 'Bio / About You' : 'Role Description'} <span className="text-violet-600 dark:text-violet-400">*</span>
               </label>
               <textarea
                 id="description" name="description" required rows={4}
                 value={form.description} onChange={handleChange}
                 placeholder={inquiryType === 'project'
                   ? 'Describe what you need built, the problem it solves, and any technical requirements...'
+                  : inquiryType === 'speaker'
+                  ? 'Tell us a bit about yourself, your role, and what you\'d like to cover in your talk...'
                   : 'Describe the role, day-to-day responsibilities, and what the intern will learn or build...'}
                 className={`${inputClass} resize-none`}
               />
@@ -296,7 +351,7 @@ export default function HireForm() {
                   </svg>
                   Sending...
                 </span>
-              ) : inquiryType === 'project' ? 'Send Project Inquiry' : 'Post Internship'}
+              ) : inquiryType === 'project' ? 'Send Project Inquiry' : inquiryType === 'speaker' ? 'Submit Speaker Request' : 'Post Internship'}
             </button>
           </form>
         </div>
