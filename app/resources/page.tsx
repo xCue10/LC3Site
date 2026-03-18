@@ -20,7 +20,7 @@ export default function ResourcesPage() {
   const resources = readJSON<Resource[]>('resources.json');
 
   // Group by category — preferred order, then any extras alphabetically
-  const categoryOrder = ['Microsoft', 'Cloud', 'Development', 'Tools', 'General'];
+  const categoryOrder = ['Microsoft', 'Cloud', 'Development', 'AI Tools', 'Tools', 'General'];
   const allCategories = Array.from(new Set(resources.map((r) => r.category)));
   const categories = [
     ...categoryOrder.filter((c) => allCategories.includes(c)),
