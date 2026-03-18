@@ -23,6 +23,7 @@ export async function PUT(req: NextRequest) {
     discord: body.discord ?? '',
     github: body.github ?? '',
     linkedin: body.linkedin ?? '',
+    socialLinksLive: body.socialLinksLive ?? false,
     lastUpdated: new Date().toISOString(),
   };
   writeJSON('settings.json', settings);

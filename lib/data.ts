@@ -77,6 +77,7 @@ export interface SiteSettings {
   discord?: string;
   github?: string;
   linkedin?: string;
+  socialLinksLive?: boolean;
 }
 
 export interface Stats {

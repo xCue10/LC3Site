@@ -18,6 +18,7 @@ interface SiteSettings {
   discord?: string;
   github?: string;
   linkedin?: string;
+  socialLinksLive?: boolean;
 }
 
 interface Member {
@@ -832,7 +833,6 @@ function Dashboard() {
   const [postModal, setPostModal] = useState<{ open: boolean; post: Post | null }>({ open: false, post: null });
   const [sponsorModal, setSponsorModal] = useState<{ open: boolean; sponsor: Sponsor | null }>({ open: false, sponsor: null });
   const [caseStudiesConfig, setCaseStudiesConfig] = useState<CaseStudiesConfig>({ live: false, sectionTitle: 'Past Work', caseStudies: [] });
-  const [socialLinksOpen, setSocialLinksOpen] = useState(false);
   const [homeTechRaw, setHomeTechRaw] = useState('');
   const [aboutTechRaw, setAboutTechRaw] = useState('');
   const [caseStudyModal, setCaseStudyModal] = useState<{ open: boolean; caseStudy: CaseStudy | null }>({ open: false, caseStudy: null });
@@ -2450,40 +2450,42 @@ function Dashboard() {
                   </div>
                 </div>
 
-                <div className="border border-slate-200 dark:border-[#1e2d45] rounded-xl overflow-hidden">
-                  <button
-                    type="button"
-                    onClick={() => setSocialLinksOpen((o) => !o)}
-                    className="flex items-center justify-between w-full px-4 py-3 bg-slate-50 dark:bg-[#111a2e] hover:bg-slate-100 dark:hover:bg-white/5 transition-colors"
-                  >
-                    <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Club Social Links</span>
-                    <svg
-                      className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${socialLinksOpen ? 'rotate-180' : ''}`}
-                      fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </button>
-                  {socialLinksOpen && (
-                    <div className="space-y-3 p-4 border-t border-slate-200 dark:border-[#1e2d45]">
-                      {[
-                        { key: 'discord' as const, label: 'Discord Invite URL', placeholder: 'https://discord.gg/...' },
-                        { key: 'github' as const, label: 'GitHub Organization URL', placeholder: 'https://github.com/your-org' },
-                        { key: 'linkedin' as const, label: 'LinkedIn Page URL', placeholder: 'https://linkedin.com/company/...' },
-                      ].map(({ key, label, placeholder }) => (
-                        <div key={key}>
-                          <label className="block text-sm font-medium text-slate-400 mb-1.5">{label}</label>
-                          <input
-                            type="url"
-                            value={siteSettings[key] ?? ''}
-                            onChange={(e) => setSiteSettings((s) => ({ ...s, [key]: e.target.value }))}
-                            placeholder={placeholder}
-                            className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
-                          />
-                        </div>
-                      ))}
+                <div className="space-y-3">
+                  <div className={`rounded-2xl border-2 p-5 flex items-center justify-between gap-6 transition-all ${siteSettings.socialLinksLive ? 'border-green-400/50 bg-green-50 dark:bg-green-500/5' : 'border-slate-200 dark:border-[#1e2d45] bg-white dark:bg-[#0d1424]'}`}>
+                    <div>
+                      <p className={`font-semibold ${siteSettings.socialLinksLive ? 'text-green-700 dark:text-green-400' : 'text-slate-900 dark:text-white'}`}>
+                        Club Social Links are {siteSettings.socialLinksLive ? 'LIVE' : 'hidden'}
+                      </p>
+                      <p className="text-slate-500 text-sm mt-0.5">
+                        {siteSettings.socialLinksLive ? 'Social links are visible on the Contact page.' : 'Toggle on to show social links on the Contact page.'}
+                      </p>
                     </div>
-                  )}
+                    <button
+                      type="button"
+                      onClick={() => setSiteSettings((s) => ({ ...s, socialLinksLive: !s.socialLinksLive }))}
+                      className={`relative flex-shrink-0 w-14 h-8 rounded-full transition-colors focus:outline-none ${siteSettings.socialLinksLive ? 'bg-green-500' : 'bg-slate-300 dark:bg-slate-600'}`}
+                    >
+                      <div className={`absolute top-1 left-1 w-6 h-6 rounded-full bg-white shadow-md transition-transform ${siteSettings.socialLinksLive ? 'translate-x-6' : ''}`} />
+                    </button>
+                  </div>
+                  <div className="space-y-3">
+                    {[
+                      { key: 'discord' as const, label: 'Discord Invite URL', placeholder: 'https://discord.gg/...' },
+                      { key: 'github' as const, label: 'GitHub Organization URL', placeholder: 'https://github.com/your-org' },
+                      { key: 'linkedin' as const, label: 'LinkedIn Page URL', placeholder: 'https://linkedin.com/company/...' },
+                    ].map(({ key, label, placeholder }) => (
+                      <div key={key}>
+                        <label className="block text-sm font-medium text-slate-400 mb-1.5">{label}</label>
+                        <input
+                          type="url"
+                          value={siteSettings[key] ?? ''}
+                          onChange={(e) => setSiteSettings((s) => ({ ...s, [key]: e.target.value }))}
+                          placeholder={placeholder}
+                          className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                        />
+                      </div>
+                    ))}
+                  </div>
                 </div>
 
                 <button

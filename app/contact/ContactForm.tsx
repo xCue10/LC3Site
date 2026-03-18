@@ -168,7 +168,7 @@ export default function ContactForm({ settings }: { settings: SiteSettings }) {
             ))}
           </div>
 
-          {(settings.discord || settings.github || settings.linkedin) && (
+          {settings.socialLinksLive && (settings.discord || settings.github || settings.linkedin) && (
             <div className="mt-8">
               <p className="text-xs text-slate-500 font-medium uppercase tracking-wider mb-4">Connect With Us</p>
               <div className="flex flex-wrap gap-3">
