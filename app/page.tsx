@@ -78,7 +78,7 @@ export default function HomePage() {
   return (
     <div>
       {/* Hero */}
-      <section className="relative overflow-hidden py-28 sm:py-36">
+      <section className="relative overflow-hidden py-14 sm:py-20">
         {/* Background */}
         <div className="absolute inset-0 -z-10 overflow-hidden">
           {/* Light mode: subtle gradient */}
@@ -99,7 +99,7 @@ export default function HomePage() {
           )}
 
           {/* Banner — swaps with theme */}
-          <div className="max-w-3xl mx-auto rounded-2xl overflow-hidden shadow-2xl shadow-violet-500/10 border border-slate-200/60 dark:border-white/10 mb-10">
+          <div className="w-full max-w-5xl mx-auto rounded-2xl overflow-hidden shadow-xl shadow-violet-500/10 mb-10">
             <img src="/banner-light.svg" alt="LC3 - Lowcode Cloud Club · College of Southern Nevada" className="w-full dark:hidden" />
             <img src="/banner-dark.svg" alt="LC3 - Lowcode Cloud Club · College of Southern Nevada" className="w-full hidden dark:block" />
           </div>
