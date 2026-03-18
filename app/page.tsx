@@ -7,7 +7,13 @@ export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'LC3 - Lowcode Cloud Club',
-  description: 'LC3 is a university tech club focused on low-code platforms, cloud computing, and real-world software projects. Join us to build, learn, and connect.',
+  description: 'LC3 is a student tech club at the College of Southern Nevada focused on low-code platforms, cloud computing, and real-world software projects. Join us to build, learn, and connect.',
+  openGraph: {
+    images: [{ url: '/banner.svg', width: 680, height: 230, alt: 'LC3 - Lowcode Cloud Club' }],
+  },
+  twitter: {
+    images: ['/banner.svg'],
+  },
 };
 
 export default function HomePage() {
@@ -122,6 +128,11 @@ export default function HomePage() {
             >
               Meet the Team
             </Link>
+          </div>
+
+          {/* Banner */}
+          <div className="mt-10 max-w-3xl mx-auto rounded-2xl overflow-hidden shadow-2xl shadow-violet-500/10 border border-white/10">
+            <img src="/banner.svg" alt="LC3 - Lowcode Cloud Club · College of Southern Nevada" className="w-full" />
           </div>
 
           {/* Tech stack strip */}
