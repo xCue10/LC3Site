@@ -1078,6 +1078,10 @@ function Dashboard() {
     await fetch('/api/case-studies', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(config) });
   };
 
+  const persistSettings = async (settings: SiteSettings) => {
+    await fetch('/api/settings', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(settings) });
+  };
+
   const saveCaseStudy = async (data: Omit<CaseStudy, 'id'>) => {
     let updated: CaseStudy[];
     if (caseStudyModal.caseStudy) {
@@ -2465,7 +2469,11 @@ function Dashboard() {
                     </div>
                     <button
                       type="button"
-                      onClick={() => setSiteSettings((s) => ({ ...s, socialLinksLive: !s.socialLinksLive }))}
+                      onClick={() => {
+                        const next = { ...siteSettings, socialLinksLive: !siteSettings.socialLinksLive };
+                        setSiteSettings(next);
+                        persistSettings(next);
+                      }}
                       className={`relative flex-shrink-0 w-14 h-8 rounded-full transition-colors focus:outline-none ${siteSettings.socialLinksLive ? 'bg-green-500' : 'bg-slate-300 dark:bg-slate-600'}`}
                     >
                       <div className={`absolute top-1 left-1 w-6 h-6 rounded-full bg-white shadow-md transition-transform ${siteSettings.socialLinksLive ? 'translate-x-6' : ''}`} />
@@ -2517,10 +2525,7 @@ function Dashboard() {
                 </div>
 
                 <button
-                  onClick={async () => {
-                    await fetch('/api/settings', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(siteSettings) });
-                    fetchData();
-                  }}
+                  onClick={async () => { await persistSettings(siteSettings); fetchData(); }}
                   className="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-violet-600 text-white text-sm font-semibold rounded-xl hover:opacity-90 transition-opacity"
                 >
                   Save Settings
