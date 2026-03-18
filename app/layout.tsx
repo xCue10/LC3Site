@@ -20,8 +20,8 @@ export const metadata: Metadata = {
     default: 'LC3 - Lowcode Cloud Club',
     template: '%s | LC3',
   },
-  description: 'LC3 is a university tech club focused on low-code platforms, cloud computing, and real-world software projects. Join us to build, learn, and connect.',
-  keywords: ['LC3', 'Lowcode Cloud Club', 'tech club', 'Power Platform', 'Azure', 'student club', 'software development'],
+  description: 'LC3 is a student tech club at the College of Southern Nevada focused on low-code platforms, cloud computing, and real-world software projects. Join us to build, learn, and connect.',
+  keywords: ['LC3', 'Lowcode Cloud Club', 'tech club', 'Power Platform', 'Azure', 'student club', 'software development', 'College of Southern Nevada', 'CSN'],
   openGraph: {
     type: 'website',
     siteName: 'LC3 - Lowcode Cloud Club',

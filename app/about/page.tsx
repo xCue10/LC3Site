@@ -83,12 +83,13 @@ export default function AboutPage() {
       {/* Hero */}
       <div className="text-center mb-20">
         <p className="text-violet-600 dark:text-violet-400 text-sm font-medium mb-3">{about.heroTagline}</p>
-        <h1 className="text-4xl sm:text-6xl font-bold text-slate-900 dark:text-white mb-6 leading-tight">
+        <h1 className="text-4xl sm:text-6xl font-bold text-slate-900 dark:text-white mb-4 leading-tight">
           About{' '}
           <span className="bg-gradient-to-r from-blue-600 via-violet-600 to-violet-700 bg-clip-text text-transparent dark:from-blue-400 dark:via-violet-400 dark:to-violet-500">
             LC3
           </span>
         </h1>
+        <p className="text-sm text-slate-400 dark:text-slate-500 mb-5">College of Southern Nevada</p>
         <p className="text-lg text-slate-600 dark:text-slate-400 leading-relaxed max-w-2xl mx-auto">
           {about.heroDescription}
         </p>

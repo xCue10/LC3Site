@@ -104,7 +104,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-slate-200 dark:border-[#1e2d45] mt-8 pt-6 text-center text-slate-400 text-sm">
-          © {new Date().getFullYear()} LC3 - Lowcode Cloud Club. All rights reserved.
+          © {new Date().getFullYear()} LC3 - Lowcode Cloud Club · College of Southern Nevada. All rights reserved.
         </div>
       </div>
     </footer>
