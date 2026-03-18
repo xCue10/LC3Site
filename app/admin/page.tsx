@@ -578,9 +578,9 @@ function ProjectModal({
 }
 
 // ─── Post Modal ──────────────────────────────────────────────────────────────
-interface PostForm { title: string; excerpt: string; content: string; published: boolean; }
+interface PostForm { title: string; excerpt: string; content: string; published: boolean; coverImage: string; }
 function PostModal({ post, onSave, onClose }: { post: Post | null; onSave: (d: PostForm) => Promise<void>; onClose: () => void }) {
-  const [form, setForm] = useState<PostForm>(post ? { title: post.title, excerpt: post.excerpt, content: post.content, published: post.published } : { title: '', excerpt: '', content: '', published: false });
+  const [form, setForm] = useState<PostForm>(post ? { title: post.title, excerpt: post.excerpt, content: post.content, published: post.published, coverImage: post.coverImage || '' } : { title: '', excerpt: '', content: '', published: false, coverImage: '' });
   const [saving, setSaving] = useState(false);
   const inputCls = 'w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all';
   return (
@@ -602,7 +602,15 @@ function PostModal({ post, onSave, onClose }: { post: Post | null; onSave: (d: P
             <textarea rows={2} value={form.excerpt} onChange={(e) => setForm((f) => ({ ...f, excerpt: e.target.value }))} placeholder="A brief description..." className={`${inputCls} resize-none`} />
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Content <span className="text-slate-400 font-normal">(blank lines create new paragraphs)</span></label>
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Cover Image URL <span className="text-slate-400 font-normal">(optional — paste a Discord image link)</span></label>
+            <input type="url" value={form.coverImage} onChange={(e) => setForm((f) => ({ ...f, coverImage: e.target.value }))} placeholder="https://cdn.discordapp.com/attachments/..." className={inputCls} />
+            {form.coverImage && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={form.coverImage} alt="Cover preview" className="mt-2 w-full h-36 object-cover rounded-xl border border-slate-200 dark:border-[#1e2d45]" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+            )}
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Content <span className="text-slate-400 font-normal">(markdown supported — use ![alt](url) for inline images)</span></label>
             <textarea rows={10} required value={form.content} onChange={(e) => setForm((f) => ({ ...f, content: e.target.value }))} placeholder="Write your post content here..." className={`${inputCls} resize-y`} />
           </div>
           <label className="flex items-center gap-3 cursor-pointer select-none">

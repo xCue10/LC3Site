@@ -112,6 +112,7 @@ export interface Post {
   content: string;
   publishedAt: string;
   published: boolean;
+  coverImage?: string;
 }
 
 export interface Sponsor {

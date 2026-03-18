@@ -14,6 +14,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     excerpt: body.excerpt ?? posts[index].excerpt,
     content: body.content ?? posts[index].content,
     published: body.published ?? posts[index].published,
+    coverImage: body.coverImage !== undefined ? (body.coverImage || undefined) : posts[index].coverImage,
   };
   writeJSON('posts.json', posts);
   return NextResponse.json(posts[index]);

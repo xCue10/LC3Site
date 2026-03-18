@@ -36,6 +36,10 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
       </Link>
 
       <article>
+        {post.coverImage && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={post.coverImage} alt={post.title} className="w-full h-72 sm:h-96 object-cover rounded-2xl mb-8" />
+        )}
         <div className="mb-8">
           <div className="flex items-center gap-2 mb-4">
             <span className="text-xs text-slate-400">{formatDate(post.publishedAt)}</span>
@@ -68,6 +72,8 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
                 : <code className="bg-slate-100 dark:bg-white/5 rounded px-1.5 py-0.5 text-sm font-mono text-slate-700 dark:text-slate-300">{children}</code>,
               strong: ({ children }) => <strong className="font-semibold text-slate-900 dark:text-white">{children}</strong>,
               hr: () => <hr className="border-slate-200 dark:border-[#1e2d45] my-8" />,
+              // eslint-disable-next-line @next/next/no-img-element
+              img: ({ src, alt }) => <img src={src} alt={alt || ''} className="w-full rounded-2xl my-6 object-cover" />,
             }}
           >
             {post.content}

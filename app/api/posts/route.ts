@@ -23,6 +23,7 @@ export async function POST(req: NextRequest) {
     content: body.content || '',
     publishedAt: new Date().toISOString(),
     published: body.published ?? false,
+    coverImage: body.coverImage || undefined,
   };
   posts.unshift(newPost);
   writeJSON('posts.json', posts);
