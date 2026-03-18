@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://lc3.up.railway.app'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'https://lc3.up.railway.app'),
   title: {
     default: 'LC3 - Lowcode Cloud Club',
     template: '%s | LC3',

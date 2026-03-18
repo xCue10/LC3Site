@@ -20,7 +20,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
     id: Date.now().toString(),
     eventId: id,
     name: body.name || '',
-    email: body.email || '',
+    email: (body.email || '').toLowerCase(),
     submittedAt: new Date().toISOString(),
   };
   rsvps.push(newRSVP);

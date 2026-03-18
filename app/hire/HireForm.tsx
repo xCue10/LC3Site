@@ -24,6 +24,18 @@ export default function HireForm() {
     positionTitle: '', duration: '', compensation: '', requiredSkills: '',
     topic: '', availability: '',
   });
+
+  const switchInquiryType = (type: 'project' | 'internship' | 'speaker') => {
+    setInquiryType(type);
+    setForm((prev) => ({
+      ...prev,
+      // Reset type-specific fields when switching
+      projectType: '', timeline: '',
+      positionTitle: '', duration: '', compensation: '', requiredSkills: '',
+      topic: '', availability: '',
+      description: '',
+    }));
+  };
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [error, setError] = useState('');
 
@@ -222,7 +234,7 @@ export default function HireForm() {
               <button
                 key={id}
                 type="button"
-                onClick={() => setInquiryType(id)}
+                onClick={() => switchInquiryType(id)}
                 className={`flex flex-col items-center gap-2 p-4 rounded-xl border text-sm font-medium transition-all ${
                   inquiryType === id
                     ? 'bg-gradient-to-br from-blue-50 to-violet-50 border-violet-300 text-slate-900 dark:from-blue-600/20 dark:to-violet-600/20 dark:border-violet-500/50 dark:text-white'

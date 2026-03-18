@@ -174,7 +174,7 @@ export default function ContactForm({ settings }: { settings: SiteSettings }) {
               <label htmlFor="reason" className={labelClass}>
                 Why do you want to join? <span className="text-violet-600 dark:text-violet-400">*</span>
               </label>
-              <textarea id="reason" name="reason" required rows={4} value={form.reason} onChange={handleChange}
+              <textarea id="reason" name="reason" required rows={4} maxLength={1000} value={form.reason} onChange={handleChange}
                 placeholder="Tell us about yourself, your interests, and what you hope to get out of LC3..."
                 className={`${inputClass} resize-none`} />
             </div>
