@@ -246,24 +246,112 @@ export default function AboutPage() {
       )}
 
       {/* CTA */}
-      <div className="bg-gradient-to-r from-blue-600 to-violet-600 rounded-3xl p-10 text-center text-white">
-        <h2 className="text-3xl font-bold mb-4">{about.ctaTitle}</h2>
-        <p className="text-white/80 mb-8 max-w-md mx-auto leading-relaxed">
-          {about.ctaDescription}
-        </p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Link
-            href="/contact"
-            className="px-8 py-3.5 bg-white text-violet-700 font-semibold rounded-xl hover:bg-white/90 transition-all shadow-lg"
-          >
-            Apply to Join
-          </Link>
-          <Link
-            href="/members"
-            className="px-8 py-3.5 bg-white/10 border border-white/20 text-white font-semibold rounded-xl hover:bg-white/20 transition-all"
-          >
-            Meet the Team
-          </Link>
+      <div className="relative overflow-hidden bg-white border border-slate-200 dark:bg-[#0d1424] dark:border-[#1e2d45] rounded-3xl p-8 sm:p-10">
+        {/* Soft gradient background layer */}
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/[0.05] via-violet-500/[0.05] to-transparent dark:from-blue-500/10 dark:via-violet-500/8 dark:to-transparent pointer-events-none rounded-3xl" />
+        {/* Top-center accent line */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-56 h-px bg-gradient-to-r from-transparent via-violet-400/50 to-transparent dark:via-violet-500/60" />
+
+        <div className="relative flex flex-col md:flex-row items-center gap-8 md:gap-12">
+
+          {/* Text content */}
+          <div className="flex-1 text-center md:text-left">
+            <div className="inline-flex items-center gap-2 bg-violet-50 dark:bg-violet-500/10 border border-violet-200 dark:border-violet-500/20 rounded-full px-3 py-1 mb-5">
+              <span className="w-1.5 h-1.5 rounded-full bg-violet-500 animate-pulse" />
+              <span className="text-xs font-medium text-violet-700 dark:text-violet-400">Now Recruiting</span>
+            </div>
+            <h2 className="text-3xl font-bold mb-4 text-slate-900 dark:text-white">{about.ctaTitle}</h2>
+            <p className="text-slate-500 dark:text-slate-400 mb-8 max-w-md leading-relaxed">
+              {about.ctaDescription}
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
+              <Link
+                href="/contact"
+                className="px-8 py-3.5 bg-gradient-to-r from-blue-600 to-violet-600 text-white font-semibold rounded-xl hover:opacity-90 transition-all shadow-lg shadow-violet-500/20"
+              >
+                Apply to Join
+              </Link>
+              <Link
+                href="/members"
+                className="px-8 py-3.5 bg-slate-100 border border-slate-200 text-slate-700 font-semibold rounded-xl hover:bg-slate-200 transition-all dark:bg-white/5 dark:border-white/10 dark:text-white dark:hover:bg-white/10"
+              >
+                Meet the Team
+              </Link>
+            </div>
+          </div>
+
+          {/* Custom SVG — LEARN → BUILD → LEAD pathway */}
+          <div className="flex-shrink-0 w-full max-w-[220px] opacity-90 dark:opacity-80">
+            <svg width="220" height="205" viewBox="0 0 220 205" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <style>{`
+                  @keyframes cta-dash  { to { stroke-dashoffset: -16; } }
+                  @keyframes cta-pulse { 0%,100%{opacity:0.35} 50%{opacity:0.9} }
+                  @keyframes cta-glow  { 0%,100%{opacity:0.08} 50%{opacity:0.22} }
+                  @keyframes cta-ring  { 0%,100%{opacity:0.08} 50%{opacity:0.28} }
+                  @keyframes cta-corner{ 0%,100%{opacity:0.4}  50%{opacity:0.9} }
+                `}</style>
+                <radialGradient id="cta-rg-a" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stopColor="#6366f1" stopOpacity="0.3"/>
+                  <stop offset="100%" stopColor="#6366f1" stopOpacity="0"/>
+                </radialGradient>
+                <radialGradient id="cta-rg-b" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stopColor="#818cf8" stopOpacity="0.25"/>
+                  <stop offset="100%" stopColor="#818cf8" stopOpacity="0"/>
+                </radialGradient>
+                <radialGradient id="cta-rg-c" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stopColor="#0891b2" stopOpacity="0.28"/>
+                  <stop offset="100%" stopColor="#0891b2" stopOpacity="0"/>
+                </radialGradient>
+                <linearGradient id="cta-line-g" x1="0" y1="1" x2="1" y2="0">
+                  <stop offset="0%" stopColor="#6366f1"/>
+                  <stop offset="100%" stopColor="#0891b2"/>
+                </linearGradient>
+              </defs>
+
+              {/* Outer ring */}
+              <ellipse cx="110" cy="102" rx="107" ry="99" fill="none" stroke="#6366f1" strokeWidth="0.7" strokeOpacity="1" style={{animation:'cta-ring 4s ease-in-out infinite'}}/>
+
+              {/* Corner brackets */}
+              <path d="M14 2 L2 2 L2 14"   fill="none" stroke="#6366f1" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{animation:'cta-corner 3s ease-in-out infinite'}}/>
+              <path d="M206 2 L218 2 L218 14"  fill="none" stroke="#0891b2" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{animation:'cta-corner 3s ease-in-out infinite 0.75s'}}/>
+              <path d="M14 203 L2 203 L2 191" fill="none" stroke="#6366f1" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{animation:'cta-corner 3s ease-in-out infinite 1.5s'}}/>
+              <path d="M206 203 L218 203 L218 191" fill="none" stroke="#0891b2" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{animation:'cta-corner 3s ease-in-out infinite 2.25s'}}/>
+
+              {/* ── Node 1: LEARN (bottom-left) ── */}
+              <circle cx="45" cy="162" r="30" fill="url(#cta-rg-a)" style={{animation:'cta-glow 3s ease-in-out infinite'}}/>
+              <circle cx="45" cy="162" r="21" fill="none" stroke="#6366f1" strokeWidth="1.5" strokeOpacity="0.5"/>
+              <circle cx="45" cy="162" r="6.5" fill="#6366f1" fillOpacity="0.55"/>
+              <text x="45" y="192" textAnchor="middle" fontSize="8.5" fill="#6366f1" fillOpacity="0.75" fontFamily="system-ui,sans-serif" fontWeight="700" letterSpacing="0.8">LEARN</text>
+
+              {/* Connector: LEARN → BUILD */}
+              <line x1="63" y1="146" x2="97" y2="112" stroke="url(#cta-line-g)" strokeWidth="1.2" strokeOpacity="0.45" strokeDasharray="4 5" style={{animation:'cta-dash 1.8s linear infinite'}}/>
+
+              {/* ── Node 2: BUILD (center) ── */}
+              <circle cx="113" cy="97" r="32" fill="url(#cta-rg-b)" style={{animation:'cta-glow 3s ease-in-out infinite 1s'}}/>
+              <circle cx="113" cy="97" r="22" fill="none" stroke="#818cf8" strokeWidth="1.5" strokeOpacity="0.55"/>
+              <circle cx="113" cy="97" r="7.5" fill="#818cf8" fillOpacity="0.55"/>
+              <text x="113" y="128" textAnchor="middle" fontSize="8.5" fill="#818cf8" fillOpacity="0.75" fontFamily="system-ui,sans-serif" fontWeight="700" letterSpacing="0.8">BUILD</text>
+
+              {/* Connector: BUILD → LEAD */}
+              <line x1="131" y1="80" x2="160" y2="50" stroke="url(#cta-line-g)" strokeWidth="1.2" strokeOpacity="0.45" strokeDasharray="4 5" style={{animation:'cta-dash 2s linear infinite 0.6s'}}/>
+
+              {/* ── Node 3: LEAD (top-right) ── */}
+              <circle cx="178" cy="36" r="34" fill="url(#cta-rg-c)" style={{animation:'cta-glow 3s ease-in-out infinite 2s'}}/>
+              <circle cx="178" cy="36" r="23" fill="none" stroke="#0891b2" strokeWidth="1.5" strokeOpacity="0.5"/>
+              <circle cx="178" cy="36" r="8" fill="#0891b2" fillOpacity="0.55"/>
+              <text x="178" y="67" textAnchor="middle" fontSize="8.5" fill="#0891b2" fillOpacity="0.75" fontFamily="system-ui,sans-serif" fontWeight="700" letterSpacing="0.8">LEAD</text>
+
+              {/* Floating accent dots */}
+              <circle cx="22"  cy="72"  r="2.5" fill="#6366f1" fillOpacity="0.45" style={{animation:'cta-pulse 2.5s ease-in-out infinite'}}/>
+              <circle cx="78"  cy="30"  r="2"   fill="#818cf8" fillOpacity="0.45" style={{animation:'cta-pulse 2.5s ease-in-out infinite 0.7s'}}/>
+              <circle cx="200" cy="85"  r="2.5" fill="#0891b2" fillOpacity="0.45" style={{animation:'cta-pulse 2.5s ease-in-out infinite 1.4s'}}/>
+              <circle cx="158" cy="158" r="2"   fill="#6366f1" fillOpacity="0.4"  style={{animation:'cta-pulse 2.5s ease-in-out infinite 0.3s'}}/>
+              <circle cx="205" cy="155" r="1.5" fill="#818cf8" fillOpacity="0.4"  style={{animation:'cta-pulse 2.5s ease-in-out infinite 2s'}}/>
+              <circle cx="30"  cy="130" r="1.5" fill="#0891b2" fillOpacity="0.35" style={{animation:'cta-pulse 2.5s ease-in-out infinite 1.1s'}}/>
+            </svg>
+          </div>
+
         </div>
       </div>
     </div>
