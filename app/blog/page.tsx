@@ -32,34 +32,40 @@ export default function BlogPage() {
           No posts yet — check back soon!
         </div>
       ) : (
-        <div className="space-y-6">
+        <div className="space-y-3">
           {posts.map((post) => (
             <Link
               key={post.id}
               href={`/blog/${post.slug}`}
-              className="block bg-white border border-slate-200 rounded-2xl overflow-hidden hover:border-violet-200 hover:shadow-sm transition-all group dark:bg-[#0d1424] dark:border-[#1e2d45] dark:hover:border-violet-500/30"
+              className="flex items-center gap-4 bg-white border border-slate-200 rounded-2xl p-4 hover:border-violet-200 hover:shadow-sm transition-all group dark:bg-[#0d1424] dark:border-[#1e2d45] dark:hover:border-violet-500/30"
             >
-              {post.coverImage && (
+              {/* Thumbnail */}
+              {post.coverImage ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={post.coverImage} alt={post.title} className="w-full object-contain max-h-72 bg-slate-100 dark:bg-[#111a2e]" />
-              )}
-              <div className="p-6">
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="text-xs text-slate-400">{formatDate(post.publishedAt)}</span>
+                <img src={post.coverImage} alt={post.title} className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl object-cover flex-shrink-0 bg-slate-100 dark:bg-[#111a2e]" />
+              ) : (
+                <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl flex-shrink-0 bg-gradient-to-br from-violet-100 to-blue-100 dark:from-violet-500/10 dark:to-blue-500/10 flex items-center justify-center">
+                  <svg className="w-7 h-7 text-violet-400 dark:text-violet-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+                  </svg>
                 </div>
-                <h2 className="text-xl font-semibold text-slate-900 dark:text-white mb-2 group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors">
+              )}
+
+              {/* Content */}
+              <div className="flex-1 min-w-0">
+                <span className="text-xs text-slate-400">{formatDate(post.publishedAt)}</span>
+                <h2 className="text-base font-semibold text-slate-900 dark:text-white mt-0.5 mb-1 group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors line-clamp-1">
                   {post.title}
                 </h2>
                 {post.excerpt && (
-                  <p className="text-slate-500 text-sm leading-relaxed mb-4 line-clamp-2">{post.excerpt}</p>
+                  <p className="text-slate-500 text-sm leading-relaxed line-clamp-2">{post.excerpt}</p>
                 )}
-                <span className="text-violet-600 dark:text-violet-400 text-sm font-medium inline-flex items-center gap-1">
-                  Read more
-                  <svg className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </span>
               </div>
+
+              {/* Arrow */}
+              <svg className="w-4 h-4 text-slate-300 dark:text-slate-600 group-hover:text-violet-400 group-hover:translate-x-0.5 transition-all flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
             </Link>
           ))}
         </div>
