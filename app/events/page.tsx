@@ -51,6 +51,8 @@ export default function EventsPage() {
             <style>{`
               @keyframes ev-spark { 0%,100%{opacity:0.3;transform:scale(0.85)} 50%{opacity:0.95;transform:scale(1.15)} }
               @keyframes ev-pulse { 0%,100%{opacity:0.5} 50%{opacity:1} }
+              @keyframes ev-ring { 0%,100%{opacity:0.1} 50%{opacity:0.35} }
+              @keyframes ev-corner { 0%,100%{opacity:0.4} 50%{opacity:0.9} }
             `}</style>
           </defs>
           <circle cx="36" cy="36" r="33" fill="#3b82f6" fillOpacity="0.07" stroke="#3b82f6" strokeWidth="1" strokeOpacity="0.3"/>
@@ -74,6 +76,13 @@ export default function EventsPage() {
           <circle cx="62" cy="60" r="2.5" fill="#0891b2" fillOpacity="0.7" style={{animation:'ev-spark 2.2s ease-in-out infinite 1.65s'}}/>
           <circle cx="5" cy="36" r="1.5" fill="#6366f1" fillOpacity="0.5" style={{animation:'ev-spark 2.2s ease-in-out infinite 0.8s'}}/>
           <circle cx="67" cy="36" r="1.5" fill="#0891b2" fillOpacity="0.5" style={{animation:'ev-spark 2.2s ease-in-out infinite 1.3s'}}/>
+          {/* Outer glow ring */}
+          <circle cx="36" cy="36" r="35.5" fill="none" stroke="#6366f1" strokeWidth="1" strokeOpacity="1" style={{animation:'ev-ring 3s ease-in-out infinite'}}/>
+          {/* Corner accents */}
+          <path d="M12 2 L2 2 L2 12" fill="none" stroke="#6366f1" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{animation:'ev-corner 3s ease-in-out infinite'}}/>
+          <path d="M60 2 L70 2 L70 12" fill="none" stroke="#0891b2" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{animation:'ev-corner 3s ease-in-out infinite 0.75s'}}/>
+          <path d="M12 70 L2 70 L2 60" fill="none" stroke="#6366f1" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{animation:'ev-corner 3s ease-in-out infinite 1.5s'}}/>
+          <path d="M60 70 L70 70 L70 60" fill="none" stroke="#0891b2" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{animation:'ev-corner 3s ease-in-out infinite 2.25s'}}/>
         </svg>
         <p className="text-blue-600 dark:text-blue-400 text-sm font-medium mb-2">Stay in the loop</p>
         <h1 className="text-4xl sm:text-5xl font-bold text-slate-900 dark:text-white mb-4">Events</h1>

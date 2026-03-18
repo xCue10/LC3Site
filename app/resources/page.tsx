@@ -40,6 +40,8 @@ export default function ResourcesPage() {
             <style>{`
               @keyframes res-spark { 0%,100%{opacity:0.3;transform:scale(0.85)} 50%{opacity:0.9;transform:scale(1.15)} }
               @keyframes res-glow { 0%,100%{opacity:0.06} 50%{opacity:0.16} }
+              @keyframes res-ring { 0%,100%{opacity:0.1} 50%{opacity:0.35} }
+              @keyframes res-corner { 0%,100%{opacity:0.4} 50%{opacity:0.9} }
             `}</style>
           </defs>
           <circle cx="36" cy="36" r="33" fill="#7c3aed" fillOpacity="0.07" stroke="#7c3aed" strokeWidth="1" strokeOpacity="0.3"/>
@@ -64,6 +66,13 @@ export default function ResourcesPage() {
           <circle cx="62" cy="12" r="2" fill="#0891b2" fillOpacity="0.65" style={{animation:'res-spark 2.2s ease-in-out infinite 0.55s'}}/>
           <circle cx="10" cy="58" r="2" fill="#818cf8" fillOpacity="0.65" style={{animation:'res-spark 2.2s ease-in-out infinite 1.1s'}}/>
           <circle cx="62" cy="58" r="2.5" fill="#0891b2" fillOpacity="0.7" style={{animation:'res-spark 2.2s ease-in-out infinite 1.65s'}}/>
+          {/* Outer glow ring */}
+          <circle cx="36" cy="36" r="35.5" fill="none" stroke="#6366f1" strokeWidth="1" strokeOpacity="1" style={{animation:'res-ring 3s ease-in-out infinite'}}/>
+          {/* Corner accents */}
+          <path d="M12 2 L2 2 L2 12" fill="none" stroke="#6366f1" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{animation:'res-corner 3s ease-in-out infinite'}}/>
+          <path d="M60 2 L70 2 L70 12" fill="none" stroke="#0891b2" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{animation:'res-corner 3s ease-in-out infinite 0.75s'}}/>
+          <path d="M12 70 L2 70 L2 60" fill="none" stroke="#6366f1" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{animation:'res-corner 3s ease-in-out infinite 1.5s'}}/>
+          <path d="M60 70 L70 70 L70 60" fill="none" stroke="#0891b2" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{animation:'res-corner 3s ease-in-out infinite 2.25s'}}/>
         </svg>
         <p className="text-violet-600 dark:text-violet-400 text-sm font-medium mb-2">Curated by the community</p>
         <h1 className="text-4xl sm:text-5xl font-bold text-slate-900 dark:text-white mb-4">Resources</h1>

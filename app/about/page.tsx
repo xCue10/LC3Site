@@ -104,6 +104,8 @@ export default function AboutPage() {
                 @keyframes about-dash { to { stroke-dashoffset: -20; } }
                 @keyframes about-glow { 0%,100%{opacity:0.12} 50%{opacity:0.22} }
                 @keyframes about-dot { 0%,100%{opacity:0.3} 50%{opacity:0.85} }
+                @keyframes about-ring { 0%,100%{opacity:0.1} 50%{opacity:0.35} }
+                @keyframes about-corner { 0%,100%{opacity:0.4} 50%{opacity:0.9} }
               `}</style>
               <radialGradient id="about-cg" cx="50%" cy="50%" r="50%">
                 <stop offset="0%" stopColor="#6366f1" stopOpacity="0.25"/>
@@ -171,6 +173,13 @@ export default function AboutPage() {
             <circle cx="192" cy="78" r="2" fill="#0891b2" fillOpacity="0.5" style={{animation:'about-dot 2.5s ease-in-out infinite 0.8s'}}/>
             <circle cx="98" cy="182" r="2" fill="#818cf8" fillOpacity="0.5" style={{animation:'about-dot 2.5s ease-in-out infinite 1.4s'}}/>
             <circle cx="202" cy="178" r="2.5" fill="#0891b2" fillOpacity="0.5" style={{animation:'about-dot 2.5s ease-in-out infinite 0.4s'}}/>
+            {/* Outer glow ring */}
+            <ellipse cx="150" cy="135" rx="148" ry="133" fill="none" stroke="#6366f1" strokeWidth="0.8" strokeOpacity="1" style={{animation:'about-ring 3s ease-in-out infinite'}}/>
+            {/* Corner accents */}
+            <path d="M20 2 L2 2 L2 20" fill="none" stroke="#6366f1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{animation:'about-corner 3s ease-in-out infinite'}}/>
+            <path d="M280 2 L298 2 L298 20" fill="none" stroke="#0891b2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{animation:'about-corner 3s ease-in-out infinite 0.75s'}}/>
+            <path d="M20 268 L2 268 L2 250" fill="none" stroke="#6366f1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{animation:'about-corner 3s ease-in-out infinite 1.5s'}}/>
+            <path d="M280 268 L298 268 L298 250" fill="none" stroke="#0891b2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{animation:'about-corner 3s ease-in-out infinite 2.25s'}}/>
           </svg>
         </div>
       </div>

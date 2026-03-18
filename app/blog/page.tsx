@@ -24,6 +24,8 @@ export default function BlogPage() {
             <style>{`
               @keyframes blog-wave { 0%,100%{opacity:0.15;transform:scale(0.95)} 50%{opacity:0.55;transform:scale(1.05)} }
               @keyframes blog-spark { 0%,100%{opacity:0.3} 50%{opacity:0.9} }
+              @keyframes blog-ring { 0%,100%{opacity:0.1} 50%{opacity:0.35} }
+              @keyframes blog-corner { 0%,100%{opacity:0.4} 50%{opacity:0.9} }
             `}</style>
           </defs>
           <circle cx="36" cy="36" r="33" fill="#7c3aed" fillOpacity="0.07" stroke="#7c3aed" strokeWidth="1" strokeOpacity="0.3"/>
@@ -46,6 +48,13 @@ export default function BlogPage() {
           <circle cx="62" cy="14" r="2" fill="#818cf8" fillOpacity="0.65" style={{animation:'blog-spark 2s ease-in-out infinite 0.6s'}}/>
           <circle cx="10" cy="58" r="2" fill="#0891b2" fillOpacity="0.65" style={{animation:'blog-spark 2s ease-in-out infinite 1.2s'}}/>
           <circle cx="60" cy="60" r="2.5" fill="#6366f1" fillOpacity="0.7" style={{animation:'blog-spark 2s ease-in-out infinite 1.8s'}}/>
+          {/* Outer glow ring */}
+          <circle cx="36" cy="36" r="35.5" fill="none" stroke="#6366f1" strokeWidth="1" strokeOpacity="1" style={{animation:'blog-ring 3s ease-in-out infinite'}}/>
+          {/* Corner accents */}
+          <path d="M12 2 L2 2 L2 12" fill="none" stroke="#6366f1" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{animation:'blog-corner 3s ease-in-out infinite'}}/>
+          <path d="M60 2 L70 2 L70 12" fill="none" stroke="#0891b2" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{animation:'blog-corner 3s ease-in-out infinite 0.75s'}}/>
+          <path d="M12 70 L2 70 L2 60" fill="none" stroke="#6366f1" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{animation:'blog-corner 3s ease-in-out infinite 1.5s'}}/>
+          <path d="M60 70 L70 70 L70 60" fill="none" stroke="#0891b2" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{animation:'blog-corner 3s ease-in-out infinite 2.25s'}}/>
         </svg>
         <p className="text-violet-600 dark:text-violet-400 text-sm font-medium mb-2">What&apos;s new</p>
         <h1 className="text-4xl font-bold text-slate-900 dark:text-white mb-3">Club Updates</h1>

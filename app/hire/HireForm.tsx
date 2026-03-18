@@ -177,6 +177,8 @@ export default function HireForm() {
               <style>{`
                 @keyframes hire-spark { 0%,100%{opacity:0.3} 50%{opacity:0.9} }
                 @keyframes hire-clasp { 0%,100%{opacity:0.5} 50%{opacity:1} }
+                @keyframes hire-ring { 0%,100%{opacity:0.1} 50%{opacity:0.35} }
+                @keyframes hire-corner { 0%,100%{opacity:0.4} 50%{opacity:0.9} }
               `}</style>
             </defs>
             <circle cx="36" cy="36" r="33" fill="#3b82f6" fillOpacity="0.07" stroke="#3b82f6" strokeWidth="1" strokeOpacity="0.3"/>
@@ -194,6 +196,13 @@ export default function HireForm() {
             <circle cx="62" cy="14" r="2" fill="#6366f1" fillOpacity="0.65" style={{animation:'hire-spark 2.2s ease-in-out infinite 0.55s'}}/>
             <circle cx="10" cy="60" r="2" fill="#0891b2" fillOpacity="0.65" style={{animation:'hire-spark 2.2s ease-in-out infinite 1.1s'}}/>
             <circle cx="62" cy="60" r="2.5" fill="#3b82f6" fillOpacity="0.7" style={{animation:'hire-spark 2.2s ease-in-out infinite 1.65s'}}/>
+            {/* Outer glow ring */}
+            <circle cx="36" cy="36" r="35.5" fill="none" stroke="#6366f1" strokeWidth="1" strokeOpacity="1" style={{animation:'hire-ring 3s ease-in-out infinite'}}/>
+            {/* Corner accents */}
+            <path d="M12 2 L2 2 L2 12" fill="none" stroke="#6366f1" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{animation:'hire-corner 3s ease-in-out infinite'}}/>
+            <path d="M60 2 L70 2 L70 12" fill="none" stroke="#0891b2" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{animation:'hire-corner 3s ease-in-out infinite 0.75s'}}/>
+            <path d="M12 70 L2 70 L2 60" fill="none" stroke="#6366f1" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{animation:'hire-corner 3s ease-in-out infinite 1.5s'}}/>
+            <path d="M60 70 L70 70 L70 60" fill="none" stroke="#0891b2" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{animation:'hire-corner 3s ease-in-out infinite 2.25s'}}/>
           </svg>
           <p className="text-blue-600 dark:text-blue-400 text-sm font-medium mb-2">Work with student talent</p>
           <h1 className="text-4xl sm:text-5xl font-bold text-slate-900 dark:text-white mb-6">Partner with LC3</h1>

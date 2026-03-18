@@ -286,6 +286,8 @@ export default function MembersClient({ members }: { members: Member[] }) {
               @keyframes mem-pulse { 0%,100%{opacity:0.15} 50%{opacity:0.28} }
               @keyframes mem-dash { to { stroke-dashoffset: -14; } }
               @keyframes mem-dot { 0%,100%{opacity:0.3} 50%{opacity:0.9} }
+              @keyframes mem-ring { 0%,100%{opacity:0.1} 50%{opacity:0.35} }
+              @keyframes mem-corner { 0%,100%{opacity:0.4} 50%{opacity:0.9} }
             `}</style>
           </defs>
           <circle cx="36" cy="36" r="20" fill="#7c3aed" fillOpacity="0.12" style={{animation:'mem-pulse 3s ease-in-out infinite'}}/>
@@ -319,6 +321,13 @@ export default function MembersClient({ members }: { members: Member[] }) {
           <circle cx="24" cy="28" r="1.5" fill="#6366f1" fillOpacity="0.5" style={{animation:'mem-dot 2.5s ease-in-out infinite'}}/>
           <circle cx="48" cy="26" r="1.5" fill="#0891b2" fillOpacity="0.5" style={{animation:'mem-dot 2.5s ease-in-out infinite 0.8s'}}/>
           <circle cx="22" cy="48" r="1.5" fill="#818cf8" fillOpacity="0.5" style={{animation:'mem-dot 2.5s ease-in-out infinite 1.6s'}}/>
+          {/* Outer glow ring */}
+          <circle cx="36" cy="36" r="35.5" fill="none" stroke="#6366f1" strokeWidth="1" strokeOpacity="1" style={{animation:'mem-ring 3s ease-in-out infinite'}}/>
+          {/* Corner accents */}
+          <path d="M12 2 L2 2 L2 12" fill="none" stroke="#6366f1" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{animation:'mem-corner 3s ease-in-out infinite'}}/>
+          <path d="M60 2 L70 2 L70 12" fill="none" stroke="#0891b2" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{animation:'mem-corner 3s ease-in-out infinite 0.75s'}}/>
+          <path d="M12 70 L2 70 L2 60" fill="none" stroke="#6366f1" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{animation:'mem-corner 3s ease-in-out infinite 1.5s'}}/>
+          <path d="M60 70 L70 70 L70 60" fill="none" stroke="#0891b2" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{animation:'mem-corner 3s ease-in-out infinite 2.25s'}}/>
         </svg>
         <p className="text-violet-600 dark:text-violet-400 text-sm font-medium mb-2">The people behind the code</p>
         <h1 className="text-4xl sm:text-5xl font-bold text-slate-900 dark:text-white mb-4">Meet Our Members</h1>

@@ -93,9 +93,30 @@ export default function HomePage() {
           )}
 
           {/* Banner — swaps with theme */}
-          <div className="w-full max-w-5xl mx-auto rounded-2xl overflow-hidden shadow-xl shadow-violet-500/10 mb-10">
-            <img src="/banner-light.svg" alt="LC3 - Lowcode Cloud Club · College of Southern Nevada" className="w-full dark:hidden" />
-            <img src="/banner-dark.svg" alt="LC3 - Lowcode Cloud Club · College of Southern Nevada" className="w-full hidden dark:block" />
+          <style>{`
+            @keyframes banner-glow { 0%,100%{opacity:0.25} 50%{opacity:0.6} }
+            @keyframes banner-corner { 0%,100%{opacity:0.4} 50%{opacity:0.9} }
+          `}</style>
+          <div className="relative w-full max-w-5xl mx-auto mb-10">
+            {/* Glow ring */}
+            <div className="absolute -inset-[4px] -z-10 rounded-[20px]" style={{background:'linear-gradient(135deg,rgba(99,102,241,0.45),rgba(8,145,178,0.3),rgba(99,102,241,0.45))',filter:'blur(10px)',animation:'banner-glow 3s ease-in-out infinite'}}/>
+            {/* Corner accents */}
+            <svg className="absolute -top-2 -left-2 w-8 h-8" viewBox="0 0 32 32" fill="none" style={{animation:'banner-corner 3s ease-in-out infinite'}}>
+              <path d="M16 2 L2 2 L2 16" stroke="#6366f1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+            <svg className="absolute -top-2 -right-2 w-8 h-8" viewBox="0 0 32 32" fill="none" style={{animation:'banner-corner 3s ease-in-out infinite 0.75s'}}>
+              <path d="M16 2 L30 2 L30 16" stroke="#0891b2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+            <svg className="absolute -bottom-2 -left-2 w-8 h-8" viewBox="0 0 32 32" fill="none" style={{animation:'banner-corner 3s ease-in-out infinite 1.5s'}}>
+              <path d="M16 30 L2 30 L2 16" stroke="#6366f1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+            <svg className="absolute -bottom-2 -right-2 w-8 h-8" viewBox="0 0 32 32" fill="none" style={{animation:'banner-corner 3s ease-in-out infinite 2.25s'}}>
+              <path d="M16 30 L30 30 L30 16" stroke="#0891b2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+            <div className="rounded-2xl overflow-hidden shadow-xl shadow-violet-500/10">
+              <img src="/banner-light.svg" alt="LC3 - Lowcode Cloud Club · College of Southern Nevada" className="w-full dark:hidden" />
+              <img src="/banner-dark.svg" alt="LC3 - Lowcode Cloud Club · College of Southern Nevada" className="w-full hidden dark:block" />
+            </div>
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
