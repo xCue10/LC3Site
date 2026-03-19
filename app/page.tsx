@@ -2,6 +2,8 @@ import Link from 'next/link';
 import { readJSON, Event, Project, Member, Stats, SiteSettings, Post, SponsorsConfig, CaseStudiesConfig, HomeContent } from '@/lib/data';
 import ScrollReveal from './components/ScrollReveal';
 import HeroTyping from './components/HeroTyping';
+import AnimatedStat from './components/AnimatedStat';
+import StaggerReveal from './components/StaggerReveal';
 import type { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
@@ -102,6 +104,9 @@ export default function HomePage() {
             @keyframes hero-blob-c { 0%,100%{transform:scale(1);opacity:0.1} 50%{transform:scale(1.2);opacity:0.18} }
             @keyframes hero-light-shift { 0%,100%{opacity:1} 50%{opacity:0.65} }
             @keyframes cursor-blink { 0%,100%{opacity:1} 50%{opacity:0} }
+            @keyframes btn-pulse { 0%,100%{box-shadow:0 8px 25px -4px rgba(139,92,246,0.35)} 50%{box-shadow:0 8px 38px 4px rgba(139,92,246,0.6)} }
+            @keyframes badge-pulse { 0%,100%{box-shadow:none;border-color:rgb(226,232,240)} 50%{box-shadow:0 0 8px 1px rgba(99,102,241,0.2);border-color:rgba(99,102,241,0.4)} }
+            @keyframes badge-pulse-dark { 0%,100%{box-shadow:none} 50%{box-shadow:0 0 10px 2px rgba(139,92,246,0.25)} }
           `}</style>
           <div className="relative w-full max-w-5xl mx-auto mb-10">
             {/* Glow ring */}
@@ -130,13 +135,15 @@ export default function HomePage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/contact"
-              className="px-8 py-3.5 bg-gradient-to-r from-blue-600 to-violet-600 text-white font-semibold rounded-xl hover:from-blue-500 hover:to-violet-500 transition-all shadow-lg shadow-violet-500/25 hover:shadow-violet-500/40 hover:-translate-y-0.5"
+              className="px-8 py-3.5 bg-gradient-to-r from-blue-600 to-violet-600 text-white font-semibold rounded-xl hover:from-blue-500 hover:to-violet-500 transition-all hover:-translate-y-0.5"
+              style={{animation:'btn-pulse 2.8s ease-in-out infinite'}}
             >
               {homeContent.primaryButtonLabel}
             </Link>
             <Link
               href="/members"
               className="px-8 py-3.5 bg-white border border-slate-200 text-slate-700 font-semibold rounded-xl hover:bg-slate-50 hover:border-slate-300 transition-all hover:-translate-y-0.5 shadow-sm dark:bg-white/5 dark:border-white/15 dark:text-white dark:hover:bg-white/10 dark:hover:border-white/25"
+              style={{animation:'btn-pulse 2.8s ease-in-out infinite 1.4s'}}
             >
               {homeContent.secondaryButtonLabel}
             </Link>
@@ -144,10 +151,11 @@ export default function HomePage() {
 
           {/* Tech stack strip */}
           <div className="mt-8 flex flex-wrap justify-center gap-2">
-            {homeContent.techStack.map((tech) => (
+            {homeContent.techStack.map((tech, i) => (
               <span
                 key={tech}
-                className="text-xs text-slate-500 bg-white border border-slate-200 px-3 py-1 rounded-full dark:bg-white/5 dark:border-white/10"
+                className="text-xs text-slate-500 bg-white border px-3 py-1 rounded-full transition-all duration-200 hover:text-violet-600 hover:border-violet-300 hover:bg-violet-50 dark:bg-white/5 dark:border-white/10 dark:hover:text-violet-400 dark:hover:border-violet-500/40 dark:hover:bg-violet-500/10"
+                style={{animation:`badge-pulse 3.5s ease-in-out infinite ${i * 220}ms`}}
               >
                 {tech}
               </span>
@@ -178,21 +186,16 @@ export default function HomePage() {
       {/* Stats */}
       <section className="border-y border-slate-200 bg-white dark:border-[#1e2d45] dark:bg-[#0d1424]">
         <ScrollReveal>
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+        <StaggerReveal className="max-w-6xl mx-auto px-4 sm:px-6 py-12 grid grid-cols-2 md:grid-cols-4 gap-6 text-center" stagger={120}>
           {[
             { value: stats.activeMembers, label: 'Active Members' },
             { value: stats.eventsHosted, label: 'Events Hosted' },
             { value: stats.projectsBuilt, label: 'Projects Built' },
             { value: stats.yearsActive, label: 'Years Active' },
           ].map(({ value, label }) => (
-            <div key={label}>
-              <div className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-violet-600 bg-clip-text text-transparent dark:from-blue-400 dark:to-violet-400">
-                {value || '—'}
-              </div>
-              <div className="text-slate-500 text-sm mt-1">{label}</div>
-            </div>
+            <AnimatedStat key={label} value={value} label={label} />
           ))}
-        </div>
+        </StaggerReveal>
         </ScrollReveal>
       </section>
 
@@ -242,7 +245,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <StaggerReveal className="grid grid-cols-2 gap-4" stagger={100}>
             {homeContent.missionItems.map(({ title, desc }, i) => (
               <div
                 key={i}
@@ -255,7 +258,7 @@ export default function HomePage() {
                 <div className="text-slate-500 text-xs leading-relaxed">{desc}</div>
               </div>
             ))}
-          </div>
+          </StaggerReveal>
         </div>
         </ScrollReveal>
       </section>
@@ -275,7 +278,7 @@ export default function HomePage() {
               </Link>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-6">
+            <StaggerReveal className="grid md:grid-cols-3 gap-6">
               {featuredProjects.map((project) => (
                 <div
                   key={project.id}
@@ -304,7 +307,7 @@ export default function HomePage() {
                   </div>
                 </div>
               ))}
-            </div>
+            </StaggerReveal>
           </div>
           </ScrollReveal>
         </section>
@@ -324,7 +327,7 @@ export default function HomePage() {
             </Link>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6">
+          <StaggerReveal className="grid md:grid-cols-2 gap-6">
             {upcomingEvents.map((event) => (
               <div key={event.id} className="bg-white border border-slate-200 rounded-2xl p-6 hover:border-blue-200 hover:shadow-sm transition-all dark:bg-[#0d1424] dark:border-[#1e2d45] dark:hover:border-blue-500/30">
                 <div className="flex items-start gap-4">
@@ -350,7 +353,7 @@ export default function HomePage() {
                 </div>
               </div>
             ))}
-          </div>
+          </StaggerReveal>
           </ScrollReveal>
         </section>
       )}
@@ -368,7 +371,7 @@ export default function HomePage() {
               All posts →
             </Link>
           </div>
-          <div className="grid md:grid-cols-3 gap-6">
+          <StaggerReveal className="grid md:grid-cols-3 gap-6">
             {latestPosts.map((post) => (
               <Link
                 key={post.id}
@@ -386,7 +389,7 @@ export default function HomePage() {
                 )}
               </Link>
             ))}
-          </div>
+          </StaggerReveal>
           </ScrollReveal>
         </section>
       )}
