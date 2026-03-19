@@ -127,7 +127,6 @@ function FlipCard({ member, index, variant = 'member' }: { member: Member; index
           className={`absolute inset-0 bg-white dark:bg-[#0d1424] border ${vs.border} rounded-2xl p-5 flex flex-col gap-3 overflow-hidden ${flipped ? 'pointer-events-none' : ''}`}
           style={{ backfaceVisibility: 'hidden' }}
         >
-          <Link href={`/members/${member.id}`} className="absolute inset-0 z-0 rounded-2xl" aria-label={`View ${member.name}'s profile`} />
 
           {/* Avatar + name */}
           <div className="flex items-center gap-3 relative z-10">
@@ -167,7 +166,11 @@ function FlipCard({ member, index, variant = 'member' }: { member: Member; index
           {/* Footer */}
           <div className={`mt-auto pt-3 border-t ${vs.divider} flex items-center justify-between relative z-10`}>
             <SocialIcons member={member} />
-            <span className="text-xs text-slate-400 dark:text-slate-600 ml-auto tabular-nums">hover ↻</span>
+            {/* Desktop: hint; Mobile: actual link (back face never shows on touch) */}
+            <span className="text-xs text-slate-400 dark:text-slate-600 ml-auto hidden sm:block">hover ↻</span>
+            <Link href={`/members/${member.id}`} className="text-xs text-slate-400 dark:text-slate-500 hover:text-violet-600 dark:hover:text-violet-400 transition-colors ml-auto sm:hidden">
+              View Profile →
+            </Link>
           </div>
         </div>
 
