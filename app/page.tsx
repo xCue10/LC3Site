@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { readJSON, Event, Project, Member, Stats, SiteSettings, Post, SponsorsConfig, CaseStudiesConfig, HomeContent } from '@/lib/data';
 import ScrollReveal from './components/ScrollReveal';
+import HeroTyping from './components/HeroTyping';
 import type { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
@@ -75,13 +76,13 @@ export default function HomePage() {
       <section className="relative overflow-hidden py-14 sm:py-20">
         {/* Background */}
         <div className="absolute inset-0 -z-10 overflow-hidden">
-          {/* Light mode: subtle gradient */}
-          <div className="absolute inset-0 bg-gradient-to-br from-violet-50 via-blue-50/40 to-transparent dark:hidden" />
-          {/* Dark mode: glows */}
+          {/* Light mode: subtle animated gradient */}
+          <div className="absolute inset-0 bg-gradient-to-br from-violet-50 via-blue-50/40 to-transparent dark:hidden" style={{animation:'hero-light-shift 8s ease-in-out infinite'}} />
+          {/* Dark mode: animated glows */}
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[2px] bg-gradient-to-r from-transparent via-violet-500/40 to-transparent hidden dark:block" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-violet-600/15 rounded-full blur-3xl hidden dark:block" />
-          <div className="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-blue-600/15 rounded-full blur-3xl hidden dark:block" />
-          <div className="absolute bottom-0 right-1/4 w-[300px] h-[300px] bg-cyan-600/10 rounded-full blur-3xl hidden dark:block" />
+          <div className="absolute top-1/2 left-1/2 w-[700px] h-[700px] bg-violet-600/15 rounded-full blur-3xl hidden dark:block" style={{animation:'hero-blob-a 9s ease-in-out infinite'}} />
+          <div className="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-blue-600/15 rounded-full blur-3xl hidden dark:block" style={{animation:'hero-blob-b 11s ease-in-out infinite 1s'}} />
+          <div className="absolute bottom-0 right-1/4 w-[300px] h-[300px] bg-purple-600/12 rounded-full blur-3xl hidden dark:block" style={{animation:'hero-blob-c 13s ease-in-out infinite 2s'}} />
         </div>
 
         <div className="max-w-6xl mx-auto px-4 sm:px-6 text-center">
@@ -96,6 +97,11 @@ export default function HomePage() {
           <style>{`
             @keyframes banner-glow { 0%,100%{opacity:0.25} 50%{opacity:0.6} }
             @keyframes banner-corner { 0%,100%{opacity:0.4} 50%{opacity:0.9} }
+            @keyframes hero-blob-a { 0%,100%{transform:translate(-50%,-50%) scale(1);opacity:0.15} 50%{transform:translate(-50%,-50%) scale(1.18);opacity:0.22} }
+            @keyframes hero-blob-b { 0%,100%{transform:scale(1);opacity:0.15} 50%{transform:scale(1.25);opacity:0.24} }
+            @keyframes hero-blob-c { 0%,100%{transform:scale(1);opacity:0.1} 50%{transform:scale(1.2);opacity:0.18} }
+            @keyframes hero-light-shift { 0%,100%{opacity:1} 50%{opacity:0.65} }
+            @keyframes cursor-blink { 0%,100%{opacity:1} 50%{opacity:0} }
           `}</style>
           <div className="relative w-full max-w-5xl mx-auto mb-10">
             {/* Glow ring */}
@@ -118,6 +124,8 @@ export default function HomePage() {
               <img src="/banner-dark.svg" alt="LC3 - Lowcode Cloud Club · College of Southern Nevada" className="w-full hidden dark:block" />
             </div>
           </div>
+
+          <HeroTyping />
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
