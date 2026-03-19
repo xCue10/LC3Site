@@ -90,6 +90,8 @@ export interface Stats {
   yearsActive: string;
 }
 
+export type ProjectStatus = 'in-progress' | 'completed' | 'open';
+
 export interface Project {
   id: string;
   name: string;
@@ -98,6 +100,7 @@ export interface Project {
   gradient: string;
   github: string;
   contributors?: string[];
+  status?: ProjectStatus;
 }
 
 export interface RSVP {

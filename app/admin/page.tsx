@@ -173,6 +173,8 @@ interface PartnerInquiry {
   availability?: string;
 }
 
+type ProjectStatus = 'in-progress' | 'completed' | 'open';
+
 interface Project {
   id: string;
   name: string;
@@ -181,6 +183,7 @@ interface Project {
   gradient: string;
   github: string;
   contributors?: string[];
+  status?: ProjectStatus;
 }
 
 const GRADIENTS = [
@@ -193,7 +196,7 @@ const GRADIENTS = [
 ];
 
 const emptyProject: Omit<Project, 'id'> = {
-  name: '', description: '', tags: [], gradient: GRADIENTS[0].value, github: '', contributors: [],
+  name: '', description: '', tags: [], gradient: GRADIENTS[0].value, github: '', contributors: [], status: undefined,
 };
 
 const emptyMember: Omit<Member, 'id'> = {
@@ -595,6 +598,21 @@ function ProjectModal({
               placeholder="Alice Johnson, Bob Smith"
               className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
             />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Status <span className="text-slate-500 font-normal">(optional)</span></label>
+            <select
+              name="status"
+              value={form.status ?? ''}
+              onChange={(e) => setForm((p) => ({ ...p, status: (e.target.value as ProjectStatus) || undefined }))}
+              className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 dark:text-white rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+            >
+              <option value="">— No status —</option>
+              <option value="in-progress">In Progress</option>
+              <option value="completed">Completed</option>
+              <option value="open">Open to Contributors</option>
+            </select>
           </div>
 
           <div className="flex gap-3 pt-2">
@@ -1464,7 +1482,12 @@ function Dashboard() {
                       <div className={`h-1 bg-gradient-to-r ${proj.gradient}`} />
                       <div className="p-4 flex items-center gap-4">
                         <div className="flex-1 min-w-0">
-                          <div className="text-slate-900 dark:text-white font-medium">{proj.name}</div>
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <div className="text-slate-900 dark:text-white font-medium">{proj.name}</div>
+                            {proj.status === 'in-progress' && <span className="text-xs px-2 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400">In Progress</span>}
+                            {proj.status === 'completed' && <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400">Completed</span>}
+                            {proj.status === 'open' && <span className="text-xs px-2 py-0.5 rounded-full bg-violet-500/10 border border-violet-500/20 text-violet-400">Open</span>}
+                          </div>
                           <div className="text-slate-500 text-sm truncate mt-0.5">{proj.description}</div>
                           <div className="flex flex-wrap gap-1.5 mt-2">
                             {proj.tags.map((t) => (

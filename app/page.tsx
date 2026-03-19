@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { readJSON, Event, Project, Member, Stats, SiteSettings, Post, SponsorsConfig, CaseStudiesConfig, HomeContent } from '@/lib/data';
+import { readJSON, Event, Project, Member, Stats, SiteSettings, Post, SponsorsConfig, CaseStudiesConfig, HomeContent, ProjectStatus } from '@/lib/data';
 import ScrollReveal from './components/ScrollReveal';
 import HeroTyping from './components/HeroTyping';
 import AnimatedStat from './components/AnimatedStat';
@@ -18,6 +18,35 @@ export const metadata: Metadata = {
     images: ['/banner.svg'],
   },
 };
+
+function HomeStatusBadge({ status }: { status: ProjectStatus }) {
+  if (status === 'in-progress') {
+    return (
+      <span className="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full bg-amber-50 border border-amber-200 text-amber-700 dark:bg-amber-500/10 dark:border-amber-500/20 dark:text-amber-400 shrink-0">
+        <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
+        In Progress
+      </span>
+    );
+  }
+  if (status === 'completed') {
+    return (
+      <span className="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 dark:bg-emerald-500/10 dark:border-emerald-500/20 dark:text-emerald-400 shrink-0">
+        <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+        </svg>
+        Completed
+      </span>
+    );
+  }
+  return (
+    <span className="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full bg-violet-50 border border-violet-200 text-violet-700 dark:bg-violet-500/10 dark:border-violet-500/20 dark:text-violet-400 shrink-0">
+      <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+      </svg>
+      Open
+    </span>
+  );
+}
 
 export default function HomePage() {
   const events = readJSON<Event[]>('events.json');
@@ -286,7 +315,10 @@ export default function HomePage() {
                 >
                   <div className={`h-1.5 bg-gradient-to-r ${project.gradient}`} />
                   <div className="p-6">
-                    <h3 className="text-slate-900 dark:text-white font-semibold text-lg mb-2">{project.name}</h3>
+                    <div className="flex items-start justify-between gap-2 mb-2">
+                      <h3 className="text-slate-900 dark:text-white font-semibold text-lg">{project.name}</h3>
+                      {project.status && <HomeStatusBadge status={project.status} />}
+                    </div>
                     <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-4">{project.description}</p>
                     <div className="flex flex-wrap gap-2">
                       {project.tags.map((tag) => (
