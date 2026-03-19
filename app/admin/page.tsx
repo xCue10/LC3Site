@@ -3115,11 +3115,16 @@ function Dashboard() {
                           disabled={galleryEditSaving}
                           onClick={async () => {
                             setGalleryEditSaving(true);
-                            await fetch('/api/gallery', { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ public_id: galleryEditTarget.public_id, event: galleryEditForm.event, caption: galleryEditForm.caption }) });
+                            const res = await fetch('/api/gallery', { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ public_id: galleryEditTarget.public_id, event: galleryEditForm.event, caption: galleryEditForm.caption }) });
                             setGalleryEditSaving(false);
+                            if (res.ok) {
+                              setGalleryImages((imgs) => imgs.map((img) =>
+                                img.public_id === galleryEditTarget.public_id
+                                  ? { ...img, context: { custom: { event: galleryEditForm.event, caption: galleryEditForm.caption } } }
+                                  : img
+                              ));
+                            }
                             setGalleryEditTarget(null);
-                            const gl = await fetch('/api/gallery').then((r) => r.ok ? r.json() : []).catch(() => []);
-                            setGalleryImages(Array.isArray(gl) ? gl as GalleryImage[] : []);
                           }}
                           className="flex-1 py-2.5 bg-gradient-to-r from-blue-600 to-violet-600 text-white rounded-xl hover:opacity-90 transition-opacity text-sm font-semibold disabled:opacity-50"
                         >
