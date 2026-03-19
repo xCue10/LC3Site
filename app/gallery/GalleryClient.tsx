@@ -8,6 +8,12 @@ export interface GalleryImage {
   width: number;
   height: number;
   format: string;
+  context?: {
+    custom?: {
+      event?: string;
+      caption?: string;
+    };
+  };
 }
 
 function thumbUrl(url: string) {
@@ -42,52 +48,60 @@ export default function GalleryClient({ images }: { images: GalleryImage[] }) {
     return () => window.removeEventListener('keydown', handler);
   }, [selected, close, prev, next]);
 
-  // Lock body scroll when lightbox is open
   useEffect(() => {
-    if (selected !== null) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
+    document.body.style.overflow = selected !== null ? 'hidden' : '';
     return () => { document.body.style.overflow = ''; };
   }, [selected]);
 
+  const activeImg = selected !== null ? images[selected] : null;
+  const activeEvent = activeImg?.context?.custom?.event?.trim();
+  const activeCaption = activeImg?.context?.custom?.caption?.trim();
+
   return (
     <>
-      {/* Masonry grid via CSS columns */}
+      {/* Masonry grid */}
       <div className="columns-2 md:columns-3 lg:columns-4 gap-3">
-        {images.map((img, i) => (
-          <div
-            key={img.public_id}
-            className="break-inside-avoid mb-3 cursor-zoom-in group relative overflow-hidden rounded-xl border border-slate-200 dark:border-[#1e2d45]"
-            onClick={() => setSelected(i)}
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={thumbUrl(img.secure_url)}
-              alt=""
-              loading="lazy"
-              className="w-full block rounded-xl transition-transform duration-500 group-hover:scale-[1.04]"
-            />
-            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/35 transition-colors duration-300 rounded-xl flex items-center justify-center">
-              <svg
-                className="w-9 h-9 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 drop-shadow-lg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={1.5}
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0zm-6-3v6m-3-3h6" />
-              </svg>
+        {images.map((img, i) => {
+          const event = img.context?.custom?.event?.trim();
+          return (
+            <div
+              key={img.public_id}
+              className="break-inside-avoid mb-3 cursor-zoom-in group relative overflow-hidden rounded-xl border border-slate-200 dark:border-[#1e2d45]"
+              onClick={() => setSelected(i)}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={thumbUrl(img.secure_url)}
+                alt={event ?? ''}
+                loading="lazy"
+                className="w-full block rounded-xl transition-transform duration-500 group-hover:scale-[1.04]"
+              />
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-300 rounded-xl">
+                {/* Expand icon */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <svg
+                    className="w-9 h-9 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 drop-shadow-lg"
+                    fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0zm-6-3v6m-3-3h6" />
+                  </svg>
+                </div>
+                {/* Event label */}
+                {event && (
+                  <div className="absolute bottom-0 left-0 right-0 px-3 py-2.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <p className="text-white text-xs font-medium truncate drop-shadow-md">{event}</p>
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* Lightbox */}
-      {selected !== null && (
+      {selected !== null && activeImg && (
         <div
-          className="fixed inset-0 z-[9999] bg-black/92 backdrop-blur-sm flex items-center justify-center"
+          className="fixed inset-0 z-[9999] bg-black/92 backdrop-blur-sm flex flex-col items-center justify-center gap-3 p-4"
           onClick={close}
         >
           {/* Close */}
@@ -104,7 +118,7 @@ export default function GalleryClient({ images }: { images: GalleryImage[] }) {
           {/* Prev */}
           <button
             onClick={(e) => { e.stopPropagation(); prev(); }}
-            className="absolute left-3 sm:left-6 w-11 h-11 flex items-center justify-center rounded-xl bg-white/10 hover:bg-white/20 text-white transition-colors"
+            className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 w-11 h-11 flex items-center justify-center rounded-xl bg-white/10 hover:bg-white/20 text-white transition-colors"
             aria-label="Previous"
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
@@ -115,7 +129,7 @@ export default function GalleryClient({ images }: { images: GalleryImage[] }) {
           {/* Next */}
           <button
             onClick={(e) => { e.stopPropagation(); next(); }}
-            className="absolute right-3 sm:right-6 w-11 h-11 flex items-center justify-center rounded-xl bg-white/10 hover:bg-white/20 text-white transition-colors"
+            className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 w-11 h-11 flex items-center justify-center rounded-xl bg-white/10 hover:bg-white/20 text-white transition-colors"
             aria-label="Next"
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
@@ -123,21 +137,34 @@ export default function GalleryClient({ images }: { images: GalleryImage[] }) {
             </svg>
           </button>
 
-          {/* Image */}
+          {/* Image + metadata */}
           <div
-            className="px-16 sm:px-20 max-w-6xl w-full flex items-center justify-center"
+            className="px-16 sm:px-20 max-w-5xl w-full flex flex-col items-center gap-4"
             onClick={(e) => e.stopPropagation()}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src={lightboxUrl(images[selected].secure_url)}
-              alt=""
-              className="max-w-full max-h-[85vh] object-contain rounded-xl shadow-2xl"
+              src={lightboxUrl(activeImg.secure_url)}
+              alt={activeEvent ?? ''}
+              className="max-w-full max-h-[72vh] object-contain rounded-xl shadow-2xl"
             />
+
+            {(activeEvent || activeCaption) && (
+              <div className="text-center space-y-1.5">
+                {activeEvent && (
+                  <span className="inline-block text-xs font-medium px-3 py-1 rounded-full bg-violet-500/25 text-violet-300 border border-violet-500/30">
+                    {activeEvent}
+                  </span>
+                )}
+                {activeCaption && (
+                  <p className="text-white/70 text-sm max-w-xl leading-relaxed">{activeCaption}</p>
+                )}
+              </div>
+            )}
           </div>
 
           {/* Counter */}
-          <div className="absolute bottom-5 left-1/2 -translate-x-1/2 text-white/60 text-sm tabular-nums">
+          <div className="absolute bottom-5 left-1/2 -translate-x-1/2 text-white/50 text-sm tabular-nums">
             {selected + 1} / {images.length}
           </div>
         </div>

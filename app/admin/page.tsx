@@ -841,6 +841,12 @@ interface GalleryImage {
   format: string;
   created_at: string;
   bytes: number;
+  context?: {
+    custom?: {
+      event?: string;
+      caption?: string;
+    };
+  };
 }
 
 type TabId = 'members' | 'events' | 'contacts' | 'partners' | 'projects' | 'stats' | 'settings' | 'about' | 'home' | 'posts' | 'sponsors' | 'resources' | 'past-work' | 'rsvps' | 'gallery';
@@ -900,6 +906,9 @@ function Dashboard() {
   const [galleryUploading, setGalleryUploading] = useState(false);
   const [galleryUploadError, setGalleryUploadError] = useState('');
   const [galleryDeleteId, setGalleryDeleteId] = useState<string | null>(null);
+  const [galleryEditTarget, setGalleryEditTarget] = useState<GalleryImage | null>(null);
+  const [galleryEditForm, setGalleryEditForm] = useState({ event: '', caption: '' });
+  const [galleryEditSaving, setGalleryEditSaving] = useState(false);
 
   // Search & sort
   const [membersSearch, setMembersSearch] = useState('');
@@ -2901,6 +2910,12 @@ function Dashboard() {
                         loading="lazy"
                         className="w-full h-full object-cover"
                       />
+                      {/* Always-visible event label */}
+                      {img.context?.custom?.event && (
+                        <div className="absolute bottom-0 left-0 right-0 px-2 py-1.5 bg-gradient-to-t from-black/60 to-transparent rounded-b-xl pointer-events-none">
+                          <p className="text-white text-xs font-medium truncate">{img.context.custom.event}</p>
+                        </div>
+                      )}
                       <div className="absolute inset-0 bg-black/0 group-hover:bg-black/50 transition-colors flex items-center justify-center gap-2">
                         <a
                           href={img.secure_url}
@@ -2915,6 +2930,21 @@ function Dashboard() {
                           </svg>
                         </a>
                         <button
+                          onClick={() => {
+                            setGalleryEditTarget(img);
+                            setGalleryEditForm({
+                              event: img.context?.custom?.event ?? '',
+                              caption: img.context?.custom?.caption ?? '',
+                            });
+                          }}
+                          className="opacity-0 group-hover:opacity-100 transition-opacity w-8 h-8 bg-violet-500 hover:bg-violet-600 rounded-lg flex items-center justify-center text-white"
+                          title="Edit info"
+                        >
+                          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                          </svg>
+                        </button>
+                        <button
                           onClick={() => setGalleryDeleteId(img.public_id)}
                           className="opacity-0 group-hover:opacity-100 transition-opacity w-8 h-8 bg-red-500 hover:bg-red-600 rounded-lg flex items-center justify-center text-white"
                           title="Delete"
@@ -2926,6 +2956,82 @@ function Dashboard() {
                       </div>
                     </div>
                   ))}
+                </div>
+              )}
+
+              {/* Edit info modal */}
+              {galleryEditTarget && (
+                <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                  <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl w-full max-w-md overflow-hidden">
+                    <div className="flex items-center gap-3 p-5 border-b border-slate-200 dark:border-[#1e2d45]">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={galleryEditTarget.secure_url.replace('/upload/', '/upload/w_80,h_80,c_fill,q_auto,f_auto/')}
+                        alt=""
+                        className="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+                      />
+                      <div>
+                        <h3 className="text-slate-900 dark:text-white font-semibold">Edit Photo Info</h3>
+                        <p className="text-slate-500 text-xs mt-0.5">Visible in the public gallery lightbox</p>
+                      </div>
+                    </div>
+                    <div className="p-5 space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
+                          Event <span className="text-slate-400 font-normal">(e.g. Spring Hackathon 2025)</span>
+                        </label>
+                        <input
+                          type="text"
+                          value={galleryEditForm.event}
+                          onChange={(e) => setGalleryEditForm((f) => ({ ...f, event: e.target.value }))}
+                          placeholder="Event name"
+                          className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
+                          Caption <span className="text-slate-400 font-normal">(optional description)</span>
+                        </label>
+                        <textarea
+                          rows={3}
+                          value={galleryEditForm.caption}
+                          onChange={(e) => setGalleryEditForm((f) => ({ ...f, caption: e.target.value }))}
+                          placeholder="What's happening in this photo?"
+                          className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all resize-none"
+                        />
+                      </div>
+                      <div className="flex gap-3 pt-1">
+                        <button
+                          onClick={() => setGalleryEditTarget(null)}
+                          className="flex-1 py-2.5 border border-slate-200 dark:border-[#1e2d45] text-slate-500 dark:text-slate-400 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 transition-colors text-sm font-medium"
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          disabled={galleryEditSaving}
+                          onClick={async () => {
+                            setGalleryEditSaving(true);
+                            await fetch('/api/gallery', {
+                              method: 'PATCH',
+                              headers: { 'Content-Type': 'application/json' },
+                              body: JSON.stringify({
+                                public_id: galleryEditTarget.public_id,
+                                event: galleryEditForm.event,
+                                caption: galleryEditForm.caption,
+                              }),
+                            });
+                            setGalleryEditSaving(false);
+                            setGalleryEditTarget(null);
+                            const gl = await fetch('/api/gallery').then((r) => r.ok ? r.json() : []).catch(() => []);
+                            setGalleryImages(Array.isArray(gl) ? gl as GalleryImage[] : []);
+                          }}
+                          className="flex-1 py-2.5 bg-gradient-to-r from-blue-600 to-violet-600 text-white rounded-xl hover:opacity-90 transition-opacity text-sm font-semibold disabled:opacity-50"
+                        >
+                          {galleryEditSaving ? 'Saving…' : 'Save'}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               )}
 

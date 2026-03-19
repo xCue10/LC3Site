@@ -18,7 +18,7 @@ async function fetchGalleryImages(): Promise<GalleryImage[]> {
   try {
     const auth = Buffer.from(`${key}:${secret}`).toString('base64');
     const res = await fetch(
-      `https://api.cloudinary.com/v1_1/${cloud}/resources/image?prefix=lc3-gallery&type=upload&max_results=500`,
+      `https://api.cloudinary.com/v1_1/${cloud}/resources/image?prefix=lc3-gallery&type=upload&max_results=500&context=true`,
       { headers: { Authorization: `Basic ${auth}` }, next: { revalidate: 60 } }
     );
     if (!res.ok) return [];

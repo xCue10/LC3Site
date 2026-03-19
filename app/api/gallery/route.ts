@@ -27,7 +27,7 @@ export async function GET() {
 
   try {
     const res = await fetch(
-      `https://api.cloudinary.com/v1_1/${cloud}/resources/image?prefix=lc3-gallery&type=upload&max_results=500`,
+      `https://api.cloudinary.com/v1_1/${cloud}/resources/image?prefix=lc3-gallery&type=upload&max_results=500&context=true`,
       { headers: { Authorization: `Basic ${basicAuth(key, secret)}` } }
     );
     if (!res.ok) return NextResponse.json([]);
@@ -68,6 +68,41 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: data.error?.message ?? 'Upload failed' }, { status: 400 });
   }
   return NextResponse.json(data);
+}
+
+export async function PATCH(req: NextRequest) {
+  const { cloud, key, secret } = cfg();
+  if (!cloud || !key || !secret) {
+    return NextResponse.json({ error: 'Cloudinary not configured' }, { status: 500 });
+  }
+
+  const { public_id, event, caption } = await req.json();
+  if (!public_id) return NextResponse.json({ error: 'No public_id' }, { status: 400 });
+
+  // Cloudinary context format: key=value|key2=value2
+  // Escape special chars in values
+  const esc = (v: string) => v.replace(/\\/g, '\\\\').replace(/\|/g, '\\|').replace(/=/g, '\\=');
+  const context = [
+    `event=${esc(event ?? '')}`,
+    `caption=${esc(caption ?? '')}`,
+  ].join('|');
+
+  const res = await fetch(
+    `https://api.cloudinary.com/v1_1/${cloud}/resources/image/context`,
+    {
+      method: 'POST',
+      headers: {
+        Authorization: `Basic ${basicAuth(key, secret)}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ context, public_ids: [public_id] }),
+    }
+  );
+  const data = await res.json();
+  if (!res.ok) {
+    return NextResponse.json({ error: data.error?.message ?? 'Update failed' }, { status: 400 });
+  }
+  return NextResponse.json({ success: true });
 }
 
 export async function DELETE(req: NextRequest) {
