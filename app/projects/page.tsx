@@ -19,7 +19,19 @@ function GithubIcon() {
 function ProjectCard({ project }: { project: Project }) {
   return (
     <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden hover:border-violet-200 hover:shadow-md hover:-translate-y-0.5 transition-all flex flex-col dark:bg-[#0d1424] dark:border-[#1e2d45] dark:hover:border-violet-500/30 dark:hover:shadow-none">
-      <div className={`h-1.5 bg-gradient-to-r ${project.gradient}`} />
+      <div className={`relative h-24 bg-gradient-to-r ${project.gradient} overflow-hidden`}>
+        <svg className="absolute inset-0 w-full h-full" viewBox="0 0 320 96" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+          <circle cx="0" cy="0" r="70" fill="white" fillOpacity="0.07"/>
+          <circle cx="320" cy="96" r="80" fill="white" fillOpacity="0.07"/>
+          <circle cx="160" cy="48" r="40" fill="white" fillOpacity="0.04"/>
+          <text x="18" y="64" fontSize="32" fill="white" fillOpacity="0.13" fontFamily="monospace" fontWeight="bold">{'{ }'}</text>
+          <text x="218" y="44" fontSize="22" fill="white" fillOpacity="0.10" fontFamily="monospace">{'</>'}</text>
+          <circle cx="82" cy="14" r="2" fill="white" fillOpacity="0.4"/>
+          <circle cx="258" cy="18" r="2.5" fill="white" fillOpacity="0.35"/>
+          <circle cx="292" cy="76" r="2" fill="white" fillOpacity="0.35"/>
+          <circle cx="132" cy="82" r="1.5" fill="white" fillOpacity="0.3"/>
+        </svg>
+      </div>
       <div className="p-6 flex flex-col flex-1">
         <h3 className="text-slate-900 dark:text-white font-semibold text-lg mb-2">{project.name}</h3>
         <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-4 flex-1">{project.description}</p>

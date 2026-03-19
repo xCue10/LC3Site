@@ -74,8 +74,15 @@ export default function BlogPage() {
             <Link
               key={post.id}
               href={`/blog/${post.slug}`}
-              className="flex items-center gap-4 bg-white border border-slate-200 rounded-2xl p-4 hover:border-violet-200 hover:shadow-sm transition-all group dark:bg-[#0d1424] dark:border-[#1e2d45] dark:hover:border-violet-500/30"
+              className="relative flex items-center gap-4 bg-white border border-slate-200 rounded-2xl p-4 hover:border-violet-200 hover:shadow-sm transition-all group dark:bg-[#0d1424] dark:border-[#1e2d45] dark:hover:border-violet-500/30 overflow-hidden"
             >
+              <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-[0.03] dark:opacity-[0.045]" viewBox="0 0 400 88" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+                {([14, 34, 54, 74] as number[]).flatMap((y) =>
+                  ([16, 52, 88, 124, 160, 196, 232, 268, 304, 340, 376] as number[]).map((x) => (
+                    <circle key={`${x}-${y}`} cx={x} cy={y} r="1.5" fill="#6366f1"/>
+                  ))
+                )}
+              </svg>
               {/* Thumbnail */}
               {post.coverImage ? (
                 // eslint-disable-next-line @next/next/no-img-element

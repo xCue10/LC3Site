@@ -95,6 +95,13 @@ function Avatar({ member, index, size = 'md' }: { member: Member; index: number;
 function MemberCard({ member, index }: { member: Member; index: number }) {
   return (
     <div className="group relative bg-white border border-slate-200 rounded-2xl p-5 hover:border-violet-200 hover:shadow-sm hover:-translate-y-0.5 transition-all flex flex-col gap-3 dark:bg-[#0d1424] dark:border-[#1e2d45] dark:hover:border-violet-500/40">
+      <svg className="absolute top-0 right-0 w-28 h-28 opacity-[0.035] dark:opacity-[0.055] pointer-events-none rounded-tr-2xl overflow-hidden" viewBox="0 0 112 112" aria-hidden="true">
+        <circle cx="112" cy="0" r="58" fill="none" stroke="#7c3aed" strokeWidth="1"/>
+        <circle cx="112" cy="0" r="40" fill="none" stroke="#7c3aed" strokeWidth="1"/>
+        <circle cx="112" cy="0" r="22" fill="none" stroke="#7c3aed" strokeWidth="1"/>
+        <circle cx="88" cy="24" r="2" fill="#7c3aed"/>
+        <circle cx="72" cy="40" r="1.5" fill="#6366f1"/>
+      </svg>
       <Link href={`/members/${member.id}`} className="absolute inset-0 rounded-2xl z-0" aria-label={`View ${member.name}'s profile`} />
       <div className="flex items-center gap-3">
         <Avatar member={member} index={index} />
@@ -134,6 +141,13 @@ function MemberCard({ member, index }: { member: Member; index: number }) {
 function AdvisorCard({ member, index }: { member: Member; index: number }) {
   return (
     <div className="group relative bg-white border border-amber-200 rounded-2xl p-5 hover:border-amber-300 hover:shadow-sm hover:-translate-y-0.5 transition-all flex flex-col gap-3 dark:bg-[#0d1424] dark:border-amber-500/20 dark:hover:border-amber-500/40">
+      <svg className="absolute top-0 right-0 w-28 h-28 opacity-[0.04] dark:opacity-[0.06] pointer-events-none rounded-tr-2xl overflow-hidden" viewBox="0 0 112 112" aria-hidden="true">
+        <circle cx="112" cy="0" r="58" fill="none" stroke="#d97706" strokeWidth="1"/>
+        <circle cx="112" cy="0" r="40" fill="none" stroke="#d97706" strokeWidth="1"/>
+        <circle cx="112" cy="0" r="22" fill="none" stroke="#d97706" strokeWidth="1"/>
+        <circle cx="88" cy="24" r="2" fill="#d97706"/>
+        <circle cx="72" cy="40" r="1.5" fill="#f59e0b"/>
+      </svg>
       <Link href={`/members/${member.id}`} className="absolute inset-0 rounded-2xl z-0" aria-label={`View ${member.name}'s profile`} />
       <div className="flex items-center gap-3">
         <Avatar member={member} index={index} size="lg" />
@@ -182,6 +196,13 @@ function AdvisorCard({ member, index }: { member: Member; index: number }) {
 function OfficerCard({ member, index }: { member: Member; index: number }) {
   return (
     <div className="group relative bg-white border border-violet-200 rounded-2xl p-5 hover:border-violet-300 hover:shadow-sm hover:-translate-y-0.5 transition-all flex flex-col gap-3 dark:bg-[#0d1424] dark:border-violet-500/20 dark:hover:border-violet-500/40">
+      <svg className="absolute top-0 right-0 w-28 h-28 opacity-[0.04] dark:opacity-[0.06] pointer-events-none rounded-tr-2xl overflow-hidden" viewBox="0 0 112 112" aria-hidden="true">
+        <circle cx="112" cy="0" r="58" fill="none" stroke="#7c3aed" strokeWidth="1"/>
+        <circle cx="112" cy="0" r="40" fill="none" stroke="#7c3aed" strokeWidth="1"/>
+        <circle cx="112" cy="0" r="22" fill="none" stroke="#7c3aed" strokeWidth="1"/>
+        <circle cx="88" cy="24" r="2" fill="#7c3aed"/>
+        <circle cx="72" cy="40" r="1.5" fill="#6366f1"/>
+      </svg>
       <Link href={`/members/${member.id}`} className="absolute inset-0 rounded-2xl z-0" aria-label={`View ${member.name}'s profile`} />
       <div className="flex items-center gap-3">
         <Avatar member={member} index={index} />
