@@ -1,1 +1,11 @@
-[]
+[
+  {
+    "id": "lc3-club-website",
+    "name": "LC3 Club Website",
+    "description": "The official website for the LC3 club, featuring member profiles, events, projects, blog posts, and an admin dashboard.",
+    "tags": ["Next.js", "TypeScript", "Tailwind CSS"],
+    "gradient": "from-blue-500 to-cyan-500",
+    "github": "",
+    "contributors": ["Jordon Aquiningoc"]
+  }
+]
