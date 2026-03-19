@@ -99,10 +99,8 @@ export async function PATCH(req: NextRequest) {
     `caption=${esc(caption ?? '')}`,
   ].join('|');
 
-  // Cloudinary Admin API expects form-encoded, not JSON
-  const body = new URLSearchParams();
-  body.set('context', context);
-  body.append('public_ids[]', public_id);
+  // Cloudinary Admin API expects form-encoded with literal brackets (URLSearchParams encodes [] as %5B%5D which Cloudinary rejects)
+  const bodyStr = `context=${encodeURIComponent(context)}&public_ids[]=${encodeURIComponent(public_id)}`;
 
   const res = await fetch(
     `https://api.cloudinary.com/v1_1/${cloud}/resources/image/context`,
@@ -112,7 +110,7 @@ export async function PATCH(req: NextRequest) {
         Authorization: `Basic ${basicAuth(key, secret)}`,
         'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body: body.toString(),
+      body: bodyStr,
     }
   );
   const data = await res.json();

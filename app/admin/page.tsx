@@ -1247,35 +1247,6 @@ function Dashboard() {
             </div>
           ))}
 
-          {/* View Site quick links */}
-          <div className="mt-3 pt-3 border-t border-slate-200 dark:border-[#1e2d45]">
-            <p className="text-[11px] font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 px-2 mb-1">View Site</p>
-            {[
-              { href: '/', label: 'Home' },
-              { href: '/members', label: 'Members' },
-              { href: '/events', label: 'Events' },
-              { href: '/projects', label: 'Projects' },
-              { href: '/gallery', label: 'Gallery' },
-              { href: '/blog', label: 'Blog' },
-              { href: '/resources', label: 'Resources' },
-              { href: '/about', label: 'About' },
-              { href: '/hire', label: 'Partner With Us' },
-              { href: '/contact', label: 'Contact' },
-            ].map(({ href, label }) => (
-              <a
-                key={href}
-                href={href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-between w-full px-2 py-1.5 rounded-lg text-sm text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5 hover:text-slate-900 dark:hover:text-white transition-all group"
-              >
-                <span>{label}</span>
-                <svg className="w-3 h-3 opacity-0 group-hover:opacity-50 transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                </svg>
-              </a>
-            ))}
-          </div>
         </nav>
 
         {/* Main Content */}
