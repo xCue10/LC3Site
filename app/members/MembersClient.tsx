@@ -92,138 +92,169 @@ function Avatar({ member, index, size = 'md' }: { member: Member; index: number;
   );
 }
 
-function MemberCard({ member, index }: { member: Member; index: number }) {
+const variantStyles = {
+  member:  { border: 'border-slate-200 dark:border-[#1e2d45]',  roleTag: 'bg-blue-50 border-blue-200 text-blue-600 dark:bg-blue-500/10 dark:border-blue-500/20 dark:text-blue-400',  divider: 'border-slate-100 dark:border-[#1e2d45]' },
+  officer: { border: 'border-violet-200/60 dark:border-violet-500/20', roleTag: 'bg-violet-50 border-violet-200 text-violet-600 dark:bg-violet-500/10 dark:border-violet-500/20 dark:text-violet-400', divider: 'border-violet-100 dark:border-[#1e2d45]' },
+  advisor: { border: 'border-amber-200/60 dark:border-amber-500/20',   roleTag: 'bg-amber-50 border-amber-200 text-amber-600 dark:bg-amber-500/10 dark:border-amber-500/20 dark:text-amber-400',   divider: 'border-amber-100 dark:border-[#1e2d45]' },
+} as const;
+
+function FlipCard({ member, index, variant = 'member' }: { member: Member; index: number; variant?: keyof typeof variantStyles }) {
+  const [flipped, setFlipped] = useState(false);
+  const vs = variantStyles[variant];
+
   return (
-    <div className="group relative bg-white border border-slate-200 rounded-2xl p-5 hover:border-violet-200 hover:shadow-sm hover:-translate-y-0.5 transition-all flex flex-col gap-3 dark:bg-[#0d1424] dark:border-[#1e2d45] dark:hover:border-violet-500/40">
+    <div
+      className="relative h-56 rounded-2xl transition-[box-shadow] duration-300"
+      style={{
+        perspective: '1000px',
+        boxShadow: flipped ? '0 0 32px rgba(139,92,246,0.32)' : '0 0 0 rgba(139,92,246,0)',
+      }}
+      onMouseEnter={() => setFlipped(true)}
+      onMouseLeave={() => setFlipped(false)}
+    >
+      {/* Flip inner */}
+      <div
+        className="w-full h-full"
+        style={{
+          transformStyle: 'preserve-3d',
+          transform: flipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
+          transition: 'transform 0.6s cubic-bezier(0.4,0.2,0.2,1)',
+        }}
+      >
 
-      <Link href={`/members/${member.id}`} className="absolute inset-0 rounded-2xl z-0" aria-label={`View ${member.name}'s profile`} />
-      <div className="flex items-center gap-3">
-        <Avatar member={member} index={index} />
-        <div className="min-w-0">
-          <h3 className="text-slate-900 dark:text-white font-semibold truncate group-hover:text-violet-600 dark:group-hover:text-violet-300 transition-colors">{member.name}</h3>
-          {(member.majors ?? []).length > 0 && (
-            <div className="flex flex-wrap gap-1 mt-0.5">
-              {member.majors.map((m) => (
-                <span key={m} className="text-xs bg-slate-100 text-slate-500 px-2 py-0.5 rounded-md dark:bg-slate-700/40 dark:text-slate-400">{m}</span>
-              ))}
+        {/* ── FRONT FACE ── */}
+        <div
+          className={`absolute inset-0 bg-white dark:bg-[#0d1424] border ${vs.border} rounded-2xl p-5 flex flex-col gap-3 overflow-hidden ${flipped ? 'pointer-events-none' : ''}`}
+          style={{ backfaceVisibility: 'hidden' }}
+        >
+          <Link href={`/members/${member.id}`} className="absolute inset-0 z-0 rounded-2xl" aria-label={`View ${member.name}'s profile`} />
+
+          {/* Avatar + name */}
+          <div className="flex items-center gap-3 relative z-10">
+            <Avatar member={member} index={index} />
+            <div className="min-w-0">
+              <h3 className="text-slate-900 dark:text-white font-semibold truncate">{member.name}</h3>
+              {member.role ? (
+                <div className="flex flex-wrap gap-1 mt-0.5">
+                  {member.role.split(/[,/]/).map((r) => r.trim()).filter(Boolean).slice(0, 2).map((r) => (
+                    <span key={r} className={`inline-block text-xs font-medium border px-2 py-0.5 rounded-full ${vs.roleTag}`}>{r}</span>
+                  ))}
+                </div>
+              ) : (member.majors ?? []).length > 0 && (
+                <div className="flex flex-wrap gap-1 mt-0.5">
+                  {member.majors.slice(0, 1).map((m) => (
+                    <span key={m} className="text-xs bg-slate-100 text-slate-500 px-2 py-0.5 rounded-md dark:bg-slate-700/40 dark:text-slate-400">{m}</span>
+                  ))}
+                </div>
+              )}
             </div>
-          )}
+          </div>
+
+          {/* Badges */}
+          <div className="flex flex-wrap gap-1.5 relative z-10">
+            {member.focusArea && (
+              <span className="inline-flex items-center gap-1 bg-blue-50 border border-blue-200 text-blue-600 text-xs px-2.5 py-0.5 rounded-full dark:bg-blue-500/10 dark:border-blue-500/20 dark:text-blue-400">
+                <span className="w-1 h-1 bg-blue-500 rounded-full dark:bg-blue-400" />{member.focusArea}
+              </span>
+            )}
+            {member.status && (
+              <span className="inline-flex items-center gap-1 bg-emerald-50 border border-emerald-200 text-emerald-600 text-xs px-2.5 py-0.5 rounded-full dark:bg-emerald-500/10 dark:border-emerald-500/20 dark:text-emerald-400">
+                <span className="w-1 h-1 bg-emerald-500 rounded-full dark:bg-emerald-400" />{member.status}
+              </span>
+            )}
+          </div>
+
+          {/* Footer */}
+          <div className={`mt-auto pt-3 border-t ${vs.divider} flex items-center justify-between relative z-10`}>
+            <SocialIcons member={member} />
+            <span className="text-xs text-slate-400 dark:text-slate-600 ml-auto tabular-nums">hover ↻</span>
+          </div>
         </div>
-      </div>
 
-      <div className="flex flex-wrap gap-1.5">
-        {member.focusArea && (
-          <span className="inline-flex items-center gap-1 bg-blue-50 border border-blue-200 text-blue-600 text-xs px-2.5 py-0.5 rounded-full dark:bg-blue-500/10 dark:border-blue-500/20 dark:text-blue-400">
-            <span className="w-1 h-1 bg-blue-500 rounded-full dark:bg-blue-400" />{member.focusArea}
-          </span>
-        )}
-        {member.status && (
-          <span className="inline-flex items-center gap-1 bg-emerald-50 border border-emerald-200 text-emerald-600 text-xs px-2.5 py-0.5 rounded-full dark:bg-emerald-500/10 dark:border-emerald-500/20 dark:text-emerald-400">
-            <span className="w-1 h-1 bg-emerald-500 rounded-full dark:bg-emerald-400" />{member.status}
-          </span>
-        )}
-      </div>
+        {/* ── BACK FACE ── */}
+        <div
+          className={`absolute inset-0 rounded-2xl p-5 flex flex-col gap-2.5 overflow-hidden ${!flipped ? 'pointer-events-none' : ''}`}
+          style={{
+            backfaceVisibility: 'hidden',
+            transform: 'rotateY(180deg)',
+            background: 'linear-gradient(135deg, #0f2040 0%, #1a0d3b 60%, #0a1628 100%)',
+          }}
+        >
+          {/* Glow blobs */}
+          <div className="absolute -top-8 -right-8 w-32 h-32 bg-blue-500/20 rounded-full blur-2xl pointer-events-none" />
+          <div className="absolute -bottom-8 -left-8 w-32 h-32 bg-violet-600/20 rounded-full blur-2xl pointer-events-none" />
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-px bg-gradient-to-r from-transparent via-blue-400/40 to-transparent" />
 
-      <div className="mt-auto pt-3 border-t border-slate-100 dark:border-[#1e2d45] flex items-center justify-between">
-        <SocialIcons member={member} />
-        <span className="relative z-10 text-xs text-slate-400 group-hover:text-violet-600 dark:text-slate-600 dark:group-hover:text-violet-400 transition-colors ml-auto">View Profile →</span>
-      </div>
-    </div>
-  );
-}
-
-function AdvisorCard({ member, index }: { member: Member; index: number }) {
-  return (
-    <div className="group relative bg-white border border-amber-200 rounded-2xl p-5 hover:border-amber-300 hover:shadow-sm hover:-translate-y-0.5 transition-all flex flex-col gap-3 dark:bg-[#0d1424] dark:border-amber-500/20 dark:hover:border-amber-500/40">
-      <Link href={`/members/${member.id}`} className="absolute inset-0 rounded-2xl z-0" aria-label={`View ${member.name}'s profile`} />
-      <div className="flex items-center gap-3">
-        <Avatar member={member} index={index} size="lg" />
-        <div className="min-w-0">
-          <h3 className="text-slate-900 dark:text-white font-semibold text-lg truncate group-hover:text-amber-600 dark:group-hover:text-amber-300 transition-colors">{member.name}</h3>
-          {member.role && (
-            <div className="flex flex-wrap gap-1 mt-1">
-              {member.role.split(/[,/]/).map((r) => r.trim()).filter(Boolean).map((r) => (
-                <span key={r} className="inline-block text-xs font-medium bg-amber-50 border border-amber-200 text-amber-600 px-2.5 py-0.5 rounded-full dark:bg-amber-500/10 dark:border-amber-500/20 dark:text-amber-400">
-                  {r}
-                </span>
-              ))}
+          {/* Name row */}
+          <div className="flex items-center gap-2 relative z-10">
+            <Avatar member={member} index={index} size="sm" />
+            <div className="min-w-0">
+              <p className="text-white font-semibold text-sm leading-tight truncate">{member.name}</p>
+              {member.role && (
+                <p className="text-blue-300 text-xs leading-tight truncate">{member.role.split(/[,/]/)[0].trim()}</p>
+              )}
             </div>
-          )}
+          </div>
+
+          {/* Majors */}
           {(member.majors ?? []).length > 0 && (
-            <div className="flex flex-wrap gap-1 mt-1">
-              {member.majors.map((m) => (
-                <span key={m} className="text-xs bg-slate-100 text-slate-500 px-2 py-0.5 rounded-md dark:bg-slate-700/40 dark:text-slate-400">{m}</span>
+            <div className="flex flex-wrap gap-1 relative z-10">
+              {member.majors.slice(0, 2).map((m) => (
+                <span key={m} className="text-xs bg-white/10 border border-white/10 text-blue-100 px-2 py-0.5 rounded-md">{m}</span>
               ))}
             </div>
           )}
+
+          {/* Focus area */}
+          {member.focusArea && (
+            <div className="relative z-10">
+              <span className="inline-flex items-center gap-1 bg-violet-500/20 border border-violet-400/30 text-violet-200 text-xs px-2.5 py-0.5 rounded-full">
+                <span className="w-1 h-1 bg-violet-400 rounded-full" />{member.focusArea}
+              </span>
+            </div>
+          )}
+
+          {/* Skills */}
+          {(member.skills ?? []).length > 0 && (
+            <div className="flex flex-wrap gap-1 relative z-10">
+              {member.skills.slice(0, 4).map((s) => (
+                <span key={s} className="text-xs bg-blue-500/20 border border-blue-400/20 text-blue-100 px-2 py-0.5 rounded-md">{s}</span>
+              ))}
+              {member.skills.length > 4 && (
+                <span className="text-xs text-blue-300/60 self-center">+{member.skills.length - 4}</span>
+              )}
+            </div>
+          )}
+
+          {/* Footer: socials + view profile */}
+          <div className="mt-auto pt-2 border-t border-white/10 flex items-center justify-between relative z-10">
+            <div className="flex items-center gap-1">
+              {member.github && (
+                <a href={member.github} target="_blank" rel="noopener noreferrer"
+                  className="flex items-center justify-center w-7 h-7 rounded-lg bg-white/10 text-white/70 hover:bg-white/20 hover:text-white transition-all"
+                  onClick={(e) => e.stopPropagation()}><GithubIcon /></a>
+              )}
+              {member.linkedin && (
+                <a href={member.linkedin} target="_blank" rel="noopener noreferrer"
+                  className="flex items-center justify-center w-7 h-7 rounded-lg bg-white/10 text-white/70 hover:bg-blue-400/30 hover:text-blue-300 transition-all"
+                  onClick={(e) => e.stopPropagation()}><LinkedInIcon /></a>
+              )}
+              {member.twitter && (
+                <a href={member.twitter} target="_blank" rel="noopener noreferrer"
+                  className="flex items-center justify-center w-7 h-7 rounded-lg bg-white/10 text-white/70 hover:bg-sky-400/20 hover:text-sky-300 transition-all"
+                  onClick={(e) => e.stopPropagation()}><TwitterIcon /></a>
+              )}
+            </div>
+            <Link
+              href={`/members/${member.id}`}
+              className="text-xs font-medium text-white/60 hover:text-white transition-colors"
+              onClick={(e) => e.stopPropagation()}
+            >
+              View Profile →
+            </Link>
+          </div>
         </div>
-      </div>
 
-      <div className="flex flex-wrap gap-1.5">
-        {member.focusArea && (
-          <span className="inline-flex items-center gap-1 bg-blue-50 border border-blue-200 text-blue-600 text-xs px-2.5 py-0.5 rounded-full dark:bg-blue-500/10 dark:border-blue-500/20 dark:text-blue-400">
-            <span className="w-1 h-1 bg-blue-500 rounded-full dark:bg-blue-400" />{member.focusArea}
-          </span>
-        )}
-        {member.status && (
-          <span className="inline-flex items-center gap-1 bg-emerald-50 border border-emerald-200 text-emerald-600 text-xs px-2.5 py-0.5 rounded-full dark:bg-emerald-500/10 dark:border-emerald-500/20 dark:text-emerald-400">
-            <span className="w-1 h-1 bg-emerald-500 rounded-full dark:bg-emerald-400" />{member.status}
-          </span>
-        )}
-      </div>
-
-      <div className="mt-auto pt-3 border-t border-amber-100 dark:border-[#1e2d45] flex items-center justify-between">
-        <SocialIcons member={member} />
-        <span className="relative z-10 text-xs text-slate-400 group-hover:text-amber-600 dark:text-slate-600 dark:group-hover:text-amber-400 transition-colors ml-auto">View Profile →</span>
-      </div>
-    </div>
-  );
-}
-
-function OfficerCard({ member, index }: { member: Member; index: number }) {
-  return (
-    <div className="group relative bg-white border border-violet-200 rounded-2xl p-5 hover:border-violet-300 hover:shadow-sm hover:-translate-y-0.5 transition-all flex flex-col gap-3 dark:bg-[#0d1424] dark:border-violet-500/20 dark:hover:border-violet-500/40">
-
-      <Link href={`/members/${member.id}`} className="absolute inset-0 rounded-2xl z-0" aria-label={`View ${member.name}'s profile`} />
-      <div className="flex items-center gap-3">
-        <Avatar member={member} index={index} />
-        <div className="min-w-0">
-          <h3 className="text-slate-900 dark:text-white font-semibold truncate group-hover:text-violet-600 dark:group-hover:text-violet-300 transition-colors">{member.name}</h3>
-          {member.role && (
-            <div className="flex flex-wrap gap-1 mt-1">
-              {member.role.split(/[,/]/).map((r) => r.trim()).filter(Boolean).map((r) => (
-                <span key={r} className="inline-block text-xs font-medium bg-violet-50 border border-violet-200 text-violet-600 px-2.5 py-0.5 rounded-full dark:bg-violet-500/10 dark:border-violet-500/20 dark:text-violet-400">
-                  {r}
-                </span>
-              ))}
-            </div>
-          )}
-          {(member.majors ?? []).length > 0 && (
-            <div className="flex flex-wrap gap-1 mt-1">
-              {member.majors.map((m) => (
-                <span key={m} className="text-xs bg-slate-100 text-slate-500 px-2 py-0.5 rounded-md dark:bg-slate-700/40 dark:text-slate-400">{m}</span>
-              ))}
-            </div>
-          )}
-        </div>
-      </div>
-
-      <div className="flex flex-wrap gap-1.5">
-        {member.focusArea && (
-          <span className="inline-flex items-center gap-1 bg-blue-50 border border-blue-200 text-blue-600 text-xs px-2.5 py-0.5 rounded-full dark:bg-blue-500/10 dark:border-blue-500/20 dark:text-blue-400">
-            <span className="w-1 h-1 bg-blue-500 rounded-full dark:bg-blue-400" />{member.focusArea}
-          </span>
-        )}
-        {member.status && (
-          <span className="inline-flex items-center gap-1 bg-emerald-50 border border-emerald-200 text-emerald-600 text-xs px-2.5 py-0.5 rounded-full dark:bg-emerald-500/10 dark:border-emerald-500/20 dark:text-emerald-400">
-            <span className="w-1 h-1 bg-emerald-500 rounded-full dark:bg-emerald-400" />{member.status}
-          </span>
-        )}
-      </div>
-
-      <div className="mt-auto pt-3 border-t border-violet-100 dark:border-[#1e2d45] flex items-center justify-between">
-        <SocialIcons member={member} />
-        <span className="relative z-10 text-xs text-slate-400 group-hover:text-violet-600 dark:text-slate-600 dark:group-hover:text-violet-400 transition-colors ml-auto">View Profile →</span>
       </div>
     </div>
   );
@@ -390,7 +421,7 @@ export default function MembersClient({ members }: { members: Member[] }) {
             <section>
               <SectionDivider color="bg-amber-500" label={`Club Advisors${advisors.length !== allAdvisors.length ? ` (${advisors.length}/${allAdvisors.length})` : ''}`} />
               <div className="grid sm:grid-cols-2 gap-5 max-w-2xl mx-auto">
-                {advisors.map((m) => <AdvisorCard key={m.id} member={m} index={members.indexOf(m)} />)}
+                {advisors.map((m) => <FlipCard key={m.id} member={m} index={members.indexOf(m)} variant="advisor" />)}
               </div>
             </section>
           )}
@@ -399,7 +430,7 @@ export default function MembersClient({ members }: { members: Member[] }) {
             <section>
               <SectionDivider color="bg-violet-500" label={`Club Officers${officers.length !== allOfficers.length ? ` (${officers.length}/${allOfficers.length})` : ''}`} />
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                {officers.map((m) => <OfficerCard key={m.id} member={m} index={members.indexOf(m)} />)}
+                {officers.map((m) => <FlipCard key={m.id} member={m} index={members.indexOf(m)} variant="officer" />)}
               </div>
             </section>
           )}
@@ -408,7 +439,7 @@ export default function MembersClient({ members }: { members: Member[] }) {
             <section>
               <SectionDivider color="bg-blue-500" label={`Members${regulars.length !== allRegulars.length ? ` (${regulars.length}/${allRegulars.length})` : ''}`} />
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-                {regulars.map((m) => <MemberCard key={m.id} member={m} index={members.indexOf(m)} />)}
+                {regulars.map((m) => <FlipCard key={m.id} member={m} index={members.indexOf(m)} variant="member" />)}
               </div>
             </section>
           )}

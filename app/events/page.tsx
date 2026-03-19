@@ -2,6 +2,7 @@ import { readJSON, Event, RSVP } from '@/lib/data';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import EventRSVPForm from './EventRSVPForm';
+import EventCountdown from '@/app/components/EventCountdown';
 
 export const dynamic = 'force-dynamic';
 
@@ -102,11 +103,9 @@ export default function EventsPage() {
           )}
         </div>
 
-        {upcoming.length === 0 ? (
-          <div className="bg-white border border-slate-200 rounded-2xl p-10 text-center text-slate-400 dark:bg-[#0d1424] dark:border-[#1e2d45] dark:text-slate-500">
-            No upcoming events scheduled. Check back soon!
-          </div>
-        ) : (
+        <EventCountdown events={upcoming.map((e) => ({ id: e.id, title: e.title, date: e.date }))} />
+
+        {upcoming.length > 0 && (
           <div className="space-y-4">
             {upcoming.map((event) => (
               <div
