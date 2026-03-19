@@ -16,6 +16,7 @@ const moreLinks = [
   { href: '/about', label: 'About' },
   { href: '/blog', label: 'Blog' },
   { href: '/projects', label: 'Projects' },
+  { href: '/gallery', label: 'Gallery' },
   { href: '/resources', label: 'Resources' },
 ];
 
