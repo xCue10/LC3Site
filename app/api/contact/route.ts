@@ -1,9 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { readJSON, writeJSON, Contact } from '@/lib/data';
 import { Resend } from 'resend';
+import { verifyHcaptcha } from '@/lib/captcha';
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
+
+  // Honeypot: bots fill this hidden field, humans don't — silently discard
+  if (body.website) return NextResponse.json({ success: true }, { status: 201 });
+
+  // hCaptcha verification
+  const captchaOk = await verifyHcaptcha(body.captchaToken);
+  if (!captchaOk) return NextResponse.json({ error: 'Captcha verification failed.' }, { status: 400 });
+
   const contacts = readJSON<Contact[]>('contacts.json');
   const newContact: Contact = {
     id: Date.now().toString(),

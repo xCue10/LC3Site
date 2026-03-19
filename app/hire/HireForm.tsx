@@ -1,6 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
+import HCaptcha from '@hcaptcha/react-hcaptcha';
+
+const HCAPTCHA_SITE_KEY = process.env.NEXT_PUBLIC_HCAPTCHA_SITE_KEY ?? '';
 
 const projectTypes = [
   'Web Application', 'Mobile App', 'Data Analysis / Dashboard',
@@ -38,6 +41,8 @@ export default function HireForm() {
   };
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [error, setError] = useState('');
+  const [captchaToken, setCaptchaToken] = useState('');
+  const captchaRef = useRef<HCaptcha>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -45,19 +50,26 @@ export default function HireForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (HCAPTCHA_SITE_KEY && !captchaToken) {
+      setError('Please complete the captcha.');
+      return;
+    }
     setStatus('loading');
     setError('');
     try {
       const res = await fetch('/api/hire', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ inquiryType, ...form }),
+        body: JSON.stringify({ inquiryType, ...form, captchaToken }),
       });
-      if (!res.ok) throw new Error('Submission failed');
+      const data = await res.json() as { error?: string };
+      if (!res.ok) throw new Error(data.error ?? 'Submission failed');
       setStatus('success');
-    } catch {
+    } catch (err) {
       setStatus('error');
-      setError('Something went wrong. Please try again.');
+      setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.');
+      captchaRef.current?.resetCaptcha();
+      setCaptchaToken('');
     }
   };
 
@@ -280,6 +292,12 @@ export default function HireForm() {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
+            {/* Honeypot — hidden from real users, bots fill it in */}
+            <div style={{ position: 'absolute', left: '-9999px', opacity: 0, height: 0, overflow: 'hidden' }} aria-hidden="true">
+              <label htmlFor="hp-website">Website</label>
+              <input id="hp-website" name="website" type="text" tabIndex={-1} autoComplete="off" />
+            </div>
+
             {/* Common fields */}
             <div className="grid sm:grid-cols-2 gap-4">
               <div>
@@ -378,13 +396,26 @@ export default function HireForm() {
               />
             </div>
 
+            {/* hCaptcha widget */}
+            {HCAPTCHA_SITE_KEY && (
+              <div>
+                <HCaptcha
+                  ref={captchaRef}
+                  sitekey={HCAPTCHA_SITE_KEY}
+                  onVerify={setCaptchaToken}
+                  onExpire={() => setCaptchaToken('')}
+                  theme={typeof document !== 'undefined' && document.documentElement.classList.contains('dark') ? 'dark' : 'light'}
+                />
+              </div>
+            )}
+
             {error && (
               <div className="bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-xl dark:bg-red-500/10 dark:border-red-500/20 dark:text-red-400">{error}</div>
             )}
 
             <button
               type="submit"
-              disabled={status === 'loading'}
+              disabled={status === 'loading' || (!!HCAPTCHA_SITE_KEY && !captchaToken)}
               className="w-full py-3.5 bg-gradient-to-r from-blue-600 to-violet-600 text-white font-semibold rounded-xl hover:opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-violet-500/20"
             >
               {status === 'loading' ? (

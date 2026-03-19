@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
+import HCaptcha from '@hcaptcha/react-hcaptcha';
 import type { SiteSettings } from '@/lib/data';
 
 const majors = [
@@ -79,10 +80,14 @@ const infoItems = (settings: SiteSettings) => [
 const inputClass = 'w-full bg-white border border-slate-300 text-slate-900 placeholder:text-slate-400 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-violet-400 focus:ring-1 focus:ring-violet-400/30 transition-all dark:bg-[#111a2e] dark:border-[#1e2d45] dark:text-white dark:placeholder:text-slate-600 dark:focus:border-violet-500/50 dark:focus:ring-violet-500/30';
 const labelClass = 'block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2';
 
+const HCAPTCHA_SITE_KEY = process.env.NEXT_PUBLIC_HCAPTCHA_SITE_KEY ?? '';
+
 export default function ContactForm({ settings }: { settings: SiteSettings }) {
   const [form, setForm] = useState({ name: '', email: '', major: '', reason: '' });
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [error, setError] = useState('');
+  const [captchaToken, setCaptchaToken] = useState('');
+  const captchaRef = useRef<HCaptcha>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -90,20 +95,29 @@ export default function ContactForm({ settings }: { settings: SiteSettings }) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (HCAPTCHA_SITE_KEY && !captchaToken) {
+      setError('Please complete the captcha.');
+      return;
+    }
     setStatus('loading');
     setError('');
     try {
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, captchaToken }),
       });
-      if (!res.ok) throw new Error('Submission failed');
+      const data = await res.json() as { error?: string };
+      if (!res.ok) throw new Error(data.error ?? 'Submission failed');
       setStatus('success');
       setForm({ name: '', email: '', major: '', reason: '' });
-    } catch {
+      setCaptchaToken('');
+      captchaRef.current?.resetCaptcha();
+    } catch (err) {
       setStatus('error');
-      setError('Something went wrong. Please try again.');
+      setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.');
+      captchaRef.current?.resetCaptcha();
+      setCaptchaToken('');
     }
   };
 
@@ -209,6 +223,12 @@ export default function ContactForm({ settings }: { settings: SiteSettings }) {
           <h2 className="text-xl font-semibold text-slate-900 dark:text-white mb-6">Interest Form</h2>
 
           <form onSubmit={handleSubmit} className="space-y-5">
+            {/* Honeypot — hidden from real users, bots fill it in */}
+            <div style={{ position: 'absolute', left: '-9999px', opacity: 0, height: 0, overflow: 'hidden' }} aria-hidden="true">
+              <label htmlFor="website">Website</label>
+              <input id="website" name="website" type="text" tabIndex={-1} autoComplete="off" />
+            </div>
+
             <div>
               <label htmlFor="name" className={labelClass}>
                 Full Name <span className="text-violet-600 dark:text-violet-400">*</span>
@@ -247,11 +267,24 @@ export default function ContactForm({ settings }: { settings: SiteSettings }) {
                 className={`${inputClass} resize-none`} />
             </div>
 
+            {/* hCaptcha widget */}
+            {HCAPTCHA_SITE_KEY && (
+              <div>
+                <HCaptcha
+                  ref={captchaRef}
+                  sitekey={HCAPTCHA_SITE_KEY}
+                  onVerify={setCaptchaToken}
+                  onExpire={() => setCaptchaToken('')}
+                  theme={typeof document !== 'undefined' && document.documentElement.classList.contains('dark') ? 'dark' : 'light'}
+                />
+              </div>
+            )}
+
             {error && (
               <div className="bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-xl dark:bg-red-500/10 dark:border-red-500/20 dark:text-red-400">{error}</div>
             )}
 
-            <button type="submit" disabled={status === 'loading'}
+            <button type="submit" disabled={status === 'loading' || (!!HCAPTCHA_SITE_KEY && !captchaToken)}
               className="w-full py-3.5 bg-gradient-to-r from-blue-600 to-violet-600 text-white font-semibold rounded-xl hover:opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-violet-500/20">
               {status === 'loading' ? (
                 <span className="flex items-center justify-center gap-2">
