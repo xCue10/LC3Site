@@ -276,37 +276,6 @@ export default function HomePage() {
             <p className="text-slate-600 dark:text-slate-300 leading-relaxed mb-6">
               {homeContent.aboutBody2}
             </p>
-            <div className="flex flex-wrap gap-3">
-              <Link
-                href="/members"
-                className="inline-flex items-center gap-2 text-violet-600 hover:text-violet-700 dark:text-violet-400 dark:hover:text-violet-300 font-medium transition-colors text-sm"
-              >
-                Meet the team
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </Link>
-              <span className="text-slate-300 dark:text-slate-700">·</span>
-              <Link
-                href="/events"
-                className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium transition-colors text-sm"
-              >
-                See upcoming events
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </Link>
-              <span className="text-slate-300 dark:text-slate-700">·</span>
-              <Link
-                href="/about"
-                className="inline-flex items-center gap-2 text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300 font-medium transition-colors text-sm"
-              >
-                Learn more
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </Link>
-            </div>
           </div>
 
           <StaggerReveal className="grid grid-cols-2 gap-4" stagger={100}>
@@ -337,8 +306,8 @@ export default function HomePage() {
                 <p className="text-violet-600 dark:text-violet-400 text-sm font-medium mb-1">{homeContent.projectsEyebrow}</p>
                 <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white">{homeContent.projectsHeading}</h2>
               </div>
-              <Link href="/members" className="text-slate-500 hover:text-slate-700 dark:hover:text-white text-sm transition-colors hidden sm:block">
-                View all members →
+              <Link href="/projects" className="text-slate-500 hover:text-slate-700 dark:hover:text-white text-sm transition-colors hidden sm:block">
+                View all projects →
               </Link>
             </div>
 
