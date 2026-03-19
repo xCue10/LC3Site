@@ -18,7 +18,7 @@ export default function BlogPage() {
 
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 py-16">
-      <div className="mb-12">
+      <div className="mb-12 text-center">
         <svg width="72" height="72" viewBox="0 0 72 72" className="mx-auto mb-5 opacity-85 dark:opacity-75" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <style>{`

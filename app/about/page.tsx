@@ -213,21 +213,6 @@ export default function AboutPage() {
         </div>
       )}
 
-      {/* Tech Stack */}
-      {about.techStack.length > 0 && (
-        <div className="mb-16">
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">{about.techStackTitle}</h2>
-          <p className="text-slate-500 mb-6">{about.techStackSubtitle}</p>
-          <div className="flex flex-wrap gap-3">
-            {about.techStack.map((name, i) => (
-              <span key={i} className={`px-4 py-2 rounded-xl border text-sm font-medium ${techColors[i % techColors.length]}`}>
-                {name}
-              </span>
-            ))}
-          </div>
-        </div>
-      )}
-
       {/* Activities */}
       {about.activities.length > 0 && (
         <div className="mb-16">
@@ -240,6 +225,21 @@ export default function AboutPage() {
                 <h3 className="font-semibold text-slate-900 dark:text-white text-sm mb-1.5">{title}</h3>
                 <p className="text-slate-500 text-sm leading-relaxed">{desc}</p>
               </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Tech Stack */}
+      {about.techStack.length > 0 && (
+        <div className="mb-16">
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">{about.techStackTitle}</h2>
+          <p className="text-slate-500 mb-6">{about.techStackSubtitle}</p>
+          <div className="flex flex-wrap gap-3">
+            {about.techStack.map((name, i) => (
+              <span key={i} className={`px-4 py-2 rounded-xl border text-sm font-medium ${techColors[i % techColors.length]}`}>
+                {name}
+              </span>
             ))}
           </div>
         </div>
