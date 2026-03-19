@@ -10,7 +10,7 @@ const PUBLIC_API_PATHS = [
 ];
 
 function isAdminAuthed(request: NextRequest): boolean {
-  const adminPassword = process.env.NEXT_PUBLIC_ADMIN_PASSWORD;
+  const adminPassword = process.env.ADMIN_PASSWORD;
   if (!adminPassword) return true; // not configured — open in dev
   const token = request.cookies.get('lc3-admin')?.value;
   return token === adminPassword;
