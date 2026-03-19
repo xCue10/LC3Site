@@ -909,6 +909,10 @@ function Dashboard() {
   const [galleryEditTarget, setGalleryEditTarget] = useState<GalleryImage | null>(null);
   const [galleryEditForm, setGalleryEditForm] = useState({ event: '', caption: '' });
   const [galleryEditSaving, setGalleryEditSaving] = useState(false);
+  const [galleryAddOpen, setGalleryAddOpen] = useState(false);
+  const [galleryAddForm, setGalleryAddForm] = useState({ event: '', caption: '' });
+  const [galleryAddFile, setGalleryAddFile] = useState<File | null>(null);
+  const [galleryAddPreview, setGalleryAddPreview] = useState('');
 
   // Search & sort
   const [membersSearch, setMembersSearch] = useState('');
@@ -2838,118 +2842,88 @@ function Dashboard() {
           {/* Gallery Tab */}
           {tab === 'gallery' && (
             <div>
+              {/* Header */}
               <div className="mb-5 flex items-center justify-between gap-4">
                 <div>
                   <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Gallery</h2>
                   <p className="text-slate-500 text-xs mt-0.5">
-                    {galleryImages.length} photo{galleryImages.length !== 1 ? 's' : ''} in lc3-gallery
+                    {galleryImages.length} photo{galleryImages.length !== 1 ? 's' : ''} live on the site
                   </p>
                 </div>
-                <div className="flex items-center gap-3">
-                  {galleryUploading && (
-                    <span className="text-xs text-violet-500 dark:text-violet-400 animate-pulse">Uploading…</span>
-                  )}
-                  {galleryUploadError && (
-                    <span className="text-xs text-red-500">{galleryUploadError}</span>
-                  )}
-                  <label className="cursor-pointer inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-blue-600 to-violet-600 text-white text-sm font-medium hover:opacity-90 transition-opacity">
-                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
-                    </svg>
-                    Upload Photos
-                    <input
-                      type="file"
-                      accept="image/*"
-                      multiple
-                      className="hidden"
-                      disabled={galleryUploading}
-                      onChange={async (e) => {
-                        const files = Array.from(e.target.files ?? []);
-                        if (!files.length) return;
-                        setGalleryUploading(true);
-                        setGalleryUploadError('');
-                        try {
-                          const results = await Promise.all(
-                            files.map(async (file) => {
-                              const fd = new FormData();
-                              fd.append('file', file);
-                              const res = await fetch('/api/gallery', { method: 'POST', body: fd });
-                              return res.ok ? null : await res.json().then((d) => d.error ?? 'Upload failed');
-                            })
-                          );
-                          const errs = results.filter(Boolean);
-                          if (errs.length) setGalleryUploadError(errs[0] as string);
-                        } catch {
-                          setGalleryUploadError('Upload failed');
-                        }
-                        setGalleryUploading(false);
-                        const gl = await fetch('/api/gallery').then((r) => r.ok ? r.json() : []).catch(() => []);
-                        setGalleryImages(Array.isArray(gl) ? gl as GalleryImage[] : []);
-                        e.target.value = '';
-                      }}
-                    />
-                  </label>
-                </div>
+                <button
+                  onClick={() => { setGalleryAddOpen(true); setGalleryAddForm({ event: '', caption: '' }); setGalleryAddFile(null); setGalleryAddPreview(''); }}
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-blue-600 to-violet-600 text-white text-sm font-medium hover:opacity-90 transition-opacity"
+                >
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+                  </svg>
+                  Add Photo
+                </button>
               </div>
 
+              {/* Photo grid */}
               {galleryImages.length === 0 ? (
-                <div className="text-center py-16 text-slate-500 border border-slate-200 dark:border-[#1e2d45] rounded-2xl">
-                  No photos yet. Upload images to get started.
+                <div className="text-center py-20 border border-dashed border-slate-300 dark:border-[#1e2d45] rounded-2xl">
+                  <div className="w-14 h-14 bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl flex items-center justify-center mx-auto mb-3">
+                    <svg className="w-7 h-7 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                  </div>
+                  <p className="text-slate-500 font-medium text-sm mb-1">No photos yet</p>
+                  <p className="text-slate-400 text-xs">Click &ldquo;Add Photo&rdquo; to upload your first image.</p>
                 </div>
               ) : (
-                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
                   {galleryImages.map((img) => (
                     <div
                       key={img.public_id}
-                      className="group relative aspect-square rounded-xl overflow-hidden border border-slate-200 dark:border-[#1e2d45] bg-slate-100 dark:bg-[#111a2e]"
+                      className="group relative rounded-xl overflow-hidden border border-slate-200 dark:border-[#1e2d45] bg-slate-100 dark:bg-[#111a2e]"
                     >
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
-                        src={img.secure_url.replace('/upload/', '/upload/w_200,h_200,c_fill,q_auto,f_auto/')}
+                        src={img.secure_url.replace('/upload/', '/upload/w_300,h_200,c_fill,q_auto,f_auto/')}
                         alt=""
                         loading="lazy"
-                        className="w-full h-full object-cover"
+                        className="w-full aspect-[3/2] object-cover"
                       />
-                      {/* Always-visible event label */}
-                      {img.context?.custom?.event && (
-                        <div className="absolute bottom-0 left-0 right-0 px-2 py-1.5 bg-gradient-to-t from-black/60 to-transparent rounded-b-xl pointer-events-none">
-                          <p className="text-white text-xs font-medium truncate">{img.context.custom.event}</p>
-                        </div>
-                      )}
-                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/50 transition-colors flex items-center justify-center gap-2">
+                      {/* Metadata strip — always visible */}
+                      <div className="px-2.5 py-2 bg-white dark:bg-[#0d1424] border-t border-slate-100 dark:border-[#1e2d45]">
+                        <p className="text-slate-800 dark:text-white text-xs font-medium truncate">
+                          {img.context?.custom?.event || <span className="text-slate-400 italic">No event</span>}
+                        </p>
+                        {img.context?.custom?.caption && (
+                          <p className="text-slate-500 text-xs truncate mt-0.5">{img.context.custom.caption}</p>
+                        )}
+                      </div>
+                      {/* Hover actions */}
+                      <div className="absolute top-0 left-0 right-0 flex justify-end gap-1.5 p-2 opacity-0 group-hover:opacity-100 transition-opacity">
                         <a
                           href={img.secure_url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          onClick={(e) => e.stopPropagation()}
-                          className="opacity-0 group-hover:opacity-100 transition-opacity w-8 h-8 bg-white/20 hover:bg-white/30 rounded-lg flex items-center justify-center text-white"
+                          className="w-7 h-7 bg-black/50 hover:bg-black/70 rounded-lg flex items-center justify-center text-white"
                           title="View full size"
                         >
-                          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                             <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                           </svg>
                         </a>
                         <button
-                          onClick={() => {
-                            setGalleryEditTarget(img);
-                            setGalleryEditForm({
-                              event: img.context?.custom?.event ?? '',
-                              caption: img.context?.custom?.caption ?? '',
-                            });
-                          }}
-                          className="opacity-0 group-hover:opacity-100 transition-opacity w-8 h-8 bg-violet-500 hover:bg-violet-600 rounded-lg flex items-center justify-center text-white"
+                          onClick={() => { setGalleryEditTarget(img); setGalleryEditForm({ event: img.context?.custom?.event ?? '', caption: img.context?.custom?.caption ?? '' }); }}
+                          className="w-7 h-7 bg-violet-500/80 hover:bg-violet-500 rounded-lg flex items-center justify-center text-white"
                           title="Edit info"
                         >
-                          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                             <path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                           </svg>
                         </button>
                         <button
                           onClick={() => setGalleryDeleteId(img.public_id)}
-                          className="opacity-0 group-hover:opacity-100 transition-opacity w-8 h-8 bg-red-500 hover:bg-red-600 rounded-lg flex items-center justify-center text-white"
+                          className="w-7 h-7 bg-red-500/80 hover:bg-red-500 rounded-lg flex items-center justify-center text-white"
                           title="Delete"
                         >
-                          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                             <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                           </svg>
                         </button>
@@ -2959,75 +2933,124 @@ function Dashboard() {
                 </div>
               )}
 
-              {/* Edit info modal */}
-              {galleryEditTarget && (
-                <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-                  <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl w-full max-w-md overflow-hidden">
-                    <div className="flex items-center gap-3 p-5 border-b border-slate-200 dark:border-[#1e2d45]">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={galleryEditTarget.secure_url.replace('/upload/', '/upload/w_80,h_80,c_fill,q_auto,f_auto/')}
-                        alt=""
-                        className="w-12 h-12 rounded-lg object-cover flex-shrink-0"
-                      />
-                      <div>
-                        <h3 className="text-slate-900 dark:text-white font-semibold">Edit Photo Info</h3>
-                        <p className="text-slate-500 text-xs mt-0.5">Visible in the public gallery lightbox</p>
-                      </div>
+              {/* ── Add Photo modal ── */}
+              {galleryAddOpen && (
+                <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => setGalleryAddOpen(false)}>
+                  <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl w-full max-w-lg overflow-hidden" onClick={(e) => e.stopPropagation()}>
+                    <div className="flex items-center justify-between p-5 border-b border-slate-200 dark:border-[#1e2d45]">
+                      <h3 className="text-slate-900 dark:text-white font-semibold">Add Photo</h3>
+                      <button onClick={() => setGalleryAddOpen(false)} className="text-slate-400 hover:text-slate-600 dark:hover:text-white transition-colors">
+                        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                      </button>
                     </div>
                     <div className="p-5 space-y-4">
+                      {/* Event */}
                       <div>
                         <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
                           Event <span className="text-slate-400 font-normal">(e.g. Spring Hackathon 2025)</span>
                         </label>
                         <input
                           type="text"
-                          value={galleryEditForm.event}
-                          onChange={(e) => setGalleryEditForm((f) => ({ ...f, event: e.target.value }))}
-                          placeholder="Event name"
+                          value={galleryAddForm.event}
+                          onChange={(e) => setGalleryAddForm((f) => ({ ...f, event: e.target.value }))}
+                          placeholder="What event is this from?"
                           className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
                         />
                       </div>
+                      {/* Caption */}
                       <div>
                         <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
-                          Caption <span className="text-slate-400 font-normal">(optional description)</span>
+                          Caption <span className="text-slate-400 font-normal">(optional)</span>
                         </label>
                         <textarea
-                          rows={3}
-                          value={galleryEditForm.caption}
-                          onChange={(e) => setGalleryEditForm((f) => ({ ...f, caption: e.target.value }))}
+                          rows={2}
+                          value={galleryAddForm.caption}
+                          onChange={(e) => setGalleryAddForm((f) => ({ ...f, caption: e.target.value }))}
                           placeholder="What's happening in this photo?"
                           className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all resize-none"
                         />
                       </div>
+                      {/* File picker */}
+                      <div>
+                        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Photo</label>
+                        {galleryAddPreview ? (
+                          <div className="relative rounded-xl overflow-hidden border border-slate-200 dark:border-[#1e2d45]">
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img src={galleryAddPreview} alt="" className="w-full max-h-48 object-cover" />
+                            <button
+                              onClick={() => { setGalleryAddFile(null); setGalleryAddPreview(''); }}
+                              className="absolute top-2 right-2 w-7 h-7 bg-black/60 hover:bg-black/80 rounded-lg flex items-center justify-center text-white"
+                            >
+                              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                              </svg>
+                            </button>
+                          </div>
+                        ) : (
+                          <label className="flex flex-col items-center justify-center gap-2 w-full h-32 border-2 border-dashed border-slate-300 dark:border-[#1e2d45] rounded-xl cursor-pointer hover:border-violet-400 dark:hover:border-violet-500/50 transition-colors">
+                            <svg className="w-8 h-8 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+                            </svg>
+                            <span className="text-slate-500 text-sm">Click to choose a photo</span>
+                            <input
+                              type="file"
+                              accept="image/*"
+                              className="hidden"
+                              onChange={(e) => {
+                                const f = e.target.files?.[0];
+                                if (!f) return;
+                                setGalleryAddFile(f);
+                                setGalleryAddPreview(URL.createObjectURL(f));
+                              }}
+                            />
+                          </label>
+                        )}
+                      </div>
+                      {galleryUploadError && (
+                        <p className="text-red-500 text-sm">{galleryUploadError}</p>
+                      )}
+                      {/* Actions */}
                       <div className="flex gap-3 pt-1">
                         <button
-                          onClick={() => setGalleryEditTarget(null)}
+                          onClick={() => setGalleryAddOpen(false)}
                           className="flex-1 py-2.5 border border-slate-200 dark:border-[#1e2d45] text-slate-500 dark:text-slate-400 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 transition-colors text-sm font-medium"
                         >
                           Cancel
                         </button>
                         <button
-                          disabled={galleryEditSaving}
+                          disabled={!galleryAddFile || galleryUploading}
                           onClick={async () => {
-                            setGalleryEditSaving(true);
-                            await fetch('/api/gallery', {
-                              method: 'PATCH',
-                              headers: { 'Content-Type': 'application/json' },
-                              body: JSON.stringify({
-                                public_id: galleryEditTarget.public_id,
-                                event: galleryEditForm.event,
-                                caption: galleryEditForm.caption,
-                              }),
-                            });
-                            setGalleryEditSaving(false);
-                            setGalleryEditTarget(null);
+                            if (!galleryAddFile) return;
+                            setGalleryUploading(true);
+                            setGalleryUploadError('');
+                            try {
+                              const fd = new FormData();
+                              fd.append('file', galleryAddFile);
+                              fd.append('event', galleryAddForm.event);
+                              fd.append('caption', galleryAddForm.caption);
+                              const res = await fetch('/api/gallery', { method: 'POST', body: fd });
+                              if (!res.ok) {
+                                const d = await res.json();
+                                setGalleryUploadError(d.error ?? 'Upload failed');
+                                setGalleryUploading(false);
+                                return;
+                              }
+                            } catch {
+                              setGalleryUploadError('Upload failed');
+                              setGalleryUploading(false);
+                              return;
+                            }
+                            setGalleryUploading(false);
+                            setGalleryAddOpen(false);
+                            setGalleryAddPreview('');
                             const gl = await fetch('/api/gallery').then((r) => r.ok ? r.json() : []).catch(() => []);
                             setGalleryImages(Array.isArray(gl) ? gl as GalleryImage[] : []);
                           }}
-                          className="flex-1 py-2.5 bg-gradient-to-r from-blue-600 to-violet-600 text-white rounded-xl hover:opacity-90 transition-opacity text-sm font-semibold disabled:opacity-50"
+                          className="flex-1 py-2.5 bg-gradient-to-r from-blue-600 to-violet-600 text-white rounded-xl hover:opacity-90 transition-opacity text-sm font-semibold disabled:opacity-40"
                         >
-                          {galleryEditSaving ? 'Saving…' : 'Save'}
+                          {galleryUploading ? 'Uploading…' : 'Upload & Publish'}
                         </button>
                       </div>
                     </div>
@@ -3035,30 +3058,62 @@ function Dashboard() {
                 </div>
               )}
 
-              {/* Delete confirm modal */}
+              {/* ── Edit info modal ── */}
+              {galleryEditTarget && (
+                <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                  <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl w-full max-w-md overflow-hidden">
+                    <div className="flex items-center gap-3 p-5 border-b border-slate-200 dark:border-[#1e2d45]">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={galleryEditTarget.secure_url.replace('/upload/', '/upload/w_80,h_80,c_fill,q_auto,f_auto/')} alt="" className="w-12 h-12 rounded-lg object-cover flex-shrink-0" />
+                      <div>
+                        <h3 className="text-slate-900 dark:text-white font-semibold">Edit Photo Info</h3>
+                        <p className="text-slate-500 text-xs mt-0.5">Updates the public gallery immediately</p>
+                      </div>
+                    </div>
+                    <div className="p-5 space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Event</label>
+                        <input type="text" value={galleryEditForm.event} onChange={(e) => setGalleryEditForm((f) => ({ ...f, event: e.target.value }))} placeholder="Event name" className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all" />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Caption <span className="text-slate-400 font-normal">(optional)</span></label>
+                        <textarea rows={3} value={galleryEditForm.caption} onChange={(e) => setGalleryEditForm((f) => ({ ...f, caption: e.target.value }))} placeholder="What's happening in this photo?" className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all resize-none" />
+                      </div>
+                      <div className="flex gap-3 pt-1">
+                        <button onClick={() => setGalleryEditTarget(null)} className="flex-1 py-2.5 border border-slate-200 dark:border-[#1e2d45] text-slate-500 dark:text-slate-400 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 transition-colors text-sm font-medium">Cancel</button>
+                        <button
+                          disabled={galleryEditSaving}
+                          onClick={async () => {
+                            setGalleryEditSaving(true);
+                            await fetch('/api/gallery', { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ public_id: galleryEditTarget.public_id, event: galleryEditForm.event, caption: galleryEditForm.caption }) });
+                            setGalleryEditSaving(false);
+                            setGalleryEditTarget(null);
+                            const gl = await fetch('/api/gallery').then((r) => r.ok ? r.json() : []).catch(() => []);
+                            setGalleryImages(Array.isArray(gl) ? gl as GalleryImage[] : []);
+                          }}
+                          className="flex-1 py-2.5 bg-gradient-to-r from-blue-600 to-violet-600 text-white rounded-xl hover:opacity-90 transition-opacity text-sm font-semibold disabled:opacity-50"
+                        >
+                          {galleryEditSaving ? 'Saving…' : 'Save Changes'}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* ── Delete confirm ── */}
               {galleryDeleteId && (
                 <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
                   <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl p-6 max-w-sm w-full">
                     <h3 className="text-slate-900 dark:text-white font-semibold mb-2">Delete Photo?</h3>
-                    <p className="text-slate-500 text-sm mb-5">
-                      This permanently removes it from Cloudinary and the gallery.
-                    </p>
+                    <p className="text-slate-500 text-sm mb-5">This permanently removes it from Cloudinary and the gallery.</p>
                     <div className="flex gap-3">
-                      <button
-                        onClick={() => setGalleryDeleteId(null)}
-                        className="flex-1 py-2.5 border border-slate-200 dark:border-[#1e2d45] text-slate-500 dark:text-slate-400 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 transition-colors text-sm font-medium"
-                      >
-                        Cancel
-                      </button>
+                      <button onClick={() => setGalleryDeleteId(null)} className="flex-1 py-2.5 border border-slate-200 dark:border-[#1e2d45] text-slate-500 dark:text-slate-400 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 transition-colors text-sm font-medium">Cancel</button>
                       <button
                         onClick={async () => {
                           const id = galleryDeleteId;
                           setGalleryDeleteId(null);
-                          await fetch('/api/gallery', {
-                            method: 'DELETE',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ public_id: id }),
-                          });
+                          await fetch('/api/gallery', { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ public_id: id }) });
                           const gl = await fetch('/api/gallery').then((r) => r.ok ? r.json() : []).catch(() => []);
                           setGalleryImages(Array.isArray(gl) ? gl as GalleryImage[] : []);
                         }}

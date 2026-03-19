@@ -48,15 +48,27 @@ export async function POST(req: NextRequest) {
   const file = incoming.get('file') as File | null;
   if (!file) return NextResponse.json({ error: 'No file provided' }, { status: 400 });
 
+  const eventVal = (incoming.get('event') as string | null)?.trim() ?? '';
+  const captionVal = (incoming.get('caption') as string | null)?.trim() ?? '';
+
+  const esc = (v: string) => v.replace(/\\/g, '\\\\').replace(/\|/g, '\\|').replace(/=/g, '\\=');
+  const context = [
+    `event=${esc(eventVal)}`,
+    `caption=${esc(captionVal)}`,
+  ].join('|');
+
   const timestamp = Math.floor(Date.now() / 1000).toString();
   const folder = 'lc3-gallery';
-  const signature = sign({ folder, timestamp }, secret);
+  // context must be included in signature params
+  const signParams: Record<string, string> = { context, folder, timestamp };
+  const signature = sign(signParams, secret);
 
   const form = new FormData();
   form.append('file', file);
   form.append('api_key', key);
   form.append('timestamp', timestamp);
   form.append('folder', folder);
+  form.append('context', context);
   form.append('signature', signature);
 
   const res = await fetch(`https://api.cloudinary.com/v1_1/${cloud}/image/upload`, {
