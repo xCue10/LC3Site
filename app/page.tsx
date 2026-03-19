@@ -412,17 +412,20 @@ export default function HomePage() {
               <Link
                 key={post.id}
                 href={`/blog/${post.slug}`}
-                className="block bg-white border border-slate-200 rounded-2xl p-6 hover:border-violet-200 hover:shadow-sm transition-all group dark:bg-[#0d1424] dark:border-[#1e2d45] dark:hover:border-violet-500/30"
+                className="block bg-white border border-slate-200 rounded-2xl overflow-hidden hover:border-violet-200 hover:shadow-sm transition-all group dark:bg-[#0d1424] dark:border-[#1e2d45] dark:hover:border-violet-500/30"
               >
-                <p className="text-xs text-slate-400 mb-3">
-                  {new Date(post.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                </p>
-                <h3 className="font-semibold text-slate-900 dark:text-white mb-2 group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors line-clamp-2">
-                  {post.title}
-                </h3>
-                {post.excerpt && (
-                  <p className="text-slate-500 text-sm leading-relaxed line-clamp-2">{post.excerpt}</p>
-                )}
+                <div className="h-1.5 bg-gradient-to-r from-violet-500 to-blue-500" />
+                <div className="p-6">
+                  <p className="text-xs text-slate-400 mb-3">
+                    {new Date(post.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                  </p>
+                  <h3 className="font-semibold text-slate-900 dark:text-white mb-2 group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors line-clamp-2">
+                    {post.title}
+                  </h3>
+                  {post.excerpt && (
+                    <p className="text-slate-500 text-sm leading-relaxed line-clamp-2">{post.excerpt}</p>
+                  )}
+                </div>
               </Link>
             ))}
           </StaggerReveal>
