@@ -109,7 +109,7 @@ export default async function GalleryPage() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
             </svg>
           </div>
-          <p className="text-slate-400">No photos yet — upload images to the <code className="text-violet-500 text-sm">lc3-gallery</code> folder in Cloudinary.</p>
+          <p className="text-slate-400">No photos yet. Check back soon!</p>
         </div>
       ) : (
         <GalleryClient images={images} />
