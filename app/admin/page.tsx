@@ -833,7 +833,17 @@ function ResourceModal({
   );
 }
 
-type TabId = 'members' | 'events' | 'contacts' | 'partners' | 'projects' | 'stats' | 'settings' | 'about' | 'home' | 'posts' | 'sponsors' | 'resources' | 'past-work' | 'rsvps';
+interface GalleryImage {
+  public_id: string;
+  secure_url: string;
+  width: number;
+  height: number;
+  format: string;
+  created_at: string;
+  bytes: number;
+}
+
+type TabId = 'members' | 'events' | 'contacts' | 'partners' | 'projects' | 'stats' | 'settings' | 'about' | 'home' | 'posts' | 'sponsors' | 'resources' | 'past-work' | 'rsvps' | 'gallery';
 
 // ─── Dashboard ───────────────────────────────────────────────────────────────
 function Dashboard() {
@@ -886,6 +896,10 @@ function Dashboard() {
     ctaButtonLabel: 'Apply to Join LC3',
   });
   const [loading, setLoading] = useState(true);
+  const [galleryImages, setGalleryImages] = useState<GalleryImage[]>([]);
+  const [galleryUploading, setGalleryUploading] = useState(false);
+  const [galleryUploadError, setGalleryUploadError] = useState('');
+  const [galleryDeleteId, setGalleryDeleteId] = useState<string | null>(null);
 
   // Search & sort
   const [membersSearch, setMembersSearch] = useState('');
@@ -934,7 +948,7 @@ function Dashboard() {
     const safe = <T,>(url: string, fallback: T) =>
       fetch(url).then((r) => r.ok ? r.json() as Promise<T> : fallback).catch(() => fallback);
 
-    const [m, e, c, pt, p, s, st, ab, po, sp, rv, rs, cs, hm] = await Promise.all([
+    const [m, e, c, pt, p, s, st, ab, po, sp, rv, rs, cs, hm, gl] = await Promise.all([
       safe('/api/members', []),
       safe('/api/events', []),
       safe('/api/contact', []),
@@ -949,6 +963,7 @@ function Dashboard() {
       safe('/api/resources', []),
       safe('/api/case-studies', { live: false, sectionTitle: 'Past Work', caseStudies: [] }),
       safe('/api/home', {}),
+      safe('/api/gallery', []),
     ]);
     setMembers(m as Member[]);
     setEvents(e as Event[]);
@@ -966,6 +981,7 @@ function Dashboard() {
     setHomeContent(hm as HomeContent);
     setHomeTechRaw(((hm as HomeContent).techStack ?? []).join(', '));
     setAboutTechRaw(((ab as AboutContent).techStack ?? []).join(', '));
+    setGalleryImages(Array.isArray(gl) ? gl as GalleryImage[] : []);
     setLoading(false);
   }, []);
 
@@ -1133,6 +1149,7 @@ function Dashboard() {
         { id: 'events' as TabId, label: 'Events', count: events.length, unread: 0 },
         { id: 'projects' as TabId, label: 'Projects', count: projects.length, unread: 0 },
         { id: 'posts' as TabId, label: 'Blog', count: posts.length, unread: 0 },
+        { id: 'gallery' as TabId, label: 'Gallery', count: galleryImages.length, unread: 0 },
       ],
     },
     {
@@ -2808,6 +2825,147 @@ function Dashboard() {
               </div>
             );
           })()}
+
+          {/* Gallery Tab */}
+          {tab === 'gallery' && (
+            <div>
+              <div className="mb-5 flex items-center justify-between gap-4">
+                <div>
+                  <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Gallery</h2>
+                  <p className="text-slate-500 text-xs mt-0.5">
+                    {galleryImages.length} photo{galleryImages.length !== 1 ? 's' : ''} in lc3-gallery
+                  </p>
+                </div>
+                <div className="flex items-center gap-3">
+                  {galleryUploading && (
+                    <span className="text-xs text-violet-500 dark:text-violet-400 animate-pulse">Uploading…</span>
+                  )}
+                  {galleryUploadError && (
+                    <span className="text-xs text-red-500">{galleryUploadError}</span>
+                  )}
+                  <label className="cursor-pointer inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-blue-600 to-violet-600 text-white text-sm font-medium hover:opacity-90 transition-opacity">
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                    </svg>
+                    Upload Photos
+                    <input
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      className="hidden"
+                      disabled={galleryUploading}
+                      onChange={async (e) => {
+                        const files = Array.from(e.target.files ?? []);
+                        if (!files.length) return;
+                        setGalleryUploading(true);
+                        setGalleryUploadError('');
+                        try {
+                          const results = await Promise.all(
+                            files.map(async (file) => {
+                              const fd = new FormData();
+                              fd.append('file', file);
+                              const res = await fetch('/api/gallery', { method: 'POST', body: fd });
+                              return res.ok ? null : await res.json().then((d) => d.error ?? 'Upload failed');
+                            })
+                          );
+                          const errs = results.filter(Boolean);
+                          if (errs.length) setGalleryUploadError(errs[0] as string);
+                        } catch {
+                          setGalleryUploadError('Upload failed');
+                        }
+                        setGalleryUploading(false);
+                        const gl = await fetch('/api/gallery').then((r) => r.ok ? r.json() : []).catch(() => []);
+                        setGalleryImages(Array.isArray(gl) ? gl as GalleryImage[] : []);
+                        e.target.value = '';
+                      }}
+                    />
+                  </label>
+                </div>
+              </div>
+
+              {galleryImages.length === 0 ? (
+                <div className="text-center py-16 text-slate-500 border border-slate-200 dark:border-[#1e2d45] rounded-2xl">
+                  No photos yet. Upload images to get started.
+                </div>
+              ) : (
+                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3">
+                  {galleryImages.map((img) => (
+                    <div
+                      key={img.public_id}
+                      className="group relative aspect-square rounded-xl overflow-hidden border border-slate-200 dark:border-[#1e2d45] bg-slate-100 dark:bg-[#111a2e]"
+                    >
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={img.secure_url.replace('/upload/', '/upload/w_200,h_200,c_fill,q_auto,f_auto/')}
+                        alt=""
+                        loading="lazy"
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/50 transition-colors flex items-center justify-center gap-2">
+                        <a
+                          href={img.secure_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={(e) => e.stopPropagation()}
+                          className="opacity-0 group-hover:opacity-100 transition-opacity w-8 h-8 bg-white/20 hover:bg-white/30 rounded-lg flex items-center justify-center text-white"
+                          title="View full size"
+                        >
+                          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                          </svg>
+                        </a>
+                        <button
+                          onClick={() => setGalleryDeleteId(img.public_id)}
+                          className="opacity-0 group-hover:opacity-100 transition-opacity w-8 h-8 bg-red-500 hover:bg-red-600 rounded-lg flex items-center justify-center text-white"
+                          title="Delete"
+                        >
+                          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Delete confirm modal */}
+              {galleryDeleteId && (
+                <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                  <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl p-6 max-w-sm w-full">
+                    <h3 className="text-slate-900 dark:text-white font-semibold mb-2">Delete Photo?</h3>
+                    <p className="text-slate-500 text-sm mb-5">
+                      This permanently removes it from Cloudinary and the gallery.
+                    </p>
+                    <div className="flex gap-3">
+                      <button
+                        onClick={() => setGalleryDeleteId(null)}
+                        className="flex-1 py-2.5 border border-slate-200 dark:border-[#1e2d45] text-slate-500 dark:text-slate-400 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 transition-colors text-sm font-medium"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        onClick={async () => {
+                          const id = galleryDeleteId;
+                          setGalleryDeleteId(null);
+                          await fetch('/api/gallery', {
+                            method: 'DELETE',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ public_id: id }),
+                          });
+                          const gl = await fetch('/api/gallery').then((r) => r.ok ? r.json() : []).catch(() => []);
+                          setGalleryImages(Array.isArray(gl) ? gl as GalleryImage[] : []);
+                        }}
+                        className="flex-1 py-2.5 bg-red-500 hover:bg-red-600 text-white rounded-xl transition-colors text-sm font-semibold"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
         </>
       )}
         </div>{/* end main content */}
