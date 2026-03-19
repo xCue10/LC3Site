@@ -178,6 +178,41 @@ export default function HomePage() {
             </Link>
           </div>
 
+          {/* Quick-nav cards */}
+          <div className="mt-10 grid grid-cols-3 sm:grid-cols-6 gap-3 w-full max-w-2xl mx-auto">
+            {[
+              { href: '/events', label: 'Events', icon: (
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+              )},
+              { href: '/projects', label: 'Projects', icon: (
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>
+              )},
+              { href: '/gallery', label: 'Gallery', icon: (
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" /><path strokeLinecap="round" strokeLinejoin="round" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+              )},
+              { href: '/blog', label: 'Blog', icon: (
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" /></svg>
+              )},
+              { href: '/members', label: 'Members', icon: (
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+              )},
+              { href: '/about', label: 'About', icon: (
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+              )},
+            ].map(({ href, label, icon }) => (
+              <Link
+                key={href}
+                href={href}
+                className="flex flex-col items-center gap-2 py-4 px-2 rounded-2xl bg-white border border-slate-200 hover:border-violet-300 hover:bg-violet-50/50 hover:-translate-y-0.5 shadow-sm transition-all duration-200 text-center group dark:bg-white/5 dark:border-white/10 dark:hover:border-violet-500/40 dark:hover:bg-violet-500/5"
+              >
+                <span className="text-slate-500 group-hover:text-violet-600 dark:text-slate-400 dark:group-hover:text-violet-400 transition-colors">
+                  {icon}
+                </span>
+                <span className="text-xs font-medium text-slate-600 group-hover:text-violet-700 dark:text-slate-400 dark:group-hover:text-violet-300 transition-colors">{label}</span>
+              </Link>
+            ))}
+          </div>
+
           {/* Tech stack strip */}
           <div className="mt-8 flex flex-wrap justify-center gap-2">
             {homeContent.techStack.map((tech, i) => (
