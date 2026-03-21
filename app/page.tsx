@@ -139,7 +139,7 @@ export default function HomePage() {
             {/* Connection lines */}
             <line x1="160" y1="120" x2="340" y2="200" stroke="rgba(139,92,246,0.12)" strokeWidth="1" strokeDasharray="4 6" style={{animation:'hero-line-dash 1.8s linear infinite'}}/>
             <line x1="340" y1="200" x2="560" y2="140" stroke="rgba(59,130,246,0.12)" strokeWidth="1" strokeDasharray="4 6" style={{animation:'hero-line-dash 2.1s linear infinite 0.4s'}}/>
-            <line x1="340" y1="200" x2="480" y2="340" stroke="rgba(99,102,241,0.1)" strokeWidth="1" strokeDasharray="4 6" style={{animation:'hero-line-dash 1.6s linear infinite 0.8s'}}/>
+            <line x1="340" y1="200" x2="480" y2="250" stroke="rgba(99,102,241,0.1)" strokeWidth="1" strokeDasharray="4 6" style={{animation:'hero-line-dash 1.6s linear infinite 0.8s'}}/>
             <line x1="840" y1="130" x2="1040" y2="220" stroke="rgba(6,182,212,0.12)" strokeWidth="1" strokeDasharray="4 6" style={{animation:'hero-line-dash 1.9s linear infinite 0.6s'}}/>
             <line x1="1040" y1="220" x2="900" y2="360" stroke="rgba(139,92,246,0.1)" strokeWidth="1" strokeDasharray="4 6" style={{animation:'hero-line-dash 2.2s linear infinite 1s'}}/>
             <line x1="560" y1="140" x2="840" y2="130" stroke="rgba(59,130,246,0.08)" strokeWidth="1" strokeDasharray="4 6" style={{animation:'hero-line-dash 2.4s linear infinite 1.4s'}}/>
@@ -152,7 +152,7 @@ export default function HomePage() {
               {cx:560, cy:140, r:16, color:'rgba(6,182,212,0.14)', stroke:'rgba(6,182,212,0.32)', dot:'#06b6d4', label:'Cloud', delay:'1.2s'},
               {cx:840, cy:130, r:19, color:'rgba(99,102,241,0.16)', stroke:'rgba(99,102,241,0.35)', dot:'#6366f1', label:'Node', delay:'0.4s'},
               {cx:1040, cy:220, r:20, color:'rgba(139,92,246,0.15)', stroke:'rgba(139,92,246,0.32)', dot:'#8b5cf6', label:'AI', delay:'1s'},
-              {cx:480, cy:340, r:14, color:'rgba(34,197,94,0.12)', stroke:'rgba(34,197,94,0.28)', dot:'#22c55e', label:'API', delay:'1.6s'},
+              {cx:480, cy:250, r:14, color:'rgba(34,197,94,0.12)', stroke:'rgba(34,197,94,0.28)', dot:'#22c55e', label:'API', delay:'1.6s'},
               {cx:900, cy:360, r:15, color:'rgba(245,158,11,0.12)', stroke:'rgba(245,158,11,0.28)', dot:'#f59e0b', label:'Git', delay:'0.8s'},
               {cx:100, cy:340, r:13, color:'rgba(236,72,153,0.1)', stroke:'rgba(236,72,153,0.24)', dot:'#ec4899', label:'UI', delay:'1.8s'},
               {cx:1100, cy:380, r:13, color:'rgba(6,182,212,0.1)', stroke:'rgba(6,182,212,0.24)', dot:'#06b6d4', label:'DB', delay:'2.2s'},
