@@ -1209,6 +1209,14 @@ function Dashboard() {
 
   const navGroups = [
     {
+      label: 'Pages',
+      items: [
+        { id: 'home' as TabId, label: 'Home', count: null, unread: 0 },
+        { id: 'about' as TabId, label: 'About', count: null, unread: 0 },
+        { id: 'shield' as TabId, label: 'Shield', count: null, unread: 0 },
+      ],
+    },
+    {
       label: 'Content',
       items: [
         { id: 'members' as TabId, label: 'Members', count: members.length, unread: 0 },
@@ -1216,6 +1224,9 @@ function Dashboard() {
         { id: 'projects' as TabId, label: 'Projects', count: projects.length, unread: 0 },
         { id: 'posts' as TabId, label: 'Blog', count: posts.length, unread: 0 },
         { id: 'gallery' as TabId, label: 'Gallery', count: galleryImages.length, unread: 0 },
+        { id: 'sponsors' as TabId, label: 'Sponsors', count: sponsorsConfig.sponsors.length, unread: 0 },
+        { id: 'past-work' as TabId, label: 'Past Work', count: caseStudiesConfig.caseStudies.length, unread: 0 },
+        { id: 'resources' as TabId, label: 'Resources', count: resources.length, unread: 0 },
       ],
     },
     {
@@ -1227,20 +1238,9 @@ function Dashboard() {
       ],
     },
     {
-      label: 'Site',
-      items: [
-        { id: 'sponsors' as TabId, label: 'Sponsors', count: sponsorsConfig.sponsors.length, unread: 0 },
-        { id: 'resources' as TabId, label: 'Resources', count: resources.length, unread: 0 },
-        { id: 'past-work' as TabId, label: 'Past Work', count: caseStudiesConfig.caseStudies.length, unread: 0 },
-        { id: 'shield' as TabId, label: 'Shield Page', count: null, unread: 0 },
-      ],
-    },
-    {
-      label: 'Settings',
+      label: 'Config',
       items: [
         { id: 'stats' as TabId, label: 'Stats', count: null, unread: 0 },
-        { id: 'home' as TabId, label: 'Home Page', count: null, unread: 0 },
-        { id: 'about' as TabId, label: 'About Page', count: null, unread: 0 },
         { id: 'settings' as TabId, label: 'Settings', count: null, unread: 0 },
       ],
     },
