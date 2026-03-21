@@ -3,36 +3,54 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { loadUserData, BADGES, getBadgeInfo, gradeColor } from '@/lib/shield-storage';
-import { UserData } from '@/lib/shield-types';
+import { UserData, ScanType } from '@/lib/shield-types';
 import ShieldAppLayout from '@/app/shield/components/ShieldAppLayout';
+import ShieldOnboarding from '@/app/shield/components/ShieldOnboarding';
 import {
   Shield, Globe, Code2, Github, Package, Key, Cookie,
   Globe2, Lock, FileSearch, ClipboardCheck,
   AlertTriangle, Trophy, Loader2, ExternalLink,
-  TrendingUp, ChevronRight
+  TrendingUp, ChevronRight, Sparkles, LucideIcon
 } from 'lucide-react';
 
-const SCANNERS = [
-  { href: '/shield/scan/url', icon: Globe, label: 'URL Scanner', desc: 'Security headers & HTTPS', color: '#3b82f6' },
-  { href: '/shield/scan/code', icon: Code2, label: 'Code Scanner', desc: 'AI vulnerability analysis', color: '#8b5cf6' },
-  { href: '/shield/scan/github', icon: Github, label: 'GitHub Repo', desc: 'Exposed secrets in repos', color: '#6b7280' },
-  { href: '/shield/scan/dependencies', icon: Package, label: 'Dependencies', desc: 'CVE database check', color: '#22c55e' },
-  { href: '/shield/scan/jwt', icon: Key, label: 'JWT Analyzer', desc: 'Decode & audit tokens', color: '#f59e0b' },
-  { href: '/shield/scan/cookies', icon: Cookie, label: 'Cookie Checker', desc: 'Verify security flags', color: '#ec4899' },
-  { href: '/shield/scan/dns', icon: Globe2, label: 'DNS Checker', desc: 'SPF, DMARC, DKIM', color: '#06b6d4' },
-  { href: '/shield/scan/ssl', icon: Lock, label: 'SSL/TLS', desc: 'Certificate validation', color: '#22c55e' },
-  { href: '/shield/scan/sensitive-files', icon: FileSearch, label: 'Sensitive Files', desc: 'Find exposed files', color: '#ef4444' },
-  { href: '/shield/scan/owasp', icon: ClipboardCheck, label: 'OWASP Top 10', desc: 'Security checklist', color: '#f97316' },
+const SCANNERS: { href: string; icon: LucideIcon; label: string; desc: string; color: string; type: ScanType }[] = [
+  { href: '/shield/scan/url', icon: Globe, label: 'URL Scanner', desc: 'Security headers & HTTPS', color: '#3b82f6', type: 'url' },
+  { href: '/shield/scan/code', icon: Code2, label: 'Code Scanner', desc: 'AI vulnerability analysis', color: '#8b5cf6', type: 'code' },
+  { href: '/shield/scan/github', icon: Github, label: 'GitHub Repo', desc: 'Exposed secrets in repos', color: '#6b7280', type: 'github' },
+  { href: '/shield/scan/dependencies', icon: Package, label: 'Dependencies', desc: 'CVE database check', color: '#22c55e', type: 'dependencies' },
+  { href: '/shield/scan/jwt', icon: Key, label: 'JWT Analyzer', desc: 'Decode & audit tokens', color: '#f59e0b', type: 'jwt' },
+  { href: '/shield/scan/cookies', icon: Cookie, label: 'Cookie Checker', desc: 'Verify security flags', color: '#ec4899', type: 'cookies' },
+  { href: '/shield/scan/dns', icon: Globe2, label: 'DNS Checker', desc: 'SPF, DMARC, DKIM', color: '#06b6d4', type: 'dns' },
+  { href: '/shield/scan/ssl', icon: Lock, label: 'SSL/TLS', desc: 'Certificate validation', color: '#22c55e', type: 'ssl' },
+  { href: '/shield/scan/sensitive-files', icon: FileSearch, label: 'Sensitive Files', desc: 'Find exposed files', color: '#ef4444', type: 'sensitive-files' },
+  { href: '/shield/scan/owasp', icon: ClipboardCheck, label: 'OWASP Top 10', desc: 'Security checklist', color: '#f97316', type: 'owasp' },
 ];
+
+const BADGE_HINTS: Record<string, string> = {
+  'https-hero': 'Run the URL Scanner on an HTTPS site',
+  'no-secrets': 'Run Code Scanner and get clean results',
+  'owasp-aware': 'Complete the OWASP Top 10 checklist',
+  'a-grade-club': 'Score 90+ on any scan',
+  'dependency-guardian': 'Scan dependencies with no CVEs',
+  'cookie-monster': 'Run Cookie Checker on a secure site',
+  'dns-defender': 'Run DNS Checker with all records passing',
+  'clean-repo': 'Scan a GitHub repo with no exposed secrets',
+  'quick-fixer': 'Mark 5 issues as fixed from scan results',
+  'security-streak': 'Scan every day for 7 days in a row',
+};
 
 export default function DashboardPage() {
   const router = useRouter();
   const [userData, setUserData] = useState<UserData | null>(null);
+  const [showOnboarding, setShowOnboarding] = useState(false);
 
   useEffect(() => {
     const data = loadUserData();
     if (!data) { router.push('/shield/login'); return; }
     setUserData(data);
+    if (!localStorage.getItem('lc3shield_onboarded')) {
+      setShowOnboarding(true);
+    }
   }, [router]);
 
   if (!userData) return (
@@ -45,13 +63,35 @@ export default function DashboardPage() {
 
   const recentScans = userData.scanHistory.slice(0, 6);
   const earnedBadges = userData.badges.map(id => getBadgeInfo(id));
-  const nextBadge = BADGES.find(b => !userData.badges.includes(b.id));
+  const unearnedBadges = BADGES.filter(b => !userData.badges.includes(b.id));
   const avgScore = userData.scanHistory.length > 0
     ? Math.round(userData.scanHistory.reduce((s, r) => s + r.score, 0) / userData.scanHistory.length)
     : null;
 
+  // Smart scan suggestions
+  const oneWeekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
+  const recentTypes = new Set(
+    userData.scanHistory.filter(s => s.timestamp > oneWeekAgo).map(s => s.type)
+  );
+  const lastUrlScan = userData.scanHistory.find(s => s.type === 'url');
+  const relatedScanners = lastUrlScan
+    ? SCANNERS.filter(s => ['dns', 'ssl', 'sensitive-files'].includes(s.type) && !recentTypes.has(s.type))
+    : [];
+  const unusedScanners = SCANNERS.filter(s => !userData.scanHistory.some(h => h.type === s.type));
+  const suggestions = [
+    ...relatedScanners,
+    ...unusedScanners.filter(s => !relatedScanners.includes(s)),
+  ].slice(0, 3);
+
   return (
     <ShieldAppLayout>
+      {showOnboarding && (
+        <ShieldOnboarding onClose={() => {
+          localStorage.setItem('lc3shield_onboarded', '1');
+          setShowOnboarding(false);
+        }} />
+      )}
+
       <div className="px-4 sm:px-6 py-6 sm:py-8 max-w-5xl mx-auto">
 
         {/* Header */}
@@ -92,7 +132,7 @@ export default function DashboardPage() {
 
         {/* Scanner grid */}
         <div
-          className="rounded-2xl overflow-hidden mb-6"
+          className="rounded-2xl overflow-hidden mb-4"
           style={{ background: '#161b27', border: '1px solid rgba(255,255,255,0.09)' }}
         >
           <div className="px-5 py-4" style={{ borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
@@ -128,6 +168,37 @@ export default function DashboardPage() {
             ))}
           </div>
         </div>
+
+        {/* Smart scan suggestions */}
+        {suggestions.length > 0 && (
+          <div
+            className="rounded-2xl p-4 mb-6 flex flex-wrap items-center gap-3"
+            style={{ background: 'rgba(59,130,246,0.06)', border: '1px solid rgba(59,130,246,0.2)' }}
+          >
+            <div className="flex items-center gap-2 shrink-0">
+              <Sparkles style={{ width: '14px', height: '14px', color: '#60a5fa' }} />
+              <span style={{ fontSize: '12px', fontWeight: 600, color: '#60a5fa' }}>Suggested for you</span>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {suggestions.map(({ href, icon: Icon, label, color, type }) => (
+                <Link
+                  key={href}
+                  href={href}
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all"
+                  style={{ background: `${color}14`, border: `1px solid ${color}30`, fontSize: '12px', color: '#cbd5e1', fontWeight: 500 }}
+                  onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = 'white'; }}
+                  onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = '#cbd5e1'; }}
+                >
+                  <Icon style={{ width: '12px', height: '12px', color }} />
+                  {label}
+                  {!userData.scanHistory.some(h => h.type === type) && (
+                    <span style={{ fontSize: '10px', color: '#94a3b8', marginLeft: '2px' }}>· new</span>
+                  )}
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Bottom row: Recent scans + Badges */}
         <div className="grid lg:grid-cols-3 gap-5">
@@ -214,25 +285,16 @@ export default function DashboardPage() {
                 <Trophy className="w-4 h-4 text-amber-400" />
                 <h2 className="text-white font-semibold" style={{ fontSize: '15px' }}>Badges</h2>
               </div>
-              <Link
-                href="/shield/badges"
-                className="flex items-center gap-1 text-[12px] transition-colors"
-                style={{ color: '#64748b' }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = '#93c5fd')}
-                onMouseLeave={(e) => (e.currentTarget.style.color = '#64748b')}
-              >
-                All <ChevronRight className="w-3 h-3" />
-              </Link>
+              <span style={{ fontSize: '12px', color: '#64748b' }}>
+                {userData.badges.length}/{BADGES.length}
+              </span>
             </div>
 
             <div className="p-4">
-              {earnedBadges.length === 0 ? (
-                <p style={{ fontSize: '13px', color: '#64748b', textAlign: 'center', padding: '16px 0' }}>
-                  Complete scans to earn badges!
-                </p>
-              ) : (
+              {/* Earned badges */}
+              {earnedBadges.length > 0 && (
                 <div className="flex flex-wrap gap-2 mb-4">
-                  {earnedBadges.slice(0, 8).map(badge => (
+                  {earnedBadges.map(badge => (
                     <div
                       key={badge.id}
                       title={`${badge.name}: ${badge.description}`}
@@ -252,18 +314,37 @@ export default function DashboardPage() {
                 </div>
               )}
 
-              {nextBadge && (
-                <div className="pt-3" style={{ borderTop: earnedBadges.length > 0 ? '1px solid rgba(255,255,255,0.07)' : 'none' }}>
+              {/* Unearned badges with hints */}
+              {unearnedBadges.length > 0 && (
+                <div style={{ borderTop: earnedBadges.length > 0 ? '1px solid rgba(255,255,255,0.07)' : 'none', paddingTop: earnedBadges.length > 0 ? '12px' : 0 }}>
                   <div style={{ fontSize: '10px', color: '#64748b', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.06em', fontWeight: 600 }}>
-                    Next to unlock
+                    To unlock
                   </div>
-                  <div className="flex items-center gap-2.5">
-                    <span className="text-xl grayscale opacity-30">{nextBadge.icon}</span>
-                    <div>
-                      <div style={{ fontSize: '12px', fontWeight: 600, color: '#94a3b8' }}>{nextBadge.name}</div>
-                      <div style={{ fontSize: '11px', color: '#64748b', lineHeight: 1.4 }}>{nextBadge.description}</div>
-                    </div>
+                  <div className="space-y-2">
+                    {unearnedBadges.slice(0, 4).map(badge => (
+                      <div key={badge.id} className="flex items-start gap-2.5">
+                        <span className="text-lg grayscale opacity-30 shrink-0 mt-0.5">{badge.icon}</span>
+                        <div className="min-w-0">
+                          <div style={{ fontSize: '11px', fontWeight: 600, color: '#64748b' }}>{badge.name}</div>
+                          <div style={{ fontSize: '10px', color: '#475569', lineHeight: 1.4 }}>
+                            {BADGE_HINTS[badge.id] || badge.description}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                    {unearnedBadges.length > 4 && (
+                      <p style={{ fontSize: '10px', color: '#475569', marginTop: '4px' }}>
+                        +{unearnedBadges.length - 4} more badges to earn
+                      </p>
+                    )}
                   </div>
+                </div>
+              )}
+
+              {unearnedBadges.length === 0 && (
+                <div className="text-center py-4">
+                  <Trophy className="w-8 h-8 text-amber-400 mx-auto mb-2" />
+                  <p style={{ fontSize: '12px', color: '#fbbf24', fontWeight: 600 }}>All badges earned!</p>
                 </div>
               )}
             </div>

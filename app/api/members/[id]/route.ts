@@ -1,44 +1,43 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { readJSON, writeJSON, Member } from '@/lib/data';
+import { timingSafeEqual } from 'crypto';
 
-export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+const MEMBER_CODE = process.env.LC3MEMBER_PASSWORD;
+
+export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const body = await req.json();
-  const members = readJSON<Member[]>('members.json');
-  const index = members.findIndex((m) => m.id === id);
-  if (index === -1) return NextResponse.json({ error: 'Not found' }, { status: 404 });
+  const { code, bio, github, linkedin, twitter, avatarUrl, skills } = await req.json();
 
-  members[index] = {
-    ...members[index],
-    name: body.name ?? members[index].name,
-    role: body.role ?? members[index].role,
-    memberType: body.memberType ?? members[index].memberType,
-    majors: Array.isArray(body.majors)
-      ? body.majors
-      : (body.majors || '').split(',').map((s: string) => s.trim()).filter(Boolean),
-    focusArea: body.focusArea ?? members[index].focusArea,
-    status: body.status ?? members[index].status ?? '',
-    avatarUrl: body.avatarUrl ?? members[index].avatarUrl ?? '',
-    bio: body.bio ?? members[index].bio ?? '',
-    skills: Array.isArray(body.skills)
-      ? body.skills
-      : (body.skills || '').split(',').map((s: string) => s.trim()).filter(Boolean),
-    projects: Array.isArray(body.projects)
-      ? body.projects
-      : (body.projects || '').split(',').map((p: string) => p.trim()).filter(Boolean),
-    github: body.github ?? members[index].github,
-    linkedin: body.linkedin ?? members[index].linkedin,
-    twitter: body.twitter ?? members[index].twitter,
-  };
+  // Verify the LC3MEMBER code
+  if (!MEMBER_CODE) {
+    return NextResponse.json({ error: 'Auth not configured' }, { status: 503 });
+  }
+  let valid = false;
+  try {
+    const a = Buffer.from(code ?? '');
+    const b = Buffer.from(MEMBER_CODE);
+    valid = a.length === b.length && timingSafeEqual(a, b);
+  } catch {
+    valid = false;
+  }
+  if (!valid) {
+    return NextResponse.json({ error: 'Invalid code' }, { status: 401 });
+  }
+
+  const members = readJSON<Member[]>('members.json', []);
+  const idx = members.findIndex(m => m.id === id);
+  if (idx === -1) {
+    return NextResponse.json({ error: 'Member not found' }, { status: 404 });
+  }
+
+  // Only allow editing safe fields
+  if (bio !== undefined) members[idx].bio = String(bio).slice(0, 500);
+  if (github !== undefined) members[idx].github = String(github).slice(0, 200);
+  if (linkedin !== undefined) members[idx].linkedin = String(linkedin).slice(0, 200);
+  if (twitter !== undefined) members[idx].twitter = String(twitter).slice(0, 200);
+  if (avatarUrl !== undefined) members[idx].avatarUrl = String(avatarUrl).slice(0, 500);
+  if (Array.isArray(skills)) members[idx].skills = skills.map(String).slice(0, 20);
+
   writeJSON('members.json', members);
-  return NextResponse.json(members[index]);
-}
-
-export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params;
-  const members = readJSON<Member[]>('members.json');
-  const filtered = members.filter((m) => m.id !== id);
-  if (filtered.length === members.length) return NextResponse.json({ error: 'Not found' }, { status: 404 });
-  writeJSON('members.json', filtered);
-  return NextResponse.json({ success: true });
+  return NextResponse.json({ ok: true, member: members[idx] });
 }
