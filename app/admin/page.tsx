@@ -133,6 +133,12 @@ interface HomeMissionItem {
   desc: string;
 }
 
+interface HomeShieldFeatureCard {
+  icon: string;
+  title: string;
+  desc: string;
+}
+
 interface HomeContent {
   primaryButtonLabel: string;
   secondaryButtonLabel: string;
@@ -153,6 +159,13 @@ interface HomeContent {
   ctaHeading: string;
   ctaDescription: string;
   ctaButtonLabel: string;
+  shieldBadgeLabel?: string;
+  shieldHeadingPrefix?: string;
+  shieldDescription?: string;
+  shieldFeatureTags?: string[];
+  shieldCtaLabel?: string;
+  shieldButtonLabel?: string;
+  shieldFeatureCards?: HomeShieldFeatureCard[];
 }
 
 interface PartnerInquiry {
@@ -881,6 +894,7 @@ function Dashboard() {
   const [shieldConfig, setShieldConfig] = useState<ShieldPageConfig>({ live: false, heading: 'LC3 Shield', tagline: 'Coming Soon', description: '', features: [] });
   const [shieldFeaturesRaw, setShieldFeaturesRaw] = useState('');
   const [homeTechRaw, setHomeTechRaw] = useState('');
+  const [shieldTagsRaw, setShieldTagsRaw] = useState('');
   const [aboutTechRaw, setAboutTechRaw] = useState('');
   const [caseStudyModal, setCaseStudyModal] = useState<{ open: boolean; caseStudy: CaseStudy | null }>({ open: false, caseStudy: null });
   const [aboutContent, setAboutContent] = useState<AboutContent>({
@@ -910,6 +924,13 @@ function Dashboard() {
     ctaHeading: 'Ready to join?',
     ctaDescription: '',
     ctaButtonLabel: 'Apply to Join LC3',
+    shieldBadgeLabel: 'New Tool',
+    shieldHeadingPrefix: 'Introducing',
+    shieldDescription: '',
+    shieldFeatureTags: [],
+    shieldCtaLabel: 'Explore LC3 Shield',
+    shieldButtonLabel: 'LC3 Shield',
+    shieldFeatureCards: [],
   });
   const [loading, setLoading] = useState(true);
   const [galleryImages, setGalleryImages] = useState<GalleryImage[]>([]);
@@ -1007,6 +1028,7 @@ function Dashboard() {
     setShieldConfig(shData);
     setShieldFeaturesRaw((shData.features ?? []).join('\n'));
     setHomeTechRaw(((hm as HomeContent).techStack ?? []).join(', '));
+    setShieldTagsRaw(((hm as HomeContent).shieldFeatureTags ?? []).join(', '));
     setAboutTechRaw(((ab as AboutContent).techStack ?? []).join(', '));
     setGalleryImages(Array.isArray(gl) ? gl as GalleryImage[] : []);
     setLoading(false);
@@ -2236,6 +2258,113 @@ function Dashboard() {
                     placeholder="Apply to Join LC3"
                     className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
                   />
+                </div>
+              </div>
+
+              {/* LC3 Shield Section */}
+              <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl p-6 space-y-4">
+                <p className="text-xs text-slate-500 font-medium uppercase tracking-wider">LC3 Shield Section</p>
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Badge Label</label>
+                    <input type="text" value={homeContent.shieldBadgeLabel ?? ''}
+                      onChange={(e) => setHomeContent((h) => ({ ...h, shieldBadgeLabel: e.target.value }))}
+                      placeholder="New Tool"
+                      className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Heading Prefix</label>
+                    <input type="text" value={homeContent.shieldHeadingPrefix ?? ''}
+                      onChange={(e) => setHomeContent((h) => ({ ...h, shieldHeadingPrefix: e.target.value }))}
+                      placeholder="Introducing"
+                      className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                    />
+                  </div>
+                </div>
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Hero Button Label</label>
+                    <input type="text" value={homeContent.shieldButtonLabel ?? ''}
+                      onChange={(e) => setHomeContent((h) => ({ ...h, shieldButtonLabel: e.target.value }))}
+                      placeholder="LC3 Shield"
+                      className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">CTA Button Label</label>
+                    <input type="text" value={homeContent.shieldCtaLabel ?? ''}
+                      onChange={(e) => setHomeContent((h) => ({ ...h, shieldCtaLabel: e.target.value }))}
+                      placeholder="Explore LC3 Shield"
+                      className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Description</label>
+                  <textarea rows={3} value={homeContent.shieldDescription ?? ''}
+                    onChange={(e) => setHomeContent((h) => ({ ...h, shieldDescription: e.target.value }))}
+                    placeholder="A hands-on cybersecurity scanner built for..."
+                    className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all resize-none"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Feature Tags <span className="text-slate-400 font-normal">(comma-separated)</span></label>
+                  <input type="text"
+                    value={shieldTagsRaw}
+                    onChange={(e) => {
+                      setShieldTagsRaw(e.target.value);
+                      setHomeContent((h) => ({ ...h, shieldFeatureTags: e.target.value.split(',').map((s) => s.trim()).filter(Boolean) }));
+                    }}
+                    placeholder="URL Scanner, Code Analysis, SSL/TLS..."
+                    className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                  />
+                  {(homeContent.shieldFeatureTags ?? []).length > 0 && (
+                    <div className="flex flex-wrap gap-2 mt-2">
+                      {(homeContent.shieldFeatureTags ?? []).map((t, i) => (
+                        <span key={i} className="text-xs bg-red-50 border border-red-200 text-red-600 dark:bg-red-500/10 dark:border-red-500/20 dark:text-red-400 px-2.5 py-1 rounded-full">{t}</span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">Feature Cards</label>
+                    <button
+                      onClick={() => setHomeContent((h) => ({ ...h, shieldFeatureCards: [...(h.shieldFeatureCards ?? []), { icon: '🔍', title: '', desc: '' }] }))}
+                      className="flex items-center gap-1 text-xs text-violet-600 dark:text-violet-400 hover:text-violet-700 dark:hover:text-violet-300 font-medium transition-colors"
+                    >
+                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
+                      Add Card
+                    </button>
+                  </div>
+                  <div className="grid sm:grid-cols-2 gap-3">
+                    {(homeContent.shieldFeatureCards ?? []).map((card, i) => (
+                      <div key={i} className="bg-slate-50 dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] rounded-xl p-4 space-y-2">
+                        <div className="flex items-center gap-2">
+                          <input type="text" value={card.icon}
+                            onChange={(e) => setHomeContent((h) => { const cards = [...(h.shieldFeatureCards ?? [])]; cards[i] = { ...cards[i], icon: e.target.value }; return { ...h, shieldFeatureCards: cards }; })}
+                            placeholder="🔍"
+                            className="w-14 bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#253650] text-slate-900 dark:text-white rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:border-violet-500/50 text-center"
+                          />
+                          <input type="text" value={card.title}
+                            onChange={(e) => setHomeContent((h) => { const cards = [...(h.shieldFeatureCards ?? [])]; cards[i] = { ...cards[i], title: e.target.value }; return { ...h, shieldFeatureCards: cards }; })}
+                            placeholder="Card title"
+                            className="flex-1 bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#253650] text-slate-900 dark:text-white rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-violet-500/50 font-medium"
+                          />
+                          <button onClick={() => setHomeContent((h) => ({ ...h, shieldFeatureCards: (h.shieldFeatureCards ?? []).filter((_, j) => j !== i) }))}
+                            className="w-6 h-6 flex items-center justify-center rounded-md text-slate-400 hover:text-red-400 hover:bg-red-500/10 transition-all flex-shrink-0">
+                            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                          </button>
+                        </div>
+                        <input type="text" value={card.desc}
+                          onChange={(e) => setHomeContent((h) => { const cards = [...(h.shieldFeatureCards ?? [])]; cards[i] = { ...cards[i], desc: e.target.value }; return { ...h, shieldFeatureCards: cards }; })}
+                          placeholder="Short description..."
+                          className="w-full bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#253650] text-slate-900 dark:text-white rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-violet-500/50"
+                        />
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
 

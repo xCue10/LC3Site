@@ -195,6 +195,14 @@ export interface HomeContent {
   ctaHeading: string;
   ctaDescription: string;
   ctaButtonLabel: string;
+  // LC3 Shield section
+  shieldBadgeLabel?: string;
+  shieldHeadingPrefix?: string;
+  shieldDescription?: string;
+  shieldFeatureTags?: string[];
+  shieldCtaLabel?: string;
+  shieldButtonLabel?: string;
+  shieldFeatureCards?: Array<{ icon: string; title: string; desc: string }>;
 }
 
 export interface Resource {
