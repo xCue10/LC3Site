@@ -2,7 +2,7 @@
 import { useState, useMemo } from 'react';
 import { Member } from '@/lib/data';
 
-type EditFields = { bio: string; github: string; linkedin: string; twitter: string; avatarUrl: string; skills: string };
+type EditFields = { bio: string; github: string; linkedin: string; twitter: string; avatarUrl: string; skills: string; majors: string };
 
 export default function MemberPortalClient({ members }: { members: Member[] }) {
   const [query, setQuery] = useState('');
@@ -11,7 +11,7 @@ export default function MemberPortalClient({ members }: { members: Member[] }) {
   const [verified, setVerified] = useState(false);
   const [verifying, setVerifying] = useState(false);
   const [verifyError, setVerifyError] = useState('');
-  const [fields, setFields] = useState<EditFields>({ bio: '', github: '', linkedin: '', twitter: '', avatarUrl: '', skills: '' });
+  const [fields, setFields] = useState<EditFields>({ bio: '', github: '', linkedin: '', twitter: '', avatarUrl: '', skills: '', majors: '' });
   const [saving, setSaving] = useState(false);
   const [saveMsg, setSaveMsg] = useState('');
 
@@ -30,6 +30,7 @@ export default function MemberPortalClient({ members }: { members: Member[] }) {
       twitter: m.twitter || '',
       avatarUrl: m.avatarUrl || '',
       skills: (m.skills || []).join(', '),
+      majors: (m.majors || []).join(', '),
     });
     setVerified(false);
     setCode('');
@@ -75,6 +76,7 @@ export default function MemberPortalClient({ members }: { members: Member[] }) {
           twitter: fields.twitter,
           avatarUrl: fields.avatarUrl,
           skills: fields.skills.split(',').map(s => s.trim()).filter(Boolean),
+          majors: fields.majors.split(',').map(s => s.trim()).filter(Boolean),
         }),
       });
       if (res.ok) {
@@ -87,6 +89,8 @@ export default function MemberPortalClient({ members }: { members: Member[] }) {
     }
     setSaving(false);
   };
+
+  const avatarPreview = fields.avatarUrl || selected?.avatarUrl || '';
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-16">
@@ -118,8 +122,12 @@ export default function MemberPortalClient({ members }: { members: Member[] }) {
                   onClick={() => handleSelect(m)}
                   className="w-full flex items-center gap-3 p-3 rounded-xl border border-slate-200 dark:border-[#1e2d45] hover:border-violet-400 hover:bg-violet-50 dark:hover:bg-violet-500/10 transition-all text-left"
                 >
-                  {m.avatarUrl && (
+                  {m.avatarUrl ? (
                     <img src={m.avatarUrl} alt={m.name} className="w-9 h-9 rounded-full object-cover shrink-0" />
+                  ) : (
+                    <div className="w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 to-violet-600 flex items-center justify-center text-white text-sm font-bold shrink-0">
+                      {m.name.charAt(0)}
+                    </div>
                   )}
                   <div>
                     <div className="font-semibold text-slate-900 dark:text-white text-sm">{m.name}</div>
@@ -145,11 +153,19 @@ export default function MemberPortalClient({ members }: { members: Member[] }) {
             ← Back to search
           </button>
 
-          <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl p-5 mb-4 flex items-center gap-3">
-            {selected.avatarUrl && <img src={selected.avatarUrl} alt={selected.name} className="w-10 h-10 rounded-full object-cover shrink-0" />}
-            <div>
+          {/* Profile card */}
+          <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl p-5 mb-4 flex items-center gap-4">
+            {avatarPreview ? (
+              <img src={avatarPreview} alt={selected.name} className="w-14 h-14 rounded-full object-cover shrink-0 ring-2 ring-violet-500/30" />
+            ) : (
+              <div className="w-14 h-14 rounded-full bg-gradient-to-br from-blue-500 to-violet-600 flex items-center justify-center text-white text-xl font-bold shrink-0">
+                {selected.name.charAt(0)}
+              </div>
+            )}
+            <div className="min-w-0">
               <div className="font-bold text-slate-900 dark:text-white">{selected.name}</div>
-              <div className="text-xs text-slate-400">{selected.role}</div>
+              <div className="text-xs text-slate-400">{selected.role} · {selected.memberType}</div>
+              {verified && <div className="text-xs text-green-500 mt-0.5">✓ Verified — editing enabled</div>}
             </div>
           </div>
 
@@ -180,13 +196,41 @@ export default function MemberPortalClient({ members }: { members: Member[] }) {
             <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl p-6">
               <h2 className="font-semibold text-slate-900 dark:text-white mb-4">Edit Your Profile</h2>
               <form onSubmit={handleSave} className="space-y-4">
+
+                {/* Avatar URL with live preview */}
+                <div>
+                  <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1.5 uppercase tracking-wide">Avatar URL</label>
+                  <div className="flex gap-3 items-start">
+                    <input
+                      type="text"
+                      value={fields.avatarUrl}
+                      onChange={e => setFields(f => ({ ...f, avatarUrl: e.target.value }))}
+                      placeholder="https://…/your-photo.jpg"
+                      className="flex-1 bg-slate-50 dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 dark:text-white placeholder:text-slate-400 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                    />
+                    {fields.avatarUrl ? (
+                      <img
+                        src={fields.avatarUrl}
+                        alt="Preview"
+                        className="w-10 h-10 rounded-full object-cover shrink-0 ring-2 ring-violet-500/30"
+                        onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                        onLoad={(e) => { (e.target as HTMLImageElement).style.display = 'block'; }}
+                      />
+                    ) : (
+                      <div className="w-10 h-10 rounded-full bg-slate-100 dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] shrink-0 flex items-center justify-center text-slate-400 text-xs">
+                        ?
+                      </div>
+                    )}
+                  </div>
+                </div>
+
                 {([
                   { label: 'Bio', key: 'bio', placeholder: 'Tell us about yourself…', multiline: true },
+                  { label: 'Majors (comma-separated)', key: 'majors', placeholder: 'Computer Science, Business…' },
+                  { label: 'Skills (comma-separated)', key: 'skills', placeholder: 'React, Python, Azure…' },
                   { label: 'GitHub URL', key: 'github', placeholder: 'https://github.com/yourname' },
                   { label: 'LinkedIn URL', key: 'linkedin', placeholder: 'https://linkedin.com/in/yourname' },
                   { label: 'Twitter/X URL', key: 'twitter', placeholder: 'https://x.com/yourhandle' },
-                  { label: 'Avatar URL', key: 'avatarUrl', placeholder: 'https://…/your-photo.jpg' },
-                  { label: 'Skills (comma-separated)', key: 'skills', placeholder: 'React, Python, Azure…' },
                 ] as { label: string; key: keyof EditFields; placeholder: string; multiline?: boolean }[]).map(({ label, key, placeholder, multiline }) => (
                   <div key={key}>
                     <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1.5 uppercase tracking-wide">{label}</label>
@@ -209,6 +253,7 @@ export default function MemberPortalClient({ members }: { members: Member[] }) {
                     )}
                   </div>
                 ))}
+
                 {saveMsg && (
                   <p className={`text-sm ${saveMsg.startsWith('Saved') ? 'text-green-500' : 'text-red-400'}`}>{saveMsg}</p>
                 )}

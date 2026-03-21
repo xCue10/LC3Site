@@ -6,7 +6,7 @@ const MEMBER_CODE = process.env.LC3MEMBER_PASSWORD;
 
 export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const { code, bio, github, linkedin, twitter, avatarUrl, skills } = await req.json();
+  const { code, bio, github, linkedin, twitter, avatarUrl, skills, majors } = await req.json();
 
   // Verify the LC3MEMBER code
   if (!MEMBER_CODE) {
@@ -37,6 +37,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
   if (twitter !== undefined) members[idx].twitter = String(twitter).slice(0, 200);
   if (avatarUrl !== undefined) members[idx].avatarUrl = String(avatarUrl).slice(0, 500);
   if (Array.isArray(skills)) members[idx].skills = skills.map(String).slice(0, 20);
+  if (Array.isArray(majors)) members[idx].majors = majors.map(String).slice(0, 10);
 
   writeJSON('members.json', members);
   return NextResponse.json({ ok: true, member: members[idx] });

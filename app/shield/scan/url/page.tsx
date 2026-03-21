@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { loadUserData, consumeScan } from '@/lib/shield-storage';
 import { ScanResult } from '@/lib/shield-types';
 import ShieldScannerLayout from '@/app/shield/components/ShieldScannerLayout';
@@ -25,6 +25,7 @@ const SCAN_STEPS = [
 
 export default function UrlScannerPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [url, setUrl] = useState('');
   const [scanning, setScanning] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -36,7 +37,9 @@ export default function UrlScannerPage() {
     const data = loadUserData();
     if (!data) { router.push('/shield/login'); return; }
     setMode(data.mode);
-  }, [router]);
+    const prefill = searchParams.get('url');
+    if (prefill) setUrl(prefill);
+  }, [router, searchParams]);
 
   const startScan = async () => {
     if (!url.trim()) return;
