@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { loadUserData, BADGES } from '@/lib/shield-storage';
+import { loadUserData, syncFromServer, BADGES } from '@/lib/shield-storage';
 import { UserData } from '@/lib/shield-types';
 import ShieldAppLayout from '@/app/shield/components/ShieldAppLayout';
 import { Trophy, Lock, Loader2 } from 'lucide-react';
@@ -14,6 +14,7 @@ export default function BadgesPage() {
     const data = loadUserData();
     if (!data) { router.push('/shield/login'); return; }
     setUserData(data);
+    syncFromServer().then(fresh => { if (fresh) setUserData(fresh); });
   }, [router]);
 
   if (!userData) return (

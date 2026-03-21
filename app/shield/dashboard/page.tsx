@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { loadUserData, BADGES, getBadgeInfo, gradeColor } from '@/lib/shield-storage';
+import { loadUserData, syncFromServer, BADGES, getBadgeInfo, gradeColor } from '@/lib/shield-storage';
 import { UserData, ScanType } from '@/lib/shield-types';
 import ShieldAppLayout from '@/app/shield/components/ShieldAppLayout';
 import ShieldOnboarding from '@/app/shield/components/ShieldOnboarding';
@@ -51,6 +51,8 @@ export default function DashboardPage() {
     if (!localStorage.getItem('lc3shield_onboarded')) {
       setShowOnboarding(true);
     }
+    // Sync from server in background to pick up cross-device history
+    syncFromServer().then(fresh => { if (fresh) setUserData(fresh); });
   }, [router]);
 
   if (!userData) return (

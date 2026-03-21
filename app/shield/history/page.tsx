@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { loadUserData, gradeColor } from '@/lib/shield-storage';
+import { loadUserData, syncFromServer, gradeColor } from '@/lib/shield-storage';
 import { ScanResult, ScanType } from '@/lib/shield-types';
 import { UserData } from '@/lib/shield-types';
 import ShieldAppLayout from '@/app/shield/components/ShieldAppLayout';
@@ -40,6 +40,7 @@ export default function HistoryPage() {
     const data = loadUserData();
     if (!data) { router.push('/shield/login'); return; }
     setUserData(data);
+    syncFromServer().then(fresh => { if (fresh) setUserData(fresh); });
   }, [router]);
 
   if (!userData) return (

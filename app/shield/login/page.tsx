@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { AlertCircle, ArrowRight, KeyRound } from 'lucide-react';
-import { saveUserData, getDefaultUserData, loadUserData, loadRawUserData } from '@/lib/shield-storage';
+import { saveUserData, loadUserData, setSessionToken } from '@/lib/shield-storage';
 
 
 function ShieldBanner() {
@@ -225,6 +225,7 @@ function ShieldBanner() {
 
 export default function ShieldLoginPage() {
   const [password, setPassword] = useState('');
+  const [displayName, setDisplayName] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [adminMode, setAdminMode] = useState(false);
@@ -240,13 +241,11 @@ export default function ShieldLoginPage() {
     setError('');
     setLoading(true);
 
-    const code = adminMode ? 'LC3ADMIN' : 'LC3MEMBER';
-
     try {
-      const res = await fetch('/api/shield/auth', {
+      const res = await fetch('/api/shield/session', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ code, password }),
+        body: JSON.stringify({ password, displayName: displayName.trim() || 'Member', adminMode }),
       });
       const data = await res.json();
 
@@ -256,23 +255,8 @@ export default function ShieldLoginPage() {
         return;
       }
 
-      const upperCode = data.code as string;
-      const isAdmin = data.isAdmin === true;
-      const existing = loadRawUserData();
-      if (existing && existing.accessCode === upperCode) {
-        const today = new Date().toISOString().split('T')[0];
-        const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
-        if (existing.lastLoginDate === yesterday) existing.loginStreak += 1;
-        else if (existing.lastLoginDate !== today) existing.loginStreak = 1;
-        existing.lastLoginDate = today;
-        existing.loggedIn = true;
-        existing.isAdmin = isAdmin;
-        saveUserData(existing);
-      } else {
-        const fresh = getDefaultUserData(upperCode);
-        fresh.isAdmin = isAdmin;
-        saveUserData(fresh);
-      }
+      setSessionToken(data.token);
+      saveUserData({ ...data.userData, loggedIn: true });
       router.push('/shield/dashboard');
     } catch {
       setError('Connection error. Please try again.');
@@ -330,6 +314,37 @@ export default function ShieldLoginPage() {
           </p>
 
           <form onSubmit={handleLogin} className="space-y-4">
+            {/* Display name — skip for admin */}
+            {!adminMode && (
+              <div>
+                <label
+                  htmlFor="displayName"
+                  style={{ fontSize: '12px', fontWeight: 600, color: '#64748b', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block' }}
+                >
+                  Your Name
+                </label>
+                <input
+                  id="displayName"
+                  type="text"
+                  value={displayName}
+                  onChange={(e) => setDisplayName(e.target.value)}
+                  placeholder="e.g. Jordon"
+                  autoComplete="name"
+                  className="w-full px-4 py-3 rounded-xl outline-none transition-all text-white"
+                  style={{
+                    background: 'rgba(255,255,255,0.03)',
+                    border: '1.5px solid rgba(255,255,255,0.07)',
+                    fontSize: '14px',
+                  }}
+                  onFocus={(e) => { e.target.style.borderColor = 'rgba(59,130,246,0.5)'; e.target.style.boxShadow = '0 0 0 3px rgba(59,130,246,0.07)'; }}
+                  onBlur={(e) => { e.target.style.borderColor = 'rgba(255,255,255,0.07)'; e.target.style.boxShadow = 'none'; }}
+                />
+                <p style={{ fontSize: '11px', color: '#334155', marginTop: '6px' }}>
+                  Use the same name on any device to restore your history.
+                </p>
+              </div>
+            )}
+
             {/* Password */}
             <div>
               <label

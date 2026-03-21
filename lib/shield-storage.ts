@@ -1,7 +1,48 @@
 import { UserData, ScanResult, BadgeId, Badge } from './shield-types';
 
 const STORAGE_KEY = 'lc3shield_user_data';
+const TOKEN_KEY = 'lc3shield_token';
 export const DAILY_SCAN_LIMIT = 10;
+
+// --- Session token (localStorage) ---
+export function getSessionToken(): string | null {
+  if (typeof window === 'undefined') return null;
+  return localStorage.getItem(TOKEN_KEY);
+}
+export function setSessionToken(token: string): void {
+  if (typeof window === 'undefined') return;
+  localStorage.setItem(TOKEN_KEY, token);
+}
+export function clearSessionToken(): void {
+  if (typeof window === 'undefined') return;
+  localStorage.removeItem(TOKEN_KEY);
+}
+
+// Sync latest data from server into localStorage cache; returns updated data
+export async function syncFromServer(): Promise<UserData | null> {
+  const token = getSessionToken();
+  if (!token) return null;
+  try {
+    const res = await fetch('/api/shield/session', {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (!res.ok) return null;
+    const data = await res.json() as UserData;
+    saveUserData(data);
+    return data;
+  } catch { return null; }
+}
+
+// Push current userData to server (fire and forget)
+export function pushToServer(data: UserData): void {
+  const token = getSessionToken();
+  if (!token) return;
+  fetch('/api/shield/session', {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+    body: JSON.stringify(data),
+  }).catch(() => { /* best effort */ });
+}
 
 export const BADGES: Badge[] = [
   { id: 'https-hero', name: 'HTTPS Hero', description: 'Scanned a site with HTTPS enabled', icon: '🔒', earned: false },
@@ -71,19 +112,21 @@ export function clearUserData(): void {
   } catch {
     localStorage.removeItem(STORAGE_KEY);
   }
+  // Keep the token so re-login restores server history
 }
 
 export function addScanResult(result: ScanResult): UserData {
   // Use loadRawUserData so the save works regardless of the loggedIn flag state
   const data = loadRawUserData();
   if (!data) throw new Error('No user data');
-  data.scanHistory = [result, ...data.scanHistory].slice(0, 100);
+  data.scanHistory = [result, ...data.scanHistory]; // no local cap — server stores all
   data.totalScans += 1;
   data.totalIssuesFound += result.vulnerabilities.length;
   result.badgesEarned.forEach(b => {
     if (!data.badges.includes(b)) data.badges.push(b);
   });
   saveUserData(data);
+  pushToServer(data); // persist to server
   return data;
 }
 
@@ -96,6 +139,7 @@ export function markIssueFixed(scanId: string, vulnId: string): void {
     if (vuln) vuln.isFixed = true;
   }
   saveUserData(data);
+  pushToServer(data);
 }
 
 export function getRemainingScans(): number {
@@ -120,6 +164,7 @@ export function consumeScan(): boolean {
   if ((data.scansToday ?? 0) >= DAILY_SCAN_LIMIT) return false;
   data.scansToday = (data.scansToday ?? 0) + 1;
   saveUserData(data);
+  pushToServer(data);
   return true;
 }
 
