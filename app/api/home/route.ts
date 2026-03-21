@@ -56,6 +56,13 @@ export async function PUT(req: NextRequest) {
     ctaHeading: body.ctaHeading ?? current.ctaHeading,
     ctaDescription: body.ctaDescription ?? current.ctaDescription,
     ctaButtonLabel: body.ctaButtonLabel ?? current.ctaButtonLabel,
+    shieldBadgeLabel: body.shieldBadgeLabel ?? current.shieldBadgeLabel,
+    shieldHeadingPrefix: body.shieldHeadingPrefix ?? current.shieldHeadingPrefix,
+    shieldDescription: body.shieldDescription ?? current.shieldDescription,
+    shieldFeatureTags: Array.isArray(body.shieldFeatureTags) ? body.shieldFeatureTags : current.shieldFeatureTags,
+    shieldCtaLabel: body.shieldCtaLabel ?? current.shieldCtaLabel,
+    shieldButtonLabel: body.shieldButtonLabel ?? current.shieldButtonLabel,
+    shieldFeatureCards: Array.isArray(body.shieldFeatureCards) ? body.shieldFeatureCards : current.shieldFeatureCards,
   };
   writeJSON('home.json', home);
   return NextResponse.json(home);

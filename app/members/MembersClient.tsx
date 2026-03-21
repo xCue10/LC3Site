@@ -111,7 +111,7 @@ function FlipCard({ member, index, variant = 'member' }: { member: Member; index
     <div
       className="relative h-56 rounded-2xl transition-[box-shadow] duration-300"
       style={{
-        perspective: '1000px',
+        perspective: isTouch ? undefined : '1000px',
         boxShadow: flipped ? '0 0 32px rgba(139,92,246,0.32)' : '0 0 0 rgba(139,92,246,0)',
       }}
       onMouseEnter={!isTouch ? () => setFlipped(true) : undefined}
@@ -121,7 +121,7 @@ function FlipCard({ member, index, variant = 'member' }: { member: Member; index
       {/* Flip inner */}
       <div
         className="w-full h-full"
-        style={{
+        style={isTouch ? {} : {
           transformStyle: 'preserve-3d',
           transform: flipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
           transition: 'transform 0.6s cubic-bezier(0.4,0.2,0.2,1)',
@@ -130,8 +130,15 @@ function FlipCard({ member, index, variant = 'member' }: { member: Member; index
 
         {/* ── FRONT FACE ── */}
         <div
-          className={`absolute inset-0 bg-white dark:bg-[#0d1424] border ${vs.border} rounded-2xl p-5 flex flex-col gap-3 overflow-hidden ${flipped ? 'pointer-events-none' : ''}`}
-          style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' }}
+          className={`absolute inset-0 bg-white dark:bg-[#0d1424] border ${vs.border} rounded-2xl p-5 flex flex-col gap-3 overflow-hidden`}
+          style={isTouch ? {
+            opacity: flipped ? 0 : 1,
+            pointerEvents: flipped ? 'none' : 'auto',
+            transition: 'opacity 0.3s ease',
+          } : {
+            backfaceVisibility: 'hidden',
+            WebkitBackfaceVisibility: 'hidden',
+          }}
         >
 
           {/* Avatar + name */}
@@ -182,8 +189,13 @@ function FlipCard({ member, index, variant = 'member' }: { member: Member; index
 
         {/* ── BACK FACE ── */}
         <div
-          className={`absolute inset-0 rounded-2xl p-5 flex flex-col gap-2.5 overflow-hidden ${!flipped ? 'pointer-events-none' : ''}`}
-          style={{
+          className="absolute inset-0 rounded-2xl p-5 flex flex-col gap-2.5 overflow-hidden"
+          style={isTouch ? {
+            opacity: flipped ? 1 : 0,
+            pointerEvents: flipped ? 'auto' : 'none',
+            transition: 'opacity 0.3s ease',
+            background: 'linear-gradient(135deg, #0f2040 0%, #1a0d3b 60%, #0a1628 100%)',
+          } : {
             backfaceVisibility: 'hidden',
             WebkitBackfaceVisibility: 'hidden',
             transform: 'rotateY(180deg)',
