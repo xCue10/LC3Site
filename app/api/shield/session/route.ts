@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createHmac, timingSafeEqual, randomBytes } from 'crypto';
-import { readJSON, writeJSON } from '@/lib/data';
-import { UserData, ScanResult, BadgeId } from '@/lib/shield-types';
+import { createHmac, timingSafeEqual } from 'crypto';
+import { readJSON, writeJSON, Member } from '@/lib/data';
+import { UserData } from '@/lib/shield-types';
 
 interface SessionRecord extends UserData {
   displayName: string;
@@ -62,9 +62,17 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
   }
 
-  const displayName = rawName.trim() || 'Member';
+  const displayName = rawName.trim();
+  if (!adminMode) {
+    if (!displayName) return NextResponse.json({ error: 'Please select your name.' }, { status: 400 });
+    const members = readJSON<Member[]>('members.json', []);
+    const match = members.find(m => m.name.toLowerCase() === displayName.toLowerCase());
+    if (!match) return NextResponse.json({ error: 'Name not found in the member list. Contact your club admin.' }, { status: 403 });
+  }
+
+  const resolvedName = adminMode ? 'Admin' : displayName;
   const passwordEnv = process.env[envVar]!;
-  const token = makeToken(passwordEnv, displayName);
+  const token = makeToken(passwordEnv, resolvedName);
   const isAdmin = adminMode;
   const accessCode = adminMode ? 'LC3ADMIN' : 'LC3MEMBER';
   const today = new Date().toISOString().split('T')[0];
@@ -86,7 +94,7 @@ export async function POST(req: NextRequest) {
   }
 
   const fresh: SessionRecord = {
-    displayName,
+    displayName: resolvedName,
     accessCode,
     isAdmin,
     mode: 'beginner',

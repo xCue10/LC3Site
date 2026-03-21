@@ -1,8 +1,9 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import { AlertCircle, ArrowRight, KeyRound } from 'lucide-react';
+import { AlertCircle, ArrowRight, KeyRound, User } from 'lucide-react';
 import { saveUserData, loadUserData, setSessionToken } from '@/lib/shield-storage';
+import type { Member } from '@/lib/data';
 
 
 function ShieldBanner() {
@@ -225,11 +226,34 @@ function ShieldBanner() {
 
 export default function ShieldLoginPage() {
   const [password, setPassword] = useState('');
-  const [displayName, setDisplayName] = useState('');
+  const [nameQuery, setNameQuery] = useState('');
+  const [selectedMember, setSelectedMember] = useState<Member | null>(null);
+  const [members, setMembers] = useState<Member[]>([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [adminMode, setAdminMode] = useState(false);
+  const nameRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
+
+  useEffect(() => {
+    fetch('/api/members').then(r => r.json()).then(setMembers).catch(() => {});
+  }, []);
+
+  // Close suggestions on outside click
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (nameRef.current && !nameRef.current.contains(e.target as Node)) {
+        setShowSuggestions(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, []);
+
+  const suggestions = nameQuery.trim()
+    ? members.filter(m => m.name.toLowerCase().includes(nameQuery.toLowerCase().trim())).slice(0, 6)
+    : [];
 
   useEffect(() => {
     const data = loadUserData();
@@ -245,7 +269,7 @@ export default function ShieldLoginPage() {
       const res = await fetch('/api/shield/session', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ password, displayName: displayName.trim() || 'Member', adminMode }),
+        body: JSON.stringify({ password, displayName: selectedMember?.name ?? '', adminMode }),
       });
       const data = await res.json();
 
@@ -264,7 +288,7 @@ export default function ShieldLoginPage() {
     }
   };
 
-  const canSubmit = password && !loading;
+  const canSubmit = password && !loading && (adminMode || selectedMember !== null);
 
   return (
     <div
@@ -314,34 +338,81 @@ export default function ShieldLoginPage() {
           </p>
 
           <form onSubmit={handleLogin} className="space-y-4">
-            {/* Display name — skip for admin */}
+            {/* Member name picker — skip for admin */}
             {!adminMode && (
-              <div>
+              <div ref={nameRef}>
                 <label
-                  htmlFor="displayName"
-                  style={{ fontSize: '12px', fontWeight: 600, color: '#64748b', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block' }}
+                  style={{ fontSize: '12px', fontWeight: 600, color: '#64748b', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.06em', display: 'flex', alignItems: 'center', gap: '4px' }}
                 >
+                  <User style={{ width: 12, height: 12 }} />
                   Your Name
                 </label>
-                <input
-                  id="displayName"
-                  type="text"
-                  value={displayName}
-                  onChange={(e) => setDisplayName(e.target.value)}
-                  placeholder="e.g. Jordon"
-                  autoComplete="name"
-                  className="w-full px-4 py-3 rounded-xl outline-none transition-all text-white"
-                  style={{
-                    background: 'rgba(255,255,255,0.03)',
-                    border: '1.5px solid rgba(255,255,255,0.07)',
-                    fontSize: '14px',
-                  }}
-                  onFocus={(e) => { e.target.style.borderColor = 'rgba(59,130,246,0.5)'; e.target.style.boxShadow = '0 0 0 3px rgba(59,130,246,0.07)'; }}
-                  onBlur={(e) => { e.target.style.borderColor = 'rgba(255,255,255,0.07)'; e.target.style.boxShadow = 'none'; }}
-                />
-                <p style={{ fontSize: '11px', color: '#334155', marginTop: '6px' }}>
-                  Use the same name on any device to restore your history.
-                </p>
+
+                {selectedMember ? (
+                  <div
+                    className="flex items-center gap-3 px-4 py-3 rounded-xl cursor-pointer"
+                    style={{ background: 'rgba(59,130,246,0.06)', border: '1.5px solid rgba(59,130,246,0.3)', fontSize: '14px' }}
+                    onClick={() => { setSelectedMember(null); setNameQuery(''); }}
+                  >
+                    {selectedMember.avatarUrl && (
+                      <img src={selectedMember.avatarUrl} alt={selectedMember.name} className="w-7 h-7 rounded-full object-cover shrink-0" />
+                    )}
+                    <div className="flex-1 min-w-0">
+                      <div className="text-white font-medium text-sm">{selectedMember.name}</div>
+                      <div style={{ fontSize: '11px', color: '#64748b' }}>{selectedMember.role}</div>
+                    </div>
+                    <span style={{ fontSize: '11px', color: '#475569' }}>Change</span>
+                  </div>
+                ) : (
+                  <div className="relative">
+                    <input
+                      type="text"
+                      value={nameQuery}
+                      onChange={(e) => { setNameQuery(e.target.value); setShowSuggestions(true); setError(''); }}
+                      onFocus={() => setShowSuggestions(true)}
+                      placeholder="Search your name…"
+                      autoComplete="off"
+                      className="w-full px-4 py-3 rounded-xl outline-none transition-all text-white"
+                      style={{
+                        background: 'rgba(255,255,255,0.03)',
+                        border: '1.5px solid rgba(255,255,255,0.07)',
+                        fontSize: '14px',
+                      }}
+                    />
+                    {showSuggestions && suggestions.length > 0 && (
+                      <div
+                        className="absolute top-full mt-1.5 w-full rounded-xl overflow-hidden z-50"
+                        style={{ background: '#0d1117', border: '1px solid rgba(255,255,255,0.1)', boxShadow: '0 8px 32px rgba(0,0,0,0.5)' }}
+                      >
+                        {suggestions.map(m => (
+                          <button
+                            key={m.id}
+                            type="button"
+                            onMouseDown={(e) => { e.preventDefault(); setSelectedMember(m); setNameQuery(''); setShowSuggestions(false); setError(''); }}
+                            className="w-full flex items-center gap-3 px-4 py-2.5 text-left transition-colors"
+                            style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}
+                            onMouseEnter={e => (e.currentTarget.style.background = 'rgba(59,130,246,0.08)')}
+                            onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
+                          >
+                            {m.avatarUrl && <img src={m.avatarUrl} alt={m.name} className="w-7 h-7 rounded-full object-cover shrink-0" />}
+                            <div>
+                              <div className="text-white text-sm font-medium">{m.name}</div>
+                              <div style={{ fontSize: '11px', color: '#475569' }}>{m.role} · {m.memberType}</div>
+                            </div>
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                    {showSuggestions && nameQuery.trim() && suggestions.length === 0 && (
+                      <div
+                        className="absolute top-full mt-1.5 w-full rounded-xl px-4 py-3 text-center z-50"
+                        style={{ background: '#0d1117', border: '1px solid rgba(255,255,255,0.1)', fontSize: '13px', color: '#475569' }}
+                      >
+                        No members found. Contact your club admin.
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             )}
 
