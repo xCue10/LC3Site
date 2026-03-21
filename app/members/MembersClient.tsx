@@ -335,54 +335,98 @@ export default function MembersClient({ members }: { members: Member[] }) {
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-16">
       {/* Header */}
       <div className="text-center mb-12">
-        <svg width="72" height="72" viewBox="0 0 72 72" className="mx-auto mb-5 opacity-85 dark:opacity-75" xmlns="http://www.w3.org/2000/svg">
+        <svg width="320" height="140" viewBox="0 0 320 140" fill="none" className="mx-auto mb-6 opacity-90 dark:opacity-80" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <style>{`
-              @keyframes mem-pulse { 0%,100%{opacity:0.15} 50%{opacity:0.28} }
-              @keyframes mem-dash { to { stroke-dashoffset: -14; } }
-              @keyframes mem-dot { 0%,100%{opacity:0.3} 50%{opacity:0.9} }
-              @keyframes mem-ring { 0%,100%{opacity:0.1} 50%{opacity:0.35} }
-              @keyframes mem-corner { 0%,100%{opacity:0.4} 50%{opacity:0.9} }
+              @keyframes mem2-dash { to { stroke-dashoffset: -14; } }
+              @keyframes mem2-spark { 0%,100%{opacity:0.3;transform:scale(0.9)} 50%{opacity:0.85;transform:scale(1.1)} }
+              @keyframes mem2-corner { 0%,100%{opacity:0.35} 50%{opacity:0.8} }
+              @keyframes mem2-hub { 0%,100%{opacity:0.18} 50%{opacity:0.35} }
+              @keyframes mem2-node { 0%,100%{opacity:0.55} 50%{opacity:1} }
+              @keyframes mem2-pulse { 0%,100%{opacity:0.5} 50%{opacity:0} }
             `}</style>
           </defs>
-          <circle cx="36" cy="36" r="20" fill="#7c3aed" fillOpacity="0.12" style={{animation:'mem-pulse 3s ease-in-out infinite'}}/>
-          {/* Connection lines */}
-          <line x1="36" y1="36" x2="12" y2="18" stroke="#6366f1" strokeWidth="1" strokeOpacity="0.45" strokeDasharray="3 4" style={{animation:'mem-dash 1.6s linear infinite'}}/>
-          <line x1="36" y1="36" x2="60" y2="18" stroke="#0891b2" strokeWidth="1" strokeOpacity="0.45" strokeDasharray="3 4" style={{animation:'mem-dash 2s linear infinite 0.4s'}}/>
-          <line x1="36" y1="36" x2="8" y2="50" stroke="#818cf8" strokeWidth="1" strokeOpacity="0.4" strokeDasharray="3 4" style={{animation:'mem-dash 1.8s linear infinite 0.8s'}}/>
-          <line x1="36" y1="36" x2="64" y2="50" stroke="#0891b2" strokeWidth="1" strokeOpacity="0.4" strokeDasharray="3 4" style={{animation:'mem-dash 2.2s linear infinite 1.2s'}}/>
-          <line x1="36" y1="36" x2="36" y2="66" stroke="#6366f1" strokeWidth="1" strokeOpacity="0.35" strokeDasharray="3 4" style={{animation:'mem-dash 1.9s linear infinite 1.6s'}}/>
+
+          {/* Corner brackets */}
+          <path d="M8 8 L8 22 M8 8 L22 8" stroke="rgba(99,102,241,0.4)" strokeWidth="1.5" strokeLinecap="round" style={{animation:'mem2-corner 3s ease-in-out infinite'}}/>
+          <path d="M312 8 L312 22 M312 8 L298 8" stroke="rgba(8,145,178,0.4)" strokeWidth="1.5" strokeLinecap="round" style={{animation:'mem2-corner 3s ease-in-out infinite 0.75s'}}/>
+          <path d="M8 132 L8 118 M8 132 L22 132" stroke="rgba(99,102,241,0.4)" strokeWidth="1.5" strokeLinecap="round" style={{animation:'mem2-corner 3s ease-in-out infinite 1.5s'}}/>
+          <path d="M312 132 L312 118 M312 132 L298 132" stroke="rgba(8,145,178,0.4)" strokeWidth="1.5" strokeLinecap="round" style={{animation:'mem2-corner 3s ease-in-out infinite 2.25s'}}/>
+
+          {/* Outer orbit ring */}
+          <circle cx="160" cy="70" r="58" fill="none" stroke="rgba(139,92,246,0.08)" strokeWidth="1"/>
+          <circle cx="160" cy="70" r="58" fill="none" stroke="rgba(139,92,246,0.22)" strokeWidth="1" strokeDasharray="5 9">
+            <animateTransform attributeName="transform" type="rotate" from="360 160 70" to="0 160 70" dur="22s" repeatCount="indefinite"/>
+          </circle>
+
+          {/* Inner orbit ring */}
+          <circle cx="160" cy="70" r="38" fill="none" stroke="rgba(99,102,241,0.1)" strokeWidth="1"/>
+          <circle cx="160" cy="70" r="38" fill="none" stroke="rgba(99,102,241,0.28)" strokeWidth="1" strokeDasharray="4 7">
+            <animateTransform attributeName="transform" type="rotate" from="0 160 70" to="360 160 70" dur="15s" repeatCount="indefinite"/>
+          </circle>
+
+          {/* Hub glow */}
+          <circle cx="160" cy="70" r="22" fill="rgba(99,102,241,0.12)" style={{animation:'mem2-hub 3s ease-in-out infinite'}}/>
+
+          {/* Hub pulse ring */}
+          <circle cx="160" cy="70" r="22" fill="none" stroke="rgba(99,102,241,0.3)" strokeWidth="1">
+            <animate attributeName="r" values="22;32;22" dur="3s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0.5;0;0.5" dur="3s" repeatCount="indefinite"/>
+          </circle>
+
+          {/* Central hub */}
+          <circle cx="160" cy="70" r="18" fill="rgba(99,102,241,0.1)" stroke="rgba(99,102,241,0.55)" strokeWidth="1.8"/>
+          <text x="160" y="74" textAnchor="middle" fill="rgba(99,102,241,0.9)" fontSize="10" fontFamily="monospace" fontWeight="700">LC3</text>
+
+          {/* Connection lines to outer nodes */}
+          <line x1="160" y1="70" x2="218" y2="12" stroke="rgba(59,130,246,0.22)" strokeWidth="1" strokeDasharray="3 4" style={{animation:'mem2-dash 1.4s linear infinite'}}/>
+          <line x1="160" y1="70" x2="264" y2="70" stroke="rgba(6,182,212,0.22)" strokeWidth="1" strokeDasharray="3 4" style={{animation:'mem2-dash 1.7s linear infinite 0.3s'}}/>
+          <line x1="160" y1="70" x2="218" y2="128" stroke="rgba(139,92,246,0.22)" strokeWidth="1" strokeDasharray="3 4" style={{animation:'mem2-dash 1.5s linear infinite 0.6s'}}/>
+          <line x1="160" y1="70" x2="102" y2="128" stroke="rgba(245,158,11,0.22)" strokeWidth="1" strokeDasharray="3 4" style={{animation:'mem2-dash 1.9s linear infinite 0.9s'}}/>
+          <line x1="160" y1="70" x2="56" y2="70" stroke="rgba(34,197,94,0.22)" strokeWidth="1" strokeDasharray="3 4" style={{animation:'mem2-dash 1.6s linear infinite 1.2s'}}/>
+          <line x1="160" y1="70" x2="102" y2="12" stroke="rgba(236,72,153,0.2)" strokeWidth="1" strokeDasharray="3 4" style={{animation:'mem2-dash 1.8s linear infinite 1.5s'}}/>
+
           {/* Outer person nodes */}
-          <circle cx="12" cy="18" r="8" fill="#6366f1" fillOpacity="0.1" stroke="#6366f1" strokeWidth="1.5" strokeOpacity="0.55"/>
-          <circle cx="12" cy="15.5" r="2.5" fill="#6366f1" fillOpacity="0.5"/>
-          <path d="M7.5 21 Q12 18.5 16.5 21" fill="none" stroke="#6366f1" strokeWidth="1.2" strokeOpacity="0.5" strokeLinecap="round"/>
-          <circle cx="60" cy="18" r="8" fill="#0891b2" fillOpacity="0.1" stroke="#0891b2" strokeWidth="1.5" strokeOpacity="0.55"/>
-          <circle cx="60" cy="15.5" r="2.5" fill="#0891b2" fillOpacity="0.5"/>
-          <path d="M55.5 21 Q60 18.5 64.5 21" fill="none" stroke="#0891b2" strokeWidth="1.2" strokeOpacity="0.5" strokeLinecap="round"/>
-          <circle cx="8" cy="50" r="7" fill="#818cf8" fillOpacity="0.1" stroke="#818cf8" strokeWidth="1.5" strokeOpacity="0.5"/>
-          <circle cx="8" cy="47.5" r="2.2" fill="#818cf8" fillOpacity="0.5"/>
-          <path d="M4 52.5 Q8 50.5 12 52.5" fill="none" stroke="#818cf8" strokeWidth="1.2" strokeOpacity="0.5" strokeLinecap="round"/>
-          <circle cx="64" cy="50" r="7" fill="#0891b2" fillOpacity="0.1" stroke="#0891b2" strokeWidth="1.5" strokeOpacity="0.5"/>
-          <circle cx="64" cy="47.5" r="2.2" fill="#0891b2" fillOpacity="0.5"/>
-          <path d="M60 52.5 Q64 50.5 68 52.5" fill="none" stroke="#0891b2" strokeWidth="1.2" strokeOpacity="0.5" strokeLinecap="round"/>
-          <circle cx="36" cy="66" r="7" fill="#6366f1" fillOpacity="0.1" stroke="#6366f1" strokeWidth="1.5" strokeOpacity="0.45"/>
-          <circle cx="36" cy="63.5" r="2.2" fill="#6366f1" fillOpacity="0.45"/>
-          <path d="M32 69 Q36 67 40 69" fill="none" stroke="#6366f1" strokeWidth="1.2" strokeOpacity="0.45" strokeLinecap="round"/>
-          {/* Center node */}
-          <circle cx="36" cy="36" r="10" fill="#6366f1" fillOpacity="0.12" stroke="#6366f1" strokeWidth="1.8" strokeOpacity="0.6"/>
-          <circle cx="36" cy="33" r="3.5" fill="#6366f1" fillOpacity="0.6"/>
-          <path d="M29.5 40 Q36 37 42.5 40" fill="none" stroke="#6366f1" strokeWidth="1.5" strokeOpacity="0.6" strokeLinecap="round"/>
-          {/* Floating dots */}
-          <circle cx="24" cy="28" r="1.5" fill="#6366f1" fillOpacity="0.5" style={{animation:'mem-dot 2.5s ease-in-out infinite'}}/>
-          <circle cx="48" cy="26" r="1.5" fill="#0891b2" fillOpacity="0.5" style={{animation:'mem-dot 2.5s ease-in-out infinite 0.8s'}}/>
-          <circle cx="22" cy="48" r="1.5" fill="#818cf8" fillOpacity="0.5" style={{animation:'mem-dot 2.5s ease-in-out infinite 1.6s'}}/>
-          {/* Outer glow ring */}
-          <circle cx="36" cy="36" r="35.5" fill="none" stroke="#6366f1" strokeWidth="1" strokeOpacity="1" style={{animation:'mem-ring 3s ease-in-out infinite'}}/>
-          {/* Corner accents */}
-          <path d="M12 2 L2 2 L2 12" fill="none" stroke="#6366f1" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{animation:'mem-corner 3s ease-in-out infinite'}}/>
-          <path d="M60 2 L70 2 L70 12" fill="none" stroke="#0891b2" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{animation:'mem-corner 3s ease-in-out infinite 0.75s'}}/>
-          <path d="M12 70 L2 70 L2 60" fill="none" stroke="#6366f1" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{animation:'mem-corner 3s ease-in-out infinite 1.5s'}}/>
-          <path d="M60 70 L70 70 L70 60" fill="none" stroke="#0891b2" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{animation:'mem-corner 3s ease-in-out infinite 2.25s'}}/>
+          {/* Top-right: blue */}
+          <circle cx="218" cy="12" r="12" fill="rgba(59,130,246,0.1)" stroke="rgba(59,130,246,0.45)" strokeWidth="1.4" style={{animation:'mem2-node 3s ease-in-out infinite'}}/>
+          <circle cx="218" cy="9" r="3" fill="rgba(59,130,246,0.55)"/>
+          <path d="M212 16 Q218 13 224 16" fill="none" stroke="rgba(59,130,246,0.5)" strokeWidth="1.1" strokeLinecap="round"/>
+
+          {/* Right: cyan */}
+          <circle cx="264" cy="70" r="12" fill="rgba(6,182,212,0.1)" stroke="rgba(6,182,212,0.45)" strokeWidth="1.4" style={{animation:'mem2-node 3.2s ease-in-out infinite 0.5s'}}/>
+          <circle cx="264" cy="67" r="3" fill="rgba(6,182,212,0.55)"/>
+          <path d="M258 74 Q264 71 270 74" fill="none" stroke="rgba(6,182,212,0.5)" strokeWidth="1.1" strokeLinecap="round"/>
+
+          {/* Bottom-right: violet */}
+          <circle cx="218" cy="128" r="12" fill="rgba(139,92,246,0.1)" stroke="rgba(139,92,246,0.45)" strokeWidth="1.4" style={{animation:'mem2-node 2.8s ease-in-out infinite 1s'}}/>
+          <circle cx="218" cy="125" r="3" fill="rgba(139,92,246,0.55)"/>
+          <path d="M212 132 Q218 129 224 132" fill="none" stroke="rgba(139,92,246,0.5)" strokeWidth="1.1" strokeLinecap="round"/>
+
+          {/* Bottom-left: amber */}
+          <circle cx="102" cy="128" r="12" fill="rgba(245,158,11,0.1)" stroke="rgba(245,158,11,0.42)" strokeWidth="1.4" style={{animation:'mem2-node 3.4s ease-in-out infinite 1.5s'}}/>
+          <circle cx="102" cy="125" r="3" fill="rgba(245,158,11,0.52)"/>
+          <path d="M96 132 Q102 129 108 132" fill="none" stroke="rgba(245,158,11,0.48)" strokeWidth="1.1" strokeLinecap="round"/>
+
+          {/* Left: green */}
+          <circle cx="56" cy="70" r="12" fill="rgba(34,197,94,0.1)" stroke="rgba(34,197,94,0.42)" strokeWidth="1.4" style={{animation:'mem2-node 3.1s ease-in-out infinite 2s'}}/>
+          <circle cx="56" cy="67" r="3" fill="rgba(34,197,94,0.52)"/>
+          <path d="M50 74 Q56 71 62 74" fill="none" stroke="rgba(34,197,94,0.48)" strokeWidth="1.1" strokeLinecap="round"/>
+
+          {/* Top-left: pink */}
+          <circle cx="102" cy="12" r="12" fill="rgba(236,72,153,0.08)" stroke="rgba(236,72,153,0.38)" strokeWidth="1.4" style={{animation:'mem2-node 2.9s ease-in-out infinite 2.5s'}}/>
+          <circle cx="102" cy="9" r="3" fill="rgba(236,72,153,0.48)"/>
+          <path d="M96 16 Q102 13 108 16" fill="none" stroke="rgba(236,72,153,0.44)" strokeWidth="1.1" strokeLinecap="round"/>
+
+          {/* Orbiting dot on inner ring */}
+          <circle cx="198" cy="70" r="3.5" fill="#6366f1" opacity="0.7">
+            <animateTransform attributeName="transform" type="rotate" from="0 160 70" to="360 160 70" dur="15s" repeatCount="indefinite"/>
+          </circle>
+
+          {/* Sparkle dots */}
+          <circle cx="26" cy="26" r="2.5" fill="#6366f1" opacity="0.65" style={{animation:'mem2-spark 2.3s ease-in-out infinite'}}/>
+          <circle cx="294" cy="24" r="2" fill="#0891b2" opacity="0.6" style={{animation:'mem2-spark 2.3s ease-in-out infinite 0.7s'}}/>
+          <circle cx="26" cy="114" r="2" fill="#818cf8" opacity="0.6" style={{animation:'mem2-spark 2.3s ease-in-out infinite 1.4s'}}/>
+          <circle cx="294" cy="114" r="2.5" fill="#0891b2" opacity="0.65" style={{animation:'mem2-spark 2.3s ease-in-out infinite 2.1s'}}/>
         </svg>
         <p className="text-violet-600 dark:text-violet-400 text-sm font-medium mb-2">The people behind the code</p>
         <h1 className="text-4xl sm:text-5xl font-bold text-slate-900 dark:text-white mb-4">Meet Our Members</h1>

@@ -148,38 +148,90 @@ export default function ContactForm({ settings }: { settings: SiteSettings }) {
       <div className="grid lg:grid-cols-2 gap-16 items-start">
         {/* Left: Info */}
         <div>
-          <svg width="72" height="72" viewBox="0 0 72 72" className="mb-5 opacity-85 dark:opacity-75" xmlns="http://www.w3.org/2000/svg">
+          <svg width="320" height="140" viewBox="0 0 320 140" fill="none" className="mb-6 opacity-90 dark:opacity-80" xmlns="http://www.w3.org/2000/svg">
             <defs>
               <style>{`
-                @keyframes cont-spark { 0%,100%{opacity:0.3} 50%{opacity:0.9} }
-                @keyframes cont-arrow { 0%,100%{opacity:0.5;transform:translateX(0)} 50%{opacity:1;transform:translateX(2px)} }
-                @keyframes cont-ring { 0%,100%{opacity:0.1} 50%{opacity:0.35} }
-                @keyframes cont-corner { 0%,100%{opacity:0.4} 50%{opacity:0.9} }
+                @keyframes cont2-wave { 0%{opacity:0.6;transform:scale(1)} 100%{opacity:0;transform:scale(1.5)} }
+                @keyframes cont2-wave2 { 0%{opacity:0.5;transform:scale(1)} 100%{opacity:0;transform:scale(1.5)} }
+                @keyframes cont2-wave3 { 0%{opacity:0.4;transform:scale(1)} 100%{opacity:0;transform:scale(1.5)} }
+                @keyframes cont2-packet { 0%{transform:translateX(0)} 100%{transform:translateX(180px)} }
+                @keyframes cont2-server { 0%,100%{opacity:0.5} 50%{opacity:1} }
+                @keyframes cont2-spark { 0%,100%{opacity:0.3;transform:scale(0.9)} 50%{opacity:0.85;transform:scale(1.1)} }
+                @keyframes cont2-corner { 0%,100%{opacity:0.35} 50%{opacity:0.8} }
+                @keyframes cont2-arrow { 0%,100%{opacity:0.5;transform:translateX(0)} 50%{opacity:1;transform:translateX(3px)} }
+                @keyframes cont2-blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
               `}</style>
             </defs>
-            <circle cx="36" cy="36" r="33" fill="#7c3aed" fillOpacity="0.07" stroke="#7c3aed" strokeWidth="1" strokeOpacity="0.3"/>
-            {/* Envelope body */}
-            <rect x="13" y="23" width="46" height="30" rx="5" fill="none" stroke="#6366f1" strokeWidth="1.5" strokeOpacity="0.7"/>
-            {/* Envelope flap */}
-            <path d="M13 27 L36 43 L59 27" fill="none" stroke="#6366f1" strokeWidth="1.5" strokeOpacity="0.7" strokeLinejoin="round"/>
-            {/* Bottom fold lines */}
-            <path d="M13 53 L29 39" stroke="#6366f1" strokeWidth="0.8" strokeOpacity="0.3"/>
-            <path d="M59 53 L43 39" stroke="#6366f1" strokeWidth="0.8" strokeOpacity="0.3"/>
-            {/* Send arrow badge */}
-            <circle cx="55" cy="19" r="6" fill="#6366f1" fillOpacity="0.12" stroke="#6366f1" strokeWidth="1.2" strokeOpacity="0.55"/>
-            <path d="M52 19 L58 19 M55 16 L58 19 L55 22" fill="none" stroke="#6366f1" strokeWidth="1.3" strokeOpacity="0.75" strokeLinecap="round" strokeLinejoin="round" style={{animation:'cont-arrow 2s ease-in-out infinite'}}/>
+
+            {/* Corner brackets */}
+            <path d="M8 8 L8 22 M8 8 L22 8" stroke="rgba(99,102,241,0.4)" strokeWidth="1.5" strokeLinecap="round" style={{animation:'cont2-corner 3s ease-in-out infinite'}}/>
+            <path d="M312 8 L312 22 M312 8 L298 8" stroke="rgba(8,145,178,0.4)" strokeWidth="1.5" strokeLinecap="round" style={{animation:'cont2-corner 3s ease-in-out infinite 0.75s'}}/>
+            <path d="M8 132 L8 118 M8 132 L22 132" stroke="rgba(99,102,241,0.4)" strokeWidth="1.5" strokeLinecap="round" style={{animation:'cont2-corner 3s ease-in-out infinite 1.5s'}}/>
+            <path d="M312 132 L312 118 M312 132 L298 132" stroke="rgba(8,145,178,0.4)" strokeWidth="1.5" strokeLinecap="round" style={{animation:'cont2-corner 3s ease-in-out infinite 2.25s'}}/>
+
+            {/* Antenna tower */}
+            <line x1="72" y1="110" x2="72" y2="55" stroke="rgba(99,102,241,0.55)" strokeWidth="2" strokeLinecap="round"/>
+            <line x1="60" y1="110" x2="84" y2="110" stroke="rgba(99,102,241,0.4)" strokeWidth="1.5" strokeLinecap="round"/>
+            <line x1="64" y1="96" x2="80" y2="96" stroke="rgba(99,102,241,0.3)" strokeWidth="1" strokeLinecap="round"/>
+            <line x1="67" y1="82" x2="77" y2="82" stroke="rgba(99,102,241,0.25)" strokeWidth="1" strokeLinecap="round"/>
+            {/* Antenna tip */}
+            <circle cx="72" cy="52" r="3.5" fill="rgba(99,102,241,0.7)">
+              <animate attributeName="opacity" values="0.5;1;0.5" dur="1.5s" repeatCount="indefinite"/>
+            </circle>
+
+            {/* Radio wave arcs (expanding from antenna) */}
+            <path d="M72 70 Q95 45 72 20" fill="none" stroke="rgba(99,102,241,0.5)" strokeWidth="1.5" strokeLinecap="round">
+              <animate attributeName="opacity" values="0.6;0;0.6" dur="2s" repeatCount="indefinite"/>
+            </path>
+            <path d="M72 70 Q108 32 72 -6" fill="none" stroke="rgba(99,102,241,0.35)" strokeWidth="1.2" strokeLinecap="round">
+              <animate attributeName="opacity" values="0.5;0;0.5" dur="2s" begin="0.4s" repeatCount="indefinite"/>
+            </path>
+            <path d="M72 70 Q122 18 72 -34" fill="none" stroke="rgba(99,102,241,0.2)" strokeWidth="1" strokeLinecap="round">
+              <animate attributeName="opacity" values="0.4;0;0.4" dur="2s" begin="0.8s" repeatCount="indefinite"/>
+            </path>
+            <path d="M72 70 Q49 45 72 20" fill="none" stroke="rgba(99,102,241,0.5)" strokeWidth="1.5" strokeLinecap="round">
+              <animate attributeName="opacity" values="0.6;0;0.6" dur="2s" begin="0.2s" repeatCount="indefinite"/>
+            </path>
+            <path d="M72 70 Q36 32 72 -6" fill="none" stroke="rgba(99,102,241,0.35)" strokeWidth="1.2" strokeLinecap="round">
+              <animate attributeName="opacity" values="0.5;0;0.5" dur="2s" begin="0.6s" repeatCount="indefinite"/>
+            </path>
+
+            {/* Transmission line */}
+            <line x1="90" y1="70" x2="230" y2="70" stroke="rgba(99,102,241,0.15)" strokeWidth="1.5"/>
+            <line x1="90" y1="70" x2="230" y2="70" stroke="rgba(99,102,241,0.4)" strokeWidth="1" strokeDasharray="5 5">
+              <animate attributeName="stroke-dashoffset" from="0" to="-20" dur="0.8s" repeatCount="indefinite"/>
+            </line>
+
+            {/* Traveling envelope packet */}
+            <g style={{animation:'cont2-packet 2.2s ease-in-out infinite'}}>
+              <rect x="82" y="61" width="20" height="14" rx="2.5" fill="rgba(99,102,241,0.12)" stroke="rgba(99,102,241,0.55)" strokeWidth="1.2"/>
+              <path d="M82 64 L92 70 L102 64" fill="none" stroke="rgba(99,102,241,0.55)" strokeWidth="1" strokeLinejoin="round"/>
+            </g>
+
+            {/* Server destination */}
+            <rect x="236" y="42" width="44" height="56" rx="6" fill="rgba(6,182,212,0.07)" stroke="rgba(6,182,212,0.38)" strokeWidth="1.3"/>
+            <rect x="236" y="42" width="44" height="14" rx="6" fill="rgba(6,182,212,0.1)"/>
+            <rect x="236" y="48" width="44" height="8" fill="rgba(6,182,212,0.08)"/>
+            {/* Server status dot */}
+            <circle cx="250" cy="49" r="2.5" fill="#22c55e" style={{animation:'cont2-blink 1.8s ease-in-out infinite'}}/>
+            <circle cx="258" cy="49" r="2.5" fill="rgba(6,182,212,0.5)"/>
+            <circle cx="266" cy="49" r="2.5" fill="rgba(99,102,241,0.5)"/>
+            {/* Server lines */}
+            <rect x="243" y="64" width="30" height="2" rx="1" fill="rgba(6,182,212,0.4)"/>
+            <rect x="243" y="70" width="22" height="2" rx="1" fill="rgba(6,182,212,0.3)"/>
+            <rect x="243" y="76" width="26" height="2" rx="1" fill="rgba(6,182,212,0.35)"/>
+            <rect x="243" y="82" width="18" height="2" rx="1" fill="rgba(6,182,212,0.25)"/>
+            {/* Received indicator */}
+            <circle cx="258" cy="92" r="5" fill="rgba(34,197,94,0.12)" stroke="rgba(34,197,94,0.45)" strokeWidth="1" style={{animation:'cont2-server 2s ease-in-out infinite'}}>
+              <animate attributeName="opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite"/>
+            </circle>
+            <path d="M255 92 L257 94 L261 90" fill="none" stroke="rgba(34,197,94,0.65)" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
+
             {/* Sparkle dots */}
-            <circle cx="8" cy="12" r="2.5" fill="#6366f1" fillOpacity="0.7" style={{animation:'cont-spark 2.2s ease-in-out infinite'}}/>
-            <circle cx="62" cy="14" r="2" fill="#818cf8" fillOpacity="0.65" style={{animation:'cont-spark 2.2s ease-in-out infinite 0.55s'}}/>
-            <circle cx="10" cy="60" r="2" fill="#0891b2" fillOpacity="0.65" style={{animation:'cont-spark 2.2s ease-in-out infinite 1.1s'}}/>
-            <circle cx="62" cy="60" r="2.5" fill="#6366f1" fillOpacity="0.7" style={{animation:'cont-spark 2.2s ease-in-out infinite 1.65s'}}/>
-            {/* Outer glow ring */}
-            <circle cx="36" cy="36" r="35.5" fill="none" stroke="#6366f1" strokeWidth="1" strokeOpacity="1" style={{animation:'cont-ring 3s ease-in-out infinite'}}/>
-            {/* Corner accents */}
-            <path d="M12 2 L2 2 L2 12" fill="none" stroke="#6366f1" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{animation:'cont-corner 3s ease-in-out infinite'}}/>
-            <path d="M60 2 L70 2 L70 12" fill="none" stroke="#0891b2" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{animation:'cont-corner 3s ease-in-out infinite 0.75s'}}/>
-            <path d="M12 70 L2 70 L2 60" fill="none" stroke="#6366f1" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{animation:'cont-corner 3s ease-in-out infinite 1.5s'}}/>
-            <path d="M60 70 L70 70 L70 60" fill="none" stroke="#0891b2" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{animation:'cont-corner 3s ease-in-out infinite 2.25s'}}/>
+            <circle cx="26" cy="26" r="2.5" fill="#6366f1" opacity="0.65" style={{animation:'cont2-spark 2.3s ease-in-out infinite'}}/>
+            <circle cx="294" cy="24" r="2" fill="#0891b2" opacity="0.6" style={{animation:'cont2-spark 2.3s ease-in-out infinite 0.7s'}}/>
+            <circle cx="26" cy="114" r="2" fill="#818cf8" opacity="0.6" style={{animation:'cont2-spark 2.3s ease-in-out infinite 1.4s'}}/>
+            <circle cx="294" cy="114" r="2.5" fill="#0891b2" opacity="0.65" style={{animation:'cont2-spark 2.3s ease-in-out infinite 2.1s'}}/>
           </svg>
           <p className="text-violet-600 dark:text-violet-400 text-sm font-medium mb-2">Get involved</p>
           <h1 className="text-4xl sm:text-5xl font-bold text-slate-900 dark:text-white mb-6">Join LC3</h1>

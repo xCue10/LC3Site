@@ -47,43 +47,81 @@ export default function EventsPage() {
     <div className="max-w-4xl mx-auto px-4 sm:px-6 py-16">
       {/* Header */}
       <div className="text-center mb-14">
-        <svg width="72" height="72" viewBox="0 0 72 72" className="mx-auto mb-5 opacity-85 dark:opacity-75" xmlns="http://www.w3.org/2000/svg">
+        <svg width="320" height="140" viewBox="0 0 320 140" fill="none" className="mx-auto mb-6 opacity-90 dark:opacity-80" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <style>{`
-              @keyframes ev-spark { 0%,100%{opacity:0.3;transform:scale(0.85)} 50%{opacity:0.95;transform:scale(1.15)} }
-              @keyframes ev-pulse { 0%,100%{opacity:0.5} 50%{opacity:1} }
-              @keyframes ev-ring { 0%,100%{opacity:0.1} 50%{opacity:0.35} }
-              @keyframes ev-corner { 0%,100%{opacity:0.4} 50%{opacity:0.9} }
+              @keyframes ev2-dash { to { stroke-dashoffset: -22; } }
+              @keyframes ev2-spark { 0%,100%{opacity:0.3;transform:scale(0.9)} 50%{opacity:0.85;transform:scale(1.1)} }
+              @keyframes ev2-corner { 0%,100%{opacity:0.35} 50%{opacity:0.8} }
+              @keyframes ev2-badge { 0%,100%{transform:scale(1)} 50%{transform:scale(1.08)} }
+              @keyframes ev2-node2 { 0%,100%{opacity:0.6} 50%{opacity:1} }
+              @keyframes ev2-notif { 0%,100%{transform:scale(1);opacity:0.85} 50%{transform:scale(1.15);opacity:1} }
             `}</style>
+            <radialGradient id="ev2-g1" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.35"/>
+              <stop offset="100%" stopColor="#3b82f6" stopOpacity="0"/>
+            </radialGradient>
+            <radialGradient id="ev2-g2" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="#8b5cf6" stopOpacity="0.5"/>
+              <stop offset="100%" stopColor="#8b5cf6" stopOpacity="0"/>
+            </radialGradient>
+            <radialGradient id="ev2-g3" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="#06b6d4" stopOpacity="0.35"/>
+              <stop offset="100%" stopColor="#06b6d4" stopOpacity="0"/>
+            </radialGradient>
           </defs>
-          <circle cx="36" cy="36" r="33" fill="#3b82f6" fillOpacity="0.07" stroke="#3b82f6" strokeWidth="1" strokeOpacity="0.3"/>
-          {/* Calendar body */}
-          <rect x="16" y="24" width="40" height="32" rx="5" fill="none" stroke="#3b82f6" strokeWidth="1.5" strokeOpacity="0.7"/>
-          <rect x="16" y="24" width="40" height="11" rx="5" fill="#3b82f6" fillOpacity="0.18"/>
-          <rect x="16" y="30" width="40" height="5" fill="#3b82f6" fillOpacity="0.18"/>
-          {/* Pegs */}
-          <rect x="26" y="20" width="3" height="8" rx="1.5" fill="#6366f1" fillOpacity="0.7"/>
-          <rect x="43" y="20" width="3" height="8" rx="1.5" fill="#6366f1" fillOpacity="0.7"/>
-          {/* Day dots */}
-          <circle cx="26" cy="44" r="2.5" fill="#3b82f6" fillOpacity="0.55"/>
-          <circle cx="36" cy="44" r="2.5" fill="#3b82f6" fillOpacity="0.55"/>
-          <circle cx="46" cy="44" r="3" fill="#6366f1" fillOpacity="0.75" style={{animation:'ev-pulse 2s ease-in-out infinite'}}/>
-          <circle cx="26" cy="52" r="2" fill="#3b82f6" fillOpacity="0.4"/>
-          <circle cx="36" cy="52" r="2" fill="#818cf8" fillOpacity="0.45"/>
+
+          {/* Corner brackets */}
+          <path d="M8 8 L8 22 M8 8 L22 8" stroke="rgba(99,102,241,0.4)" strokeWidth="1.5" strokeLinecap="round" style={{animation:'ev2-corner 3s ease-in-out infinite'}}/>
+          <path d="M312 8 L312 22 M312 8 L298 8" stroke="rgba(8,145,178,0.4)" strokeWidth="1.5" strokeLinecap="round" style={{animation:'ev2-corner 3s ease-in-out infinite 0.75s'}}/>
+          <path d="M8 132 L8 118 M8 132 L22 132" stroke="rgba(99,102,241,0.4)" strokeWidth="1.5" strokeLinecap="round" style={{animation:'ev2-corner 3s ease-in-out infinite 1.5s'}}/>
+          <path d="M312 132 L312 118 M312 132 L298 132" stroke="rgba(8,145,178,0.4)" strokeWidth="1.5" strokeLinecap="round" style={{animation:'ev2-corner 3s ease-in-out infinite 2.25s'}}/>
+
+          {/* Timeline baseline */}
+          <line x1="48" y1="70" x2="272" y2="70" stroke="rgba(99,102,241,0.12)" strokeWidth="2.5"/>
+          <line x1="48" y1="70" x2="272" y2="70" stroke="rgba(99,102,241,0.45)" strokeWidth="1.5" strokeDasharray="6 6" style={{animation:'ev2-dash 1s linear infinite'}}/>
+
+          {/* Node 1 — Workshop */}
+          <circle cx="80" cy="70" r="26" fill="url(#ev2-g1)"/>
+          <circle cx="80" cy="70" r="16" fill="rgba(59,130,246,0.1)" stroke="rgba(59,130,246,0.5)" strokeWidth="1.5"/>
+          <circle cx="80" cy="70" r="6" fill="#3b82f6" opacity="0.85"/>
+          <text x="80" y="40" textAnchor="middle" fill="rgba(99,102,241,0.7)" fontSize="8" fontFamily="monospace" fontWeight="600">MAR 15</text>
+          <rect x="57" y="94" width="46" height="14" rx="4" fill="rgba(59,130,246,0.08)" stroke="rgba(59,130,246,0.22)" strokeWidth="0.8"/>
+          <text x="80" y="104" textAnchor="middle" fill="rgba(59,130,246,0.75)" fontSize="7" fontFamily="monospace">WORKSHOP</text>
+
+          {/* Node 2 — Hackathon (featured) */}
+          <circle cx="160" cy="70" r="30" fill="url(#ev2-g2)">
+            <animate attributeName="r" values="28;34;28" dur="2.5s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="1;0.55;1" dur="2.5s" repeatCount="indefinite"/>
+          </circle>
+          <circle cx="160" cy="70" r="19" fill="rgba(139,92,246,0.14)" stroke="rgba(139,92,246,0.65)" strokeWidth="2"/>
+          <circle cx="160" cy="70" r="7.5" fill="#8b5cf6" style={{animation:'ev2-node2 1.8s ease-in-out infinite'}}/>
+          <rect x="140" y="30" width="40" height="15" rx="7" fill="rgba(139,92,246,0.85)" style={{animation:'ev2-badge 2s ease-in-out infinite', transformOrigin:'160px 37px'}}>
+            <animate attributeName="opacity" values="0.8;1;0.8" dur="2s" repeatCount="indefinite"/>
+          </rect>
+          <text x="160" y="41" textAnchor="middle" fill="white" fontSize="7" fontFamily="monospace" fontWeight="700">NEXT UP</text>
+          <rect x="132" y="96" width="56" height="14" rx="4" fill="rgba(139,92,246,0.1)" stroke="rgba(139,92,246,0.32)" strokeWidth="0.8"/>
+          <text x="160" y="106" textAnchor="middle" fill="rgba(139,92,246,0.9)" fontSize="7" fontFamily="monospace">HACKATHON</text>
+
+          {/* Notification dot */}
+          <circle cx="176" cy="53" r="6" fill="#ef4444" style={{animation:'ev2-notif 1.4s ease-in-out infinite', transformOrigin:'176px 53px'}}>
+            <animate attributeName="opacity" values="0.8;1;0.8" dur="1.4s" repeatCount="indefinite"/>
+          </circle>
+          <text x="176" y="56.5" textAnchor="middle" fill="white" fontSize="6.5" fontWeight="700">!</text>
+
+          {/* Node 3 — Speaker */}
+          <circle cx="240" cy="70" r="26" fill="url(#ev2-g3)"/>
+          <circle cx="240" cy="70" r="16" fill="rgba(6,182,212,0.1)" stroke="rgba(6,182,212,0.42)" strokeWidth="1.5"/>
+          <circle cx="240" cy="70" r="6" fill="#06b6d4" opacity="0.78"/>
+          <text x="240" y="40" textAnchor="middle" fill="rgba(6,182,212,0.65)" fontSize="8" fontFamily="monospace" fontWeight="600">APR 22</text>
+          <rect x="218" y="94" width="44" height="14" rx="4" fill="rgba(6,182,212,0.07)" stroke="rgba(6,182,212,0.22)" strokeWidth="0.8"/>
+          <text x="240" y="104" textAnchor="middle" fill="rgba(6,182,212,0.72)" fontSize="7" fontFamily="monospace">SPEAKER</text>
+
           {/* Sparkle dots */}
-          <circle cx="8" cy="12" r="2.5" fill="#6366f1" fillOpacity="0.7" style={{animation:'ev-spark 2.2s ease-in-out infinite'}}/>
-          <circle cx="62" cy="10" r="2" fill="#0891b2" fillOpacity="0.65" style={{animation:'ev-spark 2.2s ease-in-out infinite 0.55s'}}/>
-          <circle cx="10" cy="60" r="2" fill="#818cf8" fillOpacity="0.65" style={{animation:'ev-spark 2.2s ease-in-out infinite 1.1s'}}/>
-          <circle cx="62" cy="60" r="2.5" fill="#0891b2" fillOpacity="0.7" style={{animation:'ev-spark 2.2s ease-in-out infinite 1.65s'}}/>
-          <circle cx="5" cy="36" r="1.5" fill="#6366f1" fillOpacity="0.5" style={{animation:'ev-spark 2.2s ease-in-out infinite 0.8s'}}/>
-          <circle cx="67" cy="36" r="1.5" fill="#0891b2" fillOpacity="0.5" style={{animation:'ev-spark 2.2s ease-in-out infinite 1.3s'}}/>
-          {/* Outer glow ring */}
-          <circle cx="36" cy="36" r="35.5" fill="none" stroke="#6366f1" strokeWidth="1" strokeOpacity="1" style={{animation:'ev-ring 3s ease-in-out infinite'}}/>
-          {/* Corner accents */}
-          <path d="M12 2 L2 2 L2 12" fill="none" stroke="#6366f1" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{animation:'ev-corner 3s ease-in-out infinite'}}/>
-          <path d="M60 2 L70 2 L70 12" fill="none" stroke="#0891b2" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{animation:'ev-corner 3s ease-in-out infinite 0.75s'}}/>
-          <path d="M12 70 L2 70 L2 60" fill="none" stroke="#6366f1" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{animation:'ev-corner 3s ease-in-out infinite 1.5s'}}/>
-          <path d="M60 70 L70 70 L70 60" fill="none" stroke="#0891b2" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{animation:'ev-corner 3s ease-in-out infinite 2.25s'}}/>
+          <circle cx="26" cy="26" r="2.5" fill="#6366f1" opacity="0.65" style={{animation:'ev2-spark 2.3s ease-in-out infinite'}}/>
+          <circle cx="293" cy="24" r="2" fill="#0891b2" opacity="0.6" style={{animation:'ev2-spark 2.3s ease-in-out infinite 0.7s'}}/>
+          <circle cx="26" cy="114" r="2" fill="#818cf8" opacity="0.6" style={{animation:'ev2-spark 2.3s ease-in-out infinite 1.4s'}}/>
+          <circle cx="293" cy="114" r="2.5" fill="#0891b2" opacity="0.65" style={{animation:'ev2-spark 2.3s ease-in-out infinite 2.1s'}}/>
         </svg>
         <p className="text-blue-600 dark:text-blue-400 text-sm font-medium mb-2">Stay in the loop</p>
         <h1 className="text-4xl sm:text-5xl font-bold text-slate-900 dark:text-white mb-4">Events</h1>

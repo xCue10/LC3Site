@@ -111,42 +111,86 @@ export default function ProjectsPage() {
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-16">
       {/* Header */}
       <div className="text-center mb-16">
-        <svg width="72" height="72" viewBox="0 0 72 72" className="mx-auto mb-5 opacity-85 dark:opacity-75" xmlns="http://www.w3.org/2000/svg">
+        <svg width="320" height="140" viewBox="0 0 320 140" fill="none" className="mx-auto mb-6 opacity-90 dark:opacity-80" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <style>{`
-              @keyframes proj-blink { 0%,49%{opacity:1} 50%,100%{opacity:0} }
-              @keyframes proj-spark { 0%,100%{opacity:0.3} 50%{opacity:0.9} }
-              @keyframes proj-ring { 0%,100%{opacity:0.1} 50%{opacity:0.35} }
-              @keyframes proj-corner { 0%,100%{opacity:0.4} 50%{opacity:0.9} }
+              @keyframes proj2-dash { to { stroke-dashoffset: -18; } }
+              @keyframes proj2-blink { 0%,49%{opacity:1} 50%,100%{opacity:0} }
+              @keyframes proj2-spark { 0%,100%{opacity:0.3;transform:scale(0.9)} 50%{opacity:0.9;transform:scale(1.1)} }
+              @keyframes proj2-corner { 0%,100%{opacity:0.35} 50%{opacity:0.8} }
+              @keyframes proj2-rocket { 0%,100%{transform:translate(0px,0px)} 50%{transform:translate(2px,-3px)} }
+              @keyframes proj2-staging { 0%,100%{opacity:0.7} 50%{opacity:1} }
+              @keyframes proj2-deploy { 0%,100%{opacity:0.5} 50%{opacity:1} }
             `}</style>
           </defs>
-          <circle cx="36" cy="36" r="33" fill="#7c3aed" fillOpacity="0.07" stroke="#7c3aed" strokeWidth="1" strokeOpacity="0.3"/>
-          {/* Terminal window */}
-          <rect x="14" y="20" width="44" height="34" rx="5" fill="none" stroke="#6366f1" strokeWidth="1.5" strokeOpacity="0.7"/>
-          <rect x="14" y="20" width="44" height="11" rx="5" fill="#6366f1" fillOpacity="0.15"/>
-          <rect x="14" y="26" width="44" height="5" fill="#6366f1" fillOpacity="0.12"/>
-          {/* Traffic dots */}
-          <circle cx="21" cy="25.5" r="2.2" fill="#6366f1" fillOpacity="0.55"/>
-          <circle cx="27.5" cy="25.5" r="2.2" fill="#818cf8" fillOpacity="0.5"/>
-          <circle cx="34" cy="25.5" r="2.2" fill="#0891b2" fillOpacity="0.5"/>
-          {/* Code lines */}
-          <rect x="19" y="37" width="22" height="2.5" rx="1.25" fill="#6366f1" fillOpacity="0.55"/>
-          <rect x="19" y="43" width="30" height="2.5" rx="1.25" fill="#818cf8" fillOpacity="0.45"/>
-          <rect x="19" y="49" width="16" height="2.5" rx="1.25" fill="#0891b2" fillOpacity="0.5"/>
-          {/* Blinking cursor */}
-          <rect x="36" y="49" width="7" height="2.5" rx="1.25" fill="#6366f1" fillOpacity="0.7" style={{animation:'proj-blink 1s step-end infinite'}}/>
+
+          {/* Corner brackets */}
+          <path d="M8 8 L8 22 M8 8 L22 8" stroke="rgba(99,102,241,0.4)" strokeWidth="1.5" strokeLinecap="round" style={{animation:'proj2-corner 3s ease-in-out infinite'}}/>
+          <path d="M312 8 L312 22 M312 8 L298 8" stroke="rgba(8,145,178,0.4)" strokeWidth="1.5" strokeLinecap="round" style={{animation:'proj2-corner 3s ease-in-out infinite 0.75s'}}/>
+          <path d="M8 132 L8 118 M8 132 L22 132" stroke="rgba(99,102,241,0.4)" strokeWidth="1.5" strokeLinecap="round" style={{animation:'proj2-corner 3s ease-in-out infinite 1.5s'}}/>
+          <path d="M312 132 L312 118 M312 132 L298 132" stroke="rgba(8,145,178,0.4)" strokeWidth="1.5" strokeLinecap="round" style={{animation:'proj2-corner 3s ease-in-out infinite 2.25s'}}/>
+
+          {/* Terminal box */}
+          <rect x="14" y="50" width="56" height="40" rx="5" fill="rgba(99,102,241,0.07)" stroke="rgba(99,102,241,0.35)" strokeWidth="1.2"/>
+          <rect x="14" y="50" width="56" height="12" rx="5" fill="rgba(99,102,241,0.12)"/>
+          <rect x="14" y="56" width="56" height="6" fill="rgba(99,102,241,0.1)"/>
+          <circle cx="21" cy="56" r="2.2" fill="#6366f1" opacity="0.6"/>
+          <circle cx="28" cy="56" r="2.2" fill="#818cf8" opacity="0.55"/>
+          <circle cx="35" cy="56" r="2.2" fill="#0891b2" opacity="0.55"/>
+          <rect x="19" y="68" width="20" height="2.5" rx="1" fill="#6366f1" opacity="0.5"/>
+          <rect x="19" y="74" width="28" height="2.5" rx="1" fill="#818cf8" opacity="0.45"/>
+          <rect x="19" y="80" width="14" height="2.5" rx="1" fill="#0891b2" opacity="0.5"/>
+          <rect x="34" y="80" width="7" height="2.5" rx="1" fill="#6366f1" opacity="0.7" style={{animation:'proj2-blink 1s step-end infinite'}}/>
+
+          {/* Main branch */}
+          <line x1="70" y1="82" x2="250" y2="82" stroke="rgba(99,102,241,0.15)" strokeWidth="2"/>
+          <line x1="70" y1="82" x2="250" y2="82" stroke="rgba(99,102,241,0.45)" strokeWidth="1.5" strokeDasharray="5 5" style={{animation:'proj2-dash 0.9s linear infinite'}}/>
+
+          {/* Feature branch curve up and back down */}
+          <path d="M112 82 Q112 48 140 48 L182 48 Q210 48 210 82" stroke="rgba(139,92,246,0.18)" strokeWidth="1.5" fill="none"/>
+          <path d="M112 82 Q112 48 140 48 L182 48 Q210 48 210 82" stroke="rgba(139,92,246,0.5)" strokeWidth="1" strokeDasharray="4 5" fill="none" style={{animation:'proj2-dash 1.1s linear infinite 0.3s'}}/>
+
+          {/* Main branch commit dots */}
+          <circle cx="112" cy="82" r="8" fill="rgba(34,197,94,0.12)" stroke="rgba(34,197,94,0.5)" strokeWidth="1.5"/>
+          <circle cx="112" cy="82" r="3.5" fill="#22c55e" opacity="0.85"/>
+          <text x="112" y="100" textAnchor="middle" fill="rgba(34,197,94,0.6)" fontSize="6.5" fontFamily="monospace">main</text>
+
+          <circle cx="155" cy="82" r="7.5" fill="rgba(99,102,241,0.1)" stroke="rgba(99,102,241,0.45)" strokeWidth="1.5"/>
+          <circle cx="155" cy="82" r="3" fill="#6366f1" opacity="0.8"/>
+
+          <circle cx="210" cy="82" r="9" fill="rgba(245,158,11,0.13)" stroke="rgba(245,158,11,0.52)" strokeWidth="1.5" style={{animation:'proj2-staging 2s ease-in-out infinite'}}>
+            <animate attributeName="opacity" values="0.7;1;0.7" dur="2s" repeatCount="indefinite"/>
+          </circle>
+          <circle cx="210" cy="82" r="3.5" fill="#f59e0b" opacity="0.9"/>
+          <text x="210" y="100" textAnchor="middle" fill="rgba(245,158,11,0.62)" fontSize="6.5" fontFamily="monospace">staging</text>
+
+          {/* Feature branch commit dots */}
+          <circle cx="148" cy="48" r="7" fill="rgba(139,92,246,0.1)" stroke="rgba(139,92,246,0.42)" strokeWidth="1.2"/>
+          <circle cx="148" cy="48" r="2.8" fill="#8b5cf6" opacity="0.8"/>
+          <circle cx="175" cy="48" r="7" fill="rgba(139,92,246,0.1)" stroke="rgba(139,92,246,0.42)" strokeWidth="1.2"/>
+          <circle cx="175" cy="48" r="2.8" fill="#8b5cf6" opacity="0.8"/>
+          <text x="161" y="30" textAnchor="middle" fill="rgba(139,92,246,0.6)" fontSize="6.5" fontFamily="monospace">feature</text>
+
+          {/* Deploy arrow */}
+          <line x1="222" y1="82" x2="248" y2="82" stroke="rgba(34,197,94,0.5)" strokeWidth="1.5" strokeDasharray="3 3" style={{animation:'proj2-dash 0.75s linear infinite'}}/>
+
+          {/* Rocket */}
+          <g style={{animation:'proj2-rocket 2.2s ease-in-out infinite', transformOrigin:'270px 68px'}}>
+            <path d="M268 100 L260 110" stroke="rgba(34,197,94,0.35)" strokeWidth="1" strokeLinecap="round"/>
+            <path d="M272 100 L264 110" stroke="rgba(34,197,94,0.25)" strokeWidth="0.8" strokeLinecap="round"/>
+            <path d="M270 42 C272 38 278 36 280 36 C280 36 282 44 280 56 L276 70 L264 70 L260 56 C258 44 260 36 260 36 C262 36 268 38 270 42Z" fill="rgba(34,197,94,0.13)" stroke="rgba(34,197,94,0.6)" strokeWidth="1.3"/>
+            <circle cx="270" cy="56" r="3" fill="rgba(34,197,94,0.5)"/>
+            <path d="M260 64 L255 72 L260 70Z" fill="rgba(34,197,94,0.28)"/>
+            <path d="M280 64 L285 72 L280 70Z" fill="rgba(34,197,94,0.28)"/>
+            <circle cx="270" cy="44" r="2" fill="rgba(34,197,94,0.3)" style={{animation:'proj2-deploy 1.5s ease-in-out infinite'}}/>
+          </g>
+          <text x="270" y="120" textAnchor="middle" fill="rgba(34,197,94,0.55)" fontSize="6.5" fontFamily="monospace">deploy</text>
+
           {/* Sparkle dots */}
-          <circle cx="8" cy="12" r="2.5" fill="#6366f1" fillOpacity="0.7" style={{animation:'proj-spark 2s ease-in-out infinite'}}/>
-          <circle cx="63" cy="10" r="2" fill="#818cf8" fillOpacity="0.65" style={{animation:'proj-spark 2s ease-in-out infinite 0.5s'}}/>
-          <circle cx="10" cy="60" r="2" fill="#0891b2" fillOpacity="0.65" style={{animation:'proj-spark 2s ease-in-out infinite 1s'}}/>
-          <circle cx="62" cy="60" r="2.5" fill="#6366f1" fillOpacity="0.7" style={{animation:'proj-spark 2s ease-in-out infinite 1.5s'}}/>
-          {/* Outer glow ring */}
-          <circle cx="36" cy="36" r="35.5" fill="none" stroke="#6366f1" strokeWidth="1" strokeOpacity="1" style={{animation:'proj-ring 3s ease-in-out infinite'}}/>
-          {/* Corner accents */}
-          <path d="M12 2 L2 2 L2 12" fill="none" stroke="#6366f1" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{animation:'proj-corner 3s ease-in-out infinite'}}/>
-          <path d="M60 2 L70 2 L70 12" fill="none" stroke="#0891b2" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{animation:'proj-corner 3s ease-in-out infinite 0.75s'}}/>
-          <path d="M12 70 L2 70 L2 60" fill="none" stroke="#6366f1" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{animation:'proj-corner 3s ease-in-out infinite 1.5s'}}/>
-          <path d="M60 70 L70 70 L70 60" fill="none" stroke="#0891b2" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{animation:'proj-corner 3s ease-in-out infinite 2.25s'}}/>
+          <circle cx="26" cy="26" r="2.5" fill="#6366f1" opacity="0.65" style={{animation:'proj2-spark 2.2s ease-in-out infinite'}}/>
+          <circle cx="294" cy="24" r="2" fill="#0891b2" opacity="0.6" style={{animation:'proj2-spark 2.2s ease-in-out infinite 0.7s'}}/>
+          <circle cx="26" cy="114" r="2" fill="#818cf8" opacity="0.6" style={{animation:'proj2-spark 2.2s ease-in-out infinite 1.4s'}}/>
+          <circle cx="294" cy="114" r="2.5" fill="#0891b2" opacity="0.65" style={{animation:'proj2-spark 2.2s ease-in-out infinite 2.1s'}}/>
         </svg>
         <p className="text-violet-600 dark:text-violet-400 text-sm font-medium mb-2">Built by our members</p>
         <h1 className="text-4xl sm:text-5xl font-bold text-slate-900 dark:text-white mb-4">Projects</h1>
