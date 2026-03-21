@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { loadUserData, consumeScan } from '@/lib/shield-storage';
 import { ScanResult } from '@/lib/shield-types';
@@ -23,7 +23,7 @@ const SCAN_STEPS = [
   'Generating recommendations...',
 ];
 
-export default function UrlScannerPage() {
+function UrlScannerContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [url, setUrl] = useState('');
@@ -195,5 +195,13 @@ export default function UrlScannerPage() {
         )}
       </div>
     </ShieldScannerLayout>
+  );
+}
+
+export default function UrlScannerPage() {
+  return (
+    <Suspense>
+      <UrlScannerContent />
+    </Suspense>
   );
 }
