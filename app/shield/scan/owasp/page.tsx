@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import { loadUserData } from '@/lib/shield-storage';
 import ShieldScannerLayout from '@/app/shield/components/ShieldScannerLayout';
 import { ClipboardCheck, ChevronRight, Loader2 } from 'lucide-react';
-import { OWASP_QUESTIONS } from '@/app/api/shield/owasp-analyze/route';
+import { OWASP_QUESTIONS } from '@/lib/owasp-questions';
 
 type Answer = 'yes' | 'no' | 'unsure';
 
