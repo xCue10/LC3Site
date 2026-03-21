@@ -74,7 +74,8 @@ export function clearUserData(): void {
 }
 
 export function addScanResult(result: ScanResult): UserData {
-  const data = loadUserData();
+  // Use loadRawUserData so the save works regardless of the loggedIn flag state
+  const data = loadRawUserData();
   if (!data) throw new Error('No user data');
   data.scanHistory = [result, ...data.scanHistory].slice(0, 100);
   data.totalScans += 1;

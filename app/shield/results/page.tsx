@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { loadUserData, markIssueFixed, getBadgeInfo, gradeColor, addScanResult } from '@/lib/shield-storage';
+import { loadUserData, loadRawUserData, markIssueFixed, getBadgeInfo, gradeColor, addScanResult } from '@/lib/shield-storage';
 import { ScanResult } from '@/lib/shield-types';
 import ShieldAppLayout from '@/app/shield/components/ShieldAppLayout';
 import ShieldSecurityScore from '@/app/shield/components/ShieldSecurityScore';
@@ -33,7 +33,7 @@ function ResultsContent() {
   const [shareMsg, setShareMsg] = useState('');
 
   useEffect(() => {
-    const userData = loadUserData();
+    const userData = loadUserData() ?? loadRawUserData();
     if (!userData) { router.push('/shield/login'); return; }
     setMode(userData.mode);
     if (scanId) {
@@ -43,7 +43,11 @@ function ResultsContent() {
       const pending = sessionStorage.getItem('lc3shield_pending_result');
       if (pending) {
         const parsed: ScanResult = JSON.parse(pending);
-        addScanResult(parsed);
+        try {
+          addScanResult(parsed);
+        } catch (e) {
+          console.error('Failed to save scan result:', e);
+        }
         sessionStorage.removeItem('lc3shield_pending_result');
         setResult(parsed);
       }
