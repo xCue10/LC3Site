@@ -60,7 +60,7 @@ export default function DashboardPage() {
             Dashboard
           </h1>
           <p style={{ fontSize: '14px', color: '#94a3b8' }}>
-            {userData.accessCode === 'LC3MEMBER' ? 'LC3 Club Member' : 'CSN Student'}
+            {userData.isAdmin ? 'LC3 Admin' : 'LC3 Club Member'}
             {' · '}
             <span style={{ color: userData.mode === 'beginner' ? '#4ade80' : '#60a5fa' }}>
               {userData.mode === 'beginner' ? 'Beginner Mode' : 'Advanced Mode'}

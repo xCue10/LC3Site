@@ -95,6 +95,9 @@ export default function Footer() {
 
         <div className="border-t border-slate-200 dark:border-[#1e2d45] mt-8 pt-6 text-center text-slate-400 text-sm">
           © {new Date().getFullYear()} LC3 - Lowcode Cloud Club · College of Southern Nevada. All rights reserved.
+          <Link href="/admin/login" className="ml-3 opacity-[0.15] hover:opacity-50 transition-opacity select-none" tabIndex={-1}>
+            ·
+          </Link>
         </div>
       </div>
     </footer>
