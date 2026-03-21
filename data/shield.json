@@ -1,0 +1,16 @@
+{
+  "live": false,
+  "heading": "LC3 Shield",
+  "tagline": "Coming Soon",
+  "description": "LC3 Shield is a hands-on cybersecurity scanner built for LC3 Club members and CSN students. Scan URLs, analyze code, check SSL certificates, detect exposed sensitive files, audit dependencies, and more — all powered by Claude AI.",
+  "features": [
+    "URL & domain security scanning",
+    "Code vulnerability analysis",
+    "SSL/TLS certificate inspection",
+    "GitHub repository audit",
+    "Dependency vulnerability checks",
+    "JWT token analyzer",
+    "DNS record inspection",
+    "OWASP Top 10 analysis"
+  ]
+}

@@ -849,7 +849,15 @@ interface GalleryImage {
   };
 }
 
-type TabId = 'members' | 'events' | 'contacts' | 'partners' | 'projects' | 'stats' | 'settings' | 'about' | 'home' | 'posts' | 'sponsors' | 'resources' | 'past-work' | 'rsvps' | 'gallery';
+type TabId = 'members' | 'events' | 'contacts' | 'partners' | 'projects' | 'stats' | 'settings' | 'about' | 'home' | 'posts' | 'sponsors' | 'resources' | 'past-work' | 'rsvps' | 'gallery' | 'shield';
+
+interface ShieldPageConfig {
+  live: boolean;
+  heading: string;
+  tagline: string;
+  description: string;
+  features: string[];
+}
 
 // ─── Dashboard ───────────────────────────────────────────────────────────────
 function Dashboard() {
@@ -870,6 +878,8 @@ function Dashboard() {
   const [postModal, setPostModal] = useState<{ open: boolean; post: Post | null }>({ open: false, post: null });
   const [sponsorModal, setSponsorModal] = useState<{ open: boolean; sponsor: Sponsor | null }>({ open: false, sponsor: null });
   const [caseStudiesConfig, setCaseStudiesConfig] = useState<CaseStudiesConfig>({ live: false, sectionTitle: 'Past Work', caseStudies: [] });
+  const [shieldConfig, setShieldConfig] = useState<ShieldPageConfig>({ live: false, heading: 'LC3 Shield', tagline: 'Coming Soon', description: '', features: [] });
+  const [shieldFeaturesRaw, setShieldFeaturesRaw] = useState('');
   const [homeTechRaw, setHomeTechRaw] = useState('');
   const [aboutTechRaw, setAboutTechRaw] = useState('');
   const [caseStudyModal, setCaseStudyModal] = useState<{ open: boolean; caseStudy: CaseStudy | null }>({ open: false, caseStudy: null });
@@ -961,7 +971,7 @@ function Dashboard() {
     const safe = <T,>(url: string, fallback: T) =>
       fetch(url).then((r) => r.ok ? r.json() as Promise<T> : fallback).catch(() => fallback);
 
-    const [m, e, c, pt, p, s, st, ab, po, sp, rv, rs, cs, hm, gl] = await Promise.all([
+    const [m, e, c, pt, p, s, st, ab, po, sp, rv, rs, cs, hm, gl, sh] = await Promise.all([
       safe('/api/members', []),
       safe('/api/events', []),
       safe('/api/contact', []),
@@ -977,6 +987,7 @@ function Dashboard() {
       safe('/api/case-studies', { live: false, sectionTitle: 'Past Work', caseStudies: [] }),
       safe('/api/home', {}),
       safe('/api/gallery', []),
+      safe('/api/shield-page', { live: false, heading: 'LC3 Shield', tagline: 'Coming Soon', description: '', features: [] }),
     ]);
     setMembers(m as Member[]);
     setEvents(e as Event[]);
@@ -992,6 +1003,9 @@ function Dashboard() {
     setResources(Array.isArray(rs) ? rs as Array<{ id: string; title: string; description: string; url: string; category: string }> : []);
     setCaseStudiesConfig(cs as CaseStudiesConfig);
     setHomeContent(hm as HomeContent);
+    const shData = sh as ShieldPageConfig;
+    setShieldConfig(shData);
+    setShieldFeaturesRaw((shData.features ?? []).join('\n'));
     setHomeTechRaw(((hm as HomeContent).techStack ?? []).join(', '));
     setAboutTechRaw(((ab as AboutContent).techStack ?? []).join(', '));
     setGalleryImages(Array.isArray(gl) ? gl as GalleryImage[] : []);
@@ -1103,6 +1117,23 @@ function Dashboard() {
     await persistSponsors(next);
   };
 
+  const persistShield = async (config: ShieldPageConfig) => {
+    await fetch('/api/shield-page', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(config) });
+  };
+
+  const toggleShieldLive = async () => {
+    const next = { ...shieldConfig, live: !shieldConfig.live };
+    setShieldConfig(next);
+    await persistShield(next);
+  };
+
+  const saveShieldConfig = async () => {
+    const features = shieldFeaturesRaw.split('\n').map((f) => f.trim()).filter(Boolean);
+    const next = { ...shieldConfig, features };
+    setShieldConfig(next);
+    await persistShield(next);
+  };
+
   // Resource CRUD
   const saveResource = async (data: { title: string; description: string; url: string; category: string }) => {
     if (resourceModal.resource) {
@@ -1179,6 +1210,7 @@ function Dashboard() {
         { id: 'sponsors' as TabId, label: 'Sponsors', count: sponsorsConfig.sponsors.length, unread: 0 },
         { id: 'resources' as TabId, label: 'Resources', count: resources.length, unread: 0 },
         { id: 'past-work' as TabId, label: 'Past Work', count: caseStudiesConfig.caseStudies.length, unread: 0 },
+        { id: 'shield' as TabId, label: 'Shield Page', count: null, unread: 0 },
       ],
     },
     {
@@ -3133,6 +3165,90 @@ function Dashboard() {
               )}
             </div>
           )}
+          {/* Shield Page Tab */}
+          {tab === 'shield' && (
+            <div className="space-y-6">
+              <div>
+                <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Shield Page</h2>
+                <p className="text-slate-500 text-sm mt-1">Control the public <code className="text-xs bg-slate-100 dark:bg-white/10 px-1.5 py-0.5 rounded">/shield</code> landing page.</p>
+              </div>
+
+              {/* Live toggle */}
+              <div className={`rounded-2xl border-2 p-6 flex items-center justify-between gap-6 transition-all ${shieldConfig.live ? 'border-green-400/50 bg-green-50 dark:bg-green-500/5' : 'border-slate-200 dark:border-[#1e2d45] bg-white dark:bg-[#0d1424]'}`}>
+                <div>
+                  <p className={`font-semibold text-lg ${shieldConfig.live ? 'text-green-700 dark:text-green-400' : 'text-slate-900 dark:text-white'}`}>
+                    LC3 Shield is {shieldConfig.live ? 'LIVE' : 'In Progress'}
+                  </p>
+                  <p className="text-slate-500 text-sm mt-0.5">
+                    {shieldConfig.live
+                      ? 'Visitors see the Shield launch page with a Sign In button.'
+                      : 'Visitors see the "In Progress — Stay Tuned" page.'}
+                  </p>
+                </div>
+                <button
+                  onClick={toggleShieldLive}
+                  className={`relative flex-shrink-0 w-14 h-8 rounded-full transition-colors focus:outline-none ${shieldConfig.live ? 'bg-green-500' : 'bg-slate-300 dark:bg-slate-600'}`}
+                >
+                  <div className={`absolute top-1 left-1 w-6 h-6 rounded-full bg-white shadow-md transition-transform ${shieldConfig.live ? 'translate-x-6' : ''}`} />
+                </button>
+              </div>
+
+              {/* Editable fields */}
+              <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl p-6 space-y-5">
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Heading</label>
+                  <input
+                    type="text"
+                    value={shieldConfig.heading}
+                    onChange={(e) => setShieldConfig((c) => ({ ...c, heading: e.target.value }))}
+                    placeholder="LC3 Shield"
+                    className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Badge / Tagline <span className="text-slate-400 font-normal">(shown in badge above heading)</span></label>
+                  <input
+                    type="text"
+                    value={shieldConfig.tagline}
+                    onChange={(e) => setShieldConfig((c) => ({ ...c, tagline: e.target.value }))}
+                    placeholder="Coming Soon"
+                    className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Description</label>
+                  <textarea
+                    value={shieldConfig.description}
+                    onChange={(e) => setShieldConfig((c) => ({ ...c, description: e.target.value }))}
+                    rows={3}
+                    placeholder="LC3 Shield is a hands-on cybersecurity scanner..."
+                    className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all resize-none"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
+                    Features <span className="text-slate-400 font-normal">(one per line)</span>
+                  </label>
+                  <textarea
+                    value={shieldFeaturesRaw}
+                    onChange={(e) => setShieldFeaturesRaw(e.target.value)}
+                    rows={6}
+                    placeholder={"URL & domain security scanning\nCode vulnerability analysis\nSSL/TLS certificate inspection"}
+                    className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all font-mono"
+                  />
+                </div>
+                <div className="flex justify-end">
+                  <button
+                    onClick={saveShieldConfig}
+                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-violet-600 text-white text-sm font-medium hover:opacity-90 transition-opacity"
+                  >
+                    Save Changes
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
         </>
       )}
         </div>{/* end main content */}

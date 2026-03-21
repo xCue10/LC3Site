@@ -1,0 +1,165 @@
+'use client';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { loadUserData } from '@/lib/shield-storage';
+import ShieldScannerLayout from '@/app/shield/components/ShieldScannerLayout';
+import ShieldScanProgress from '@/app/shield/components/ShieldScanProgress';
+import { Github, Scan, AlertCircle } from 'lucide-react';
+
+const SCAN_STEPS = [
+  'Connecting to GitHub API...',
+  'Fetching repository metadata...',
+  'Analyzing repository visibility...',
+  'Fetching file tree...',
+  'Checking for sensitive files (.env, secrets)...',
+  'Looking for .gitignore...',
+  'Fetching key files for analysis...',
+  'Scanning package.json for vulnerable deps...',
+  'Running Claude AI analysis on code files...',
+  'Checking for hardcoded secrets...',
+  'Analyzing configuration files...',
+  'Generating security report...',
+];
+
+export default function GithubScannerPage() {
+  const router = useRouter();
+  const [repoUrl, setRepoUrl] = useState('');
+  const [scanning, setScanning] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [logs, setLogs] = useState<string[]>([]);
+  const [error, setError] = useState('');
+  const [mode, setMode] = useState<'beginner' | 'advanced'>('beginner');
+
+  useEffect(() => {
+    const data = loadUserData();
+    if (!data) { router.push('/shield/login'); return; }
+    setMode(data.mode);
+  }, [router]);
+
+  const startScan = async () => {
+    if (!repoUrl.trim()) return;
+    setScanning(true);
+    setProgress(0);
+    setLogs([]);
+    setError('');
+
+    let stepIndex = 0;
+    const interval = setInterval(() => {
+      if (stepIndex < SCAN_STEPS.length) {
+        setLogs(prev => [...prev, SCAN_STEPS[stepIndex]]);
+        setProgress(Math.round(((stepIndex + 1) / SCAN_STEPS.length) * 80));
+        stepIndex++;
+      }
+    }, 1000);
+
+    try {
+      const res = await fetch('/api/shield/scan-github', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ repoUrl: repoUrl.trim(), mode }),
+      });
+
+      clearInterval(interval);
+      setProgress(100);
+
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error || 'Scan failed');
+      }
+
+      const data = await res.json();
+      if (data.logs) setLogs(prev => [...prev, ...data.logs]);
+      setLogs(prev => [...prev, `✓ Scan complete!`]);
+
+      await new Promise(r => setTimeout(r, 500));
+      sessionStorage.setItem('lc3shield_pending_result', JSON.stringify(data.result));
+      router.push('/shield/results');
+    } catch (e: any) {
+      clearInterval(interval);
+      setError(e.message || 'Scan failed. Make sure the repo is public.');
+      setScanning(false);
+    }
+  };
+
+  return (
+    <ShieldScannerLayout
+      title="GitHub Repository Scanner"
+      description="Scan any public GitHub repository for exposed secrets, sensitive files, and security issues."
+      icon={Github}
+     
+    >
+      <div
+        className="rounded-2xl p-6"
+        style={{ background: '#111827', border: '1px solid rgba(255,255,255,0.06)' }}
+      >
+        <div className="mb-6">
+          <label className="block text-sm font-medium mb-2" style={{ color: '#94a3b8' }}>
+            Public GitHub Repository URL
+          </label>
+          <div className="flex flex-col sm:flex-row gap-3">
+            <input
+              type="text"
+              value={repoUrl}
+              onChange={(e) => setRepoUrl(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && !scanning && startScan()}
+              placeholder="https://github.com/username/repository"
+              disabled={scanning}
+              className="flex-1 rounded-xl px-4 py-3 outline-none transition-all"
+              style={{
+                background: '#0d1117',
+                border: '1px solid rgba(255,255,255,0.08)',
+                color: '#e2e8f0',
+                fontSize: '14px',
+              }}
+              onFocus={(e) => { e.target.style.borderColor = 'rgba(59,130,246,0.5)'; e.target.style.boxShadow = '0 0 0 3px rgba(59,130,246,0.08)'; }}
+              onBlur={(e) => { e.target.style.borderColor = 'rgba(255,255,255,0.08)'; e.target.style.boxShadow = 'none'; }}
+            />
+            <button
+              onClick={startScan}
+              disabled={scanning || !repoUrl.trim()}
+              className="flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-white transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+              style={{ background: 'linear-gradient(135deg, #3b82f6, #2563eb)', boxShadow: '0 0 20px rgba(59,130,246,0.25)' }}
+            >
+              <Scan className="w-4 h-4" />
+              {scanning ? 'Scanning...' : 'Scan Repo'}
+            </button>
+          </div>
+        </div>
+
+        {!scanning && logs.length === 0 && (
+          <div className="mb-6 rounded-xl p-4" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.05)' }}>
+            <h3 className="text-sm font-semibold mb-3" style={{ color: '#e2e8f0' }}>What we scan for:</h3>
+            <div className="grid grid-cols-2 gap-2">
+              {[
+                'Committed .env files',
+                'Hardcoded API keys',
+                'Missing .gitignore',
+                'Exposed credentials',
+                'Vulnerable dependencies',
+                'Private keys and certs',
+                'Sensitive config files',
+                'Email/token exposure',
+              ].map(item => (
+                <div key={item} className="flex items-center gap-2 text-sm" style={{ color: '#64748b' }}>
+                  <span style={{ color: '#3b82f6' }}>✓</span> {item}
+                </div>
+              ))}
+            </div>
+            <div className="mt-3 p-3 rounded-lg" style={{ background: 'rgba(251,191,36,0.06)', border: '1px solid rgba(251,191,36,0.15)' }}>
+              <p className="text-xs" style={{ color: '#fbbf24' }}>⚠️ Only public repositories can be scanned. Never commit secrets to GitHub — even private repos can be exposed.</p>
+            </div>
+          </div>
+        )}
+
+        {scanning && <ShieldScanProgress progress={progress} logs={logs} scanning={scanning} />}
+
+        {error && (
+          <div className="flex items-center gap-2 p-4 rounded-xl text-sm" style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)', color: '#f87171' }}>
+            <AlertCircle className="w-4 h-4 shrink-0" />
+            {error}
+          </div>
+        )}
+      </div>
+    </ShieldScannerLayout>
+  );
+}
