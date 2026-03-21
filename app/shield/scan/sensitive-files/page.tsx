@@ -41,7 +41,7 @@ export default function SensitiveFilesPage() {
       const res = await fetch('/api/shield/check-sensitive-files', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ url: url.trim() }),
+        body: JSON.stringify({ url: url.trim(), mode }),
       });
 
       clearInterval(interval);
@@ -132,7 +132,7 @@ export default function SensitiveFilesPage() {
 
           {!scanning && logs.length === 0 && (
             <div>
-              <h3 className="text-sm font-semibold mb-3" style={{ color: '#e2e8f0' }}>Files we check ({sensitiveFiles.length} paths):</h3>
+              <h3 className="text-sm font-semibold mb-3" style={{ color: '#e2e8f0' }}>Files we check ({mode === 'advanced' ? '50+' : sensitiveFiles.length} paths{mode === 'advanced' ? ' — advanced deep scan' : ''}):</h3>
               <div className="flex flex-wrap gap-2">
                 {sensitiveFiles.map(f => (
                   <code

@@ -175,6 +175,90 @@ Look for: API keys, passwords, tokens, SQL injection, insecure configs, vulnerab
     }
   }
 
+  // Advanced mode: branch protection, SECURITY.md, commit history
+  if (mode === 'advanced') {
+    logs.push('[Advanced] Checking branch protection rules...');
+    try {
+      const branchRes = await fetch(
+        `https://api.github.com/repos/${owner}/${repo}/branches/${repoData.default_branch}/protection`,
+        { headers: githubHeaders }
+      );
+      if (branchRes.status === 404) {
+        vulnerabilities.push({
+          id: makeId(),
+          title: 'No Branch Protection on Default Branch',
+          severity: 'High',
+          description: `Anyone with write access can push directly to "${repoData.default_branch}" without review. This allows accidental or malicious code to go straight to production.`,
+          technicalDescription: `Branch protection rules not configured on ${repoData.default_branch}. No required reviews, status checks, or restrictions on force pushes.`,
+          realWorldExample: 'The 2020 SolarWinds attack involved unauthorized code committed directly to the main branch without review.',
+          estimatedCost: '$3.86M average cost of a breach enabled by unreviewed code',
+          exploitSpeed: 'Immediate — any contributor can push malicious code',
+          fix: 'Enable branch protection: require pull request reviews before merging, and enable required status checks.',
+          technicalFix: 'Go to Settings → Branches → Add rule for your default branch. Enable "Require a pull request before merging" and "Require status checks."',
+          fixCode: '# Via GitHub API:\nPATCH /repos/{owner}/{repo}/branches/{branch}/protection\n{\n  "required_pull_request_reviews": { "required_approving_review_count": 1 },\n  "enforce_admins": true\n}',
+        });
+      } else if (branchRes.ok) {
+        logs.push('[Advanced] Branch protection is configured — good!');
+      }
+    } catch {
+      logs.push('[Advanced] Could not check branch protection (may need authentication)');
+    }
+
+    logs.push('[Advanced] Checking for SECURITY.md...');
+    const hasSecurityMd = files.some((f: any) =>
+      f.path === 'SECURITY.md' || f.path === '.github/SECURITY.md'
+    );
+    if (!hasSecurityMd) {
+      vulnerabilities.push({
+        id: makeId(),
+        title: 'Missing SECURITY.md (No Vulnerability Disclosure Policy)',
+        severity: 'Low',
+        description: 'Without a security policy, researchers who find vulnerabilities in your project have no way to responsibly report them to you.',
+        technicalDescription: 'No SECURITY.md or .github/SECURITY.md found. GitHub displays this file to guide security researchers on responsible disclosure.',
+        realWorldExample: 'Many vulnerabilities go unpatched because researchers have no clear reporting channel and resort to public disclosure instead.',
+        estimatedCost: 'Reputational damage from uncoordinated public vulnerability disclosure',
+        exploitSpeed: 'Indirect — attackers may find and exploit before you are notified',
+        fix: 'Create a SECURITY.md file explaining how to report security vulnerabilities privately.',
+        technicalFix: 'Create SECURITY.md or .github/SECURITY.md with your disclosure contact and process.',
+        fixCode: '# SECURITY.md\n## Reporting a Vulnerability\n\nPlease report security vulnerabilities to security@yourdomain.com.\nDo NOT create public GitHub issues for security vulnerabilities.\n\nWe will respond within 48 hours and provide a fix timeline.',
+      });
+    }
+
+    logs.push('[Advanced] Scanning recent commit messages for secret patterns...');
+    try {
+      const commitsRes = await fetch(
+        `https://api.github.com/repos/${owner}/${repo}/commits?per_page=30`,
+        { headers: githubHeaders }
+      );
+      if (commitsRes.ok) {
+        const commits = await commitsRes.json();
+        const secretPatterns = [/password/i, /secret/i, /api.?key/i, /token/i, /credential/i, /private.?key/i];
+        const suspiciousCommits = commits.filter((c: any) =>
+          secretPatterns.some(p => p.test(c.commit?.message || ''))
+        );
+        if (suspiciousCommits.length > 0) {
+          vulnerabilities.push({
+            id: makeId(),
+            title: `${suspiciousCommits.length} Commit(s) Reference Secrets or Credentials`,
+            severity: 'Medium',
+            description: `${suspiciousCommits.length} recent commit message(s) mention words like "password", "secret", or "api key". This may indicate secrets were committed and then removed — but they still exist in git history.`,
+            technicalDescription: `Commits with suspicious messages: ${suspiciousCommits.slice(0, 3).map((c: any) => c.sha?.slice(0, 7) + ': ' + c.commit?.message?.slice(0, 60)).join('; ')}. Git history is permanent — even "deleted" secrets are recoverable.`,
+            realWorldExample: 'In 2022, Samsung leaked internal source code including secret keys that appeared in git history even after removal.',
+            estimatedCost: '$3.86M+ if live credentials were exposed in history',
+            exploitSpeed: '5 minutes with git log and grep',
+            fix: 'Use git-secrets or trufflehog to scan your full git history. If secrets were committed, rotate them immediately regardless of whether they were later removed.',
+            technicalFix: 'Run: trufflehog git https://github.com/{owner}/{repo}\nOr: git log -p | grep -E "(password|secret|api_key|token)" to find affected commits',
+            fixCode: '# Install trufflehog and scan:\nnpx trufflehog git https://github.com/' + owner + '/' + repo + '\n\n# Remove secrets from history (use BFG Repo-Cleaner):\nbfg --replace-text secrets.txt\ngit push --force',
+          });
+        } else {
+          logs.push('[Advanced] No suspicious patterns in recent commit messages');
+        }
+      }
+    } catch {
+      logs.push('[Advanced] Could not fetch commit history');
+    }
+  }
+
   logs.push('Scan complete!');
 
   let score = 100;

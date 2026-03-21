@@ -53,7 +53,7 @@ export default function DependenciesScannerPage() {
       const res = await fetch('/api/shield/scan-dependencies', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ packageJson: packageJson.trim() }),
+        body: JSON.stringify({ packageJson: packageJson.trim(), mode }),
       });
 
       if (!res.ok) {

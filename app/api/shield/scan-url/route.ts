@@ -179,6 +179,123 @@ export async function POST(req: NextRequest) {
         fixCode: '// Change: <script src="http://cdn.example.com/lib.js">\n// To: <script src="https://cdn.example.com/lib.js">',
       });
     }
+
+    // Advanced mode: deeper header checks
+    if (mode === 'advanced') {
+      logs.push('[Advanced] Checking cross-origin isolation headers...');
+
+      if (!headers['cross-origin-opener-policy']) {
+        vulnerabilities.push({
+          id: makeId(),
+          title: 'Missing Cross-Origin-Opener-Policy (COOP)',
+          severity: 'Medium',
+          description: 'Your site can be targeted by cross-origin attacks that read window state or perform timing attacks via shared browsing contexts.',
+          technicalDescription: 'No Cross-Origin-Opener-Policy header. Enables Spectre-style cross-origin leaks via shared browsing context with opener pages.',
+          realWorldExample: 'Spectre CPU vulnerability exploited shared memory timing to read cross-origin data in browsers.',
+          estimatedCost: '$100K–$1M+ in data exposure',
+          exploitSpeed: '1–2 hours for a skilled attacker',
+          fix: 'Add Cross-Origin-Opener-Policy: same-origin to isolate your browsing context.',
+          technicalFix: 'Cross-Origin-Opener-Policy: same-origin',
+          fixCode: "res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');",
+        });
+      }
+
+      if (!headers['cross-origin-embedder-policy']) {
+        vulnerabilities.push({
+          id: makeId(),
+          title: 'Missing Cross-Origin-Embedder-Policy (COEP)',
+          severity: 'Low',
+          description: 'Without COEP, your site cannot enable powerful isolation features and is more exposed to Spectre-style timing attacks.',
+          technicalDescription: 'No Cross-Origin-Embedder-Policy header. Required alongside COOP to achieve cross-origin isolation and safely enable high-resolution timers.',
+          realWorldExample: 'SharedArrayBuffer was disabled in browsers after Spectre; COEP is required to safely re-enable it.',
+          estimatedCost: 'Security posture risk — limits available hardening options',
+          exploitSpeed: 'Indirect — enables Spectre-style timing attacks',
+          fix: 'Add Cross-Origin-Embedder-Policy: require-corp.',
+          technicalFix: 'Cross-Origin-Embedder-Policy: require-corp',
+          fixCode: "res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp');",
+        });
+      }
+
+      logs.push('[Advanced] Checking for server version disclosure...');
+      if (headers['server'] && /[\d.]+/.test(headers['server'])) {
+        vulnerabilities.push({
+          id: makeId(),
+          title: `Server Version Disclosed: ${headers['server']}`,
+          severity: 'Medium',
+          description: 'Your server is advertising its exact software version, helping attackers target known vulnerabilities for that version.',
+          technicalDescription: `Server header: "${headers['server']}". Exposes server software and version, enabling targeted CVE exploitation.`,
+          realWorldExample: 'Attackers routinely scan for specific server versions using Shodan and Censys to find unpatched targets.',
+          estimatedCost: '$50K–$500K depending on unpatched CVEs',
+          exploitSpeed: 'Minutes — automated scanners fingerprint servers constantly',
+          fix: 'Configure your web server to hide or genericize the Server header.',
+          technicalFix: "nginx: server_tokens off;\nApache: ServerTokens Prod\nNode/Express: app.disable('x-powered-by');",
+          fixCode: "# nginx.conf:\nserver_tokens off;\n\n# Apache httpd.conf:\nServerTokens Prod\nServerSignature Off",
+        });
+      }
+
+      if (headers['x-powered-by']) {
+        vulnerabilities.push({
+          id: makeId(),
+          title: `Technology Stack Disclosed: X-Powered-By: ${headers['x-powered-by']}`,
+          severity: 'Low',
+          description: 'Your server is revealing which framework or technology it uses, making targeted attacks easier.',
+          technicalDescription: `X-Powered-By: ${headers['x-powered-by']} reveals backend technology stack to attackers.`,
+          realWorldExample: 'Attackers use X-Powered-By to identify outdated Express, PHP, or ASP.NET versions and apply targeted exploits.',
+          estimatedCost: 'Increases attack surface — aids targeted exploitation',
+          exploitSpeed: 'Passive fingerprinting — instant',
+          fix: 'Remove the X-Powered-By header from all responses.',
+          technicalFix: "Express.js: app.disable('x-powered-by');\nnginx: more_clear_headers 'X-Powered-By';",
+          fixCode: "// Express.js:\napp.disable('x-powered-by');\n// Or use helmet:\napp.use(helmet());",
+        });
+      }
+
+      logs.push('[Advanced] Checking robots.txt for sensitive path disclosure...');
+      try {
+        const robotsRes = await fetch(`${targetUrl.replace(/\/$/, '')}/robots.txt`, {
+          signal: AbortSignal.timeout(6000),
+        });
+        if (robotsRes.ok) {
+          const robotsText = await robotsRes.text();
+          const sensitiveKeywords = ['/admin', '/api', '/config', '/backup', '/secret', '/private', '/internal', '/env', '/debug'];
+          const disallowedPaths = robotsText.match(/Disallow:\s*(.+)/gi)?.map(l => l.replace(/Disallow:\s*/i, '').trim()) || [];
+          const exposedPaths = disallowedPaths.filter(p => sensitiveKeywords.some(k => p.toLowerCase().includes(k)));
+          if (exposedPaths.length > 0) {
+            vulnerabilities.push({
+              id: makeId(),
+              title: 'robots.txt Reveals Sensitive Paths',
+              severity: 'Low',
+              description: `Your robots.txt lists paths like ${exposedPaths.slice(0, 3).join(', ')} — attackers read this file specifically to find hidden admin panels and APIs.`,
+              technicalDescription: `robots.txt Disallow entries expose internal paths: ${exposedPaths.join(', ')}. While intended to block crawlers, this file is publicly readable and acts as a roadmap for attackers.`,
+              realWorldExample: 'Attackers routinely read robots.txt to find hidden admin panels, staging environments, and API endpoints before launching targeted attacks.',
+              estimatedCost: 'Aids targeted attacks — increases breach risk',
+              exploitSpeed: '5 minutes — robots.txt is checked automatically by attackers',
+              fix: 'Remove sensitive internal paths from robots.txt. Use server-level auth to protect admin areas instead.',
+              technicalFix: 'Remove specific path references from robots.txt Disallow entries.',
+              fixCode: "# Avoid listing sensitive paths:\n# Instead of: Disallow: /admin\n# Use server-level auth:\nlocation /admin {\n  auth_basic 'Admin';\n  auth_basic_user_file /etc/nginx/.htpasswd;\n}",
+            });
+          }
+        }
+      } catch {
+        logs.push('[Advanced] Could not fetch robots.txt');
+      }
+
+      logs.push('[Advanced] Checking Cache-Control header...');
+      if (!headers['cache-control'] || (!headers['cache-control'].includes('no-store') && !headers['cache-control'].includes('private'))) {
+        vulnerabilities.push({
+          id: makeId(),
+          title: 'Permissive Cache-Control Policy',
+          severity: 'Low',
+          description: 'Pages may be cached by proxies or shared computers, potentially exposing sensitive content to other users.',
+          technicalDescription: `Cache-Control: "${headers['cache-control'] || 'not set'}". Sensitive pages should use Cache-Control: no-store, private to prevent proxy/browser caching.`,
+          realWorldExample: 'Banking and healthcare sites have exposed user data through shared browser or proxy caches.',
+          estimatedCost: 'Privacy violations, HIPAA/GDPR compliance fines',
+          exploitSpeed: 'Passive — data accumulates in shared caches over time',
+          fix: 'Add Cache-Control: no-store, private to sensitive pages (dashboards, account pages, forms).',
+          technicalFix: 'Cache-Control: no-store, no-cache, must-revalidate, private',
+          fixCode: "res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, private');",
+        });
+      }
+    }
   }
 
   // Use Claude to summarize

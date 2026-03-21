@@ -58,7 +58,7 @@ function getFixedVersion(vuln: OsvVuln, pkgName: string): string | null {
 }
 
 export async function POST(req: NextRequest) {
-  const { packageJson } = await req.json();
+  const { packageJson, mode } = await req.json();
   if (!packageJson) return NextResponse.json({ error: 'package.json content required' }, { status: 400 });
   if (typeof packageJson !== 'string' || packageJson.length > 100000) return NextResponse.json({ error: 'package.json too large' }, { status: 400 });
 
@@ -122,10 +122,41 @@ export async function POST(req: NextRequest) {
 
   logs.push('OSV check complete');
 
-  // Use Claude for additional analysis if no vulns found or for context
-  if (vulnerabilities.length === 0) {
-    logs.push('Running AI dependency audit...');
-    const systemPrompt = `You are a security expert reviewing npm package.json for security risks. Return ONLY valid JSON:
+  // AI analysis: always run in advanced mode, only run as fallback in beginner mode when no CVEs found
+  const shouldRunAI = mode === 'advanced' || vulnerabilities.length === 0;
+  if (shouldRunAI) {
+    logs.push(mode === 'advanced' ? '[Advanced] Running deep AI dependency audit...' : 'Running AI dependency audit...');
+
+    const systemPrompt = mode === 'advanced'
+      ? `You are a senior supply chain security expert auditing an npm package.json. Return ONLY valid JSON:
+{
+  "additionalRisks": [
+    {
+      "id": "string",
+      "title": "Risk title",
+      "severity": "Critical|High|Medium|Low",
+      "description": "Plain English explanation",
+      "technicalDescription": "Technical details with specific attack vectors",
+      "realWorldExample": "Real supply chain incident",
+      "estimatedCost": "Financial impact",
+      "exploitSpeed": "Time to exploit",
+      "fix": "Simple fix",
+      "technicalFix": "Technical fix with commands",
+      "fixCode": "Code fix"
+    }
+  ],
+  "overallAssessment": "Expert supply chain security assessment"
+}
+Perform deep supply chain analysis:
+- Identify packages not updated in 2+ years (abandoned/unmaintained — no security patches)
+- Flag packages with a history of compromise (event-stream, ua-parser-js, node-ipc, colors, faker)
+- Detect typosquatting risks — packages with names similar to popular packages but slightly misspelled
+- Flag overly broad version ranges (e.g. "*" or ">= 1.0.0") that could pull in malicious future versions
+- Identify packages that should be devDependencies but are in dependencies (unnecessary production attack surface)
+- Check for suspicious postinstall/preinstall scripts that could execute arbitrary code on install
+- Flag packages with unusually large transitive dependency trees (high blast radius)
+- Identify missing lockfile (no package-lock.json or yarn.lock reference)`
+      : `You are a security expert reviewing npm package.json for security risks. Return ONLY valid JSON:
 {
   "additionalRisks": [
     {
@@ -148,7 +179,9 @@ Look for: very old package versions, abandoned packages, packages with known sec
 
     try {
       const raw = await askClaude(
-        `Review this package.json for security risks beyond known CVEs:\n\n${packageJson}`,
+        mode === 'advanced'
+          ? `Perform a deep supply chain security audit of this package.json. Check for abandoned packages, typosquatting, suspicious scripts, and overly broad version ranges:\n\n${packageJson}`
+          : `Review this package.json for security risks beyond known CVEs:\n\n${packageJson}`,
         systemPrompt
       );
       const jsonMatch = raw.match(/\{[\s\S]*\}/);

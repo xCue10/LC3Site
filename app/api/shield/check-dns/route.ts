@@ -6,7 +6,7 @@ import { calculateGrade } from '@/lib/shield-storage';
 function makeId() { return crypto.randomUUID(); }
 
 export async function POST(req: NextRequest) {
-  const { domain } = await req.json();
+  const { domain, mode } = await req.json();
   if (!domain) return NextResponse.json({ error: 'Domain required' }, { status: 400 });
 
   const cleanDomain = domain.replace(/^https?:\/\//, '').replace(/\/.*$/, '').trim();
@@ -165,6 +165,87 @@ export async function POST(req: NextRequest) {
       technicalFix: 'Enable DNSSEC in your domain registrar dashboard. If using Cloudflare, go to DNS → DNSSEC tab.',
       fixCode: '# If using Cloudflare DNS:\n# 1. Log into Cloudflare dashboard\n# 2. Select domain\n# 3. Go to DNS tab\n# 4. Click "Enable DNSSEC"\n# 5. Add DS record to your registrar',
     });
+  }
+
+  // Advanced mode: CAA records, MX analysis, subdomain takeover
+  if (mode === 'advanced') {
+    logs.push('[Advanced] Checking CAA records...');
+    try {
+      const caaRecords = await dns.resolve(cleanDomain, 'CAA' as any);
+      if (caaRecords && (caaRecords as any[]).length > 0) {
+        logs.push('[Advanced] CAA records found — certificate issuance is restricted');
+      } else {
+        throw new Error('No CAA records');
+      }
+    } catch {
+      vulnerabilities.push({
+        id: makeId(),
+        title: 'Missing CAA Records (Any CA Can Issue Certificates)',
+        severity: 'Medium',
+        description: 'Without CAA records, any certificate authority in the world can issue an SSL certificate for your domain — including ones that might be compromised or tricked.',
+        technicalDescription: 'No CAA (Certification Authority Authorization) DNS records found. Any CA can issue certificates for this domain. CAA records restrict which CAs are authorized.',
+        realWorldExample: 'In 2017, Symantec improperly issued thousands of certificates. Sites with CAA records were protected; those without were not.',
+        estimatedCost: 'Fraudulent certificate issuance enabling MITM attacks — $3.86M+ breach cost',
+        exploitSpeed: '1–7 days to obtain a fraudulent certificate via a compromised CA',
+        fix: 'Add CAA DNS records specifying which certificate authorities are allowed to issue certificates for your domain.',
+        technicalFix: `Add DNS CAA records:\n${cleanDomain} CAA 0 issue "letsencrypt.org"\n${cleanDomain} CAA 0 issue "digicert.com"\n${cleanDomain} CAA 0 issuewild ";"`,
+        fixCode: `; Only allow Let's Encrypt:\n${cleanDomain} CAA 0 issue "letsencrypt.org"\n${cleanDomain} CAA 0 issuewild ";"\n${cleanDomain} CAA 0 iodef "mailto:security@${cleanDomain}"`,
+      });
+    }
+
+    logs.push('[Advanced] Checking MX records...');
+    try {
+      const mxRecords = await dns.resolveMx(cleanDomain);
+      if (mxRecords.length === 0) {
+        vulnerabilities.push({
+          id: makeId(),
+          title: 'No MX Records — Domain Cannot Receive Email',
+          severity: 'Low',
+          description: 'Your domain has no mail server records. This can be a security risk if you use email-based password resets or verification, as someone could set up mail servers to intercept those.',
+          technicalDescription: 'No MX records found. Absence of MX records means no mail server is configured, but it also means email sent to this domain may bounce unpredictably.',
+          realWorldExample: 'Expired or missing MX records have allowed attackers to register abandoned mail infrastructure and receive password reset emails.',
+          estimatedCost: 'Account takeover risk via password reset flows',
+          exploitSpeed: 'Hours to days to set up receiving mail infrastructure',
+          fix: 'Add MX records pointing to your mail provider, or explicitly configure a "null MX" record (RFC 7505) to reject all mail.',
+          technicalFix: `# Null MX to explicitly reject mail:\n${cleanDomain} MX 0 .\n\n# Or point to your mail provider:\n${cleanDomain} MX 10 mail.your-provider.com`,
+          fixCode: `; Null MX (explicitly rejects all email):\n${cleanDomain} IN MX 0 .`,
+        });
+      } else {
+        logs.push(`[Advanced] ${mxRecords.length} MX record(s) found`);
+      }
+    } catch {
+      logs.push('[Advanced] Could not resolve MX records');
+    }
+
+    logs.push('[Advanced] Checking for subdomain takeover risk on www...');
+    try {
+      const wwwCname = await dns.resolveCname(`www.${cleanDomain}`);
+      if (wwwCname.length > 0) {
+        const cnameTarget = wwwCname[0];
+        // Check if the CNAME target itself resolves
+        try {
+          await dns.resolve(cnameTarget);
+          logs.push(`[Advanced] www CNAME target ${cnameTarget} resolves — no takeover risk`);
+        } catch {
+          vulnerabilities.push({
+            id: makeId(),
+            title: `Potential Subdomain Takeover: www.${cleanDomain}`,
+            severity: 'High',
+            description: `Your www subdomain points to "${cnameTarget}" but that address no longer exists. An attacker could register it and take over your subdomain.`,
+            technicalDescription: `www.${cleanDomain} CNAME → ${cnameTarget} (dangling CNAME — target does not resolve). Attacker can claim ${cnameTarget} on the target platform and serve content under your domain.`,
+            realWorldExample: 'Hundreds of major company subdomains have been taken over via dangling CNAMEs pointing to decommissioned Heroku, GitHub Pages, or Azure services.',
+            estimatedCost: '$100K–$1M+ in phishing attacks, credential theft, brand damage',
+            exploitSpeed: 'Hours to days to claim the dangling target',
+            fix: `Remove the CNAME record for www.${cleanDomain} or point it to an active, controlled address.`,
+            technicalFix: `Delete or update the CNAME record:\nwww.${cleanDomain} CNAME → [your active server]`,
+            fixCode: `; Remove dangling CNAME and point to your server:\nwww.${cleanDomain} A [your-server-ip]\n; Or delete the www record entirely if unused`,
+          });
+        }
+      }
+    } catch {
+      // No CNAME for www — that's fine
+      logs.push('[Advanced] www has no CNAME record');
+    }
   }
 
   logs.push('DNS analysis complete!');

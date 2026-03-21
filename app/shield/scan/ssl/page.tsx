@@ -68,7 +68,7 @@ export default function SslScannerPage() {
       const res = await fetch('/api/shield/check-ssl', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ domain: domain.trim() }),
+        body: JSON.stringify({ domain: domain.trim(), mode }),
       });
 
       clearInterval(interval);

@@ -57,7 +57,7 @@ function checkCertificate(hostname: string): Promise<{
 }
 
 export async function POST(req: NextRequest) {
-  const { domain } = await req.json();
+  const { domain, mode } = await req.json();
   if (!domain) return NextResponse.json({ error: 'Domain required' }, { status: 400 });
 
   const hostname = domain.replace(/^https?:\/\//, '').replace(/\/.*$/, '').trim();
@@ -204,6 +204,103 @@ export async function POST(req: NextRequest) {
       }
     } catch {
       logs.push('Could not check HSTS header');
+    }
+  }
+
+  // Advanced mode: certificate details, SANs, algorithm, transparency
+  if (mode === 'advanced' && certInfo) {
+    logs.push('[Advanced] Checking certificate Subject Alternative Names...');
+    try {
+      const advancedSocket = await new Promise<tls.TLSSocket>((resolve, reject) => {
+        const sock = tls.connect({
+          host: hostname,
+          port: 443,
+          servername: hostname,
+          rejectUnauthorized: false,
+          timeout: 10000,
+        }, () => resolve(sock));
+        sock.on('error', reject);
+        sock.setTimeout(10000, () => { sock.destroy(); reject(new Error('timeout')); });
+      });
+
+      const cert = advancedSocket.getPeerCertificate(true) as any;
+      advancedSocket.destroy();
+
+      // Check signature algorithm
+      if (cert.sigalg && (cert.sigalg.toLowerCase().includes('sha1') || cert.sigalg.toLowerCase().includes('md5'))) {
+        vulnerabilities.push({
+          id: makeId(),
+          title: `Weak Certificate Signature Algorithm: ${cert.sigalg}`,
+          severity: 'High',
+          description: 'Your SSL certificate uses an outdated signing algorithm (SHA-1 or MD5) that can be forged by attackers with enough computing power.',
+          technicalDescription: `Certificate signed with ${cert.sigalg}. SHA-1 collision attacks are practical since 2017 (SHAttered). MD5 collisions since 2004. Browsers distrust SHA-1 certificates.`,
+          realWorldExample: 'In 2017, Google demonstrated a practical SHA-1 collision (SHAttered attack), making SHA-1 certificates forgeable.',
+          estimatedCost: '$3.86M+ if a forged cert enables MITM attacks',
+          exploitSpeed: 'Hours to days with cloud computing for SHA-1',
+          fix: 'Get a new certificate signed with SHA-256 or SHA-384. All modern CAs use SHA-256 by default.',
+          technicalFix: 'Request a new certificate — all modern CAs default to SHA-256. Run: certbot renew --force-renewal',
+          fixCode: '# Force new certificate:\nsudo certbot renew --force-renewal --key-type ecdsa',
+        });
+      } else {
+        logs.push(`[Advanced] Signature algorithm: ${cert.sigalg || 'unknown'} — acceptable`);
+      }
+
+      // Check SANs for unexpected domains
+      const sans: string[] = cert.subjectaltname
+        ? cert.subjectaltname.split(', ').map((s: string) => s.replace('DNS:', '').trim())
+        : [];
+      logs.push(`[Advanced] Certificate covers ${sans.length} domain(s)`);
+
+      if (sans.length > 50) {
+        vulnerabilities.push({
+          id: makeId(),
+          title: `Certificate Covers ${sans.length} Domains (Shared Certificate Risk)`,
+          severity: 'Low',
+          description: `Your certificate is shared with ${sans.length} other domains. If any one of those domains is compromised, it could affect trust in your certificate.`,
+          technicalDescription: `SAN certificate covering ${sans.length} domains. Multi-domain certificates from shared hosting providers mean a compromise of any co-hosted domain could expose all sharing the cert.`,
+          realWorldExample: 'Shared certificates on CDNs have been used in phishing where attackers exploit the "valid HTTPS" indicator on a domain sharing a cert with a legitimate site.',
+          estimatedCost: 'Reputational risk — browser shows your domain as "secure" even if cert is shared',
+          exploitSpeed: 'Passive — attackers use shared cert to appear legitimate',
+          fix: 'Consider using a dedicated certificate for your domain rather than a shared multi-domain certificate.',
+          technicalFix: 'Get a dedicated single-domain certificate: certbot certonly --standalone -d yourdomain.com',
+          fixCode: '# Dedicated certificate:\ncertbot certonly --standalone -d ' + hostname,
+        });
+      }
+
+      // Check if certificate is about to use CT logs (informational for advanced)
+      logs.push(`[Advanced] Certificate transparency: issued by ${certInfo.issuer}`);
+    } catch {
+      logs.push('[Advanced] Could not perform advanced certificate analysis');
+    }
+
+    // Check for OCSP Must-Staple extension support signal via headers
+    logs.push('[Advanced] Checking OCSP/certificate revocation posture...');
+    try {
+      const headRes = await fetch(`https://${hostname}`, {
+        method: 'HEAD',
+        signal: AbortSignal.timeout(6000),
+        redirect: 'follow',
+      });
+      const expectCT = headRes.headers.get('expect-ct');
+      if (!expectCT) {
+        vulnerabilities.push({
+          id: makeId(),
+          title: 'Missing Expect-CT Header (Certificate Transparency Enforcement)',
+          severity: 'Low',
+          description: 'Without Expect-CT, browsers won\'t enforce that your certificate appears in public transparency logs, making it harder to detect fraudulent certificate issuance.',
+          technicalDescription: 'No Expect-CT header. Certificate Transparency logs allow public auditing of all issued certificates. Expect-CT enforces that browsers check these logs.',
+          realWorldExample: 'DigiNotar\'s fraudulent certificate issuance in 2011 went undetected for months because CT enforcement was not widespread.',
+          estimatedCost: 'Fraudulent cert issuance may go undetected without CT enforcement',
+          exploitSpeed: 'Days to weeks — time to detect and revoke fraudulent certificates',
+          fix: 'Add Expect-CT header to enforce Certificate Transparency reporting.',
+          technicalFix: 'Expect-CT: max-age=86400, enforce, report-uri="https://your-report-endpoint.com"',
+          fixCode: "add_header Expect-CT 'max-age=86400, enforce' always;",
+        });
+      } else {
+        logs.push('[Advanced] Expect-CT header present');
+      }
+    } catch {
+      logs.push('[Advanced] Could not check Expect-CT header');
     }
   }
 
