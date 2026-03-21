@@ -18,7 +18,7 @@ export default function MembersPage() {
       <div className="text-center pb-8">
         <Link
           href="/members/portal"
-          className="text-xs text-slate-400 dark:text-slate-600 hover:text-violet-500 dark:hover:text-violet-400 transition-colors"
+          className="text-xs text-slate-400 dark:text-slate-400 hover:text-violet-500 dark:hover:text-violet-400 transition-colors"
         >
           Are you a member? Update your profile →
         </Link>
