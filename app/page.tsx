@@ -126,8 +126,8 @@ export default function HomePage() {
           <div className="absolute top-1/2 left-1/2 w-[700px] h-[700px] bg-violet-600/15 rounded-full blur-3xl hidden dark:block" style={{animation:'hero-blob-a 9s ease-in-out infinite'}} />
           <div className="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-blue-600/15 rounded-full blur-3xl hidden dark:block" style={{animation:'hero-blob-b 11s ease-in-out infinite 1s'}} />
           <div className="absolute bottom-0 right-1/4 w-[300px] h-[300px] bg-purple-600/12 rounded-full blur-3xl hidden dark:block" style={{animation:'hero-blob-c 13s ease-in-out infinite 2s'}} />
-          {/* Tech constellation — dark mode only */}
-          <svg className="absolute inset-0 w-full h-full hidden dark:block" viewBox="0 0 1200 500" fill="none" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+          {/* Tech constellation */}
+          <svg className="absolute inset-0 w-full h-full" viewBox="0 0 1200 500" fill="none" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
             <defs>
               <style>{`
                 @keyframes hero-node-float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
