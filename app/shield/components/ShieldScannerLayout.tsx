@@ -2,7 +2,7 @@
 import { ReactNode, useState, useEffect } from 'react';
 import Link from 'next/link';
 import ShieldAppLayout from '@/app/shield/components/ShieldAppLayout';
-import { getRemainingScans, DAILY_SCAN_LIMIT } from '@/lib/shield-storage';
+import { getRemainingScans, DAILY_SCAN_LIMIT, loadUserData } from '@/lib/shield-storage';
 import { LucideIcon, ChevronRight } from 'lucide-react';
 
 interface Props {
@@ -15,7 +15,11 @@ interface Props {
 
 export default function ShieldScannerLayout({ title, description, icon: Icon, iconColor = '#3b82f6', children }: Props) {
   const [remaining, setRemaining] = useState(DAILY_SCAN_LIMIT);
-  useEffect(() => { setRemaining(getRemainingScans()); }, []);
+  const [isAdmin, setIsAdmin] = useState(false);
+  useEffect(() => {
+    setRemaining(getRemainingScans());
+    setIsAdmin(loadUserData()?.isAdmin ?? false);
+  }, []);
 
   const glowMap: Record<string, string> = {
     '#3b82f6': 'rgba(59,130,246,0.2)',
@@ -59,20 +63,30 @@ export default function ShieldScannerLayout({ title, description, icon: Icon, ic
             </p>
           </div>
           {/* Daily scan counter */}
-          <div
-            className="shrink-0 flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-medium"
-            style={{
-              background: remaining === 0 ? 'rgba(239,68,68,0.1)' : remaining <= 3 ? 'rgba(245,158,11,0.1)' : 'rgba(255,255,255,0.05)',
-              border: remaining === 0 ? '1px solid rgba(239,68,68,0.3)' : remaining <= 3 ? '1px solid rgba(245,158,11,0.3)' : '1px solid rgba(255,255,255,0.08)',
-              color: remaining === 0 ? '#f87171' : remaining <= 3 ? '#fbbf24' : '#94a3b8',
-            }}
-          >
-            <span
-              className="w-1.5 h-1.5 rounded-full"
-              style={{ background: remaining === 0 ? '#ef4444' : remaining <= 3 ? '#f59e0b' : '#22c55e' }}
-            />
-            {remaining}/{DAILY_SCAN_LIMIT} scans today
-          </div>
+          {isAdmin ? (
+            <div
+              className="shrink-0 flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-medium"
+              style={{ background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.2)', color: '#4ade80' }}
+            >
+              <span className="w-1.5 h-1.5 rounded-full" style={{ background: '#22c55e' }} />
+              Unlimited scans
+            </div>
+          ) : (
+            <div
+              className="shrink-0 flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-medium"
+              style={{
+                background: remaining === 0 ? 'rgba(239,68,68,0.1)' : remaining <= 3 ? 'rgba(245,158,11,0.1)' : 'rgba(255,255,255,0.05)',
+                border: remaining === 0 ? '1px solid rgba(239,68,68,0.3)' : remaining <= 3 ? '1px solid rgba(245,158,11,0.3)' : '1px solid rgba(255,255,255,0.08)',
+                color: remaining === 0 ? '#f87171' : remaining <= 3 ? '#fbbf24' : '#94a3b8',
+              }}
+            >
+              <span
+                className="w-1.5 h-1.5 rounded-full"
+                style={{ background: remaining === 0 ? '#ef4444' : remaining <= 3 ? '#f59e0b' : '#22c55e' }}
+              />
+              {remaining}/{DAILY_SCAN_LIMIT} scans today
+            </div>
+          )}
         </div>
 
         {children}
