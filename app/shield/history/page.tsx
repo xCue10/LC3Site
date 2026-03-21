@@ -2,14 +2,14 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { loadUserData, syncFromServer, gradeColor } from '@/lib/shield-storage';
+import { loadUserData, syncFromServer, saveUserData, pushToServer, gradeColor } from '@/lib/shield-storage';
 import { ScanResult, ScanType } from '@/lib/shield-types';
 import { UserData } from '@/lib/shield-types';
 import ShieldAppLayout from '@/app/shield/components/ShieldAppLayout';
 import {
   History, Globe, Code2, Github, Package, Key, Cookie,
   Globe2, Lock, FileSearch, ClipboardCheck,
-  ExternalLink, RefreshCw, Loader2, TrendingUp, AlertTriangle
+  ExternalLink, RefreshCw, Loader2, TrendingUp, AlertTriangle, Trash2
 } from 'lucide-react';
 
 const SCAN_ICONS: Record<ScanType, React.ElementType> = {
@@ -59,6 +59,15 @@ export default function HistoryPage() {
   const avgScore = userData.scanHistory.length > 0
     ? Math.round(userData.scanHistory.reduce((s, r) => s + r.score, 0) / userData.scanHistory.length)
     : 0;
+
+  const deleteScan = (scanId: string) => {
+    const data = loadUserData();
+    if (!data) return;
+    data.scanHistory = data.scanHistory.filter(s => s.id !== scanId);
+    saveUserData(data);
+    pushToServer(data);
+    setUserData({ ...data });
+  };
 
   const rerunScan = (scan: ScanResult) => {
     const paths: Record<ScanType, string> = {
@@ -232,6 +241,16 @@ export default function HistoryPage() {
                           onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.color = '#94a3b8'; (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.05)'; }}
                         >
                           <RefreshCw className="w-3.5 h-3.5" />
+                        </button>
+                        <button
+                          onClick={() => deleteScan(scan.id)}
+                          className="p-2 rounded-lg transition-colors"
+                          style={{ background: 'rgba(255,255,255,0.05)', color: '#94a3b8' }}
+                          title="Delete scan"
+                          onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.color = '#f87171'; (e.currentTarget as HTMLButtonElement).style.background = 'rgba(239,68,68,0.12)'; }}
+                          onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.color = '#94a3b8'; (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.05)'; }}
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
                         </button>
                       </div>
                     </div>
