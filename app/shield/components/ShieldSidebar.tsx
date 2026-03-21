@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import { loadUserData, clearUserData, saveUserData } from '@/lib/shield-storage';
+import { loadUserData, clearUserData, saveUserData, pushToServer } from '@/lib/shield-storage';
 import {
   Shield, LayoutDashboard, Globe, Code2, Github, Package,
   Key, Cookie, Globe2, Lock, FileSearch, ClipboardCheck,
@@ -45,11 +45,12 @@ export default function ShieldSidebar() {
 
   const mode = userData.mode;
 
-  const toggleMode = () => {
+  const toggleMode = async () => {
     const data = loadUserData();
     if (!data) return;
     data.mode = data.mode === 'beginner' ? 'advanced' : 'beginner';
     saveUserData(data);
+    await pushToServer(data);
     window.location.reload();
   };
 

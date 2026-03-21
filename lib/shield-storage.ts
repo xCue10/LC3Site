@@ -33,15 +33,15 @@ export async function syncFromServer(): Promise<UserData | null> {
   } catch { return null; }
 }
 
-// Push current userData to server (fire and forget)
-export function pushToServer(data: UserData): void {
+// Push current userData to server. Returns a promise so callers can await it when needed.
+export function pushToServer(data: UserData): Promise<void> {
   const token = getSessionToken();
-  if (!token) return;
-  fetch('/api/shield/session', {
+  if (!token) return Promise.resolve();
+  return fetch('/api/shield/session', {
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
     body: JSON.stringify(data),
-  }).catch(() => { /* best effort */ });
+  }).then(() => {}).catch(() => { /* best effort */ });
 }
 
 export const BADGES: Badge[] = [
