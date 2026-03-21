@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Shield, AlertCircle, ArrowRight, KeyRound } from 'lucide-react';
-import { saveUserData, getDefaultUserData, loadUserData } from '@/lib/shield-storage';
+import { saveUserData, getDefaultUserData, loadUserData, loadRawUserData } from '@/lib/shield-storage';
 
 const GROUPS = [
   { code: 'LC3MEMBER', label: 'LC3 Club Member' },
@@ -41,15 +41,17 @@ export default function ShieldLoginPage() {
       }
 
       const upperCode = data.code as string;
-      const existing = loadUserData();
+      // Use raw load so history is restored even after logout (loggedIn: false)
+      const existing = loadRawUserData();
       if (existing && existing.accessCode === upperCode) {
         const today = new Date().toISOString().split('T')[0];
         const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
         if (existing.lastLoginDate === yesterday) existing.loginStreak += 1;
         else if (existing.lastLoginDate !== today) existing.loginStreak = 1;
         existing.lastLoginDate = today;
+        existing.loggedIn = true;
         saveUserData(existing);
-      } else if (!existing) {
+      } else {
         saveUserData(getDefaultUserData(upperCode));
       }
       router.push('/shield/dashboard');

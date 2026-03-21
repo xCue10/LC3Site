@@ -70,6 +70,7 @@ export interface UserData {
   totalIssuesFound: number;
   loginStreak: number;
   lastLoginDate: string;
+  loggedIn?: boolean;
 }
 
 export interface ChatMessage {

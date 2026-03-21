@@ -25,10 +25,25 @@ export function getDefaultUserData(accessCode: string): UserData {
     totalIssuesFound: 0,
     loginStreak: 1,
     lastLoginDate: new Date().toISOString().split('T')[0],
+    loggedIn: true,
   };
 }
 
 export function loadUserData(): UserData | null {
+  if (typeof window === 'undefined') return null;
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const data = JSON.parse(raw) as UserData;
+    if (data.loggedIn === false) return null;
+    return data;
+  } catch {
+    return null;
+  }
+}
+
+// Loads data regardless of loggedIn state — used on login to restore history
+export function loadRawUserData(): UserData | null {
   if (typeof window === 'undefined') return null;
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
@@ -46,7 +61,15 @@ export function saveUserData(data: UserData): void {
 
 export function clearUserData(): void {
   if (typeof window === 'undefined') return;
-  localStorage.removeItem(STORAGE_KEY);
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return;
+    const data = JSON.parse(raw) as UserData;
+    data.loggedIn = false;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  } catch {
+    localStorage.removeItem(STORAGE_KEY);
+  }
 }
 
 export function addScanResult(result: ScanResult): UserData {
