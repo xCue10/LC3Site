@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Member } from '@/lib/data';
@@ -100,7 +100,12 @@ const variantStyles = {
 
 function FlipCard({ member, index, variant = 'member' }: { member: Member; index: number; variant?: keyof typeof variantStyles }) {
   const [flipped, setFlipped] = useState(false);
+  const [isTouch, setIsTouch] = useState(false);
   const vs = variantStyles[variant];
+
+  useEffect(() => {
+    setIsTouch('ontouchstart' in window || navigator.maxTouchPoints > 0);
+  }, []);
 
   return (
     <div
@@ -109,8 +114,9 @@ function FlipCard({ member, index, variant = 'member' }: { member: Member; index
         perspective: '1000px',
         boxShadow: flipped ? '0 0 32px rgba(139,92,246,0.32)' : '0 0 0 rgba(139,92,246,0)',
       }}
-      onMouseEnter={() => setFlipped(true)}
-      onMouseLeave={() => setFlipped(false)}
+      onMouseEnter={!isTouch ? () => setFlipped(true) : undefined}
+      onMouseLeave={!isTouch ? () => setFlipped(false) : undefined}
+      onClick={() => { if (isTouch) setFlipped(f => !f); }}
     >
       {/* Flip inner */}
       <div
@@ -125,7 +131,7 @@ function FlipCard({ member, index, variant = 'member' }: { member: Member; index
         {/* ── FRONT FACE ── */}
         <div
           className={`absolute inset-0 bg-white dark:bg-[#0d1424] border ${vs.border} rounded-2xl p-5 flex flex-col gap-3 overflow-hidden ${flipped ? 'pointer-events-none' : ''}`}
-          style={{ backfaceVisibility: 'hidden' }}
+          style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' }}
         >
 
           {/* Avatar + name */}
@@ -179,6 +185,7 @@ function FlipCard({ member, index, variant = 'member' }: { member: Member; index
           className={`absolute inset-0 rounded-2xl p-5 flex flex-col gap-2.5 overflow-hidden ${!flipped ? 'pointer-events-none' : ''}`}
           style={{
             backfaceVisibility: 'hidden',
+            WebkitBackfaceVisibility: 'hidden',
             transform: 'rotateY(180deg)',
             background: 'linear-gradient(135deg, #0f2040 0%, #1a0d3b 60%, #0a1628 100%)',
           }}

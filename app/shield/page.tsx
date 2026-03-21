@@ -36,36 +36,113 @@ export default function ShieldPage() {
   return <ShieldComingSoon config={config} />;
 }
 
+function ShieldHeroSVG() {
+  return (
+    <svg
+      width="320"
+      height="320"
+      viewBox="0 0 320 320"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className="mx-auto"
+    >
+      {/* Outer orbital ring */}
+      <circle cx="160" cy="160" r="148" stroke="rgba(59,130,246,0.4)" strokeWidth="1">
+        <animateTransform attributeName="transform" type="rotate" from="0 160 160" to="360 160 160" dur="18s" repeatCount="indefinite" />
+      </circle>
+      {/* Middle orbital ring */}
+      <circle cx="160" cy="160" r="118" stroke="rgba(59,130,246,0.25)" strokeWidth="1">
+        <animateTransform attributeName="transform" type="rotate" from="360 160 160" to="0 160 160" dur="12s" repeatCount="indefinite" />
+      </circle>
+      {/* Inner orbital ring */}
+      <circle cx="160" cy="160" r="88" stroke="rgba(239,68,68,0.2)" strokeWidth="1">
+        <animateTransform attributeName="transform" type="rotate" from="0 160 160" to="360 160 160" dur="8s" repeatCount="indefinite" />
+      </circle>
+
+      {/* Pulse rings */}
+      <circle cx="160" cy="160" r="148" stroke="rgba(239,68,68,0.12)" strokeWidth="2">
+        <animate attributeName="r" values="100;155;100" dur="3s" repeatCount="indefinite" />
+        <animate attributeName="opacity" values="0.5;0;0.5" dur="3s" repeatCount="indefinite" />
+      </circle>
+      <circle cx="160" cy="160" r="80" stroke="rgba(59,130,246,0.15)" strokeWidth="2">
+        <animate attributeName="r" values="60;90;60" dur="4s" repeatCount="indefinite" begin="1s" />
+        <animate attributeName="opacity" values="0.4;0;0.4" dur="4s" repeatCount="indefinite" begin="1s" />
+      </circle>
+
+      {/* Radar sweep */}
+      <path d="M160 160 L308 160" stroke="rgba(239,68,68,0.5)" strokeWidth="1.5">
+        <animateTransform attributeName="transform" type="rotate" from="0 160 160" to="360 160 160" dur="3s" repeatCount="indefinite" />
+      </path>
+      <path d="M160 160 L308 160" stroke="rgba(239,68,68,0.18)" strokeWidth="8">
+        <animateTransform attributeName="transform" type="rotate" from="0 160 160" to="360 160 160" dur="3s" repeatCount="indefinite" />
+      </path>
+
+      {/* Scan line */}
+      <line x1="12" y1="160" x2="308" y2="160" stroke="rgba(59,130,246,0.35)" strokeWidth="1" strokeDasharray="4 6">
+        <animate attributeName="y1" values="80;240;80" dur="5s" repeatCount="indefinite" />
+        <animate attributeName="y2" values="80;240;80" dur="5s" repeatCount="indefinite" />
+        <animate attributeName="opacity" values="0.8;0.2;0.8" dur="5s" repeatCount="indefinite" />
+      </line>
+
+      {/* Shield shape */}
+      <path
+        d="M160 72 L220 96 L220 152 Q220 192 160 216 Q100 192 100 152 L100 96 Z"
+        fill="rgba(239,68,68,0.08)"
+        stroke="rgba(239,68,68,0.5)"
+        strokeWidth="2"
+      >
+        <animate attributeName="opacity" values="0.6;1;0.6" dur="2.5s" repeatCount="indefinite" />
+      </path>
+      {/* Shield check */}
+      <path
+        d="M147 150 L156 160 L174 138"
+        stroke="rgba(239,68,68,0.8)"
+        strokeWidth="3"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        fill="none"
+      >
+        <animate attributeName="opacity" values="0.5;1;0.5" dur="2.5s" repeatCount="indefinite" />
+      </path>
+
+      {/* Floating nodes on outer ring */}
+      <circle cx="308" cy="160" r="4" fill="rgba(59,130,246,0.8)">
+        <animateTransform attributeName="transform" type="rotate" from="0 160 160" to="360 160 160" dur="18s" repeatCount="indefinite" />
+        <animate attributeName="opacity" values="0.4;1;0.4" dur="2s" repeatCount="indefinite" />
+      </circle>
+      <circle cx="12" cy="160" r="3" fill="rgba(59,130,246,0.6)">
+        <animateTransform attributeName="transform" type="rotate" from="0 160 160" to="360 160 160" dur="18s" repeatCount="indefinite" />
+        <animate attributeName="opacity" values="0.3;0.9;0.3" dur="2.4s" repeatCount="indefinite" begin="0.8s" />
+      </circle>
+      <circle cx="160" cy="12" r="3.5" fill="rgba(239,68,68,0.7)">
+        <animateTransform attributeName="transform" type="rotate" from="0 160 160" to="360 160 160" dur="18s" repeatCount="indefinite" />
+        <animate attributeName="opacity" values="0.3;1;0.3" dur="1.8s" repeatCount="indefinite" begin="0.4s" />
+      </circle>
+
+      {/* Corner brackets */}
+      <path d="M28 16 L16 16 L16 28" stroke="rgba(239,68,68,0.6)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <animate attributeName="opacity" values="0.4;0.9;0.4" dur="3s" repeatCount="indefinite" />
+      </path>
+      <path d="M292 16 L304 16 L304 28" stroke="rgba(59,130,246,0.6)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <animate attributeName="opacity" values="0.4;0.9;0.4" dur="3s" repeatCount="indefinite" begin="0.75s" />
+      </path>
+      <path d="M28 304 L16 304 L16 292" stroke="rgba(239,68,68,0.6)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <animate attributeName="opacity" values="0.4;0.9;0.4" dur="3s" repeatCount="indefinite" begin="1.5s" />
+      </path>
+      <path d="M292 304 L304 304 L304 292" stroke="rgba(59,130,246,0.6)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <animate attributeName="opacity" values="0.4;0.9;0.4" dur="3s" repeatCount="indefinite" begin="2.25s" />
+      </path>
+    </svg>
+  );
+}
+
 function ShieldLiveLanding({ config }: { config: ShieldPageConfig }) {
   return (
-    <section className="relative overflow-hidden">
-      {/* Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-white to-violet-50/30 dark:from-[#080d18] dark:via-[#0a1020] dark:to-[#0d1424] -z-10" />
-      <div className="absolute inset-0 -z-10 overflow-hidden">
-        <svg className="absolute -top-40 -right-40 w-[600px] h-[600px] opacity-[0.04] dark:opacity-[0.06]" viewBox="0 0 200 200" fill="none">
-          <circle cx="100" cy="100" r="80" stroke="url(#sg1)" strokeWidth="0.5" />
-          <circle cx="100" cy="100" r="60" stroke="url(#sg1)" strokeWidth="0.5" />
-          <circle cx="100" cy="100" r="40" stroke="url(#sg1)" strokeWidth="0.5" />
-          <defs>
-            <linearGradient id="sg1" x1="20" y1="20" x2="180" y2="180" gradientUnits="userSpaceOnUse">
-              <stop stopColor="#8b5cf6" />
-              <stop offset="1" stopColor="#3b82f6" />
-            </linearGradient>
-          </defs>
-        </svg>
-      </div>
-
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 pt-24 pb-20 text-center">
-        {/* Icon */}
-        <div className="flex justify-center mb-8">
-          <div
-            className="w-20 h-20 rounded-2xl flex items-center justify-center shadow-2xl"
-            style={{ background: 'linear-gradient(135deg, #ef4444, #b91c1c)', boxShadow: '0 0 48px rgba(239,68,68,0.3)' }}
-          >
-            <svg className="w-10 h-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
-            </svg>
-          </div>
+    <section className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-red-50/20 dark:from-[#080d18] dark:via-[#0a1020] dark:to-[#0d1424]">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 pt-16 pb-20 text-center">
+        {/* Animated SVG hero */}
+        <div className="flex justify-center mb-6">
+          <ShieldHeroSVG />
         </div>
 
         <h1 className="text-4xl sm:text-5xl font-bold text-slate-900 dark:text-white mb-4" style={{ letterSpacing: '-0.03em' }}>
@@ -105,78 +182,23 @@ function ShieldLiveLanding({ config }: { config: ShieldPageConfig }) {
 
 function ShieldComingSoon({ config }: { config: ShieldPageConfig }) {
   return (
-    <section className="relative overflow-hidden">
-      {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-white to-violet-50/30 dark:from-[#080d18] dark:via-[#0a1020] dark:to-[#0d1424] -z-10" />
+    <section className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-red-50/20 dark:from-[#080d18] dark:via-[#0a1020] dark:to-[#0d1424]">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 pt-16 pb-20 text-center">
+        {/* Animated SVG hero */}
+        <div className="flex justify-center mb-6">
+          <ShieldHeroSVG />
+        </div>
 
-      {/* Animated SVG background */}
-      <div className="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
-        <svg
-          className="absolute -top-32 -right-32 w-[700px] h-[700px] opacity-[0.035] dark:opacity-[0.06]"
-          viewBox="0 0 400 400"
-          fill="none"
-        >
-          <circle cx="200" cy="200" r="180" stroke="url(#cs-g1)" strokeWidth="0.6">
-            <animateTransform attributeName="transform" type="rotate" from="0 200 200" to="360 200 200" dur="60s" repeatCount="indefinite" />
-          </circle>
-          <circle cx="200" cy="200" r="140" stroke="url(#cs-g1)" strokeWidth="0.6">
-            <animateTransform attributeName="transform" type="rotate" from="360 200 200" to="0 200 200" dur="40s" repeatCount="indefinite" />
-          </circle>
-          <circle cx="200" cy="200" r="100" stroke="url(#cs-g1)" strokeWidth="0.6">
-            <animateTransform attributeName="transform" type="rotate" from="0 200 200" to="360 200 200" dur="25s" repeatCount="indefinite" />
-          </circle>
-          <defs>
-            <linearGradient id="cs-g1" x1="20" y1="20" x2="380" y2="380" gradientUnits="userSpaceOnUse">
-              <stop stopColor="#ef4444" />
-              <stop offset="0.5" stopColor="#8b5cf6" />
-              <stop offset="1" stopColor="#3b82f6" />
-            </linearGradient>
-          </defs>
-        </svg>
-
-        <svg
-          className="absolute -bottom-20 -left-20 w-[400px] h-[400px] opacity-[0.025] dark:opacity-[0.04]"
-          viewBox="0 0 200 200"
-          fill="none"
-        >
-          <path d="M100 20 L180 60 L180 140 L100 180 L20 140 L20 60 Z" stroke="url(#cs-g2)" strokeWidth="0.8">
-            <animateTransform attributeName="transform" type="rotate" from="0 100 100" to="360 100 100" dur="30s" repeatCount="indefinite" />
-          </path>
-          <path d="M100 40 L160 70 L160 130 L100 160 L40 130 L40 70 Z" stroke="url(#cs-g2)" strokeWidth="0.8">
-            <animateTransform attributeName="transform" type="rotate" from="360 100 100" to="0 100 100" dur="20s" repeatCount="indefinite" />
-          </path>
-          <defs>
-            <linearGradient id="cs-g2" x1="0" y1="0" x2="200" y2="200" gradientUnits="userSpaceOnUse">
-              <stop stopColor="#ef4444" />
-              <stop offset="1" stopColor="#8b5cf6" />
-            </linearGradient>
-          </defs>
-        </svg>
-      </div>
-
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 pt-24 pb-20">
         {/* Coming Soon badge */}
-        <div className="flex justify-center mb-8">
+        <div className="flex justify-center mb-6">
           <span className="inline-flex items-center gap-2 text-xs font-semibold px-4 py-1.5 rounded-full bg-red-50 border border-red-200 text-red-600 dark:bg-red-500/10 dark:border-red-500/20 dark:text-red-400 uppercase tracking-wider">
             <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
             {config.tagline}
           </span>
         </div>
 
-        {/* Shield icon */}
-        <div className="flex justify-center mb-8">
-          <div
-            className="w-20 h-20 rounded-2xl flex items-center justify-center"
-            style={{ background: 'linear-gradient(135deg, #ef4444, #b91c1c)', boxShadow: '0 0 48px rgba(239,68,68,0.25)' }}
-          >
-            <svg className="w-10 h-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
-            </svg>
-          </div>
-        </div>
-
         {/* Heading */}
-        <div className="text-center mb-6">
+        <div className="mb-6">
           <h1 className="text-4xl sm:text-5xl font-bold text-slate-900 dark:text-white mb-4" style={{ letterSpacing: '-0.03em' }}>
             {config.heading} is{' '}
             <span className="bg-gradient-to-r from-red-500 to-violet-600 bg-clip-text text-transparent">
