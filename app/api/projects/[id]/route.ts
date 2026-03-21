@@ -20,6 +20,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     contributors: Array.isArray(body.contributors)
       ? body.contributors
       : (body.contributors || '').split(',').map((c: string) => c.trim()).filter(Boolean),
+    status: body.status || undefined,
   };
   writeJSON('projects.json', projects);
   return NextResponse.json(projects[index]);

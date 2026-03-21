@@ -17,6 +17,7 @@ export async function POST(req: NextRequest) {
     gradient: body.gradient || 'from-blue-500 to-cyan-500',
     github: body.github || '',
     contributors: Array.isArray(body.contributors) ? body.contributors : (body.contributors || '').split(',').map((c: string) => c.trim()).filter(Boolean),
+    ...(body.status ? { status: body.status } : {}),
   };
   projects.push(newProject);
   writeJSON('projects.json', projects);
