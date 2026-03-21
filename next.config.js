@@ -19,15 +19,17 @@ const securityHeaders = [
     value: [
       "default-src 'self'",
       // Next.js requires unsafe-inline and unsafe-eval for its runtime scripts
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://hcaptcha.com https://*.hcaptcha.com",
       // Inline styles are used throughout (Tailwind + style props)
-      "style-src 'self' 'unsafe-inline'",
+      "style-src 'self' 'unsafe-inline' https://hcaptcha.com https://*.hcaptcha.com",
       // Images can come from any HTTPS source (member avatars, etc.)
       "img-src 'self' data: https: blob:",
       // Fonts
       "font-src 'self' data:",
-      // API calls are all same-origin
-      "connect-src 'self'",
+      // API calls: same-origin + hCaptcha verification
+      "connect-src 'self' https://hcaptcha.com https://*.hcaptcha.com",
+      // hCaptcha renders its widget in an iframe
+      "frame-src https://hcaptcha.com https://*.hcaptcha.com",
       // No plugins or embedded objects
       "object-src 'none'",
       "media-src 'none'",
