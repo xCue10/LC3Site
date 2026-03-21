@@ -71,6 +71,7 @@ export interface UserData {
   loginStreak: number;
   lastLoginDate: string;
   loggedIn?: boolean;
+  isAdmin?: boolean;
   scansToday?: number;
   lastScanDate?: string;
 }

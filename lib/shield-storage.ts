@@ -100,6 +100,7 @@ export function markIssueFixed(scanId: string, vulnId: string): void {
 export function getRemainingScans(): number {
   const data = loadUserData();
   if (!data) return 0;
+  if (data.isAdmin) return DAILY_SCAN_LIMIT; // always show full for admin
   const today = new Date().toISOString().split('T')[0];
   if (data.lastScanDate !== today) return DAILY_SCAN_LIMIT;
   return Math.max(0, DAILY_SCAN_LIMIT - (data.scansToday ?? 0));
@@ -109,6 +110,7 @@ export function getRemainingScans(): number {
 export function consumeScan(): boolean {
   const data = loadUserData();
   if (!data) return false;
+  if (data.isAdmin) return true; // no limit for admin
   const today = new Date().toISOString().split('T')[0];
   if (data.lastScanDate !== today) {
     data.scansToday = 0;

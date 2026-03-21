@@ -4,10 +4,6 @@ import { useRouter } from 'next/navigation';
 import { AlertCircle, ArrowRight, KeyRound } from 'lucide-react';
 import { saveUserData, getDefaultUserData, loadUserData, loadRawUserData } from '@/lib/shield-storage';
 
-const GROUPS = [
-  { code: 'LC3MEMBER', label: 'LC3 Club Member' },
-  { code: 'CSNSTUDENT', label: 'CSN Student' },
-];
 
 function ShieldBanner() {
   return (
@@ -207,7 +203,7 @@ function ShieldBanner() {
           <span style={{ color: '#f87171' }}> Shield</span>
         </h2>
         <p style={{ fontSize: '13px', color: '#475569', lineHeight: '1.6', maxWidth: '280px', margin: '0 auto' }}>
-          AI-powered security scanning for LC3 Club members and CSN students.
+          AI-powered security scanning for LC3 Club members.
         </p>
 
         {/* Feature pills */}
@@ -228,10 +224,10 @@ function ShieldBanner() {
 }
 
 export default function ShieldLoginPage() {
-  const [code, setCode] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [adminMode, setAdminMode] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -243,6 +239,8 @@ export default function ShieldLoginPage() {
     e.preventDefault();
     setError('');
     setLoading(true);
+
+    const code = adminMode ? 'LC3ADMIN' : 'LC3MEMBER';
 
     try {
       const res = await fetch('/api/shield/auth', {
@@ -259,7 +257,7 @@ export default function ShieldLoginPage() {
       }
 
       const upperCode = data.code as string;
-      // Use raw load so history is restored even after logout (loggedIn: false)
+      const isAdmin = data.isAdmin === true;
       const existing = loadRawUserData();
       if (existing && existing.accessCode === upperCode) {
         const today = new Date().toISOString().split('T')[0];
@@ -268,9 +266,12 @@ export default function ShieldLoginPage() {
         else if (existing.lastLoginDate !== today) existing.loginStreak = 1;
         existing.lastLoginDate = today;
         existing.loggedIn = true;
+        existing.isAdmin = isAdmin;
         saveUserData(existing);
       } else {
-        saveUserData(getDefaultUserData(upperCode));
+        const fresh = getDefaultUserData(upperCode);
+        fresh.isAdmin = isAdmin;
+        saveUserData(fresh);
       }
       router.push('/shield/dashboard');
     } catch {
@@ -279,7 +280,7 @@ export default function ShieldLoginPage() {
     }
   };
 
-  const canSubmit = code && password && !loading;
+  const canSubmit = password && !loading;
 
   return (
     <div
@@ -322,42 +323,13 @@ export default function ShieldLoginPage() {
 
         <div className="w-full max-w-sm">
           <h1 className="text-2xl font-bold text-white mb-1" style={{ letterSpacing: '-0.02em' }}>
-            Sign in
+            {adminMode ? 'Admin Access' : 'Sign in'}
           </h1>
           <p style={{ fontSize: '14px', color: '#64748b', marginBottom: '28px' }}>
-            Select your group and enter your password.
+            {adminMode ? 'Owner access — no scan limits.' : 'LC3 Club members only.'}
           </p>
 
           <form onSubmit={handleLogin} className="space-y-4">
-            {/* Group selector */}
-            <div>
-              <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: '#64748b', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-                I am a...
-              </label>
-              <div className="grid grid-cols-2 gap-2">
-                {GROUPS.map(({ code: c, label }) => {
-                  const active = code === c;
-                  return (
-                    <button
-                      key={c}
-                      type="button"
-                      onClick={() => { setCode(c); setError(''); }}
-                      className="py-3 px-4 rounded-xl text-center transition-all"
-                      style={{
-                        background: active ? 'rgba(59,130,246,0.12)' : 'rgba(255,255,255,0.03)',
-                        border: active ? '1.5px solid rgba(59,130,246,0.45)' : '1.5px solid rgba(255,255,255,0.07)',
-                        color: active ? '#93c5fd' : '#475569',
-                        fontWeight: active ? 600 : 400,
-                        fontSize: '13px',
-                      }}
-                    >
-                      {label}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
             {/* Password */}
             <div>
               <label
@@ -373,7 +345,7 @@ export default function ShieldLoginPage() {
                 type="password"
                 value={password}
                 onChange={(e) => { setPassword(e.target.value); setError(''); }}
-                placeholder="Enter your password"
+                placeholder={adminMode ? 'Admin password' : 'Enter your password'}
                 autoComplete="current-password"
                 className="w-full px-4 py-3 rounded-xl outline-none transition-all text-white"
                 style={{
@@ -383,8 +355,8 @@ export default function ShieldLoginPage() {
                 }}
                 onFocus={(e) => {
                   if (!error) {
-                    e.target.style.borderColor = 'rgba(59,130,246,0.5)';
-                    e.target.style.boxShadow = '0 0 0 3px rgba(59,130,246,0.07)';
+                    e.target.style.borderColor = adminMode ? 'rgba(239,68,68,0.5)' : 'rgba(59,130,246,0.5)';
+                    e.target.style.boxShadow = adminMode ? '0 0 0 3px rgba(239,68,68,0.07)' : '0 0 0 3px rgba(59,130,246,0.07)';
                   }
                 }}
                 onBlur={(e) => {
@@ -411,10 +383,14 @@ export default function ShieldLoginPage() {
               disabled={!canSubmit}
               className="w-full py-3 rounded-xl font-semibold text-white flex items-center justify-center gap-2 transition-all"
               style={{
-                background: canSubmit ? 'linear-gradient(135deg, #3b82f6, #2563eb)' : 'rgba(59,130,246,0.2)',
+                background: canSubmit
+                  ? adminMode ? 'linear-gradient(135deg, #ef4444, #b91c1c)' : 'linear-gradient(135deg, #3b82f6, #2563eb)'
+                  : 'rgba(59,130,246,0.2)',
                 fontSize: '14px',
                 cursor: canSubmit ? 'pointer' : 'not-allowed',
-                boxShadow: canSubmit ? '0 0 20px rgba(59,130,246,0.25)' : 'none',
+                boxShadow: canSubmit
+                  ? adminMode ? '0 0 20px rgba(239,68,68,0.25)' : '0 0 20px rgba(59,130,246,0.25)'
+                  : 'none',
               }}
             >
               {loading ? (
@@ -426,14 +402,24 @@ export default function ShieldLoginPage() {
                   Verifying...
                 </>
               ) : (
-                <>Access LC3 Shield <ArrowRight className="w-4 h-4" /></>
+                <>{adminMode ? 'Admin Sign In' : 'Access LC3 Shield'} <ArrowRight className="w-4 h-4" /></>
               )}
             </button>
           </form>
 
-          <p className="text-center mt-8" style={{ fontSize: '11px', color: '#334155' }}>
-            Built for LC3 Club &amp; CSN Students · Powered by Claude AI
-          </p>
+          <div className="flex items-center justify-between mt-8">
+            <p style={{ fontSize: '11px', color: '#334155' }}>
+              Built for LC3 Club · Powered by Claude AI
+            </p>
+            <button
+              type="button"
+              onClick={() => { setAdminMode(m => !m); setPassword(''); setError(''); }}
+              style={{ fontSize: '11px', color: '#334155', background: 'none', border: 'none', cursor: 'pointer' }}
+              className="hover:text-slate-500 transition-colors"
+            >
+              {adminMode ? '← Back' : 'Admin'}
+            </button>
+          </div>
         </div>
       </div>
     </div>

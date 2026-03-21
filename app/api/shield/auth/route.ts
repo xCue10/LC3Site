@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { timingSafeEqual } from 'crypto';
 
-const VALID_CODES = ['LC3MEMBER', 'CSNSTUDENT'];
+const VALID_CODES = ['LC3MEMBER', 'LC3ADMIN'];
 
 // Simple in-memory rate limiter: max 10 attempts per IP per 15 minutes
 const attempts = new Map<string, { count: number; resetAt: number }>();
@@ -60,5 +60,5 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
   }
 
-  return NextResponse.json({ ok: true, code: upperCode });
+  return NextResponse.json({ ok: true, code: upperCode, isAdmin: upperCode === 'LC3ADMIN' });
 }
