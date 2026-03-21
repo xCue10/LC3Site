@@ -1,6 +1,7 @@
 import { UserData, ScanResult, BadgeId, Badge } from './shield-types';
 
 const STORAGE_KEY = 'lc3shield_user_data';
+export const DAILY_SCAN_LIMIT = 10;
 
 export const BADGES: Badge[] = [
   { id: 'https-hero', name: 'HTTPS Hero', description: 'Scanned a site with HTTPS enabled', icon: '🔒', earned: false },
@@ -94,6 +95,29 @@ export function markIssueFixed(scanId: string, vulnId: string): void {
     if (vuln) vuln.isFixed = true;
   }
   saveUserData(data);
+}
+
+export function getRemainingScans(): number {
+  const data = loadUserData();
+  if (!data) return 0;
+  const today = new Date().toISOString().split('T')[0];
+  if (data.lastScanDate !== today) return DAILY_SCAN_LIMIT;
+  return Math.max(0, DAILY_SCAN_LIMIT - (data.scansToday ?? 0));
+}
+
+// Returns true if scan is allowed and increments the counter, false if limit hit
+export function consumeScan(): boolean {
+  const data = loadUserData();
+  if (!data) return false;
+  const today = new Date().toISOString().split('T')[0];
+  if (data.lastScanDate !== today) {
+    data.scansToday = 0;
+    data.lastScanDate = today;
+  }
+  if ((data.scansToday ?? 0) >= DAILY_SCAN_LIMIT) return false;
+  data.scansToday = (data.scansToday ?? 0) + 1;
+  saveUserData(data);
+  return true;
 }
 
 export function getBadgeInfo(id: BadgeId): Badge {

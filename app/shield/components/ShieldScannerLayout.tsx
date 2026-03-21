@@ -1,7 +1,8 @@
 'use client';
-import { ReactNode } from 'react';
+import { ReactNode, useState, useEffect } from 'react';
 import Link from 'next/link';
 import ShieldAppLayout from '@/app/shield/components/ShieldAppLayout';
+import { getRemainingScans, DAILY_SCAN_LIMIT } from '@/lib/shield-storage';
 import { LucideIcon, ChevronRight } from 'lucide-react';
 
 interface Props {
@@ -13,6 +14,9 @@ interface Props {
 }
 
 export default function ShieldScannerLayout({ title, description, icon: Icon, iconColor = '#3b82f6', children }: Props) {
+  const [remaining, setRemaining] = useState(DAILY_SCAN_LIMIT);
+  useEffect(() => { setRemaining(getRemainingScans()); }, []);
+
   const glowMap: Record<string, string> = {
     '#3b82f6': 'rgba(59,130,246,0.2)',
     '#8b5cf6': 'rgba(139,92,246,0.2)',
@@ -35,7 +39,7 @@ export default function ShieldScannerLayout({ title, description, icon: Icon, ic
         </div>
 
         {/* Header */}
-        <div className="flex items-start gap-4 mb-8">
+        <div className="flex items-start gap-4 mb-8 flex-wrap">
           <div
             className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
             style={{
@@ -46,13 +50,28 @@ export default function ShieldScannerLayout({ title, description, icon: Icon, ic
           >
             <Icon style={{ width: '22px', height: '22px', color: iconColor }} />
           </div>
-          <div className="pt-0.5">
+          <div className="pt-0.5 flex-1 min-w-0">
             <h1 className="text-2xl font-bold text-white tracking-tight" style={{ letterSpacing: '-0.02em' }}>
               {title}
             </h1>
             <p style={{ fontSize: '14px', color: '#94a3b8', marginTop: '4px', lineHeight: '1.6' }}>
               {description}
             </p>
+          </div>
+          {/* Daily scan counter */}
+          <div
+            className="shrink-0 flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-medium"
+            style={{
+              background: remaining === 0 ? 'rgba(239,68,68,0.1)' : remaining <= 3 ? 'rgba(245,158,11,0.1)' : 'rgba(255,255,255,0.05)',
+              border: remaining === 0 ? '1px solid rgba(239,68,68,0.3)' : remaining <= 3 ? '1px solid rgba(245,158,11,0.3)' : '1px solid rgba(255,255,255,0.08)',
+              color: remaining === 0 ? '#f87171' : remaining <= 3 ? '#fbbf24' : '#94a3b8',
+            }}
+          >
+            <span
+              className="w-1.5 h-1.5 rounded-full"
+              style={{ background: remaining === 0 ? '#ef4444' : remaining <= 3 ? '#f59e0b' : '#22c55e' }}
+            />
+            {remaining}/{DAILY_SCAN_LIMIT} scans today
           </div>
         </div>
 

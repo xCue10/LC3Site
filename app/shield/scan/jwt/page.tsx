@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { loadUserData } from '@/lib/shield-storage';
+import { loadUserData, consumeScan } from '@/lib/shield-storage';
 import ShieldScannerLayout from '@/app/shield/components/ShieldScannerLayout';
 import { Key, Scan, AlertCircle, Loader2, Eye } from 'lucide-react';
 
@@ -22,6 +22,11 @@ export default function JwtAnalyzerPage() {
 
   const startScan = async () => {
     if (!token.trim()) return;
+    if (!consumeScan()) {
+      setError('Daily scan limit reached (10 scans/day). Come back tomorrow!');
+      setScanning(false);
+      return;
+    }
     setScanning(true);
     setError('');
 

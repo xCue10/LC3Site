@@ -71,6 +71,8 @@ export interface UserData {
   loginStreak: number;
   lastLoginDate: string;
   loggedIn?: boolean;
+  scansToday?: number;
+  lastScanDate?: string;
 }
 
 export interface ChatMessage {

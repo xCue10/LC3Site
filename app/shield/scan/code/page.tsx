@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { loadUserData } from '@/lib/shield-storage';
+import { loadUserData, consumeScan } from '@/lib/shield-storage';
 import ShieldScannerLayout from '@/app/shield/components/ShieldScannerLayout';
 import { Code2, Scan, AlertCircle, Loader2 } from 'lucide-react';
 
@@ -44,6 +44,11 @@ export default function CodeScannerPage() {
 
   const startScan = async () => {
     if (!code.trim()) return;
+    if (!consumeScan()) {
+      setError('Daily scan limit reached (10 scans/day). Come back tomorrow!');
+      setScanning(false);
+      return;
+    }
     setScanning(true);
     setError('');
 

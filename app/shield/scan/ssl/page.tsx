@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { loadUserData } from '@/lib/shield-storage';
+import { loadUserData, consumeScan } from '@/lib/shield-storage';
 import ShieldScannerLayout from '@/app/shield/components/ShieldScannerLayout';
 import ShieldScanProgress from '@/app/shield/components/ShieldScanProgress';
 import { Lock, Scan, AlertCircle } from 'lucide-react';
@@ -45,6 +45,11 @@ export default function SslScannerPage() {
 
   const startScan = async () => {
     if (!domain.trim()) return;
+    if (!consumeScan()) {
+      setError('Daily scan limit reached (10 scans/day). Come back tomorrow!');
+      setScanning(false);
+      return;
+    }
     setScanning(true);
     setProgress(0);
     setLogs([]);

@@ -1,9 +1,9 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { loadUserData } from '@/lib/shield-storage';
+import { loadUserData, consumeScan } from '@/lib/shield-storage';
 import ShieldScannerLayout from '@/app/shield/components/ShieldScannerLayout';
-import { ClipboardCheck, ChevronRight, Loader2 } from 'lucide-react';
+import { ClipboardCheck, ChevronRight, Loader2, AlertCircle } from 'lucide-react';
 import { OWASP_QUESTIONS } from '@/lib/owasp-questions';
 
 type Answer = 'yes' | 'no' | 'unsure';
@@ -25,6 +25,7 @@ export default function OwaspPage() {
   const router = useRouter();
   const [answers, setAnswers] = useState<Record<string, Answer>>({});
   const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState('');
   const [mode, setMode] = useState<'beginner' | 'advanced'>('beginner');
   const [activeCategory, setActiveCategory] = useState(0);
 
@@ -48,6 +49,11 @@ export default function OwaspPage() {
       if (!confirm(`You've answered ${totalAnswered}/${totalQuestions} questions. Submit anyway? Unanswered questions will be treated as "unsure".`)) return;
     }
 
+    if (!consumeScan()) {
+      setError('Daily scan limit reached (10 scans/day). Come back tomorrow!');
+      setSubmitting(false);
+      return;
+    }
     setSubmitting(true);
     const finalAnswers = { ...answers };
     OWASP_QUESTIONS.forEach(q => {
@@ -240,6 +246,13 @@ export default function OwaspPage() {
             {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <ClipboardCheck className="w-4 h-4" />}
             {submitting ? 'Claude AI is analyzing...' : `Submit Assessment (${totalAnswered}/${totalQuestions} answered)`}
           </button>
+        )}
+
+        {error && (
+          <div className="flex items-center gap-2 p-4 rounded-xl text-sm" style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)', color: '#f87171' }}>
+            <AlertCircle className="w-4 h-4 shrink-0" />
+            {error}
+          </div>
         )}
       </div>
     </ShieldScannerLayout>
