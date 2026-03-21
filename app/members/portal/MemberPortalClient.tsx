@@ -187,7 +187,7 @@ export default function MemberPortalClient({ members }: { members: Member[] }) {
                   { label: 'Twitter/X URL', key: 'twitter', placeholder: 'https://x.com/yourhandle' },
                   { label: 'Avatar URL', key: 'avatarUrl', placeholder: 'https://…/your-photo.jpg' },
                   { label: 'Skills (comma-separated)', key: 'skills', placeholder: 'React, Python, Azure…' },
-                ] as const).map(({ label, key, placeholder, multiline = false }) => (
+                ] as { label: string; key: keyof EditFields; placeholder: string; multiline?: boolean }[]).map(({ label, key, placeholder, multiline }) => (
                   <div key={key}>
                     <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1.5 uppercase tracking-wide">{label}</label>
                     {multiline ? (
