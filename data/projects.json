@@ -14,7 +14,7 @@
     "description": "Enterprise-grade cybersecurity scanner for LC3 club members and CSN students. Scan URLs, GitHub repos, code, dependencies, JWTs, cookies, DNS, and SSL — powered by Claude AI.",
     "tags": ["Next.js", "TypeScript", "Claude AI", "Cybersecurity"],
     "gradient": "from-red-600 to-rose-500",
-    "github": "https://github.com/xCue10/lc3-shield",
+    "github": "https://github.com/xCue10/LC3Site",
     "status": "in-progress",
     "contributors": ["Jordon Aquiningoc"]
   }
