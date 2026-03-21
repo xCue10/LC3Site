@@ -179,9 +179,11 @@ function FlipCard({ member, index, variant = 'member' }: { member: Member; index
           {/* Footer */}
           <div className={`mt-auto pt-3 border-t ${vs.divider} flex items-center justify-between relative z-10`}>
             <SocialIcons member={member} />
-            {/* Desktop: hint; Mobile: actual link (back face never shows on touch) */}
-            <span className="text-xs text-slate-400 dark:text-slate-600 ml-auto hidden sm:block">hover ↻</span>
-            <Link href={`/members/${member.id}`} className="text-xs text-slate-400 dark:text-slate-500 hover:text-violet-600 dark:hover:text-violet-400 transition-colors ml-auto sm:hidden">
+            <Link
+              href={`/members/${member.id}`}
+              className="text-xs text-slate-400 dark:text-slate-500 hover:text-violet-600 dark:hover:text-violet-400 transition-colors ml-auto"
+              onClick={e => e.stopPropagation()}
+            >
               View Profile →
             </Link>
           </div>
