@@ -7,6 +7,15 @@ import type { Member } from '@/lib/data';
 
 
 function ShieldBanner() {
+  const nodes = [
+    { cx: 95,  cy: 120, dur: '3.2s', label: 'SSL', color: '#22c55e', flowId: 'flow-ssl', flowDur: '2.2s', flowBegin: '0s'   },
+    { cx: 340, cy: 130, dur: '2.8s', label: 'DNS', color: '#06b6d4', flowId: 'flow-dns', flowDur: '2.0s', flowBegin: '0.4s' },
+    { cx: 75,  cy: 290, dur: '3.6s', label: 'JWT', color: '#f59e0b', flowId: 'flow-jwt', flowDur: '2.5s', flowBegin: '0.8s' },
+    { cx: 350, cy: 295, dur: '3s',   label: 'CVE', color: '#ef4444', flowId: 'flow-cve', flowDur: '1.8s', flowBegin: '1.2s' },
+    { cx: 155, cy: 335, dur: '2.5s', label: 'XSS', color: '#8b5cf6', flowId: 'flow-xss', flowDur: '2.3s', flowBegin: '1.6s' },
+    { cx: 270, cy: 340, dur: '3.4s', label: 'SQL', color: '#3b82f6', flowId: 'flow-sql', flowDur: '2.1s', flowBegin: '2.0s' },
+  ];
+
   return (
     <div
       className="hidden lg:flex flex-col items-center justify-center relative overflow-hidden"
@@ -27,13 +36,72 @@ function ShieldBanner() {
         style={{
           width: '500px',
           height: '500px',
-          background: 'radial-gradient(circle, rgba(239,68,68,0.08) 0%, rgba(139,92,246,0.06) 40%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(239,68,68,0.09) 0%, rgba(139,92,246,0.07) 40%, transparent 70%)',
           borderRadius: '50%',
         }}
       />
 
       {/* Main SVG */}
       <svg width="420" height="420" viewBox="0 0 420 420" fill="none" className="relative z-10">
+        <defs>
+          <linearGradient id="orbit1" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#3b82f6" stopOpacity="0" />
+            <stop offset="50%" stopColor="#3b82f6" stopOpacity="0.8" />
+            <stop offset="100%" stopColor="#3b82f6" stopOpacity="0" />
+          </linearGradient>
+          <linearGradient id="orbit2" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#8b5cf6" stopOpacity="0" />
+            <stop offset="50%" stopColor="#8b5cf6" stopOpacity="0.8" />
+            <stop offset="100%" stopColor="#8b5cf6" stopOpacity="0" />
+          </linearGradient>
+          <linearGradient id="orbit3" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#ef4444" stopOpacity="0" />
+            <stop offset="50%" stopColor="#ef4444" stopOpacity="0.9" />
+            <stop offset="100%" stopColor="#ef4444" stopOpacity="0" />
+          </linearGradient>
+          <linearGradient id="shieldFill" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="rgba(239,68,68,0.14)" />
+            <stop offset="100%" stopColor="rgba(185,28,28,0.06)" />
+          </linearGradient>
+          <linearGradient id="shieldStroke" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#ef4444" stopOpacity="0.9" />
+            <stop offset="100%" stopColor="#b91c1c" stopOpacity="0.4" />
+          </linearGradient>
+          <linearGradient id="checkGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#ffffff" />
+            <stop offset="100%" stopColor="#fca5a5" />
+          </linearGradient>
+          <linearGradient id="radarGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#22c55e" stopOpacity="0" />
+            <stop offset="100%" stopColor="#22c55e" stopOpacity="0.8" />
+          </linearGradient>
+          <linearGradient id="scanLine" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#3b82f6" stopOpacity="0" />
+            <stop offset="50%" stopColor="#3b82f6" stopOpacity="1" />
+            <stop offset="100%" stopColor="#3b82f6" stopOpacity="0" />
+          </linearGradient>
+          <linearGradient id="scanLine2" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#8b5cf6" stopOpacity="0" />
+            <stop offset="50%" stopColor="#8b5cf6" stopOpacity="0.7" />
+            <stop offset="100%" stopColor="#8b5cf6" stopOpacity="0" />
+          </linearGradient>
+          {/* Shield glow filter */}
+          <filter id="shieldGlow" x="-40%" y="-40%" width="180%" height="180%">
+            <feGaussianBlur stdDeviation="10" result="blur" />
+            <feMerge>
+              <feMergeNode in="blur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+          {/* animateMotion paths */}
+          <path id="flow-ssl" d="M95,120 L210,185" />
+          <path id="flow-dns" d="M340,130 L210,185" />
+          <path id="flow-jwt" d="M75,290 L210,185" />
+          <path id="flow-cve" d="M350,295 L210,185" />
+          <path id="flow-xss" d="M155,335 L210,185" />
+          <path id="flow-sql" d="M270,340 L210,185" />
+        </defs>
+
         {/* Outermost orbit ring */}
         <circle cx="210" cy="210" r="185" stroke="rgba(59,130,246,0.08)" strokeWidth="1" />
         <circle cx="210" cy="210" r="185" stroke="url(#orbit1)" strokeWidth="1.5" strokeDasharray="8 16">
@@ -84,6 +152,15 @@ function ShieldBanner() {
           <animateTransform attributeName="transform" type="rotate" from="0 210 210" to="360 210 210" dur="4s" repeatCount="indefinite" />
         </path>
 
+        {/* Shield glow backdrop */}
+        <path
+          d="M210 82 L290 110 L290 190 C290 235 254 272 210 285 C166 272 130 235 130 190 L130 110 Z"
+          fill="rgba(239,68,68,0.07)"
+          filter="url(#shieldGlow)"
+        >
+          <animate attributeName="opacity" values="0.5;1;0.5" dur="3s" repeatCount="indefinite" />
+        </path>
+
         {/* Shield body */}
         <path
           d="M210 82 L290 110 L290 190 C290 235 254 272 210 285 C166 272 130 235 130 190 L130 110 Z"
@@ -100,6 +177,9 @@ function ShieldBanner() {
           strokeWidth="1"
         />
 
+        {/* Shield inner hex decoration */}
+        <path d="M210 128 L228 138 L228 158 L210 168 L192 158 L192 138 Z" fill="none" stroke="rgba(239,68,68,0.12)" strokeWidth="0.8" />
+
         {/* Shield checkmark */}
         <path
           d="M188 183 L204 199 L232 168"
@@ -108,9 +188,17 @@ function ShieldBanner() {
           strokeLinecap="round"
           strokeLinejoin="round"
           fill="none"
+          strokeDasharray="60"
+          strokeDashoffset="60"
         >
-          <animate attributeName="stroke-dasharray" from="0 60" to="60 0" dur="1.5s" begin="0.5s" fill="freeze" />
+          <animate attributeName="stroke-dashoffset" from="60" to="0" dur="1.5s" begin="0.5s" fill="freeze" />
         </path>
+
+        {/* SECURE badge fades in after checkmark */}
+        <text x="210" y="252" textAnchor="middle" fill="#f87171" fontSize="7" fontFamily="monospace" fontWeight="bold" letterSpacing="3" opacity="0">
+          SECURE
+          <animate attributeName="opacity" values="0;0;0.65" keyTimes="0;0.65;1" dur="2.5s" begin="0.5s" fill="freeze" />
+        </text>
 
         {/* Pulse rings from shield */}
         <circle cx="210" cy="185" r="55" fill="none" stroke="rgba(239,68,68,0.15)" strokeWidth="1.5">
@@ -122,33 +210,86 @@ function ShieldBanner() {
           <animate attributeName="opacity" values="0.4;0;0.4" dur="3s" begin="1s" repeatCount="indefinite" />
         </circle>
 
-        {/* Floating security nodes */}
-        {[
-          { cx: 95, cy: 120, dur: '3.2s', label: 'SSL' },
-          { cx: 340, cy: 130, dur: '2.8s', label: 'DNS' },
-          { cx: 75, cy: 290, dur: '3.6s', label: 'JWT' },
-          { cx: 350, cy: 295, dur: '3s', label: 'CVE' },
-          { cx: 155, cy: 335, dur: '2.5s', label: 'XSS' },
-          { cx: 270, cy: 340, dur: '3.4s', label: 'SQL' },
-        ].map(({ cx, cy, dur, label }) => (
+        {/* Floating security nodes with colored labels */}
+        {nodes.map(({ cx, cy, dur, label, color }) => (
           <g key={label}>
             <rect x={cx - 18} y={cy - 10} width="36" height="20" rx="4"
-              fill="rgba(15,25,40,0.9)" stroke="rgba(59,130,246,0.3)" strokeWidth="1">
+              fill="rgba(13,17,23,0.92)" stroke={`${color}55`} strokeWidth="1">
               <animate attributeName="opacity" values="0.6;1;0.6" dur={dur} repeatCount="indefinite" />
             </rect>
-            <text x={cx} y={cy + 4} textAnchor="middle" fill="#60a5fa" fontSize="8" fontFamily="monospace" fontWeight="bold">
+            <text x={cx} y={cy + 4} textAnchor="middle" fill={color} fontSize="8" fontFamily="monospace" fontWeight="bold">
               {label}
               <animate attributeName="opacity" values="0.6;1;0.6" dur={dur} repeatCount="indefinite" />
             </text>
-            {/* connector line to center */}
-            <line x1={cx} y1={cy} x2="210" y2="185" stroke="rgba(59,130,246,0.1)" strokeWidth="0.5" strokeDasharray="3 4" />
+            {/* Connector line to shield center */}
+            <line x1={cx} y1={cy} x2="210" y2="185" stroke={`${color}18`} strokeWidth="0.5" strokeDasharray="3 4" />
           </g>
         ))}
 
-        {/* Scan line */}
+        {/* CVE periodic threat detection flash */}
+        <rect x="332" y="285" width="36" height="20" rx="4" fill="rgba(239,68,68,0)" stroke="rgba(239,68,68,0)" strokeWidth="1.5">
+          <animate
+            attributeName="fill"
+            values="rgba(239,68,68,0);rgba(239,68,68,0);rgba(239,68,68,0.25);rgba(239,68,68,0);rgba(239,68,68,0.15);rgba(239,68,68,0)"
+            keyTimes="0;0.55;0.62;0.68;0.74;0.8"
+            dur="7s"
+            repeatCount="indefinite"
+          />
+          <animate
+            attributeName="stroke"
+            values="rgba(239,68,68,0);rgba(239,68,68,0);rgba(239,68,68,0.9);rgba(239,68,68,0);rgba(239,68,68,0.5);rgba(239,68,68,0)"
+            keyTimes="0;0.55;0.62;0.68;0.74;0.8"
+            dur="7s"
+            repeatCount="indefinite"
+          />
+        </rect>
+
+        {/* Data flow particles from each node to shield center */}
+        {nodes.map(({ color, flowId, flowDur, flowBegin }) => (
+          <circle key={`pkt-${flowId}`} r="2.5" fill={color}>
+            <animateMotion dur={flowDur} begin={flowBegin} repeatCount="indefinite">
+              <mpath href={`#${flowId}`} />
+            </animateMotion>
+            <animate attributeName="opacity" values="0;0.95;0.95;0" keyTimes="0;0.12;0.78;1" dur={flowDur} begin={flowBegin} repeatCount="indefinite" />
+          </circle>
+        ))}
+
+        {/* Floating encrypted data chips */}
+        <text x="52" y="178" fill="rgba(96,165,250,0.28)" fontSize="7" fontFamily="monospace">
+          0x4F3A
+          <animate attributeName="opacity" values="0;0.5;0.5;0" keyTimes="0;0.2;0.75;1" dur="5s" begin="0s" repeatCount="indefinite" />
+        </text>
+        <text x="318" y="242" fill="rgba(139,92,246,0.28)" fontSize="7" fontFamily="monospace">
+          0x2B8C
+          <animate attributeName="opacity" values="0;0.5;0.5;0" keyTimes="0;0.2;0.75;1" dur="6s" begin="1.8s" repeatCount="indefinite" />
+        </text>
+        <text x="116" y="362" fill="rgba(34,197,94,0.25)" fontSize="7" fontFamily="monospace">
+          0xE91F
+          <animate attributeName="opacity" values="0;0.5;0.5;0" keyTimes="0;0.2;0.75;1" dur="5.5s" begin="3.2s" repeatCount="indefinite" />
+        </text>
+        <text x="262" y="100" fill="rgba(6,182,212,0.25)" fontSize="7" fontFamily="monospace">
+          0x7C4D
+          <animate attributeName="opacity" values="0;0.5;0.5;0" keyTimes="0;0.2;0.75;1" dur="4.8s" begin="2.1s" repeatCount="indefinite" />
+        </text>
+
+        {/* Corner label tags */}
+        <text x="58" y="62" fill="rgba(59,130,246,0.35)" fontSize="7" fontFamily="monospace">SHIELD</text>
+        <text x="308" y="62" fill="rgba(34,197,94,0.35)" fontSize="7" fontFamily="monospace">v2.0</text>
+
+        {/* Active status indicator */}
+        <circle cx="200" cy="404" r="3" fill="#22c55e">
+          <animate attributeName="opacity" values="1;0.25;1" dur="1.5s" repeatCount="indefinite" />
+        </circle>
+        <text x="208" y="408" fill="rgba(34,197,94,0.6)" fontSize="7" fontFamily="monospace">ACTIVE</text>
+
+        {/* Scan lines (primary + secondary) */}
         <rect x="130" y="82" width="160" height="2" fill="url(#scanLine)" opacity="0.6" rx="1">
           <animate attributeName="y" values="82;285;82" dur="4s" repeatCount="indefinite" />
           <animate attributeName="opacity" values="0;0.7;0;0.7;0" dur="4s" repeatCount="indefinite" />
+        </rect>
+        <rect x="130" y="285" width="160" height="1.5" fill="url(#scanLine2)" opacity="0" rx="1">
+          <animate attributeName="y" values="285;82;285" dur="5.5s" begin="2s" repeatCount="indefinite" />
+          <animate attributeName="opacity" values="0;0.5;0;0.5;0" dur="5.5s" begin="2s" repeatCount="indefinite" />
         </rect>
 
         {/* Corner brackets */}
@@ -157,44 +298,19 @@ function ShieldBanner() {
         <path d="M50 370 L50 350 M50 370 L70 370" stroke="rgba(59,130,246,0.3)" strokeWidth="1.5" strokeLinecap="round" />
         <path d="M370 370 L370 350 M370 370 L350 370" stroke="rgba(59,130,246,0.3)" strokeWidth="1.5" strokeLinecap="round" />
 
-        <defs>
-          <linearGradient id="orbit1" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#3b82f6" stopOpacity="0" />
-            <stop offset="50%" stopColor="#3b82f6" stopOpacity="0.8" />
-            <stop offset="100%" stopColor="#3b82f6" stopOpacity="0" />
-          </linearGradient>
-          <linearGradient id="orbit2" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#8b5cf6" stopOpacity="0" />
-            <stop offset="50%" stopColor="#8b5cf6" stopOpacity="0.8" />
-            <stop offset="100%" stopColor="#8b5cf6" stopOpacity="0" />
-          </linearGradient>
-          <linearGradient id="orbit3" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#ef4444" stopOpacity="0" />
-            <stop offset="50%" stopColor="#ef4444" stopOpacity="0.9" />
-            <stop offset="100%" stopColor="#ef4444" stopOpacity="0" />
-          </linearGradient>
-          <linearGradient id="shieldFill" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="rgba(239,68,68,0.12)" />
-            <stop offset="100%" stopColor="rgba(185,28,28,0.06)" />
-          </linearGradient>
-          <linearGradient id="shieldStroke" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#ef4444" stopOpacity="0.8" />
-            <stop offset="100%" stopColor="#b91c1c" stopOpacity="0.4" />
-          </linearGradient>
-          <linearGradient id="checkGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#ffffff" />
-            <stop offset="100%" stopColor="#fca5a5" />
-          </linearGradient>
-          <linearGradient id="radarGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#22c55e" stopOpacity="0" />
-            <stop offset="100%" stopColor="#22c55e" stopOpacity="0.8" />
-          </linearGradient>
-          <linearGradient id="scanLine" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#3b82f6" stopOpacity="0" />
-            <stop offset="50%" stopColor="#3b82f6" stopOpacity="1" />
-            <stop offset="100%" stopColor="#3b82f6" stopOpacity="0" />
-          </linearGradient>
-        </defs>
+        {/* Corner bracket glow pulses (staggered) */}
+        <path d="M50 50 L50 70 M50 50 L70 50" stroke="#3b82f6" strokeWidth="1" strokeLinecap="round" opacity="0">
+          <animate attributeName="opacity" values="0;0.6;0" dur="4s" begin="0s" repeatCount="indefinite" />
+        </path>
+        <path d="M370 50 L370 70 M370 50 L350 50" stroke="#3b82f6" strokeWidth="1" strokeLinecap="round" opacity="0">
+          <animate attributeName="opacity" values="0;0.6;0" dur="4s" begin="1s" repeatCount="indefinite" />
+        </path>
+        <path d="M50 370 L50 350 M50 370 L70 370" stroke="#3b82f6" strokeWidth="1" strokeLinecap="round" opacity="0">
+          <animate attributeName="opacity" values="0;0.6;0" dur="4s" begin="2s" repeatCount="indefinite" />
+        </path>
+        <path d="M370 370 L370 350 M370 370 L350 370" stroke="#3b82f6" strokeWidth="1" strokeLinecap="round" opacity="0">
+          <animate attributeName="opacity" values="0;0.6;0" dur="4s" begin="3s" repeatCount="indefinite" />
+        </path>
       </svg>
 
       {/* Text below SVG */}
@@ -209,13 +325,20 @@ function ShieldBanner() {
 
         {/* Feature pills */}
         <div className="flex flex-wrap justify-center gap-2 mt-5">
-          {['URL Scan', 'SSL/TLS', 'OWASP', 'GitHub', 'DNS', 'JWT'].map((f) => (
+          {[
+            { label: 'URL Scan', color: '#3b82f6' },
+            { label: 'SSL/TLS', color: '#22c55e' },
+            { label: 'OWASP',   color: '#f97316' },
+            { label: 'GitHub',  color: '#8b5cf6' },
+            { label: 'DNS',     color: '#06b6d4' },
+            { label: 'JWT',     color: '#f59e0b' },
+          ].map(({ label, color }) => (
             <span
-              key={f}
+              key={label}
               className="text-xs px-2.5 py-1 rounded-full"
-              style={{ background: 'rgba(59,130,246,0.08)', border: '1px solid rgba(59,130,246,0.15)', color: '#64748b' }}
+              style={{ background: `${color}10`, border: `1px solid ${color}28`, color: `${color}99` }}
             >
-              {f}
+              {label}
             </span>
           ))}
         </div>
