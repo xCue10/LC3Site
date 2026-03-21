@@ -1,10 +1,13 @@
 /**
  * Verifies an hCaptcha token with the hCaptcha API.
- * Returns true if valid (or if HCAPTCHA_SECRET_KEY is not configured — dev mode).
+ * Returns true if valid (or if either key is not configured — dev mode / misconfiguration).
  */
 export async function verifyHcaptcha(token: string | undefined): Promise<boolean> {
   const secret = process.env.HCAPTCHA_SECRET_KEY;
-  if (!secret) return true; // Skip verification in dev when not configured
+  const siteKey = process.env.NEXT_PUBLIC_HCAPTCHA_SITE_KEY;
+
+  // Skip verification if either key is missing — widget won't have shown so no token exists
+  if (!secret || !siteKey) return true;
 
   if (!token) return false;
 
