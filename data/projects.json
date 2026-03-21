@@ -7,5 +7,15 @@
     "gradient": "from-blue-500 to-cyan-500",
     "github": "",
     "contributors": ["Jordon Aquiningoc"]
+  },
+  {
+    "id": "lc3-shield",
+    "name": "LC3 Shield",
+    "description": "Enterprise-grade cybersecurity scanner for LC3 club members and CSN students. Scan URLs, GitHub repos, code, dependencies, JWTs, cookies, DNS, and SSL — powered by Claude AI.",
+    "tags": ["Next.js", "TypeScript", "Claude AI", "Cybersecurity"],
+    "gradient": "from-red-600 to-rose-500",
+    "github": "https://github.com/xCue10/lc3-shield",
+    "status": "in-progress",
+    "contributors": ["Jordon Aquiningoc"]
   }
 ]
