@@ -1,8 +1,8 @@
 'use client';
 import { useState, useMemo } from 'react';
-import { Member } from '@/lib/data';
+import { Member, CustomField } from '@/lib/data';
 
-type EditFields = { bio: string; github: string; linkedin: string; twitter: string; avatarUrl: string; skills: string; majors: string };
+type EditFields = { bio: string; github: string; linkedin: string; twitter: string; avatarUrl: string; skills: string; majors: string; website: string; graduationYear: string };
 
 export default function MemberPortalClient({ members }: { members: Member[] }) {
   const [query, setQuery] = useState('');
@@ -11,7 +11,8 @@ export default function MemberPortalClient({ members }: { members: Member[] }) {
   const [verified, setVerified] = useState(false);
   const [verifying, setVerifying] = useState(false);
   const [verifyError, setVerifyError] = useState('');
-  const [fields, setFields] = useState<EditFields>({ bio: '', github: '', linkedin: '', twitter: '', avatarUrl: '', skills: '', majors: '' });
+  const [fields, setFields] = useState<EditFields>({ bio: '', github: '', linkedin: '', twitter: '', avatarUrl: '', skills: '', majors: '', website: '', graduationYear: '' });
+  const [customFields, setCustomFields] = useState<CustomField[]>([]);
   const [saving, setSaving] = useState(false);
   const [saveMsg, setSaveMsg] = useState('');
 
@@ -31,7 +32,10 @@ export default function MemberPortalClient({ members }: { members: Member[] }) {
       avatarUrl: m.avatarUrl || '',
       skills: (m.skills || []).join(', '),
       majors: (m.majors || []).join(', '),
+      website: m.website || '',
+      graduationYear: m.graduationYear || '',
     });
+    setCustomFields(m.customFields || []);
     setVerified(false);
     setCode('');
     setVerifyError('');
@@ -77,6 +81,9 @@ export default function MemberPortalClient({ members }: { members: Member[] }) {
           avatarUrl: fields.avatarUrl,
           skills: fields.skills.split(',').map(s => s.trim()).filter(Boolean),
           majors: fields.majors.split(',').map(s => s.trim()).filter(Boolean),
+          website: fields.website,
+          graduationYear: fields.graduationYear,
+          customFields: customFields.filter(f => f.label.trim() && f.value.trim()),
         }),
       });
       if (res.ok) {
@@ -238,6 +245,8 @@ export default function MemberPortalClient({ members }: { members: Member[] }) {
                   { label: 'Bio', key: 'bio', placeholder: 'Tell us about yourself…', multiline: true },
                   { label: 'Majors (comma-separated)', key: 'majors', placeholder: 'Computer Science, Business…' },
                   { label: 'Skills (comma-separated)', key: 'skills', placeholder: 'React, Python, Azure…' },
+                  { label: 'Graduation Year', key: 'graduationYear', placeholder: '2026' },
+                  { label: 'Website / Portfolio', key: 'website', placeholder: 'https://yoursite.com' },
                   { label: 'GitHub URL', key: 'github', placeholder: 'https://github.com/yourname' },
                   { label: 'LinkedIn URL', key: 'linkedin', placeholder: 'https://linkedin.com/in/yourname' },
                   { label: 'Twitter/X URL', key: 'twitter', placeholder: 'https://x.com/yourhandle' },
@@ -263,6 +272,59 @@ export default function MemberPortalClient({ members }: { members: Member[] }) {
                     )}
                   </div>
                 ))}
+
+                {/* Custom fields */}
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide">Custom Fields</label>
+                    {customFields.length < 10 && (
+                      <button
+                        type="button"
+                        onClick={() => setCustomFields(cf => [...cf, { label: '', value: '' }])}
+                        className="text-xs text-violet-600 dark:text-violet-400 hover:text-violet-700 dark:hover:text-violet-300 font-medium transition-colors"
+                      >
+                        + Add field
+                      </button>
+                    )}
+                  </div>
+                  {customFields.length === 0 && (
+                    <p className="text-xs text-slate-400 dark:text-slate-500">
+                      Add anything you want on your profile — &ldquo;Currently learning&rdquo;, &ldquo;Fun fact&rdquo;, &ldquo;Open to&rdquo;, etc.
+                    </p>
+                  )}
+                  <div className="space-y-2">
+                    {customFields.map((cf, i) => (
+                      <div key={i} className="flex gap-2 items-start">
+                        <input
+                          type="text"
+                          value={cf.label}
+                          onChange={e => setCustomFields(prev => prev.map((f, j) => j === i ? { ...f, label: e.target.value } : f))}
+                          placeholder="Label"
+                          maxLength={50}
+                          className="w-1/3 bg-slate-50 dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 dark:text-white placeholder:text-slate-400 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                        />
+                        <input
+                          type="text"
+                          value={cf.value}
+                          onChange={e => setCustomFields(prev => prev.map((f, j) => j === i ? { ...f, value: e.target.value } : f))}
+                          placeholder="Value"
+                          maxLength={300}
+                          className="flex-1 bg-slate-50 dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 dark:text-white placeholder:text-slate-400 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setCustomFields(prev => prev.filter((_, j) => j !== i))}
+                          className="shrink-0 w-8 h-9 flex items-center justify-center text-slate-400 hover:text-red-400 transition-colors rounded-lg hover:bg-red-50 dark:hover:bg-red-500/10"
+                          aria-label="Remove field"
+                        >
+                          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                          </svg>
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
 
                 {saveMsg && (
                   <p className={`text-sm ${saveMsg.startsWith('Saved') ? 'text-green-500' : 'text-red-400'}`}>{saveMsg}</p>

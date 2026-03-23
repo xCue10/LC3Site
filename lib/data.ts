@@ -32,6 +32,11 @@ export function writeJSON<T>(filename: string, data: T): void {
   }
 }
 
+export interface CustomField {
+  label: string;
+  value: string;
+}
+
 export interface Member {
   id: string;
   name: string;
@@ -47,6 +52,9 @@ export interface Member {
   github: string;
   linkedin: string;
   twitter: string;
+  website?: string;
+  graduationYear?: string;
+  customFields?: CustomField[];
 }
 
 export interface Event {

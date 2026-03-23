@@ -24,6 +24,11 @@ interface SiteSettings {
   socialLinksLive?: boolean;
 }
 
+interface CustomField {
+  label: string;
+  value: string;
+}
+
 interface Member {
   id: string;
   name: string;
@@ -39,6 +44,9 @@ interface Member {
   github: string;
   linkedin: string;
   twitter: string;
+  website?: string;
+  graduationYear?: string;
+  customFields?: CustomField[];
 }
 
 interface Event {
@@ -213,7 +221,7 @@ const emptyProject: Omit<Project, 'id'> = {
 };
 
 const emptyMember: Omit<Member, 'id'> = {
-  name: '', role: '', memberType: 'member', majors: [], focusArea: '', status: '', avatarUrl: '', bio: '', skills: [], projects: [], github: '', linkedin: '', twitter: '',
+  name: '', role: '', memberType: 'member', majors: [], focusArea: '', status: '', avatarUrl: '', bio: '', skills: [], projects: [], github: '', linkedin: '', twitter: '', website: '', graduationYear: '', customFields: [],
 };
 
 const emptyEvent: Omit<Event, 'id'> = {
@@ -236,6 +244,7 @@ function MemberModal({
   const [majorsStr, setMajorsStr] = useState((member?.majors ?? []).join(', '));
   const [skillsStr, setSkillsStr] = useState((member?.skills ?? []).join(', '));
   const [projectsStr, setProjectsStr] = useState((member?.projects ?? []).join(', '));
+  const [customFields, setCustomFields] = useState<CustomField[]>(member?.customFields ?? []);
   const [saving, setSaving] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -250,6 +259,7 @@ function MemberModal({
       majors: majorsStr.split(',').map((s) => s.trim()).filter(Boolean),
       skills: skillsStr.split(',').map((s) => s.trim()).filter(Boolean),
       projects: projectsStr.split(',').map((s) => s.trim()).filter(Boolean),
+      customFields: customFields.filter((f) => f.label.trim() && f.value.trim()),
     });
     setSaving(false);
   };
@@ -303,6 +313,7 @@ function MemberModal({
             { name: 'name', label: 'Full Name', placeholder: 'Alex Johnson' },
             { name: 'focusArea', label: 'Focus Area', placeholder: 'Web Development' },
             { name: 'status', label: 'Status', placeholder: 'Open to Opportunities · Interning at Microsoft · Graduating May 2026' },
+            { name: 'graduationYear', label: 'Graduation Year', placeholder: '2026' },
             { name: 'avatarUrl', label: 'Photo URL', placeholder: 'https://example.com/photo.jpg (optional)' },
           ].map(({ name, label, placeholder }) => (
             <div key={name}>
@@ -311,7 +322,7 @@ function MemberModal({
                 name={name}
                 type="text"
                 required={name === 'name'}
-                value={(form as Record<string, string | string[]>)[name] as string}
+                value={((form as Record<string, unknown>)[name] as string) ?? ''}
                 onChange={handleChange}
                 placeholder={placeholder}
                 className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
@@ -376,19 +387,70 @@ function MemberModal({
               { name: 'github', label: 'GitHub URL', placeholder: 'https://github.com/username' },
               { name: 'linkedin', label: 'LinkedIn URL', placeholder: 'https://linkedin.com/in/username' },
               { name: 'twitter', label: 'Twitter / X URL', placeholder: 'https://twitter.com/username' },
+              { name: 'website', label: 'Website / Portfolio', placeholder: 'https://yoursite.com' },
             ].map(({ name, label, placeholder }) => (
               <div key={name}>
                 <label className="block text-sm font-medium text-slate-400 mb-1.5">{label}</label>
                 <input
                   name={name}
                   type="url"
-                  value={(form as Record<string, string | string[]>)[name] as string}
+                  value={((form as Record<string, unknown>)[name] as string) ?? ''}
                   onChange={handleChange}
                   placeholder={placeholder}
                   className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
                 />
               </div>
             ))}
+          </div>
+
+          {/* Custom Fields */}
+          <div className="pt-1">
+            <div className="flex items-center justify-between mb-2">
+              <p className="text-xs text-slate-500 font-medium uppercase tracking-wider">Custom Fields</p>
+              {customFields.length < 10 && (
+                <button
+                  type="button"
+                  onClick={() => setCustomFields((cf) => [...cf, { label: '', value: '' }])}
+                  className="text-xs text-violet-600 dark:text-violet-400 hover:text-violet-700 dark:hover:text-violet-300 font-medium transition-colors"
+                >
+                  + Add field
+                </button>
+              )}
+            </div>
+            {customFields.length === 0 && (
+              <p className="text-xs text-slate-400">No custom fields. Click &ldquo;+ Add field&rdquo; to add one.</p>
+            )}
+            <div className="space-y-2">
+              {customFields.map((cf, i) => (
+                <div key={i} className="flex gap-2 items-start">
+                  <input
+                    type="text"
+                    value={cf.label}
+                    onChange={(e) => setCustomFields((prev) => prev.map((f, j) => j === i ? { ...f, label: e.target.value } : f))}
+                    placeholder="Label"
+                    maxLength={50}
+                    className="w-1/3 bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                  />
+                  <input
+                    type="text"
+                    value={cf.value}
+                    onChange={(e) => setCustomFields((prev) => prev.map((f, j) => j === i ? { ...f, value: e.target.value } : f))}
+                    placeholder="Value"
+                    maxLength={300}
+                    className="flex-1 bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setCustomFields((prev) => prev.filter((_, j) => j !== i))}
+                    className="shrink-0 w-8 h-9 flex items-center justify-center text-slate-400 hover:text-red-400 transition-colors rounded-lg hover:bg-red-50 dark:hover:bg-red-500/10"
+                  >
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+              ))}
+            </div>
           </div>
 
           <div className="flex gap-3 pt-2">

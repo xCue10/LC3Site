@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { readJSON, writeJSON, Member } from '@/lib/data';
+import { readJSON, writeJSON, Member, CustomField } from '@/lib/data';
 import { timingSafeEqual } from 'crypto';
 
 export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
@@ -23,6 +23,9 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     github: body.github ?? members[idx].github,
     linkedin: body.linkedin ?? members[idx].linkedin,
     twitter: body.twitter ?? members[idx].twitter,
+    website: body.website ?? members[idx].website,
+    graduationYear: body.graduationYear ?? members[idx].graduationYear,
+    customFields: Array.isArray(body.customFields) ? body.customFields : members[idx].customFields,
   };
   writeJSON('members.json', members);
   return NextResponse.json(members[idx]);
@@ -41,7 +44,7 @@ const MEMBER_CODE = process.env.LC3MEMBER_PASSWORD;
 
 export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const { code, bio, github, linkedin, twitter, avatarUrl, skills, majors } = await req.json();
+  const { code, bio, github, linkedin, twitter, avatarUrl, skills, majors, website, graduationYear, customFields } = await req.json();
 
   // Verify the LC3MEMBER code
   if (!MEMBER_CODE) {
@@ -73,6 +76,14 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
   if (avatarUrl !== undefined) members[idx].avatarUrl = String(avatarUrl).slice(0, 500);
   if (Array.isArray(skills)) members[idx].skills = skills.map(String).slice(0, 20);
   if (Array.isArray(majors)) members[idx].majors = majors.map(String).slice(0, 10);
+  if (website !== undefined) members[idx].website = String(website).slice(0, 300);
+  if (graduationYear !== undefined) members[idx].graduationYear = String(graduationYear).slice(0, 10);
+  if (Array.isArray(customFields)) {
+    members[idx].customFields = (customFields as CustomField[])
+      .filter((f) => f.label && f.value)
+      .map((f) => ({ label: String(f.label).slice(0, 50), value: String(f.value).slice(0, 300) }))
+      .slice(0, 10);
+  }
 
   writeJSON('members.json', members);
   return NextResponse.json({ ok: true, member: members[idx] });

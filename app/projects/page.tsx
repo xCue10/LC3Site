@@ -47,7 +47,7 @@ function StatusBadge({ status }: { status: ProjectStatus }) {
 
 function ProjectCard({ project }: { project: Project }) {
   return (
-    <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden hover:border-violet-200 hover:shadow-md hover:-translate-y-0.5 transition-all flex flex-col dark:bg-[#0d1424] dark:border-[#1e2d45] dark:hover:border-violet-500/30 dark:hover:shadow-none">
+    <div id={project.id} className="bg-white border border-slate-200 rounded-2xl overflow-hidden hover:border-violet-200 hover:shadow-md hover:-translate-y-0.5 transition-all flex flex-col dark:bg-[#0d1424] dark:border-[#1e2d45] dark:hover:border-violet-500/30 dark:hover:shadow-none">
       <div className={`relative h-24 bg-gradient-to-r ${project.gradient} overflow-hidden`}>
         <svg className="absolute inset-0 w-full h-full" viewBox="0 0 320 96" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
           <circle cx="0" cy="0" r="70" fill="white" fillOpacity="0.07"/>

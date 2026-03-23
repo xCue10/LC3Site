@@ -1,4 +1,4 @@
-import { readJSON, Member } from '@/lib/data';
+import { readJSON, Member, Project, CustomField } from '@/lib/data';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -69,10 +69,27 @@ const memberTypeBadgeClass: Record<string, string> = {
 export default async function MemberProfilePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const members = readJSON<Member[]>('members.json');
+  const projects = readJSON<Project[]>('projects.json');
   const member = members.find((m) => m.id === id);
   if (!member) notFound();
 
   const index = members.findIndex((m) => m.id === id);
+
+  // Build a name→project map for fast lookup
+  const projectByName = new Map(projects.map((p) => [p.name.toLowerCase(), p]));
+
+  // Other members who share at least one skill with this member
+  const memberSkills = new Set((member.skills ?? []).map((s) => s.toLowerCase()));
+  const relatedMembers = members
+    .filter((m) => m.id !== member.id)
+    .map((m) => ({
+      member: m,
+      shared: (m.skills ?? []).filter((s) => memberSkills.has(s.toLowerCase())).length,
+    }))
+    .filter(({ shared }) => shared > 0)
+    .sort((a, b) => b.shared - a.shared)
+    .slice(0, 3)
+    .map(({ member: m }) => m);
   const gradient = avatarGradients[index % avatarGradients.length];
   const prevMember = index > 0 ? members[index - 1] : null;
   const nextMember = index < members.length - 1 ? members[index + 1] : null;
@@ -150,18 +167,23 @@ export default async function MemberProfilePage({ params }: { params: Promise<{ 
             </div>
           )}
 
-          {/* Majors */}
-          {(member.majors ?? []).length > 0 && (
+          {/* Majors + Graduation Year */}
+          {((member.majors ?? []).length > 0 || member.graduationYear) && (
             <div className="mb-6">
               <p className="text-slate-400 text-xs font-medium uppercase tracking-wider mb-2">
-                {member.majors.length === 1 ? 'Major' : 'Majors'}
+                {(member.majors ?? []).length === 1 ? 'Major' : 'Majors'}
               </p>
-              <div className="flex flex-wrap gap-2">
-                {member.majors.map((m) => (
+              <div className="flex flex-wrap gap-2 items-center">
+                {(member.majors ?? []).map((m) => (
                   <span key={m} className="text-sm bg-slate-100 text-slate-700 px-3 py-1.5 rounded-lg dark:bg-slate-700/40 dark:text-slate-300">
                     {m}
                   </span>
                 ))}
+                {member.graduationYear && (
+                  <span className="text-sm bg-slate-100 text-slate-500 px-3 py-1.5 rounded-lg dark:bg-slate-700/40 dark:text-slate-400">
+                    Class of {member.graduationYear}
+                  </span>
+                )}
               </div>
             </div>
           )}
@@ -185,17 +207,46 @@ export default async function MemberProfilePage({ params }: { params: Promise<{ 
             <div className="mb-6">
               <p className="text-slate-400 text-xs font-medium uppercase tracking-wider mb-2">Projects</p>
               <div className="flex flex-wrap gap-2">
-                {member.projects.map((project) => (
-                  <span key={project} className="text-sm bg-slate-100 border border-slate-200 text-slate-600 px-3 py-1.5 rounded-lg dark:bg-white/5 dark:border-white/10 dark:text-slate-300">
-                    {project}
-                  </span>
+                {member.projects.map((project) => {
+                  const matched = projectByName.get(project.toLowerCase());
+                  return matched ? (
+                    <Link
+                      key={project}
+                      href={`/projects#${matched.id}`}
+                      className="inline-flex items-center gap-1.5 text-sm bg-violet-50 border border-violet-200 text-violet-600 px-3 py-1.5 rounded-lg hover:bg-violet-100 hover:border-violet-300 transition-colors dark:bg-violet-500/10 dark:border-violet-500/20 dark:text-violet-400 dark:hover:bg-violet-500/20"
+                    >
+                      {project}
+                      <svg className="w-3 h-3 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                      </svg>
+                    </Link>
+                  ) : (
+                    <span key={project} className="text-sm bg-slate-100 border border-slate-200 text-slate-600 px-3 py-1.5 rounded-lg dark:bg-white/5 dark:border-white/10 dark:text-slate-300">
+                      {project}
+                    </span>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* Custom fields */}
+          {(member.customFields ?? []).length > 0 && (
+            <div className="mb-6">
+              <p className="text-slate-400 text-xs font-medium uppercase tracking-wider mb-3">More</p>
+              <div className="space-y-2">
+                {(member.customFields as CustomField[]).map((cf, i) => (
+                  <div key={i} className="flex gap-3 text-sm">
+                    <span className="text-slate-400 dark:text-slate-500 shrink-0 min-w-[120px]">{cf.label}</span>
+                    <span className="text-slate-700 dark:text-slate-300">{cf.value}</span>
+                  </div>
                 ))}
               </div>
             </div>
           )}
 
           {/* Social Links */}
-          {(member.github || member.linkedin || member.twitter) && (
+          {(member.github || member.linkedin || member.twitter || member.website) && (
             <div className="pt-6 border-t border-slate-200 dark:border-[#1e2d45]">
               <p className="text-slate-400 text-xs font-medium uppercase tracking-wider mb-3">Connect</p>
               <div className="flex flex-wrap gap-3">
@@ -232,11 +283,56 @@ export default async function MemberProfilePage({ params }: { params: Promise<{ 
                     Twitter / X
                   </a>
                 )}
+                {member.website && (
+                  <a
+                    href={member.website}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 px-4 py-2.5 bg-slate-100 border border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-200 rounded-xl transition-all text-sm dark:bg-white/5 dark:border-white/10 dark:text-slate-300 dark:hover:text-white dark:hover:bg-white/10"
+                  >
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" />
+                    </svg>
+                    Website
+                  </a>
+                )}
               </div>
             </div>
           )}
         </div>
       </div>
+
+      {/* Related members */}
+      {relatedMembers.length > 0 && (
+        <div className="mt-6">
+          <p className="text-slate-400 text-xs font-medium uppercase tracking-wider mb-3">Members with shared skills</p>
+          <div className="flex flex-wrap gap-3">
+            {relatedMembers.map((m) => {
+              const relIndex = members.findIndex((x) => x.id === m.id);
+              const relGradient = avatarGradients[relIndex % avatarGradients.length];
+              return (
+                <Link
+                  key={m.id}
+                  href={`/members/${m.id}`}
+                  className="flex items-center gap-3 px-4 py-2.5 bg-white border border-slate-200 rounded-xl hover:border-violet-300 dark:hover:border-violet-500/40 hover:shadow-sm transition-all dark:bg-[#0d1424] dark:border-[#1e2d45]"
+                >
+                  {m.avatarUrl ? (
+                    <Image src={m.avatarUrl} alt={m.name} width={32} height={32} className="w-8 h-8 rounded-lg object-cover flex-shrink-0" />
+                  ) : (
+                    <div className={`w-8 h-8 rounded-lg bg-gradient-to-br ${relGradient} flex items-center justify-center text-white text-xs font-bold flex-shrink-0`}>
+                      {getInitials(m.name)}
+                    </div>
+                  )}
+                  <div className="min-w-0">
+                    <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{m.name}</p>
+                    {m.role && <p className="text-xs text-slate-400 truncate">{m.role.split(/[,/]/)[0].trim()}</p>}
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
       {/* Prev / Next navigation */}
       {(prevMember || nextMember) && (
