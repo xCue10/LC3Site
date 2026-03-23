@@ -120,7 +120,7 @@ function FlipCard({ member, index, variant = 'member' }: { member: Member; index
           )}
           {(member.majors ?? []).length > 0 && (
             <div className="flex flex-wrap gap-1 mt-0.5">
-              {member.majors.slice(0, 1).map((m) => (
+              {member.majors.map((m) => (
                 <span key={m} className="text-xs bg-slate-100 text-slate-500 px-2 py-0.5 rounded-md dark:bg-slate-700/40 dark:text-slate-400">{m}</span>
               ))}
             </div>
