@@ -93,9 +93,9 @@ function Avatar({ member, index, size = 'md' }: { member: Member; index: number;
 }
 
 const variantStyles = {
-  member:  { border: 'border-slate-200 dark:border-[#1e2d45]',  roleTag: 'bg-blue-50 border-blue-200 text-blue-600 dark:bg-blue-500/10 dark:border-blue-500/20 dark:text-blue-400',  divider: 'border-slate-100 dark:border-[#1e2d45]' },
-  officer: { border: 'border-violet-200/60 dark:border-violet-500/20', roleTag: 'bg-violet-50 border-violet-200 text-violet-600 dark:bg-violet-500/10 dark:border-violet-500/20 dark:text-violet-400', divider: 'border-violet-100 dark:border-[#1e2d45]' },
-  advisor: { border: 'border-amber-200/60 dark:border-amber-500/20',   roleTag: 'bg-amber-50 border-amber-200 text-amber-600 dark:bg-amber-500/10 dark:border-amber-500/20 dark:text-amber-400',   divider: 'border-amber-100 dark:border-[#1e2d45]' },
+  member:  { border: 'border-slate-200 dark:border-[#1e2d45]',           accent: 'bg-blue-500',   roleTag: 'bg-blue-50 border-blue-200 text-blue-600 dark:bg-blue-500/10 dark:border-blue-500/20 dark:text-blue-400',     divider: 'border-slate-100 dark:border-[#1e2d45]' },
+  officer: { border: 'border-violet-200/60 dark:border-violet-500/20',    accent: 'bg-violet-500', roleTag: 'bg-violet-50 border-violet-200 text-violet-600 dark:bg-violet-500/10 dark:border-violet-500/20 dark:text-violet-400', divider: 'border-violet-100 dark:border-[#1e2d45]' },
+  advisor: { border: 'border-amber-200/60 dark:border-amber-500/20',      accent: 'bg-amber-500',  roleTag: 'bg-amber-50 border-amber-200 text-amber-600 dark:bg-amber-500/10 dark:border-amber-500/20 dark:text-amber-400',   divider: 'border-amber-100 dark:border-[#1e2d45]' },
 } as const;
 
 function FlipCard({ member, index, variant = 'member' }: { member: Member; index: number; variant?: keyof typeof variantStyles }) {
@@ -104,60 +104,66 @@ function FlipCard({ member, index, variant = 'member' }: { member: Member; index
   return (
     <Link
       href={`/members/${member.id}`}
-      className={`relative min-h-56 rounded-2xl bg-white dark:bg-[#0d1424] border ${vs.border} p-5 flex flex-col gap-3 hover:border-violet-300 dark:hover:border-violet-500/40 hover:shadow-md dark:hover:shadow-none hover:-translate-y-0.5 transition-all`}
+      className={`group relative rounded-2xl bg-white dark:bg-[#0d1424] border ${vs.border} flex flex-col overflow-hidden hover:border-violet-300 dark:hover:border-violet-500/40 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200`}
     >
-      {/* Avatar + name */}
-      <div className="flex items-center gap-3">
-        <Avatar member={member} index={index} />
-        <div className="min-w-0">
-          <h3 className="text-slate-900 dark:text-white font-semibold truncate">{member.name}</h3>
-          {member.role && (
-            <div className="flex flex-wrap gap-1 mt-0.5">
-              {member.role.split(/[,/]/).map((r) => r.trim()).filter(Boolean).slice(0, 2).map((r) => (
-                <span key={r} className={`inline-block text-xs font-medium border px-2 py-0.5 rounded-full ${vs.roleTag}`}>{r}</span>
-              ))}
-            </div>
-          )}
-          {(member.majors ?? []).length > 0 && (
-            <div className="flex flex-wrap gap-1 mt-0.5">
-              {member.majors.map((m) => (
-                <span key={m} className="text-xs bg-slate-100 text-slate-500 px-2 py-0.5 rounded-md dark:bg-slate-700/40 dark:text-slate-400">{m}</span>
-              ))}
-            </div>
-          )}
+      {/* Accent bar */}
+      <div className={`h-1 w-full ${vs.accent} opacity-80`} />
+
+      {/* Card body */}
+      <div className="p-5 flex flex-col gap-3 flex-1">
+        {/* Avatar + name */}
+        <div className="flex items-start gap-3">
+          <Avatar member={member} index={index} />
+          <div className="min-w-0 flex-1 pt-0.5">
+            <h3 className="text-slate-900 dark:text-white font-semibold leading-snug truncate">{member.name}</h3>
+            {member.role && (
+              <div className="flex flex-wrap gap-1 mt-1">
+                {member.role.split(/[,/]/).map((r) => r.trim()).filter(Boolean).slice(0, 2).map((r) => (
+                  <span key={r} className={`inline-block text-xs font-medium border px-2 py-0.5 rounded-full ${vs.roleTag}`}>{r}</span>
+                ))}
+              </div>
+            )}
+            {(member.majors ?? []).length > 0 && (
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-snug">
+                {member.majors.join(' · ')}
+              </p>
+            )}
+          </div>
         </div>
-      </div>
 
-      {/* Badges */}
-      <div className="flex flex-wrap gap-1.5">
-        {member.focusArea && (
-          <span className="inline-flex items-center gap-1 bg-blue-50 border border-blue-200 text-blue-600 text-xs px-2.5 py-0.5 rounded-full dark:bg-blue-500/10 dark:border-blue-500/20 dark:text-blue-400">
-            <span className="w-1 h-1 bg-blue-500 rounded-full dark:bg-blue-400" />{member.focusArea}
-          </span>
+        {/* Badges */}
+        {(member.focusArea || member.status) && (
+          <div className="flex flex-wrap gap-1.5">
+            {member.focusArea && (
+              <span className="inline-flex items-center gap-1 bg-blue-50 border border-blue-200 text-blue-600 text-xs px-2.5 py-0.5 rounded-full dark:bg-blue-500/10 dark:border-blue-500/20 dark:text-blue-400">
+                <span className="w-1 h-1 bg-blue-500 rounded-full dark:bg-blue-400" />{member.focusArea}
+              </span>
+            )}
+            {member.status && (
+              <span className="inline-flex items-center gap-1 bg-emerald-50 border border-emerald-200 text-emerald-600 text-xs px-2.5 py-0.5 rounded-full dark:bg-emerald-500/10 dark:border-emerald-500/20 dark:text-emerald-400">
+                <span className="w-1 h-1 bg-emerald-500 rounded-full dark:bg-emerald-400" />{member.status}
+              </span>
+            )}
+          </div>
         )}
-        {member.status && (
-          <span className="inline-flex items-center gap-1 bg-emerald-50 border border-emerald-200 text-emerald-600 text-xs px-2.5 py-0.5 rounded-full dark:bg-emerald-500/10 dark:border-emerald-500/20 dark:text-emerald-400">
-            <span className="w-1 h-1 bg-emerald-500 rounded-full dark:bg-emerald-400" />{member.status}
-          </span>
-        )}
-      </div>
 
-      {/* Skills preview */}
-      {(member.skills ?? []).length > 0 && (
-        <div className="flex flex-wrap gap-1">
-          {member.skills.slice(0, 3).map((s) => (
-            <span key={s} className="text-xs bg-slate-100 border border-slate-200 text-slate-500 px-2 py-0.5 rounded-md dark:bg-white/5 dark:border-white/10 dark:text-slate-400">{s}</span>
-          ))}
-          {member.skills.length > 3 && (
-            <span className="text-xs text-slate-400 dark:text-slate-500 self-center">+{member.skills.length - 3}</span>
-          )}
+        {/* Skills */}
+        {(member.skills ?? []).length > 0 && (
+          <div className="flex flex-wrap gap-1">
+            {member.skills.slice(0, 4).map((s) => (
+              <span key={s} className="text-xs bg-slate-100 border border-slate-200 text-slate-500 px-2 py-0.5 rounded-md dark:bg-white/5 dark:border-white/10 dark:text-slate-400">{s}</span>
+            ))}
+            {member.skills.length > 4 && (
+              <span className="text-xs text-slate-400 dark:text-slate-500 self-center">+{member.skills.length - 4}</span>
+            )}
+          </div>
+        )}
+
+        {/* Footer */}
+        <div className={`mt-auto pt-3 border-t ${vs.divider} flex items-center justify-between`}>
+          <SocialIcons member={member} />
+          <span className="text-xs text-slate-400 dark:text-slate-500 group-hover:text-violet-500 dark:group-hover:text-violet-400 ml-auto transition-colors duration-150">View Profile →</span>
         </div>
-      )}
-
-      {/* Footer */}
-      <div className={`mt-auto pt-3 border-t ${vs.divider} flex items-center justify-between`}>
-        <SocialIcons member={member} />
-        <span className="text-xs text-slate-400 dark:text-slate-500 group-hover:text-violet-600 ml-auto">View Profile →</span>
       </div>
     </Link>
   );
@@ -385,7 +391,7 @@ export default function MembersClient({ members }: { members: Member[] }) {
           {regulars.length > 0 && (
             <section>
               <SectionDivider color="bg-blue-500" label={`Members${regulars.length !== allRegulars.length ? ` (${regulars.length}/${allRegulars.length})` : ''}`} />
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
                 {regulars.map((m) => <FlipCard key={m.id} member={m} index={members.indexOf(m)} variant="member" />)}
               </div>
             </section>
