@@ -111,13 +111,14 @@ function FlipCard({ member, index, variant = 'member' }: { member: Member; index
         <Avatar member={member} index={index} />
         <div className="min-w-0">
           <h3 className="text-slate-900 dark:text-white font-semibold truncate">{member.name}</h3>
-          {member.role ? (
+          {member.role && (
             <div className="flex flex-wrap gap-1 mt-0.5">
               {member.role.split(/[,/]/).map((r) => r.trim()).filter(Boolean).slice(0, 2).map((r) => (
                 <span key={r} className={`inline-block text-xs font-medium border px-2 py-0.5 rounded-full ${vs.roleTag}`}>{r}</span>
               ))}
             </div>
-          ) : (member.majors ?? []).length > 0 && (
+          )}
+          {(member.majors ?? []).length > 0 && (
             <div className="flex flex-wrap gap-1 mt-0.5">
               {member.majors.slice(0, 1).map((m) => (
                 <span key={m} className="text-xs bg-slate-100 text-slate-500 px-2 py-0.5 rounded-md dark:bg-slate-700/40 dark:text-slate-400">{m}</span>
