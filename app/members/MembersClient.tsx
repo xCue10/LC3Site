@@ -104,7 +104,7 @@ function FlipCard({ member, index, variant = 'member' }: { member: Member; index
   return (
     <Link
       href={`/members/${member.id}`}
-      className={`relative h-56 rounded-2xl bg-white dark:bg-[#0d1424] border ${vs.border} p-5 flex flex-col gap-3 overflow-hidden hover:border-violet-300 dark:hover:border-violet-500/40 hover:shadow-md dark:hover:shadow-none hover:-translate-y-0.5 transition-all`}
+      className={`relative min-h-56 rounded-2xl bg-white dark:bg-[#0d1424] border ${vs.border} p-5 flex flex-col gap-3 hover:border-violet-300 dark:hover:border-violet-500/40 hover:shadow-md dark:hover:shadow-none hover:-translate-y-0.5 transition-all`}
     >
       {/* Avatar + name */}
       <div className="flex items-center gap-3">
