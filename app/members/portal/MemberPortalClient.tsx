@@ -209,13 +209,23 @@ export default function MemberPortalClient({ members }: { members: Member[] }) {
                       className="flex-1 bg-slate-50 dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 dark:text-white placeholder:text-slate-400 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
                     />
                     {fields.avatarUrl ? (
-                      <img
-                        src={fields.avatarUrl}
-                        alt="Preview"
-                        className="w-10 h-10 rounded-full object-cover shrink-0 ring-2 ring-violet-500/30"
-                        onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-                        onLoad={(e) => { (e.target as HTMLImageElement).style.display = 'block'; }}
-                      />
+                      <div className="flex flex-col items-center gap-1 shrink-0">
+                        <img
+                          src={fields.avatarUrl}
+                          alt="Preview"
+                          className="w-10 h-10 rounded-full object-cover ring-2 ring-violet-500/30"
+                          onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                          onLoad={(e) => { (e.target as HTMLImageElement).style.display = 'block'; }}
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setFields(f => ({ ...f, avatarUrl: '' }))}
+                          className="text-xs text-red-400 hover:text-red-600 dark:hover:text-red-300 transition-colors"
+                          title="Remove photo"
+                        >
+                          Remove
+                        </button>
+                      </div>
                     ) : (
                       <div className="w-10 h-10 rounded-full bg-slate-100 dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] shrink-0 flex items-center justify-center text-slate-400 text-xs">
                         ?
