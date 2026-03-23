@@ -2,6 +2,41 @@ import { NextRequest, NextResponse } from 'next/server';
 import { readJSON, writeJSON, Member } from '@/lib/data';
 import { timingSafeEqual } from 'crypto';
 
+export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const body = await req.json();
+  const members = readJSON<Member[]>('members.json', []);
+  const idx = members.findIndex(m => m.id === id);
+  if (idx === -1) return NextResponse.json({ error: 'Member not found' }, { status: 404 });
+  members[idx] = {
+    ...members[idx],
+    name: body.name ?? members[idx].name,
+    role: body.role ?? members[idx].role,
+    memberType: body.memberType ?? members[idx].memberType,
+    majors: Array.isArray(body.majors) ? body.majors : members[idx].majors,
+    focusArea: body.focusArea ?? members[idx].focusArea,
+    status: body.status ?? members[idx].status,
+    avatarUrl: body.avatarUrl ?? members[idx].avatarUrl,
+    bio: body.bio ?? members[idx].bio,
+    skills: Array.isArray(body.skills) ? body.skills : members[idx].skills,
+    projects: Array.isArray(body.projects) ? body.projects : members[idx].projects,
+    github: body.github ?? members[idx].github,
+    linkedin: body.linkedin ?? members[idx].linkedin,
+    twitter: body.twitter ?? members[idx].twitter,
+  };
+  writeJSON('members.json', members);
+  return NextResponse.json(members[idx]);
+}
+
+export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const members = readJSON<Member[]>('members.json', []);
+  const filtered = members.filter(m => m.id !== id);
+  if (filtered.length === members.length) return NextResponse.json({ error: 'Member not found' }, { status: 404 });
+  writeJSON('members.json', filtered);
+  return NextResponse.json({ success: true });
+}
+
 const MEMBER_CODE = process.env.LC3MEMBER_PASSWORD;
 
 export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
