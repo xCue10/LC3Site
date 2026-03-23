@@ -57,7 +57,7 @@ export async function POST(req: NextRequest) {
   const { password, displayName: rawName = '', adminMode = false } = await req.json();
   if (!password) return NextResponse.json({ error: 'Password required' }, { status: 400 });
 
-  const envVar = adminMode ? 'LC3ADMIN_PASSWORD' : 'LC3MEMBER_PASSWORD';
+  const envVar = adminMode ? 'LC3ADMIN_PASSWORD' : 'LC3_SHIELD';
   if (!verifyPassword(password, envVar)) {
     return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
   }
