@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import {
-  LS_AUTH, LS_PROFILE, PRESET_SKILLS, JOB_TYPES, INDUSTRIES, CSN_MAJORS,
+import { isCareerAuthed,
+  LS_PROFILE, PRESET_SKILLS, JOB_TYPES, INDUSTRIES, CSN_MAJORS,
   defaultProfile,
 } from '../types';
 import type { CareerProfile, CareerSkill } from '../types';
@@ -20,7 +20,7 @@ export default function OnboardingPage() {
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    if (localStorage.getItem(LS_AUTH) !== 'true') {
+    if (!isCareerAuthed()) {
       router.replace('/careers');
       return;
     }

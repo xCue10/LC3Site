@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
 import CareersNav from '../components/CareersNav';
-import { LS_AUTH, LS_PROFILE, LS_JOBS_CACHE } from '../types';
+import { isCareerAuthed, LS_PROFILE, LS_JOBS_CACHE } from '../types';
 import type { CareerProfile, Job } from '../types';
 
 function CoverLetterContent() {
@@ -23,7 +23,7 @@ function CoverLetterContent() {
   const [selectedJobId, setSelectedJobId] = useState(jobId ?? '');
 
   useEffect(() => {
-    if (localStorage.getItem(LS_AUTH) !== 'true') { router.replace('/careers'); return; }
+    if (!isCareerAuthed()) { router.replace('/careers'); return; }
     const raw = localStorage.getItem(LS_PROFILE);
     if (raw) { try { setProfile(JSON.parse(raw)); } catch {} }
 

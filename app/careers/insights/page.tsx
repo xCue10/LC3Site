@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import CareersNav from '../components/CareersNav';
-import { LS_AUTH, LS_PROFILE, LS_JOBS_CACHE } from '../types';
+import { isCareerAuthed, LS_PROFILE, LS_JOBS_CACHE } from '../types';
 import type { CareerProfile, Job } from '../types';
 
 interface Insight {
@@ -22,7 +22,7 @@ export default function InsightsPage() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    if (localStorage.getItem(LS_AUTH) !== 'true') { router.replace('/careers'); return; }
+    if (!isCareerAuthed()) { router.replace('/careers'); return; }
     loadInsights();
   }, [router]);
 

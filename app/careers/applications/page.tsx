@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import CareersNav from '../components/CareersNav';
-import { LS_AUTH, LS_APPS } from '../types';
+import { isCareerAuthed, LS_APPS } from '../types';
 import type { Application, ApplicationStatus } from '../types';
 
 const STATUSES: ApplicationStatus[] = ['Saved', 'Applied', 'Phone Screen', 'Interview Scheduled', 'Interview Done', 'Offer', 'Rejected'];
@@ -91,7 +91,7 @@ export default function ApplicationsPage() {
   const [newApp, setNewApp] = useState<Partial<Application>>({ status: 'Applied', dateApplied: new Date().toISOString().split('T')[0] });
 
   useEffect(() => {
-    if (localStorage.getItem(LS_AUTH) !== 'true') { router.replace('/careers'); return; }
+    if (!isCareerAuthed()) { router.replace('/careers'); return; }
     loadApps();
   }, [router]);
 

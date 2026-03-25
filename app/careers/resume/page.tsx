@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import CareersNav from '../components/CareersNav';
-import { LS_AUTH, LS_PROFILE } from '../types';
+import { isCareerAuthed, LS_PROFILE } from '../types';
 import type { CareerProfile } from '../types';
 
 interface ResumeAnalysis {
@@ -44,7 +44,7 @@ export default function ResumePage() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    if (localStorage.getItem(LS_AUTH) !== 'true') { router.replace('/careers'); return; }
+    if (!isCareerAuthed()) { router.replace('/careers'); return; }
     const raw = localStorage.getItem(LS_PROFILE);
     if (raw) {
       try {

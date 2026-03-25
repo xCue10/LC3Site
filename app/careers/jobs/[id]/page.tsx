@@ -4,7 +4,7 @@ import { useState, useEffect, use } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import CareersNav from '../../components/CareersNav';
-import { LS_AUTH, LS_JOBS_CACHE, LS_SAVED, LS_APPS } from '../../types';
+import { isCareerAuthed, LS_JOBS_CACHE, LS_SAVED, LS_APPS } from '../../types';
 import type { Job, SavedJob, Application } from '../../types';
 
 export default function JobDetailPage({ params }: { params: Promise<{ id: string }> }) {
@@ -16,7 +16,7 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
   const [notFound, setNotFound] = useState(false);
 
   useEffect(() => {
-    if (localStorage.getItem(LS_AUTH) !== 'true') {
+    if (!isCareerAuthed()) {
       router.replace('/careers');
       return;
     }

@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import CareersNav from '../components/CareersNav';
-import { LS_AUTH, LS_PROFILE, LS_SAVED, LS_JOBS_CACHE, JOB_TYPES, INDUSTRIES } from '../types';
+import { isCareerAuthed, LS_PROFILE, LS_SAVED, LS_JOBS_CACHE, JOB_TYPES, INDUSTRIES } from '../types';
 import type { Job, CareerProfile, SavedJob } from '../types';
 
 function MatchBadge({ score }: { score?: number }) {
@@ -162,7 +162,7 @@ export default function JobFeedPage() {
   const PER_PAGE = 12;
 
   useEffect(() => {
-    if (localStorage.getItem(LS_AUTH) !== 'true') {
+    if (!isCareerAuthed()) {
       router.replace('/careers');
       return;
     }

@@ -109,4 +109,12 @@ export const LS_PROFILE = 'lc3careers-profile';
 export const LS_SAVED = 'lc3careers-saved';
 export const LS_APPS = 'lc3careers-applications';
 export const LS_JOBS_CACHE = 'lc3careers-jobs-cache';
-export const ACCESS_CODE = 'LC3MEMBER';
+
+export function isCareerAuthed(): boolean {
+  try {
+    const val = localStorage.getItem(LS_AUTH);
+    return val === 'true' || val === 'admin';
+  } catch {
+    return false;
+  }
+}

@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import CareersNav from '../components/CareersNav';
-import { LS_AUTH, LS_SAVED } from '../types';
+import { isCareerAuthed, LS_SAVED } from '../types';
 import type { SavedJob } from '../types';
 
 export default function SavedJobsPage() {
@@ -14,7 +14,7 @@ export default function SavedJobsPage() {
   const [notesValues, setNotesValues] = useState<Record<string, string>>({});
 
   useEffect(() => {
-    if (localStorage.getItem(LS_AUTH) !== 'true') { router.replace('/careers'); return; }
+    if (!isCareerAuthed()) { router.replace('/careers'); return; }
     const raw = localStorage.getItem(LS_SAVED) ?? '[]';
     try {
       const jobs = JSON.parse(raw) as SavedJob[];
