@@ -53,7 +53,7 @@ function ShieldLiveLanding({ config }: { config: ShieldPageConfig }) {
   return (
     <div className="bg-gradient-to-br from-slate-50 via-white to-red-50/20 dark:from-[#080d18] dark:via-[#0a1020] dark:to-[#0d1424]">
       <section className="relative overflow-hidden">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-24">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             {/* Left: text + CTA */}
             <div>
@@ -83,7 +83,7 @@ function ShieldLiveLanding({ config }: { config: ShieldPageConfig }) {
       </section>
 
       {/* Feature cards */}
-      <section className="max-w-6xl mx-auto px-4 sm:px-6 pb-20">
+      <section className="max-w-6xl mx-auto px-4 sm:px-6 pb-10">
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           {SHIELD_FEATURE_CARDS.map((f) => (
             <div
@@ -105,7 +105,7 @@ function ShieldLiveLanding({ config }: { config: ShieldPageConfig }) {
 function ShieldComingSoon({ config }: { config: ShieldPageConfig }) {
   return (
     <section className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-red-50/20 dark:from-[#080d18] dark:via-[#0a1020] dark:to-[#0d1424]">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-24">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           {/* Left: text + badges */}
           <div>

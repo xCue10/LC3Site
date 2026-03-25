@@ -40,7 +40,7 @@ export default function CareersPage() {
 function CareersOffline({ config }: { config: CareersPageConfig }) {
   return (
     <section className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-blue-50/20 dark:from-[#060b18] dark:via-[#080d1c] dark:to-[#0a1020]">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-24">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           {/* Left: text */}
           <div>
