@@ -67,7 +67,7 @@ export default function ResourcesPage() {
         </div>
 
         {/* Right: SVG */}
-        <div className="flex justify-center md:justify-end">
+        <div className="flex justify-center md:justify-end overflow-hidden">
           <svg width="320" height="140" viewBox="0 0 320 140" fill="none" className="opacity-90 dark:opacity-80" xmlns="http://www.w3.org/2000/svg">
             <defs>
               <style>{`

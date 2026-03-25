@@ -84,7 +84,7 @@ function ShieldLiveLanding({ config }: { config: ShieldPageConfig }) {
 
       {/* Feature cards */}
       <section className="max-w-6xl mx-auto px-4 sm:px-6 pb-10">
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {SHIELD_FEATURE_CARDS.map((f) => (
             <div
               key={f.title}

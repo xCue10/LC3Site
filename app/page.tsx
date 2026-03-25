@@ -310,7 +310,7 @@ export default function HomePage() {
             </p>
           </div>
 
-          <StaggerReveal className="grid grid-cols-2 gap-4" stagger={100}>
+          <StaggerReveal className="grid grid-cols-1 sm:grid-cols-2 gap-4" stagger={100}>
             {homeContent.missionItems.map(({ title, desc }, i) => (
               <div
                 key={i}
@@ -371,7 +371,7 @@ export default function HomePage() {
               </div>
 
               {/* Right side: mini feature list */}
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {(homeContent.shieldFeatureCards ?? []).map(({ icon, title, desc }) => (
                   <div key={title} className="bg-white/60 dark:bg-white/[0.03] border border-slate-200/60 dark:border-white/[0.06] rounded-xl p-4">
                     <div className="text-xl mb-2">{icon}</div>
@@ -429,7 +429,7 @@ export default function HomePage() {
               </div>
 
               {/* Right side: mini feature list */}
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {[
                   { icon: '🎯', title: 'AI Match Scoring', desc: 'Jobs ranked by how well they fit your skills and goals' },
                   { icon: '✉️', title: 'Cover Letter Gen', desc: 'Personalized cover letters in seconds with Claude AI' },
