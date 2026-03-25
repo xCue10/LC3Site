@@ -19,7 +19,7 @@ function BrowserChrome({ url, children }: { url: string; children: React.ReactNo
           {url}
         </div>
       </div>
-      <div className="p-3">
+      <div className="p-3" style={{ height: 230, overflow: 'hidden' }}>
         {children}
       </div>
     </div>

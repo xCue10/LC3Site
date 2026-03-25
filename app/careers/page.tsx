@@ -90,12 +90,6 @@ function CareersOffline({ config }: { config: CareersPageConfig }) {
   return (
     <section className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-blue-50/20 dark:from-[#060b18] dark:via-[#080d1c] dark:to-[#0a1020]">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 pt-16 pb-20 text-center">
-        <div className="flex justify-center mb-8">
-          <div className="w-full max-w-md">
-            <CareersDashboardPreview />
-          </div>
-        </div>
-
         <div className="flex justify-center mb-6">
           <span className="inline-flex items-center gap-2 text-xs font-semibold px-4 py-1.5 rounded-full bg-blue-50 border border-blue-200 text-blue-600 dark:bg-blue-500/10 dark:border-blue-500/20 dark:text-blue-400 uppercase tracking-wider">
             <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
@@ -149,6 +143,13 @@ function CareersOffline({ config }: { config: CareersPageConfig }) {
                 LC3 Careers will be available to LC3 Club members at CSN.
               </p>
             </div>
+          </div>
+        </div>
+
+        {/* Dashboard preview */}
+        <div className="flex justify-center mt-10">
+          <div className="w-full max-w-md">
+            <CareersDashboardPreview />
           </div>
         </div>
       </div>

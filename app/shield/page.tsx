@@ -141,13 +141,6 @@ function ShieldLiveLanding({ config }: { config: ShieldPageConfig }) {
   return (
     <section className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-red-50/20 dark:from-[#080d18] dark:via-[#0a1020] dark:to-[#0d1424]">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 pt-16 pb-20 text-center">
-        {/* Dashboard preview */}
-        <div className="flex justify-center mb-8">
-          <div className="w-full max-w-md">
-            <ShieldDashboardPreview />
-          </div>
-        </div>
-
         <h1 className="text-4xl sm:text-5xl font-bold text-slate-900 dark:text-white mb-4" style={{ letterSpacing: '-0.03em' }}>
           {config.heading}
         </h1>
@@ -165,6 +158,13 @@ function ShieldLiveLanding({ config }: { config: ShieldPageConfig }) {
             <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
           </svg>
         </Link>
+
+        {/* Dashboard preview */}
+        <div className="flex justify-center mt-10">
+          <div className="w-full max-w-md">
+            <ShieldDashboardPreview />
+          </div>
+        </div>
 
         {config.features.length > 0 && (
           <div className="mt-16 grid grid-cols-2 sm:grid-cols-4 gap-3 text-left max-w-2xl mx-auto">
@@ -187,13 +187,6 @@ function ShieldComingSoon({ config }: { config: ShieldPageConfig }) {
   return (
     <section className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-red-50/20 dark:from-[#080d18] dark:via-[#0a1020] dark:to-[#0d1424]">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 pt-16 pb-20 text-center">
-        {/* Dashboard preview */}
-        <div className="flex justify-center mb-8">
-          <div className="w-full max-w-md">
-            <ShieldDashboardPreview />
-          </div>
-        </div>
-
         {/* Coming Soon badge */}
         <div className="flex justify-center mb-6">
           <span className="inline-flex items-center gap-2 text-xs font-semibold px-4 py-1.5 rounded-full bg-red-50 border border-red-200 text-red-600 dark:bg-red-500/10 dark:border-red-500/20 dark:text-red-400 uppercase tracking-wider">
@@ -251,6 +244,13 @@ function ShieldComingSoon({ config }: { config: ShieldPageConfig }) {
                 LC3 Shield will be available to club members and CSN students.
               </p>
             </div>
+          </div>
+        </div>
+
+        {/* Dashboard preview */}
+        <div className="flex justify-center mt-10">
+          <div className="w-full max-w-md">
+            <ShieldDashboardPreview />
           </div>
         </div>
       </div>

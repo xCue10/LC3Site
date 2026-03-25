@@ -273,13 +273,6 @@ export default function CareersLiveLanding({ config }: { config: Config }) {
         </div>
 
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 pt-12 pb-16 text-center">
-          {/* Dashboard preview */}
-          <div className="flex justify-center mb-8">
-            <div className="w-full max-w-md">
-              <CareersDashboardPreview />
-            </div>
-          </div>
-
           {/* Badge */}
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-6" style={{ background: 'rgba(59,130,246,0.1)', border: '1px solid rgba(59,130,246,0.3)', color: '#60a5fa' }}>
             <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" />
@@ -447,6 +440,13 @@ export default function CareersLiveLanding({ config }: { config: Config }) {
           )}
         </div>
       </section>
+
+      {/* Dashboard preview */}
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 pt-10 pb-4">
+        <div className="max-w-md mx-auto">
+          <CareersDashboardPreview />
+        </div>
+      </div>
 
       {/* Features */}
       <section className="max-w-4xl mx-auto px-4 sm:px-6 pb-20">
