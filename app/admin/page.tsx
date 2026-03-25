@@ -266,7 +266,7 @@ function MemberModal({
 
   return (
     <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
+      <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between p-6 border-b border-slate-200 dark:border-[#1e2d45]">
           <h2 className="text-slate-900 dark:text-white font-semibold text-lg">{member ? 'Edit Member' : 'Add Member'}</h2>
           <button onClick={onClose} className="text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors">
@@ -495,7 +495,7 @@ function EventModal({
 
   return (
     <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
+      <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between p-6 border-b border-slate-200 dark:border-[#1e2d45]">
           <h2 className="text-slate-900 dark:text-white font-semibold text-lg">{event ? 'Edit Event' : 'Add Event'}</h2>
           <button onClick={onClose} className="text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors">
@@ -589,7 +589,7 @@ function ProjectModal({
 
   return (
     <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
+      <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between p-6 border-b border-slate-200 dark:border-[#1e2d45]">
           <h2 className="text-slate-900 dark:text-white font-semibold text-lg">{project ? 'Edit Project' : 'Add Project'}</h2>
           <button onClick={onClose} className="text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors">
@@ -764,7 +764,7 @@ function CaseStudyModal({ caseStudy, onSave, onClose }: { caseStudy: CaseStudy |
   const inputCls = 'w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all';
   return (
     <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl w-full max-w-md max-h-[90vh] overflow-y-auto">
+      <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between p-6 border-b border-slate-200 dark:border-[#1e2d45]">
           <h2 className="text-slate-900 dark:text-white font-semibold text-lg">{caseStudy ? 'Edit Case Study' : 'Add Case Study'}</h2>
           <button onClick={onClose} className="text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors">
@@ -813,7 +813,7 @@ function SponsorModal({ sponsor, onSave, onClose }: { sponsor: Sponsor | null; o
   const inputCls = 'w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all';
   return (
     <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl w-full max-w-md">
+      <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl w-full max-w-2xl">
         <div className="flex items-center justify-between p-6 border-b border-slate-200 dark:border-[#1e2d45]">
           <h2 className="text-slate-900 dark:text-white font-semibold text-lg">{sponsor ? 'Edit Sponsor' : 'Add Sponsor'}</h2>
           <button onClick={onClose} className="text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors">
@@ -870,7 +870,7 @@ function ResourceModal({
 
   return (
     <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl w-full max-w-md">
+      <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl w-full max-w-2xl">
         <div className="flex items-center justify-between p-6 border-b border-slate-200 dark:border-[#1e2d45]">
           <h2 className="text-slate-900 dark:text-white font-semibold text-lg">{resource ? 'Edit Resource' : 'Add Resource'}</h2>
           <button onClick={onClose} className="text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors">
@@ -997,6 +997,8 @@ function Dashboard() {
     shieldFeatureCards: [],
   });
   const [loading, setLoading] = useState(true);
+  const [toastMessage, setToastMessage] = useState('');
+  const [memberTypeFilter, setMemberTypeFilter] = useState<'all' | 'advisor' | 'officer' | 'member'>('all');
   const [galleryImages, setGalleryImages] = useState<GalleryImage[]>([]);
   const [galleryUploading, setGalleryUploading] = useState(false);
   const [galleryUploadError, setGalleryUploadError] = useState('');
@@ -1028,6 +1030,12 @@ function Dashboard() {
     setLastSeenContacts(Number(localStorage.getItem('lastSeen_contacts') ?? 0));
     setLastSeenPartners(Number(localStorage.getItem('lastSeen_partners') ?? 0));
   }, []);
+
+  useEffect(() => {
+    if (!toastMessage) return;
+    const t = setTimeout(() => setToastMessage(''), 2000);
+    return () => clearTimeout(t);
+  }, [toastMessage]);
 
   const setTab = (id: TabId) => {
     setTabRaw(id);
@@ -1216,6 +1224,10 @@ function Dashboard() {
   };
 
   const toggleCareersLive = async () => {
+    if (!careersConfig.live) {
+      const ok = window.confirm('Set Careers to LIVE? This will make it publicly visible.');
+      if (!ok) return;
+    }
     const next = { ...careersConfig, live: !careersConfig.live };
     setCareersConfig(next);
     await persistCareers(next);
@@ -1229,6 +1241,10 @@ function Dashboard() {
   };
 
   const toggleShieldLive = async () => {
+    if (!shieldConfig.live) {
+      const ok = window.confirm('Set Shield to LIVE? This will make it publicly visible.');
+      if (!ok) return;
+    }
     const next = { ...shieldConfig, live: !shieldConfig.live };
     setShieldConfig(next);
     await persistShield(next);
@@ -1376,7 +1392,7 @@ function Dashboard() {
                   <span>{label}</span>
                   <span className={`flex items-center gap-1 ${tab === id ? 'text-white/70' : 'text-slate-400'}`}>
                     {unread > 0 && (
-                      <span className="w-1.5 h-1.5 bg-violet-400 rounded-full animate-pulse" />
+                      <span className={`text-xs font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center ${tab === id ? 'bg-white/20 text-white' : 'bg-violet-500/20 text-violet-400'}`}>{unread}</span>
                     )}
                     {count !== null && (
                       <span className="text-xs">{count}</span>
@@ -1395,6 +1411,20 @@ function Dashboard() {
         <div className="text-center py-16 text-slate-500">Loading...</div>
       ) : (
         <>
+          {/* Quick-stats header bar */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
+            {[
+              { label: 'Total Members', value: members.length, color: 'text-blue-400' },
+              { label: 'Unread Contacts', value: unreadContacts, color: unreadContacts > 0 ? 'text-violet-400' : 'text-slate-400' },
+              { label: 'Unread Partners', value: unreadPartners, color: unreadPartners > 0 ? 'text-violet-400' : 'text-slate-400' },
+              { label: 'Upcoming Events', value: events.filter((e) => e.type === 'upcoming').length, color: 'text-emerald-400' },
+            ].map(({ label, value, color }) => (
+              <div key={label} className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-xl px-4 py-3">
+                <p className="text-[11px] text-slate-500 uppercase tracking-wider font-medium mb-1">{label}</p>
+                <p className={`text-2xl font-bold ${color}`}>{value}</p>
+              </div>
+            ))}
+          </div>
           {/* Members Tab */}
           {tab === 'members' && (
             <div>
@@ -1435,8 +1465,28 @@ function Dashboard() {
               {members.length === 0 ? (
                 <div className="text-center py-16 text-slate-500 border border-slate-200 dark:border-[#1e2d45] rounded-2xl">No members yet.</div>
               ) : (
+                <>
+                  {/* Member type filter pills */}
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {([
+                      { id: 'all', label: 'All' },
+                      { id: 'advisor', label: 'Advisors' },
+                      { id: 'officer', label: 'Officers' },
+                      { id: 'member', label: 'Members' },
+                    ] as const).map(({ id, label }) => (
+                      <button
+                        key={id}
+                        onClick={() => setMemberTypeFilter(id)}
+                        className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all border ${memberTypeFilter === id ? 'bg-violet-600 border-violet-600 text-white' : 'bg-white dark:bg-[#0d1424] border-slate-200 dark:border-[#1e2d45] text-slate-500 dark:text-slate-400 hover:border-violet-500/40 hover:text-violet-500 dark:hover:text-violet-400'}`}
+                      >
+                        {label}
+                      </button>
+                    ))}
+                  </div>
                 <div className="space-y-3">
                   {members.filter((m) => {
+                    const matchesType = memberTypeFilter === 'all' || (memberTypeFilter === 'member' ? (m.memberType === 'member' || !m.memberType) : m.memberType === memberTypeFilter);
+                    if (!matchesType) return false;
                     if (!membersSearch.trim()) return true;
                     const q = membersSearch.toLowerCase();
                     return m.name.toLowerCase().includes(q) || (m.majors ?? []).join(' ').toLowerCase().includes(q) || (m.role ?? '').toLowerCase().includes(q) || (m.focusArea ?? '').toLowerCase().includes(q);
@@ -1519,6 +1569,7 @@ function Dashboard() {
                     </div>
                   ))}
                 </div>
+                </>
               )}
             </div>
           )}
@@ -1727,6 +1778,7 @@ function Dashboard() {
                   onClick={async () => {
                     await fetch('/api/stats', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(stats) });
                     fetchData();
+                    setToastMessage('Saved ✓');
                   }}
                   className="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-violet-600 text-white text-sm font-semibold rounded-xl hover:opacity-90 transition-opacity"
                 >
@@ -2826,7 +2878,7 @@ function Dashboard() {
                 </div>
 
                 <button
-                  onClick={async () => { await persistSettings(siteSettings); fetchData(); }}
+                  onClick={async () => { await persistSettings(siteSettings); fetchData(); setToastMessage('Saved ✓'); }}
                   className="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-violet-600 text-white text-sm font-semibold rounded-xl hover:opacity-90 transition-opacity"
                 >
                   Save Settings
@@ -3184,7 +3236,7 @@ function Dashboard() {
               {/* ── Add Photo modal ── */}
               {galleryAddOpen && (
                 <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-                  <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl w-full max-w-lg overflow-hidden">
+                  <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl w-full max-w-2xl overflow-hidden">
                     <div className="flex items-center justify-between p-5 border-b border-slate-200 dark:border-[#1e2d45]">
                       <h3 className="text-slate-900 dark:text-white font-semibold">Add Photo</h3>
                       <button onClick={() => setGalleryAddOpen(false)} className="text-slate-400 hover:text-slate-600 dark:hover:text-white transition-colors">
@@ -3309,7 +3361,7 @@ function Dashboard() {
               {/* ── Edit info modal ── */}
               {galleryEditTarget && (
                 <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-                  <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl w-full max-w-md overflow-hidden">
+                  <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl w-full max-w-2xl overflow-hidden">
                     <div className="flex items-center gap-3 p-5 border-b border-slate-200 dark:border-[#1e2d45]">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img src={galleryEditTarget.secure_url.replace('/upload/', '/upload/w_80,h_80,c_fill,q_auto,f_auto/')} alt="" className="w-12 h-12 rounded-lg object-cover flex-shrink-0" />
@@ -3357,7 +3409,7 @@ function Dashboard() {
               {/* ── Delete confirm ── */}
               {galleryDeleteId && (
                 <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-                  <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl p-6 max-w-sm w-full">
+                  <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl p-6 max-w-2xl w-full">
                     <h3 className="text-slate-900 dark:text-white font-semibold mb-2">Delete Photo?</h3>
                     <p className="text-slate-500 text-sm mb-5">This permanently removes it from Cloudinary and the gallery.</p>
                     <div className="flex gap-3">
@@ -3598,9 +3650,17 @@ function Dashboard() {
       {caseStudyModal.open && <CaseStudyModal caseStudy={caseStudyModal.caseStudy} onSave={saveCaseStudy} onClose={() => setCaseStudyModal({ open: false, caseStudy: null })} />}
 
       {/* Delete Confirm Modal */}
+      {/* Toast notification */}
+      {toastMessage && (
+        <div className="fixed bottom-6 right-6 z-[100] px-4 py-3 bg-[#0d1424] border border-[#30363d] text-white text-sm font-medium rounded-xl shadow-xl flex items-center gap-2 animate-in fade-in slide-in-from-bottom-2">
+          <span className="text-green-400">✓</span>
+          <span>{toastMessage}</span>
+        </div>
+      )}
+
       {deleteConfirm && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl p-6 w-full max-w-sm text-center">
+          <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl p-6 w-full max-w-2xl text-center">
             <div className="w-12 h-12 bg-red-500/10 border border-red-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
               <svg className="w-6 h-6 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
