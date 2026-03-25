@@ -239,6 +239,16 @@ export default function HomePage() {
               </svg>
               {homeContent.shieldButtonLabel}
             </Link>
+            <Link
+              href="/careers"
+              className="px-8 py-3.5 font-semibold rounded-xl transition-all hover:-translate-y-0.5 flex items-center justify-center gap-2"
+              style={{ background: 'linear-gradient(135deg, #3b82f6, #8b5cf6)', color: 'white', boxShadow: '0 4px 20px rgba(59,130,246,0.25)' }}
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+              LC3 Careers
+            </Link>
           </div>
 
           {/* Quick-nav cards */}
@@ -404,6 +414,69 @@ export default function HomePage() {
               {/* Right side: mini feature list */}
               <div className="grid grid-cols-2 gap-3">
                 {(homeContent.shieldFeatureCards ?? []).map(({ icon, title, desc }) => (
+                  <div key={title} className="bg-white/60 dark:bg-white/[0.03] border border-slate-200/60 dark:border-white/[0.06] rounded-xl p-4">
+                    <div className="text-xl mb-2">{icon}</div>
+                    <div className="text-sm font-semibold text-slate-900 dark:text-white mb-1">{title}</div>
+                    <div className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">{desc}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+        </ScrollReveal>
+      </section>
+
+      {/* LC3 Careers Feature Section */}
+      <section className="py-16 border-t border-slate-200 dark:border-[#1e2d45]">
+        <ScrollReveal>
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="relative rounded-3xl overflow-hidden border border-blue-200/60 dark:border-blue-500/15 bg-gradient-to-br from-blue-50/60 via-white to-slate-50 dark:from-blue-950/20 dark:via-[#0d1424] dark:to-[#0d1424] p-8 sm:p-10">
+            {/* Background glow */}
+            <div className="absolute -top-20 -right-20 w-64 h-64 bg-blue-500/5 dark:bg-blue-500/8 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-violet-500/5 dark:bg-violet-500/8 rounded-full blur-3xl pointer-events-none" />
+
+            <div className="relative grid md:grid-cols-2 gap-8 items-center">
+              <div>
+                {/* Badge */}
+                <div className="inline-flex items-center gap-2 text-xs font-semibold px-3 py-1.5 rounded-full bg-blue-50 border border-blue-200 text-blue-600 dark:bg-blue-500/10 dark:border-blue-500/20 dark:text-blue-400 mb-4">
+                  <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
+                  New Tool
+                </div>
+                <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-3" style={{ letterSpacing: '-0.02em' }}>
+                  Introducing{' '}
+                  <span className="bg-gradient-to-r from-blue-500 to-violet-600 bg-clip-text text-transparent">LC3 Careers</span>
+                </h2>
+                <p className="text-slate-600 dark:text-slate-400 leading-relaxed mb-6 text-sm">
+                  An AI-powered job board built exclusively for LC3 members. Powered by Claude AI, Careers matches you to real opportunities, generates personalized cover letters, analyzes your resume, and tracks every application — all in one place.
+                </p>
+                <div className="flex flex-wrap gap-2 mb-7">
+                  {['AI Match Scoring', 'Cover Letter Generator', 'Resume Analyzer', 'Skill Gap Analysis', 'Application Tracker', 'Market Insights'].map((f) => (
+                    <span key={f} className="text-xs px-2.5 py-1 rounded-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-400">
+                      {f}
+                    </span>
+                  ))}
+                </div>
+                <Link
+                  href="/careers"
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-white text-sm transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-blue-500/20"
+                  style={{ background: 'linear-gradient(135deg, #3b82f6, #8b5cf6)' }}
+                >
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                  Explore LC3 Careers
+                </Link>
+              </div>
+
+              {/* Right side: mini feature list */}
+              <div className="grid grid-cols-2 gap-3">
+                {[
+                  { icon: '🎯', title: 'AI Match Scoring', desc: 'Jobs ranked by how well they fit your skills and goals' },
+                  { icon: '✉️', title: 'Cover Letter Gen', desc: 'Personalized cover letters in seconds with Claude AI' },
+                  { icon: '📊', title: 'Skill Gap Analysis', desc: 'Know exactly what to learn for your dream role' },
+                  { icon: '📋', title: 'App Tracker', desc: 'Track every application from saved to offer' },
+                ].map(({ icon, title, desc }) => (
                   <div key={title} className="bg-white/60 dark:bg-white/[0.03] border border-slate-200/60 dark:border-white/[0.06] rounded-xl p-4">
                     <div className="text-xl mb-2">{icon}</div>
                     <div className="text-sm font-semibold text-slate-900 dark:text-white mb-1">{title}</div>
