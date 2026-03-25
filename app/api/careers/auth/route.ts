@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { timingSafeEqual } from 'crypto';
-import { readJSON } from '@/lib/data';
-
-interface Member { id: string; name: string; }
+import { readJSON, Member } from '@/lib/data';
 
 // Simple in-memory rate limiter: max 10 attempts per IP per 15 minutes
 const attempts = new Map<string, { count: number; resetAt: number }>();
