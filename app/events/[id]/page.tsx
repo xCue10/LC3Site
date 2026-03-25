@@ -89,6 +89,21 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
           {/* Description */}
           <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-[15px] mb-8 whitespace-pre-wrap">{event.description}</p>
 
+          {/* External Sign Up CTA */}
+          {isUpcoming && event.rsvpUrl && (
+            <a
+              href={event.rsvpUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex w-full items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-violet-600 text-white text-base font-semibold px-6 py-3.5 rounded-xl hover:opacity-90 transition-opacity shadow-md mb-6"
+            >
+              Sign Up for this Event
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </a>
+          )}
+
           {/* RSVP section */}
           {isUpcoming && (
             <div className="bg-slate-50 dark:bg-[#111a2e] rounded-xl p-5 border border-slate-200 dark:border-[#1e2d45] mb-4">

@@ -192,6 +192,21 @@ export default function EventsPage() {
                         {event.location}
                       </span>
                     </div>
+                    {event.rsvpUrl && (
+                      <div className="mb-4">
+                        <a
+                          href={event.rsvpUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-violet-600 text-white text-sm font-semibold px-5 py-2.5 rounded-xl hover:opacity-90 transition-opacity shadow-sm"
+                        >
+                          Sign Up
+                          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                          </svg>
+                        </a>
+                      </div>
+                    )}
                     <div className="flex flex-wrap items-center gap-3">
                       <EventRSVPForm eventId={event.id} initialCount={rsvpCounts[event.id] ?? 0} />
                       <a

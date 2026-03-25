@@ -18,47 +18,92 @@ export default function BlogPage() {
 
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 py-16">
-      <div className="mb-12 text-center">
-        <svg width="72" height="72" viewBox="0 0 72 72" className="mx-auto mb-5 opacity-85 dark:opacity-75" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <style>{`
-              @keyframes blog-wave { 0%,100%{opacity:0.15;transform:scale(0.95)} 50%{opacity:0.55;transform:scale(1.05)} }
-              @keyframes blog-spark { 0%,100%{opacity:0.3} 50%{opacity:0.9} }
-              @keyframes blog-ring { 0%,100%{opacity:0.1} 50%{opacity:0.35} }
-              @keyframes blog-corner { 0%,100%{opacity:0.4} 50%{opacity:0.9} }
-            `}</style>
-          </defs>
-          <circle cx="36" cy="36" r="33" fill="#7c3aed" fillOpacity="0.07" stroke="#7c3aed" strokeWidth="1" strokeOpacity="0.3"/>
-          {/* Signal waves */}
-          <circle cx="36" cy="36" r="28" fill="none" stroke="#6366f1" strokeWidth="0.8" strokeOpacity="0.2" style={{animation:'blog-wave 2.8s ease-in-out infinite'}}/>
-          <circle cx="36" cy="36" r="20" fill="none" stroke="#6366f1" strokeWidth="1" strokeOpacity="0.25" style={{animation:'blog-wave 2.8s ease-in-out infinite 0.7s'}}/>
-          {/* Document */}
-          <rect x="22" y="18" width="28" height="36" rx="4" fill="none" stroke="#6366f1" strokeWidth="1.5" strokeOpacity="0.7"/>
-          <rect x="22" y="18" width="28" height="10" rx="4" fill="#6366f1" fillOpacity="0.15"/>
-          <rect x="22" y="23" width="28" height="5" fill="#6366f1" fillOpacity="0.12"/>
-          {/* Text lines */}
-          <rect x="27" y="35" width="18" height="2" rx="1" fill="#6366f1" fillOpacity="0.5"/>
-          <rect x="27" y="40" width="14" height="2" rx="1" fill="#818cf8" fillOpacity="0.4"/>
-          <rect x="27" y="45" width="10" height="2" rx="1" fill="#0891b2" fillOpacity="0.4"/>
-          {/* Pen nib */}
-          <circle cx="54" cy="20" r="6" fill="#818cf8" fillOpacity="0.1" stroke="#818cf8" strokeWidth="1.2" strokeOpacity="0.5"/>
-          <path d="M51 23 L54 17 L57 23 L54 22 Z" fill="none" stroke="#818cf8" strokeWidth="1.2" strokeOpacity="0.6" strokeLinejoin="round"/>
-          {/* Sparkle dots */}
-          <circle cx="8" cy="12" r="2.5" fill="#6366f1" fillOpacity="0.7" style={{animation:'blog-spark 2s ease-in-out infinite'}}/>
-          <circle cx="62" cy="14" r="2" fill="#818cf8" fillOpacity="0.65" style={{animation:'blog-spark 2s ease-in-out infinite 0.6s'}}/>
-          <circle cx="10" cy="58" r="2" fill="#0891b2" fillOpacity="0.65" style={{animation:'blog-spark 2s ease-in-out infinite 1.2s'}}/>
-          <circle cx="60" cy="60" r="2.5" fill="#6366f1" fillOpacity="0.7" style={{animation:'blog-spark 2s ease-in-out infinite 1.8s'}}/>
-          {/* Outer glow ring */}
-          <circle cx="36" cy="36" r="35.5" fill="none" stroke="#6366f1" strokeWidth="1" strokeOpacity="1" style={{animation:'blog-ring 3s ease-in-out infinite'}}/>
-          {/* Corner accents */}
-          <path d="M12 2 L2 2 L2 12" fill="none" stroke="#6366f1" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{animation:'blog-corner 3s ease-in-out infinite'}}/>
-          <path d="M60 2 L70 2 L70 12" fill="none" stroke="#0891b2" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{animation:'blog-corner 3s ease-in-out infinite 0.75s'}}/>
-          <path d="M12 70 L2 70 L2 60" fill="none" stroke="#6366f1" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{animation:'blog-corner 3s ease-in-out infinite 1.5s'}}/>
-          <path d="M60 70 L70 70 L70 60" fill="none" stroke="#0891b2" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{animation:'blog-corner 3s ease-in-out infinite 2.25s'}}/>
-        </svg>
-        <p className="text-violet-600 dark:text-violet-400 text-sm font-medium mb-2">What&apos;s new</p>
-        <h1 className="text-4xl font-bold text-slate-900 dark:text-white mb-3">Club Updates</h1>
-        <p className="text-slate-500 leading-relaxed">Announcements, recaps, and news from the LC3 community.</p>
+      <div className="grid md:grid-cols-2 gap-10 items-center mb-12">
+        {/* Left: text */}
+        <div>
+          <p className="text-violet-600 dark:text-violet-400 text-sm font-medium mb-2">What&apos;s new</p>
+          <h1 className="text-4xl font-bold text-slate-900 dark:text-white mb-3">Club Updates</h1>
+          <p className="text-slate-500 leading-relaxed">Announcements, recaps, and news from the LC3 community.</p>
+          {posts.length > 0 && (
+            <span className="inline-flex mt-4 bg-violet-50 border border-violet-200 text-violet-600 text-xs font-medium px-2.5 py-1 rounded-full dark:bg-violet-500/10 dark:border-violet-500/20 dark:text-violet-400">
+              {posts.length} post{posts.length !== 1 ? 's' : ''}
+            </span>
+          )}
+        </div>
+
+        {/* Right: SVG */}
+        <div className="flex justify-center md:justify-end overflow-hidden">
+          <svg width="320" height="140" viewBox="0 0 320 140" fill="none" className="opacity-90 dark:opacity-80" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <style>{`
+                @keyframes blog-dash { to { stroke-dashoffset: -22; } }
+                @keyframes blog-spark { 0%,100%{opacity:0.3;transform:scale(0.9)} 50%{opacity:0.85;transform:scale(1.1)} }
+                @keyframes blog-corner { 0%,100%{opacity:0.35} 50%{opacity:0.8} }
+                @keyframes blog-wave { 0%,100%{opacity:0.15;transform:scale(0.95)} 50%{opacity:0.55;transform:scale(1.05)} }
+                @keyframes blog-ring { 0%,100%{opacity:0.1} 50%{opacity:0.35} }
+                @keyframes blog-float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
+                @keyframes blog-blink { 0%,100%{opacity:0.7} 50%{opacity:1} }
+              `}</style>
+              <radialGradient id="blog-g1" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stopColor="#7c3aed" stopOpacity="0.35"/>
+                <stop offset="100%" stopColor="#7c3aed" stopOpacity="0"/>
+              </radialGradient>
+              <radialGradient id="blog-g2" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stopColor="#6366f1" stopOpacity="0.28"/>
+                <stop offset="100%" stopColor="#6366f1" stopOpacity="0"/>
+              </radialGradient>
+              <radialGradient id="blog-g3" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stopColor="#0891b2" stopOpacity="0.3"/>
+                <stop offset="100%" stopColor="#0891b2" stopOpacity="0"/>
+              </radialGradient>
+            </defs>
+
+            {/* Corner brackets */}
+            <path d="M8 8 L8 22 M8 8 L22 8" stroke="rgba(99,102,241,0.4)" strokeWidth="1.5" strokeLinecap="round" style={{animation:'blog-corner 3s ease-in-out infinite'}}/>
+            <path d="M312 8 L312 22 M312 8 L298 8" stroke="rgba(8,145,178,0.4)" strokeWidth="1.5" strokeLinecap="round" style={{animation:'blog-corner 3s ease-in-out infinite 0.75s'}}/>
+            <path d="M8 132 L8 118 M8 132 L22 132" stroke="rgba(99,102,241,0.4)" strokeWidth="1.5" strokeLinecap="round" style={{animation:'blog-corner 3s ease-in-out infinite 1.5s'}}/>
+            <path d="M312 132 L312 118 M312 132 L298 132" stroke="rgba(8,145,178,0.4)" strokeWidth="1.5" strokeLinecap="round" style={{animation:'blog-corner 3s ease-in-out infinite 2.25s'}}/>
+
+            {/* Animated dashed baseline */}
+            <line x1="48" y1="70" x2="272" y2="70" stroke="rgba(99,102,241,0.1)" strokeWidth="2"/>
+            <line x1="48" y1="70" x2="272" y2="70" stroke="rgba(99,102,241,0.4)" strokeWidth="1.5" strokeDasharray="6 6" style={{animation:'blog-dash 1s linear infinite'}}/>
+
+            {/* Main document */}
+            <circle cx="120" cy="70" r="38" fill="url(#blog-g1)"/>
+            <rect x="88" y="36" width="64" height="80" rx="6" fill="rgba(124,58,237,0.07)" stroke="rgba(99,102,241,0.55)" strokeWidth="1.5" style={{animation:'blog-float 3s ease-in-out infinite', transformOrigin:'120px 76px'}}/>
+            <rect x="88" y="36" width="64" height="16" rx="6" fill="rgba(99,102,241,0.12)"/>
+            <rect x="88" y="44" width="64" height="8" fill="rgba(99,102,241,0.08)"/>
+            {/* Text lines on document */}
+            <rect x="97" y="62" width="46" height="2.5" rx="1.2" fill="rgba(99,102,241,0.5)"/>
+            <rect x="97" y="69" width="36" height="2.5" rx="1.2" fill="rgba(129,140,248,0.4)"/>
+            <rect x="97" y="76" width="42" height="2.5" rx="1.2" fill="rgba(99,102,241,0.35)"/>
+            <rect x="97" y="83" width="28" height="2.5" rx="1.2" fill="rgba(8,145,178,0.4)"/>
+            <rect x="97" y="90" width="38" height="2.5" rx="1.2" fill="rgba(99,102,241,0.3)"/>
+            <rect x="97" y="97" width="20" height="2.5" rx="1.2" fill="rgba(129,140,248,0.3)"/>
+
+            {/* Pen / nib element floating upper right */}
+            <circle cx="200" cy="50" r="22" fill="url(#blog-g2)"/>
+            <circle cx="200" cy="50" r="14" fill="rgba(99,102,241,0.1)" stroke="rgba(99,102,241,0.5)" strokeWidth="1.5" style={{animation:'blog-wave 2.8s ease-in-out infinite'}}/>
+            <path d="M194 57 L200 43 L206 57 L200 55.5 Z" fill="none" stroke="rgba(129,140,248,0.8)" strokeWidth="1.5" strokeLinejoin="round" style={{animation:'blog-float 2.5s ease-in-out infinite', transformOrigin:'200px 50px'}}/>
+            <circle cx="200" cy="50" r="3" fill="#818cf8" opacity="0.7"/>
+
+            {/* Sparkle / publish badge */}
+            <circle cx="245" cy="88" r="20" fill="url(#blog-g3)"/>
+            <circle cx="245" cy="88" r="13" fill="rgba(8,145,178,0.1)" stroke="rgba(8,145,178,0.45)" strokeWidth="1.5"/>
+            <rect x="232" y="82" width="26" height="12" rx="4" fill="rgba(8,145,178,0.75)" style={{animation:'blog-blink 2s ease-in-out infinite', transformOrigin:'245px 88px'}}/>
+            <text x="245" y="90.5" textAnchor="middle" fill="white" fontSize="6.5" fontFamily="monospace" fontWeight="700">PUBLISH</text>
+
+            {/* Floating dots */}
+            <circle cx="155" cy="38" r="3.5" fill="#6366f1" opacity="0.5" style={{animation:'blog-float 2.2s ease-in-out infinite'}}/>
+            <circle cx="265" cy="55" r="2.5" fill="#0891b2" opacity="0.55" style={{animation:'blog-float 3.1s ease-in-out infinite 0.5s'}}/>
+
+            {/* Sparkle dots */}
+            <circle cx="26" cy="26" r="2.5" fill="#6366f1" opacity="0.65" style={{animation:'blog-spark 2.3s ease-in-out infinite'}}/>
+            <circle cx="293" cy="24" r="2" fill="#0891b2" opacity="0.6" style={{animation:'blog-spark 2.3s ease-in-out infinite 0.7s'}}/>
+            <circle cx="26" cy="114" r="2" fill="#818cf8" opacity="0.6" style={{animation:'blog-spark 2.3s ease-in-out infinite 1.4s'}}/>
+            <circle cx="293" cy="114" r="2.5" fill="#0891b2" opacity="0.65" style={{animation:'blog-spark 2.3s ease-in-out infinite 2.1s'}}/>
+          </svg>
+        </div>
       </div>
 
       {posts.length === 0 ? (

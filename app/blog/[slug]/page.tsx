@@ -23,6 +23,9 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
   const post = readJSON<Post[]>('posts.json').find((p) => p.slug === slug && p.published);
   if (!post) notFound();
 
+  const wordCount = post.content.split(/\s+/).filter(Boolean).length;
+  const readTime = Math.max(1, Math.ceil(wordCount / 200));
+
   return (
     <div className="max-w-2xl mx-auto px-4 sm:px-6 py-16">
       <Link
@@ -43,6 +46,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
         <div className="mb-8">
           <div className="flex items-center gap-2 mb-4">
             <span className="text-xs text-slate-400">{formatDate(post.publishedAt)}</span>
+            <span className="text-xs text-slate-400">· {readTime} min read</span>
           </div>
           <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white mb-4 leading-tight">
             {post.title}
