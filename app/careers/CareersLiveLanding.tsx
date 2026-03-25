@@ -272,8 +272,10 @@ export default function CareersLiveLanding({ config }: { config: Config }) {
           />
         </div>
 
-        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 pt-12 pb-16 text-center">
-          {/* Badge */}
+        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 pt-12 pb-16">
+          <div className="grid md:grid-cols-2 gap-12 items-start">
+          {/* Left: heading + login */}
+          <div>
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-6" style={{ background: 'rgba(59,130,246,0.1)', border: '1px solid rgba(59,130,246,0.3)', color: '#60a5fa' }}>
             <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" />
             Now Live for LC3 Members
@@ -282,13 +284,13 @@ export default function CareersLiveLanding({ config }: { config: Config }) {
           <h1 className="text-5xl sm:text-6xl font-black text-white mb-4" style={{ letterSpacing: '-0.03em', lineHeight: 1.1 }}>
             {config.heading}
           </h1>
-          <p className="text-xl text-slate-400 max-w-2xl mx-auto mb-10">
+          <p className="text-xl text-slate-400 mb-10">
             Find your next opportunity powered by AI
           </p>
 
           {/* CTA */}
           {!showLogin ? (
-            <div className="flex flex-col items-center gap-3">
+            <div className="flex flex-col items-start gap-3">
               <button
                 onClick={() => { setShowLogin(true); setLoginMode('member'); }}
                 className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-bold text-white text-base transition-all hover:scale-105 hover:shadow-lg"
@@ -438,15 +440,16 @@ export default function CareersLiveLanding({ config }: { config: Config }) {
               </div>
             </form>
           )}
+          </div>
+          {/* Right: preview */}
+          <div className="flex items-start pt-2">
+            <div className="w-full">
+              <CareersDashboardPreview />
+            </div>
+          </div>
+          </div>
         </div>
       </section>
-
-      {/* Dashboard preview */}
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 pt-10 pb-4">
-        <div className="max-w-md mx-auto">
-          <CareersDashboardPreview />
-        </div>
-      </div>
 
       {/* Features */}
       <section className="max-w-4xl mx-auto px-4 sm:px-6 pb-20">
