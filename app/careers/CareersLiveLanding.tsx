@@ -23,7 +23,6 @@ interface Member {
 
 export default function CareersLiveLanding({ config }: { config: Config }) {
   const router = useRouter();
-  const [showLogin, setShowLogin] = useState(false);
   const [loginMode, setLoginMode] = useState<'member' | 'admin'>('member');
   const [members, setMembers] = useState<Member[]>([]);
   const [nameQuery, setNameQuery] = useState('');
@@ -176,25 +175,7 @@ export default function CareersLiveLanding({ config }: { config: Config }) {
           {/* Two-column: login + preview */}
           <div className="grid md:grid-cols-2 gap-12 items-start">
           <div>
-          {/* CTA */}
-          {!showLogin ? (
-            <div className="flex flex-col items-start gap-3">
-              <button
-                onClick={() => { setShowLogin(true); setLoginMode('member'); }}
-                className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-bold text-white text-base transition-all hover:scale-105 hover:shadow-lg"
-                style={{
-                  background: 'linear-gradient(135deg, #3b82f6, #8b5cf6)',
-                  boxShadow: '0 0 40px rgba(59,130,246,0.3)',
-                }}
-              >
-                Get Started — Member Login
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                </svg>
-              </button>
-            </div>
-          ) : (
-            <form onSubmit={handleLogin} className="w-full">
+          <form onSubmit={handleLogin} className="w-full">
               <div
                 className="rounded-2xl p-6 text-left"
                 style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)' }}
@@ -313,13 +294,6 @@ export default function CareersLiveLanding({ config }: { config: Config }) {
                 >
                   {loading ? 'Signing in...' : 'Enter LC3 Careers'}
                 </button>
-                <button
-                  type="button"
-                  onClick={() => { setShowLogin(false); setPassword(''); setError(''); setNameQuery(''); setSelectedMember(null); }}
-                  className="w-full text-center text-xs text-slate-600 hover:text-slate-400 mt-3 transition-colors"
-                >
-                  Cancel
-                </button>
                 <p className="text-center text-xs text-slate-600 mt-2">
                   {loginMode === 'member'
                     ? 'Get your password at an LC3 club meeting'
@@ -327,7 +301,6 @@ export default function CareersLiveLanding({ config }: { config: Config }) {
                 </p>
               </div>
             </form>
-          )}
           </div>
           {/* Right: preview */}
           <div className="flex items-start pt-2">
