@@ -110,8 +110,18 @@ export default function ProjectsPage() {
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-16">
       {/* Header */}
-      <div className="text-center mb-16">
-        <svg width="320" height="140" viewBox="0 0 320 140" fill="none" className="mx-auto mb-6 opacity-90 dark:opacity-80" xmlns="http://www.w3.org/2000/svg">
+      <div className="grid md:grid-cols-2 gap-10 items-center mb-16">
+        {/* Left: text */}
+        <div>
+          <p className="text-violet-600 dark:text-violet-400 text-sm font-medium mb-2">Built by our members</p>
+          <h1 className="text-4xl sm:text-5xl font-bold text-slate-900 dark:text-white mb-4">Projects</h1>
+          <p className="text-slate-500">
+            Real-world projects built by LC3 members — from automation tools to full-stack apps.
+          </p>
+        </div>
+        {/* Right: SVG */}
+        <div className="flex justify-center md:justify-end">
+        <svg width="320" height="140" viewBox="0 0 320 140" fill="none" className="opacity-90 dark:opacity-80" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <style>{`
               @keyframes proj2-dash { to { stroke-dashoffset: -18; } }
@@ -192,11 +202,7 @@ export default function ProjectsPage() {
           <circle cx="26" cy="114" r="2" fill="#818cf8" opacity="0.6" style={{animation:'proj2-spark 2.2s ease-in-out infinite 1.4s'}}/>
           <circle cx="294" cy="114" r="2.5" fill="#0891b2" opacity="0.65" style={{animation:'proj2-spark 2.2s ease-in-out infinite 2.1s'}}/>
         </svg>
-        <p className="text-violet-600 dark:text-violet-400 text-sm font-medium mb-2">Built by our members</p>
-        <h1 className="text-4xl sm:text-5xl font-bold text-slate-900 dark:text-white mb-4">Projects</h1>
-        <p className="text-slate-500 max-w-xl mx-auto">
-          Real-world projects built by LC3 members — from automation tools to full-stack apps.
-        </p>
+        </div>
       </div>
 
       {projects.length === 0 ? (

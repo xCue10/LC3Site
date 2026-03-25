@@ -46,8 +46,18 @@ export default function EventsPage() {
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 py-16">
       {/* Header */}
-      <div className="text-center mb-14">
-        <svg width="320" height="140" viewBox="0 0 320 140" fill="none" className="mx-auto mb-6 opacity-90 dark:opacity-80" xmlns="http://www.w3.org/2000/svg">
+      <div className="grid md:grid-cols-2 gap-10 items-center mb-14">
+        {/* Left: text */}
+        <div>
+          <p className="text-blue-600 dark:text-blue-400 text-sm font-medium mb-2">Stay in the loop</p>
+          <h1 className="text-4xl sm:text-5xl font-bold text-slate-900 dark:text-white mb-4">Events</h1>
+          <p className="text-slate-500">
+            From workshops and hackathons to industry panels — there&apos;s always something going on.
+          </p>
+        </div>
+        {/* Right: SVG */}
+        <div className="flex justify-center md:justify-end">
+        <svg width="320" height="140" viewBox="0 0 320 140" fill="none" className="opacity-90 dark:opacity-80" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <style>{`
               @keyframes ev2-dash { to { stroke-dashoffset: -22; } }
@@ -123,11 +133,7 @@ export default function EventsPage() {
           <circle cx="26" cy="114" r="2" fill="#818cf8" opacity="0.6" style={{animation:'ev2-spark 2.3s ease-in-out infinite 1.4s'}}/>
           <circle cx="293" cy="114" r="2.5" fill="#0891b2" opacity="0.65" style={{animation:'ev2-spark 2.3s ease-in-out infinite 2.1s'}}/>
         </svg>
-        <p className="text-blue-600 dark:text-blue-400 text-sm font-medium mb-2">Stay in the loop</p>
-        <h1 className="text-4xl sm:text-5xl font-bold text-slate-900 dark:text-white mb-4">Events</h1>
-        <p className="text-slate-500 max-w-xl mx-auto">
-          From workshops and hackathons to industry panels — there&apos;s always something going on.
-        </p>
+        </div>
       </div>
 
       {/* Upcoming Events */}
