@@ -36,55 +36,6 @@ export default function CareersPage() {
   return <CareersOffline config={config} />;
 }
 
-function CareersHeroSVG() {
-  return (
-    <svg width="280" height="280" viewBox="0 0 280 280" fill="none" xmlns="http://www.w3.org/2000/svg" className="mx-auto">
-      {/* Outer ring */}
-      <circle cx="140" cy="140" r="130" stroke="rgba(59,130,246,0.3)" strokeWidth="1">
-        <animateTransform attributeName="transform" type="rotate" from="0 140 140" to="360 140 140" dur="20s" repeatCount="indefinite" />
-      </circle>
-      <circle cx="140" cy="140" r="100" stroke="rgba(139,92,246,0.2)" strokeWidth="1">
-        <animateTransform attributeName="transform" type="rotate" from="360 140 140" to="0 140 140" dur="14s" repeatCount="indefinite" />
-      </circle>
-      {/* Pulse */}
-      <circle cx="140" cy="140" r="75" stroke="rgba(59,130,246,0.15)" strokeWidth="2">
-        <animate attributeName="r" values="60;80;60" dur="4s" repeatCount="indefinite" />
-        <animate attributeName="opacity" values="0.5;0;0.5" dur="4s" repeatCount="indefinite" />
-      </circle>
-      {/* Briefcase icon center */}
-      <rect x="108" y="118" width="64" height="48" rx="6" fill="rgba(59,130,246,0.12)" stroke="rgba(59,130,246,0.6)" strokeWidth="2">
-        <animate attributeName="opacity" values="0.7;1;0.7" dur="3s" repeatCount="indefinite" />
-      </rect>
-      <path d="M124 118v-8a4 4 0 014-4h24a4 4 0 014 4v8" stroke="rgba(59,130,246,0.6)" strokeWidth="2" fill="none">
-        <animate attributeName="opacity" values="0.7;1;0.7" dur="3s" repeatCount="indefinite" />
-      </path>
-      <line x1="108" y1="140" x2="172" y2="140" stroke="rgba(59,130,246,0.5)" strokeWidth="1.5" />
-      {/* Floating dots */}
-      <circle cx="270" cy="140" r="4" fill="rgba(59,130,246,0.8)">
-        <animateTransform attributeName="transform" type="rotate" from="0 140 140" to="360 140 140" dur="20s" repeatCount="indefinite" />
-      </circle>
-      <circle cx="140" cy="10" r="3.5" fill="rgba(139,92,246,0.8)">
-        <animateTransform attributeName="transform" type="rotate" from="0 140 140" to="360 140 140" dur="20s" repeatCount="indefinite" />
-      </circle>
-      <circle cx="10" cy="140" r="3" fill="rgba(59,130,246,0.6)">
-        <animateTransform attributeName="transform" type="rotate" from="180 140 140" to="540 140 140" dur="20s" repeatCount="indefinite" />
-      </circle>
-      {/* Corner brackets */}
-      <path d="M20 8 L8 8 L8 20" stroke="rgba(59,130,246,0.5)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <animate attributeName="opacity" values="0.4;0.9;0.4" dur="3s" repeatCount="indefinite" />
-      </path>
-      <path d="M260 8 L272 8 L272 20" stroke="rgba(139,92,246,0.5)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <animate attributeName="opacity" values="0.4;0.9;0.4" dur="3s" repeatCount="indefinite" begin="0.75s" />
-      </path>
-      <path d="M20 272 L8 272 L8 260" stroke="rgba(59,130,246,0.5)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <animate attributeName="opacity" values="0.4;0.9;0.4" dur="3s" repeatCount="indefinite" begin="1.5s" />
-      </path>
-      <path d="M260 272 L272 272 L272 260" stroke="rgba(139,92,246,0.5)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <animate attributeName="opacity" values="0.4;0.9;0.4" dur="3s" repeatCount="indefinite" begin="2.25s" />
-      </path>
-    </svg>
-  );
-}
 
 function CareersOffline({ config }: { config: CareersPageConfig }) {
   return (
