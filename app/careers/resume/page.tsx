@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import CareersNav from '../components/CareersNav';
 import { isCareerAuthed, memberLS } from '../types';
@@ -41,7 +41,11 @@ export default function ResumePage() {
   const [targetRole, setTargetRole] = useState('');
   const [analysis, setAnalysis] = useState<ResumeAnalysis | null>(null);
   const [loading, setLoading] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [uploadedFileName, setUploadedFileName] = useState('');
   const [error, setError] = useState('');
+  const [dragOver, setDragOver] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (!isCareerAuthed()) { router.replace('/careers'); return; }
@@ -53,6 +57,27 @@ export default function ResumePage() {
       } catch {}
     }
   }, [router]);
+
+  const handleFile = async (file: File) => {
+    if (!file) return;
+    setUploading(true);
+    setError('');
+    try {
+      const form = new FormData();
+      form.append('file', file);
+      const res = await fetch('/api/careers/resume-upload', { method: 'POST', body: form });
+      const data = await res.json() as { text?: string; error?: string };
+      if (res.ok && data.text) {
+        setResumeText(data.text);
+        setUploadedFileName(file.name);
+      } else {
+        setError(data.error ?? 'Failed to read file.');
+      }
+    } catch {
+      setError('Failed to read file. Please try again.');
+    }
+    setUploading(false);
+  };
 
   const analyze = async () => {
     if (!resumeText.trim()) { setError('Please paste your resume text first'); return; }
@@ -116,18 +141,66 @@ export default function ResumePage() {
             />
           </div>
 
-          {/* Resume input */}
+          {/* Resume upload */}
           <div className="rounded-2xl p-5" style={{ background: '#111827', border: '1px solid rgba(255,255,255,0.06)' }}>
-            <label className="block text-sm font-medium text-slate-300 mb-2">Resume Text</label>
-            <textarea
-              value={resumeText}
-              onChange={(e) => setResumeText(e.target.value)}
-              rows={12}
-              placeholder="Paste your resume text here (copy from your Word doc or PDF)..."
-              className="w-full px-4 py-3 rounded-xl text-xs text-slate-300 placeholder-slate-600 focus:outline-none resize-none font-mono leading-relaxed"
-              style={inputStyle}
-            />
-            <p className="text-xs text-slate-600 mt-2">{resumeText.length} characters</p>
+            <label className="block text-sm font-medium text-slate-300 mb-3">Resume</label>
+
+            {/* Drop zone */}
+            <div
+              onClick={() => fileInputRef.current?.click()}
+              onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
+              onDragLeave={() => setDragOver(false)}
+              onDrop={(e) => { e.preventDefault(); setDragOver(false); const f = e.dataTransfer.files[0]; if (f) handleFile(f); }}
+              className="flex flex-col items-center justify-center gap-3 rounded-xl py-8 px-4 cursor-pointer transition-all mb-4"
+              style={{
+                border: `2px dashed ${dragOver ? 'rgba(59,130,246,0.6)' : 'rgba(255,255,255,0.1)'}`,
+                background: dragOver ? 'rgba(59,130,246,0.05)' : 'rgba(255,255,255,0.02)',
+              }}
+            >
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept=".pdf,.txt"
+                className="hidden"
+                onChange={(e) => { const f = e.target.files?.[0]; if (f) handleFile(f); }}
+              />
+              {uploading ? (
+                <div className="w-5 h-5 rounded-full border-2 border-blue-500 border-t-transparent animate-spin" />
+              ) : (
+                <svg className="w-8 h-8 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+                </svg>
+              )}
+              <div className="text-center">
+                {uploadedFileName ? (
+                  <>
+                    <p className="text-sm font-medium text-green-400">✓ {uploadedFileName}</p>
+                    <p className="text-xs text-slate-500 mt-1">Click to replace</p>
+                  </>
+                ) : (
+                  <>
+                    <p className="text-sm font-medium text-slate-300">Upload your resume</p>
+                    <p className="text-xs text-slate-500 mt-1">PDF or TXT · drag & drop or click</p>
+                  </>
+                )}
+              </div>
+            </div>
+
+            {/* Fallback paste */}
+            <details className="group">
+              <summary className="text-xs text-slate-500 cursor-pointer hover:text-slate-400 transition-colors select-none">
+                Or paste text manually
+              </summary>
+              <textarea
+                value={resumeText}
+                onChange={(e) => { setResumeText(e.target.value); setUploadedFileName(''); }}
+                rows={10}
+                placeholder="Paste your resume text here..."
+                className="w-full mt-3 px-4 py-3 rounded-xl text-xs text-slate-300 placeholder-slate-600 focus:outline-none resize-none font-mono leading-relaxed"
+                style={inputStyle}
+              />
+            </details>
+            {resumeText && <p className="text-xs text-slate-600 mt-2">{resumeText.length} characters extracted</p>}
           </div>
 
           <button

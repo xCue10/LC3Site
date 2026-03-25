@@ -9,6 +9,7 @@ const navLinks = [
   { href: '/careers/jobs', label: 'Job Feed' },
   { href: '/careers/saved', label: 'Saved' },
   { href: '/careers/applications', label: 'Applications' },
+  { href: '/careers/resume', label: 'Resume' },
   { href: '/careers/insights', label: 'Market Insights' },
   { href: '/careers/profile', label: 'Profile' },
 ];
