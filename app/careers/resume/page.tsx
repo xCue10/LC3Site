@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import CareersNav from '../components/CareersNav';
-import { isCareerAuthed, LS_PROFILE } from '../types';
+import { isCareerAuthed, memberLS } from '../types';
 import type { CareerProfile } from '../types';
 
 interface ResumeAnalysis {
@@ -45,7 +45,7 @@ export default function ResumePage() {
 
   useEffect(() => {
     if (!isCareerAuthed()) { router.replace('/careers'); return; }
-    const raw = localStorage.getItem(LS_PROFILE);
+    const raw = localStorage.getItem(memberLS().profile);
     if (raw) {
       try {
         const p = JSON.parse(raw) as CareerProfile;
@@ -68,7 +68,8 @@ export default function ResumePage() {
         const data = await res.json() as ResumeAnalysis;
         setAnalysis(data);
         // Save skills to profile and achievement
-        const rawProfile = localStorage.getItem(LS_PROFILE);
+        const profileKey = memberLS().profile;
+        const rawProfile = localStorage.getItem(profileKey);
         if (rawProfile) {
           const p = JSON.parse(rawProfile) as CareerProfile;
           if (!p.achievements.includes('Resume Pro')) {
@@ -81,7 +82,7 @@ export default function ResumePage() {
             p.skills = [...p.skills, ...newSkills];
           }
           p.resumeText = resumeText;
-          localStorage.setItem(LS_PROFILE, JSON.stringify(p));
+          localStorage.setItem(profileKey, JSON.stringify(p));
         }
       } else {
         setError('Analysis failed. Please try again.');

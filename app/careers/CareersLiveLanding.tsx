@@ -2,8 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { LS_AUTH, LS_PROFILE } from './types';
-import type { CareerProfile } from './types';
+import { LS_AUTH, LS_MEMBER_ID, LS_MEMBER_NAME, memberLS } from './types';
 
 interface Config {
   heading: string;
@@ -131,6 +130,7 @@ export default function CareersLiveLanding({ config }: { config: Config }) {
   const router = useRouter();
   const [showLogin, setShowLogin] = useState(false);
   const [loginMode, setLoginMode] = useState<'member' | 'admin'>('member');
+  const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -140,10 +140,15 @@ export default function CareersLiveLanding({ config }: { config: Config }) {
     try {
       const authed = localStorage.getItem(LS_AUTH);
       if (authed === 'true' || authed === 'admin') {
-        const profileRaw = localStorage.getItem(LS_PROFILE);
+        const keys = memberLS();
+        const profileRaw = localStorage.getItem(keys.profile);
         if (profileRaw) {
-          const profile = JSON.parse(profileRaw) as CareerProfile;
-          router.replace(profile.onboardingComplete ? '/careers/jobs' : '/careers/onboarding');
+          try {
+            const profile = JSON.parse(profileRaw) as { onboardingComplete?: boolean };
+            router.replace(profile.onboardingComplete ? '/careers/jobs' : '/careers/onboarding');
+          } catch {
+            router.replace('/careers/onboarding');
+          }
         } else {
           router.replace('/careers/onboarding');
         }
@@ -156,24 +161,36 @@ export default function CareersLiveLanding({ config }: { config: Config }) {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!password.trim()) return;
+    if (loginMode === 'member' && !name.trim()) return;
     setLoading(true);
     setError('');
 
     try {
+      const body = loginMode === 'member'
+        ? { password: password.trim(), name: name.trim() }
+        : { password: password.trim() };
+
       const res = await fetch('/api/careers/auth', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ password: password.trim() }),
+        body: JSON.stringify(body),
       });
 
-      const data = await res.json() as { ok?: boolean; role?: string; error?: string };
+      const data = await res.json() as { ok?: boolean; role?: string; memberId?: string; memberName?: string; error?: string };
 
       if (res.ok && data.ok) {
-        localStorage.setItem(LS_AUTH, data.role === 'admin' ? 'admin' : 'true');
-        const profileRaw = localStorage.getItem(LS_PROFILE);
+        const isAdmin = data.role === 'admin';
+        localStorage.setItem(LS_AUTH, isAdmin ? 'admin' : 'true');
+        localStorage.setItem(LS_MEMBER_ID, data.memberId ?? (isAdmin ? 'admin' : 'guest'));
+        localStorage.setItem(LS_MEMBER_NAME, data.memberName ?? (isAdmin ? 'Admin' : ''));
+
+        // Check per-member profile to decide where to redirect
+        const memberId = data.memberId ?? (isAdmin ? 'admin' : 'guest');
+        const profileKey = `lc3careers-profile-${memberId}`;
+        const profileRaw = localStorage.getItem(profileKey);
         if (profileRaw) {
           try {
-            const profile = JSON.parse(profileRaw) as CareerProfile;
+            const profile = JSON.parse(profileRaw) as { onboardingComplete?: boolean };
             router.push(profile.onboardingComplete ? '/careers/jobs' : '/careers/onboarding');
           } catch {
             router.push('/careers/onboarding');
@@ -274,7 +291,7 @@ export default function CareersLiveLanding({ config }: { config: Config }) {
                 <div className="flex gap-2 mb-4">
                   <button
                     type="button"
-                    onClick={() => { setLoginMode('member'); setError(''); setPassword(''); }}
+                    onClick={() => { setLoginMode('member'); setError(''); setPassword(''); setName(''); }}
                     className="flex-1 py-1.5 rounded-lg text-xs font-medium transition-all"
                     style={{
                       background: loginMode === 'member' ? 'rgba(59,130,246,0.3)' : 'rgba(255,255,255,0.05)',
@@ -285,7 +302,7 @@ export default function CareersLiveLanding({ config }: { config: Config }) {
                   </button>
                   <button
                     type="button"
-                    onClick={() => { setLoginMode('admin'); setError(''); setPassword(''); }}
+                    onClick={() => { setLoginMode('admin'); setError(''); setPassword(''); setName(''); }}
                     className="flex-1 py-1.5 rounded-lg text-xs font-medium transition-all"
                     style={{
                       background: loginMode === 'admin' ? 'rgba(139,92,246,0.3)' : 'rgba(255,255,255,0.05)',
@@ -296,6 +313,20 @@ export default function CareersLiveLanding({ config }: { config: Config }) {
                   </button>
                 </div>
 
+                {loginMode === 'member' && (
+                  <>
+                    <label className="block text-sm font-medium text-slate-300 mb-2">Your Name</label>
+                    <input
+                      type="text"
+                      value={name}
+                      onChange={(e) => { setName(e.target.value); setError(''); }}
+                      placeholder="First Last"
+                      autoFocus
+                      className="w-full px-4 py-3 rounded-xl text-white placeholder-slate-600 focus:outline-none mb-3"
+                      style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)' }}
+                    />
+                  </>
+                )}
                 <label className="block text-sm font-medium text-slate-300 mb-2">
                   {loginMode === 'member' ? 'Member password' : 'Admin password'}
                 </label>
@@ -304,14 +335,14 @@ export default function CareersLiveLanding({ config }: { config: Config }) {
                   value={password}
                   onChange={(e) => { setPassword(e.target.value); setError(''); }}
                   placeholder="Enter password"
-                  autoFocus
+                  autoFocus={loginMode === 'admin'}
                   className="w-full px-4 py-3 rounded-xl text-white placeholder-slate-600 text-center font-mono text-lg tracking-widest focus:outline-none mb-3"
                   style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)' }}
                 />
                 {error && <p className="text-red-400 text-xs mb-3">{error}</p>}
                 <button
                   type="submit"
-                  disabled={loading || !password.trim()}
+                  disabled={loading || !password.trim() || (loginMode === 'member' && !name.trim())}
                   className="w-full py-3 rounded-xl font-semibold text-white transition-all hover:opacity-90 disabled:opacity-50"
                   style={{
                     background: loginMode === 'admin'

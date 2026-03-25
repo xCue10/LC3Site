@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
 import CareersNav from '../components/CareersNav';
-import { isCareerAuthed, LS_PROFILE, LS_JOBS_CACHE } from '../types';
+import { isCareerAuthed, memberLS, LS_JOBS_CACHE } from '../types';
 import type { CareerProfile, Job } from '../types';
 
 function CoverLetterContent() {
@@ -24,7 +24,7 @@ function CoverLetterContent() {
 
   useEffect(() => {
     if (!isCareerAuthed()) { router.replace('/careers'); return; }
-    const raw = localStorage.getItem(LS_PROFILE);
+    const raw = localStorage.getItem(memberLS().profile);
     if (raw) { try { setProfile(JSON.parse(raw)); } catch {} }
 
     const cache = localStorage.getItem(LS_JOBS_CACHE);
@@ -61,12 +61,13 @@ function CoverLetterContent() {
         const { letter: generated } = await res.json() as { letter: string };
         setLetter(generated);
         // Achievement
-        const rawProfile = localStorage.getItem(LS_PROFILE);
+        const profileKey = memberLS().profile;
+        const rawProfile = localStorage.getItem(profileKey);
         if (rawProfile) {
           const p = JSON.parse(rawProfile) as CareerProfile;
           if (!p.achievements.includes('Cover Letter Pro')) {
             p.achievements.push('Cover Letter Pro');
-            localStorage.setItem(LS_PROFILE, JSON.stringify(p));
+            localStorage.setItem(profileKey, JSON.stringify(p));
           }
         }
       } else {

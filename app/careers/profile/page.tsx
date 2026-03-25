@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import CareersNav from '../components/CareersNav';
-import { isCareerAuthed, LS_PROFILE, LS_SAVED, LS_APPS, PRESET_SKILLS, JOB_TYPES, INDUSTRIES, CSN_MAJORS } from '../types';
+import { isCareerAuthed, memberLS, PRESET_SKILLS, JOB_TYPES, INDUSTRIES, CSN_MAJORS } from '../types';
 import type { CareerProfile, CareerSkill, Application, SavedJob } from '../types';
 
 const achievements = [
@@ -26,11 +26,12 @@ export default function ProfilePage() {
 
   useEffect(() => {
     if (!isCareerAuthed()) { router.replace('/careers'); return; }
-    const raw = localStorage.getItem(LS_PROFILE);
+    const keys = memberLS();
+    const raw = localStorage.getItem(keys.profile);
     if (raw) { try { setProfile(JSON.parse(raw)); } catch {} }
 
-    const savedRaw = localStorage.getItem(LS_SAVED) ?? '[]';
-    const appsRaw = localStorage.getItem(LS_APPS) ?? '[]';
+    const savedRaw = localStorage.getItem(keys.saved) ?? '[]';
+    const appsRaw = localStorage.getItem(keys.apps) ?? '[]';
     try {
       const saved: SavedJob[] = JSON.parse(savedRaw);
       const apps: Application[] = JSON.parse(appsRaw);
@@ -46,7 +47,7 @@ export default function ProfilePage() {
 
   const save = () => {
     if (!draft) return;
-    localStorage.setItem(LS_PROFILE, JSON.stringify(draft));
+    localStorage.setItem(memberLS().profile, JSON.stringify(draft));
     setProfile(draft);
     setEditing(false);
   };

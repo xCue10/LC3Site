@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import CareersNav from '../components/CareersNav';
-import { isCareerAuthed, LS_APPS } from '../types';
+import { isCareerAuthed, memberLS } from '../types';
 import type { Application, ApplicationStatus } from '../types';
 
 const STATUSES: ApplicationStatus[] = ['Saved', 'Applied', 'Phone Screen', 'Interview Scheduled', 'Interview Done', 'Offer', 'Rejected'];
@@ -96,12 +96,12 @@ export default function ApplicationsPage() {
   }, [router]);
 
   const loadApps = () => {
-    const raw = localStorage.getItem(LS_APPS) ?? '[]';
+    const raw = localStorage.getItem(memberLS().apps) ?? '[]';
     try { setApps(JSON.parse(raw)); } catch { setApps([]); }
   };
 
   const saveApps = (updated: Application[]) => {
-    localStorage.setItem(LS_APPS, JSON.stringify(updated));
+    localStorage.setItem(memberLS().apps, JSON.stringify(updated));
     setApps(updated);
   };
 

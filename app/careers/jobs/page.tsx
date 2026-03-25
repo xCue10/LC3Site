@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import CareersNav from '../components/CareersNav';
-import { isCareerAuthed, LS_PROFILE, LS_SAVED, LS_JOBS_CACHE, JOB_TYPES, INDUSTRIES } from '../types';
+import { isCareerAuthed, memberLS, LS_JOBS_CACHE, JOB_TYPES, INDUSTRIES } from '../types';
 import type { Job, CareerProfile, SavedJob } from '../types';
 
 function MatchBadge({ score }: { score?: number }) {
@@ -166,11 +166,12 @@ export default function JobFeedPage() {
       router.replace('/careers');
       return;
     }
-    const rawProfile = localStorage.getItem(LS_PROFILE);
+    const keys = memberLS();
+    const rawProfile = localStorage.getItem(keys.profile);
     if (rawProfile) {
       try { setProfile(JSON.parse(rawProfile)); } catch {}
     }
-    const rawSaved = localStorage.getItem(LS_SAVED);
+    const rawSaved = localStorage.getItem(keys.saved);
     if (rawSaved) {
       try {
         const saved = JSON.parse(rawSaved) as SavedJob[];
@@ -203,7 +204,7 @@ export default function JobFeedPage() {
         setFetchedAt(data.fetchedAt);
 
         // Analyze with AI if profile exists
-        const rawProfile = localStorage.getItem(LS_PROFILE);
+        const rawProfile = localStorage.getItem(memberLS().profile);
         if (rawProfile) {
           const p = JSON.parse(rawProfile) as CareerProfile;
           setLoading(false);
@@ -237,7 +238,8 @@ export default function JobFeedPage() {
   }, [loadJobs]);
 
   const toggleSave = (job: Job) => {
-    const rawSaved = localStorage.getItem(LS_SAVED) ?? '[]';
+    const keys = memberLS();
+    const rawSaved = localStorage.getItem(keys.saved) ?? '[]';
     let saved: SavedJob[] = [];
     try { saved = JSON.parse(rawSaved); } catch {}
 
@@ -248,22 +250,23 @@ export default function JobFeedPage() {
       saved = [...saved, { id: job.id, job, savedAt: new Date().toISOString() }];
       setSavedIds((prev) => new Set([...prev, job.id]));
       // Check achievement
-      const rawProfile = localStorage.getItem(LS_PROFILE);
+      const profileKey = memberLS().profile;
+      const rawProfile = localStorage.getItem(profileKey);
       if (rawProfile) {
         try {
           const p = JSON.parse(rawProfile) as CareerProfile;
           if (!p.achievements.includes('First Save')) {
             p.achievements.push('First Save');
-            localStorage.setItem(LS_PROFILE, JSON.stringify(p));
+            localStorage.setItem(profileKey, JSON.stringify(p));
           }
           if (job.matchScore !== undefined && job.matchScore >= 95 && !p.achievements.includes('Perfect Match')) {
             p.achievements.push('Perfect Match');
-            localStorage.setItem(LS_PROFILE, JSON.stringify(p));
+            localStorage.setItem(profileKey, JSON.stringify(p));
           }
         } catch {}
       }
     }
-    localStorage.setItem(LS_SAVED, JSON.stringify(saved));
+    localStorage.setItem(keys.saved, JSON.stringify(saved));
   };
 
   const filtered = jobs.filter((j) => {

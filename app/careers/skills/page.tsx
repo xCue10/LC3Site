@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import CareersNav from '../components/CareersNav';
-import { isCareerAuthed, LS_PROFILE } from '../types';
+import { isCareerAuthed, memberLS } from '../types';
 import type { CareerProfile } from '../types';
 
 interface SkillGap {
@@ -51,7 +51,7 @@ export default function SkillsPage() {
 
   useEffect(() => {
     if (!isCareerAuthed()) { router.replace('/careers'); return; }
-    const raw = localStorage.getItem(LS_PROFILE);
+    const raw = localStorage.getItem(memberLS().profile);
     if (raw) {
       try {
         const p = JSON.parse(raw) as CareerProfile;
@@ -77,12 +77,13 @@ export default function SkillsPage() {
         setData(await res.json() as SkillsData);
         // Achievement
         if (profile.skills.length >= 10) {
-          const rawProfile = localStorage.getItem(LS_PROFILE);
+          const profileKey = memberLS().profile;
+          const rawProfile = localStorage.getItem(profileKey);
           if (rawProfile) {
             const p = JSON.parse(rawProfile) as CareerProfile;
             if (!p.achievements.includes('Skill Builder')) {
               p.achievements.push('Skill Builder');
-              localStorage.setItem(LS_PROFILE, JSON.stringify(p));
+              localStorage.setItem(profileKey, JSON.stringify(p));
             }
           }
         }
@@ -96,12 +97,13 @@ export default function SkillsPage() {
   };
 
   const addSkill = (skillName: string) => {
-    const raw = localStorage.getItem(LS_PROFILE);
+    const profileKey = memberLS().profile;
+    const raw = localStorage.getItem(profileKey);
     if (!raw) return;
     const p = JSON.parse(raw) as CareerProfile;
     if (!p.skills.find((s) => s.name === skillName)) {
       p.skills.push({ name: skillName, level: 'Beginner' });
-      localStorage.setItem(LS_PROFILE, JSON.stringify(p));
+      localStorage.setItem(profileKey, JSON.stringify(p));
       setProfile(p);
     }
   };

@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { isCareerAuthed,
-  LS_PROFILE, PRESET_SKILLS, JOB_TYPES, INDUSTRIES, CSN_MAJORS,
+  memberLS, PRESET_SKILLS, JOB_TYPES, INDUSTRIES, CSN_MAJORS,
   defaultProfile,
 } from '../types';
 import type { CareerProfile, CareerSkill } from '../types';
@@ -24,7 +24,7 @@ export default function OnboardingPage() {
       router.replace('/careers');
       return;
     }
-    const raw = localStorage.getItem(LS_PROFILE);
+    const raw = localStorage.getItem(memberLS().profile);
     if (raw) {
       try { setProfile(JSON.parse(raw)); } catch {}
     }
@@ -33,7 +33,7 @@ export default function OnboardingPage() {
   const save = (updates: Partial<CareerProfile>) => {
     setProfile((p) => {
       const next = { ...p, ...updates };
-      localStorage.setItem(LS_PROFILE, JSON.stringify(next));
+      localStorage.setItem(memberLS().profile, JSON.stringify(next));
       return next;
     });
   };
@@ -94,7 +94,7 @@ export default function OnboardingPage() {
     if (!completed.achievements.includes('Profile Complete')) {
       completed.achievements = [...completed.achievements, 'Profile Complete'];
     }
-    localStorage.setItem(LS_PROFILE, JSON.stringify(completed));
+    localStorage.setItem(memberLS().profile, JSON.stringify(completed));
     setProfile(completed);
     router.push('/careers/jobs');
   };

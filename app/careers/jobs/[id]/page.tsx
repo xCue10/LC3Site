@@ -4,7 +4,7 @@ import { useState, useEffect, use } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import CareersNav from '../../components/CareersNav';
-import { isCareerAuthed, LS_JOBS_CACHE, LS_SAVED, LS_APPS } from '../../types';
+import { isCareerAuthed, memberLS, LS_JOBS_CACHE } from '../../types';
 import type { Job, SavedJob, Application } from '../../types';
 
 export default function JobDetailPage({ params }: { params: Promise<{ id: string }> }) {
@@ -39,14 +39,15 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
     }
 
     // Check saved status
-    const rawSaved = localStorage.getItem(LS_SAVED) ?? '[]';
+    const keys = memberLS();
+    const rawSaved = localStorage.getItem(keys.saved) ?? '[]';
     try {
       const savedJobs = JSON.parse(rawSaved) as SavedJob[];
       setSaved(savedJobs.some((s) => s.id === decodedId));
     } catch {}
 
     // Check applied status
-    const rawApps = localStorage.getItem(LS_APPS) ?? '[]';
+    const rawApps = localStorage.getItem(keys.apps) ?? '[]';
     try {
       const apps = JSON.parse(rawApps) as Application[];
       setApplied(apps.some((a) => a.jobUrl?.includes(decodedId)));
@@ -55,7 +56,8 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
 
   const toggleSave = () => {
     if (!job) return;
-    const rawSaved = localStorage.getItem(LS_SAVED) ?? '[]';
+    const keys = memberLS();
+    const rawSaved = localStorage.getItem(keys.saved) ?? '[]';
     let savedJobs: SavedJob[] = [];
     try { savedJobs = JSON.parse(rawSaved); } catch {}
 
@@ -64,13 +66,14 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
     } else {
       savedJobs = [...savedJobs, { id: job.id, job, savedAt: new Date().toISOString() }];
     }
-    localStorage.setItem(LS_SAVED, JSON.stringify(savedJobs));
+    localStorage.setItem(keys.saved, JSON.stringify(savedJobs));
     setSaved(!saved);
   };
 
   const addToTracker = () => {
     if (!job) return;
-    const rawApps = localStorage.getItem(LS_APPS) ?? '[]';
+    const keys = memberLS();
+    const rawApps = localStorage.getItem(keys.apps) ?? '[]';
     let apps: Application[] = [];
     try { apps = JSON.parse(rawApps); } catch {}
 
@@ -83,7 +86,7 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
       jobUrl: job.url,
     };
     apps = [...apps, newApp];
-    localStorage.setItem(LS_APPS, JSON.stringify(apps));
+    localStorage.setItem(keys.apps, JSON.stringify(apps));
     setApplied(true);
     alert('Added to Application Tracker!');
   };

@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { timingSafeEqual } from 'crypto';
+import { readJSON } from '@/lib/data';
+
+interface Member { id: string; name: string; }
 
 // Simple in-memory rate limiter: max 10 attempts per IP per 15 minutes
 const attempts = new Map<string, { count: number; resetAt: number }>();
@@ -37,24 +40,42 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Too many attempts. Try again later.' }, { status: 429 });
   }
 
-  const { password } = await req.json() as { password: string };
+  const body = await req.json() as { password?: string; name?: string };
+  const { password, name } = body;
+
   if (!password?.trim()) {
     return NextResponse.json({ error: 'Password required' }, { status: 400 });
   }
 
   const memberPassword = process.env.LC3MEMBER_PASSWORD;
-  const adminPassword = process.env.ADMIN_PASSWORD;
+  const adminPassword = process.env.LC3ADMIN_PASSWORD;
 
   if (!memberPassword) {
     return NextResponse.json({ error: 'Auth not configured — contact your instructor' }, { status: 503 });
   }
 
-  if (safeCompare(password, memberPassword)) {
-    return NextResponse.json({ ok: true, role: 'member' });
+  // Admin login (no name required)
+  if (adminPassword && safeCompare(password, adminPassword)) {
+    return NextResponse.json({ ok: true, role: 'admin', memberId: 'admin', memberName: 'Admin' });
   }
 
-  if (adminPassword && safeCompare(password, adminPassword)) {
-    return NextResponse.json({ ok: true, role: 'admin' });
+  // Member login (name + password)
+  if (safeCompare(password, memberPassword)) {
+    if (!name?.trim()) {
+      return NextResponse.json({ error: 'Name required' }, { status: 400 });
+    }
+
+    // Validate name against members.json
+    const members = readJSON<Member[]>('members.json', []);
+    const match = members.find(
+      (m) => m.name.toLowerCase().trim() === name.toLowerCase().trim()
+    );
+
+    if (!match) {
+      return NextResponse.json({ error: 'Name not found. Make sure your name matches our member list.' }, { status: 401 });
+    }
+
+    return NextResponse.json({ ok: true, role: 'member', memberId: match.id, memberName: match.name });
   }
 
   return NextResponse.json({ error: 'Invalid password' }, { status: 401 });

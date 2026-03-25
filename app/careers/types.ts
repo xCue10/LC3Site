@@ -105,10 +105,27 @@ export const defaultProfile: CareerProfile = {
 };
 
 export const LS_AUTH = 'lc3careers-auth';
-export const LS_PROFILE = 'lc3careers-profile';
-export const LS_SAVED = 'lc3careers-saved';
-export const LS_APPS = 'lc3careers-applications';
+export const LS_MEMBER_ID = 'lc3careers-member-id';
+export const LS_MEMBER_NAME = 'lc3careers-member-name';
 export const LS_JOBS_CACHE = 'lc3careers-jobs-cache';
+
+/** Returns localStorage keys namespaced to the currently logged-in member. */
+export function memberLS() {
+  try {
+    const id = localStorage.getItem(LS_MEMBER_ID) ?? 'guest';
+    return {
+      profile: `lc3careers-profile-${id}`,
+      saved: `lc3careers-saved-${id}`,
+      apps: `lc3careers-apps-${id}`,
+    };
+  } catch {
+    return {
+      profile: 'lc3careers-profile-guest',
+      saved: 'lc3careers-saved-guest',
+      apps: 'lc3careers-apps-guest',
+    };
+  }
+}
 
 export function isCareerAuthed(): boolean {
   try {

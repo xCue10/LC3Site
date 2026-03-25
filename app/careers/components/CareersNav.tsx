@@ -3,8 +3,7 @@
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import { LS_AUTH, LS_PROFILE } from '../types';
-import type { CareerProfile } from '../types';
+import { LS_AUTH, LS_MEMBER_NAME } from '../types';
 
 const navLinks = [
   { href: '/careers/jobs', label: 'Job Feed' },
@@ -17,13 +16,13 @@ const navLinks = [
 export default function CareersNav() {
   const pathname = usePathname();
   const router = useRouter();
-  const [profile, setProfile] = useState<CareerProfile | null>(null);
+  const [memberName, setMemberName] = useState('');
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     try {
-      const raw = localStorage.getItem(LS_PROFILE);
-      if (raw) setProfile(JSON.parse(raw));
+      const name = localStorage.getItem(LS_MEMBER_NAME);
+      if (name) setMemberName(name);
     } catch {}
   }, []);
 
@@ -79,9 +78,9 @@ export default function CareersNav() {
 
           {/* Right side */}
           <div className="flex items-center gap-2">
-            {profile?.fullName && (
+            {memberName && (
               <span className="hidden sm:block text-xs text-slate-400">
-                {profile.fullName.split(' ')[0]}
+                {memberName.split(' ')[0]}
               </span>
             )}
             <button

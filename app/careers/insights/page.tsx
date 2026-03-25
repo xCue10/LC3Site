@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import CareersNav from '../components/CareersNav';
-import { isCareerAuthed, LS_PROFILE, LS_JOBS_CACHE } from '../types';
+import { isCareerAuthed, memberLS, LS_JOBS_CACHE } from '../types';
 import type { CareerProfile, Job } from '../types';
 
 interface Insight {
@@ -30,7 +30,7 @@ export default function InsightsPage() {
     setLoading(true);
     setError('');
     try {
-      const rawProfile = localStorage.getItem(LS_PROFILE);
+      const rawProfile = localStorage.getItem(memberLS().profile);
       const profile: Partial<CareerProfile> = rawProfile ? JSON.parse(rawProfile) : {};
 
       const cache = localStorage.getItem(LS_JOBS_CACHE);

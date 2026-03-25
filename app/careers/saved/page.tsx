@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import CareersNav from '../components/CareersNav';
-import { isCareerAuthed, LS_SAVED } from '../types';
+import { isCareerAuthed, memberLS } from '../types';
 import type { SavedJob } from '../types';
 
 export default function SavedJobsPage() {
@@ -15,7 +15,7 @@ export default function SavedJobsPage() {
 
   useEffect(() => {
     if (!isCareerAuthed()) { router.replace('/careers'); return; }
-    const raw = localStorage.getItem(LS_SAVED) ?? '[]';
+    const raw = localStorage.getItem(memberLS().saved) ?? '[]';
     try {
       const jobs = JSON.parse(raw) as SavedJob[];
       setSavedJobs(jobs);
@@ -28,13 +28,13 @@ export default function SavedJobsPage() {
   const removeJob = (id: string) => {
     const updated = savedJobs.filter((j) => j.id !== id);
     setSavedJobs(updated);
-    localStorage.setItem(LS_SAVED, JSON.stringify(updated));
+    localStorage.setItem(memberLS().saved, JSON.stringify(updated));
   };
 
   const saveNotes = (id: string) => {
     const updated = savedJobs.map((j) => j.id === id ? { ...j, notes: notesValues[id] } : j);
     setSavedJobs(updated);
-    localStorage.setItem(LS_SAVED, JSON.stringify(updated));
+    localStorage.setItem(memberLS().saved, JSON.stringify(updated));
     setEditingNotes(null);
   };
 
