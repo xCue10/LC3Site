@@ -231,19 +231,20 @@ const emptyEvent: Omit<Event, 'id'> = {
 // ─── Member Form Modal ───────────────────────────────────────────────────────
 function MemberModal({
   member,
+  prefill,
   onSave,
   onClose,
 }: {
   member: Member | null;
+  prefill?: Partial<Omit<Member, 'id'>>;
   onSave: (data: Omit<Member, 'id'>) => Promise<void>;
   onClose: () => void;
 }) {
-  const [form, setForm] = useState<Omit<Member, 'id'>>(
-    member ? { ...member } : { ...emptyMember }
-  );
-  const [majorsStr, setMajorsStr] = useState((member?.majors ?? []).join(', '));
-  const [skillsStr, setSkillsStr] = useState((member?.skills ?? []).join(', '));
-  const [projectsStr, setProjectsStr] = useState((member?.projects ?? []).join(', '));
+  const base = member ? { ...member } : { ...emptyMember, ...(prefill ?? {}) };
+  const [form, setForm] = useState<Omit<Member, 'id'>>(base);
+  const [majorsStr, setMajorsStr] = useState((base.majors ?? []).join(', '));
+  const [skillsStr, setSkillsStr] = useState((base.skills ?? []).join(', '));
+  const [projectsStr, setProjectsStr] = useState((base.projects ?? []).join(', '));
   const [customFields, setCustomFields] = useState<CustomField[]>(member?.customFields ?? []);
   const [saving, setSaving] = useState(false);
 
@@ -268,7 +269,7 @@ function MemberModal({
     <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
       <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between p-6 border-b border-slate-200 dark:border-[#1e2d45]">
-          <h2 className="text-slate-900 dark:text-white font-semibold text-lg">{member ? 'Edit Member' : 'Add Member'}</h2>
+          <h2 className="text-slate-900 dark:text-white font-semibold text-lg">{member ? 'Edit Member' : prefill ? 'Add Member from Contact' : 'Add Member'}</h2>
           <button onClick={onClose} className="text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors">
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -1054,7 +1055,7 @@ function Dashboard() {
   const unreadContacts = contacts.filter((c) => new Date(c.submittedAt).getTime() > lastSeenContacts).length;
   const unreadPartners = partners.filter((p) => new Date(p.submittedAt).getTime() > lastSeenPartners).length;
 
-  const [memberModal, setMemberModal] = useState<{ open: boolean; member: Member | null }>({ open: false, member: null });
+  const [memberModal, setMemberModal] = useState<{ open: boolean; member: Member | null; prefill?: Partial<Omit<Member, 'id'>> }>({ open: false, member: null });
   const [eventModal, setEventModal] = useState<{ open: boolean; event: Event | null }>({ open: false, event: null });
   const [projectModal, setProjectModal] = useState<{ open: boolean; project: Project | null }>({ open: false, project: null });
   const [deleteConfirm, setDeleteConfirm] = useState<{ type: 'member' | 'event' | 'project'; id: string } | null>(null);
@@ -2998,10 +2999,28 @@ function Dashboard() {
                               <div className="text-slate-500 text-sm">{c.email} · {c.major}</div>
                             </div>
                           </div>
-                          <div className="flex items-center gap-3">
+                          <div className="flex items-center gap-2">
                             <div className="text-slate-600 text-xs">
                               {new Date(c.submittedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                             </div>
+                            <button
+                              onClick={() => setMemberModal({
+                                open: true,
+                                member: null,
+                                prefill: {
+                                  name: c.name,
+                                  majors: c.major ? [c.major] : [],
+                                  memberType: 'member',
+                                },
+                              })}
+                              className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium text-violet-400 bg-violet-500/10 hover:bg-violet-500/20 border border-violet-500/20 transition-all"
+                              title="Add to Members"
+                            >
+                              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                              </svg>
+                              Add to Members
+                            </button>
                             <button
                               onClick={async () => {
                                 if (!confirm(`Delete submission from ${c.name}?`)) return;
@@ -3618,6 +3637,7 @@ function Dashboard() {
       {memberModal.open && (
         <MemberModal
           member={memberModal.member}
+          prefill={memberModal.prefill}
           onSave={saveMember}
           onClose={() => setMemberModal({ open: false, member: null })}
         />
