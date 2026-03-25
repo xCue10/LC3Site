@@ -313,20 +313,16 @@ export default function CareersLiveLanding({ config }: { config: Config }) {
                   </button>
                 </div>
 
-                {loginMode === 'member' && (
-                  <>
-                    <label className="block text-sm font-medium text-slate-300 mb-2">Your Name</label>
-                    <input
-                      type="text"
-                      value={name}
-                      onChange={(e) => { setName(e.target.value); setError(''); }}
-                      placeholder="First Last"
-                      autoFocus
-                      className="w-full px-4 py-3 rounded-xl text-white placeholder-slate-600 focus:outline-none mb-3"
-                      style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)' }}
-                    />
-                  </>
-                )}
+                <label className="block text-sm font-medium text-slate-300 mb-2">Your Name</label>
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(e) => { setName(e.target.value); setError(''); }}
+                  placeholder="First Last"
+                  autoFocus
+                  className="w-full px-4 py-3 rounded-xl text-white placeholder-slate-600 focus:outline-none mb-3"
+                  style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)' }}
+                />
                 <label className="block text-sm font-medium text-slate-300 mb-2">
                   {loginMode === 'member' ? 'Member password' : 'Admin password'}
                 </label>
@@ -335,7 +331,7 @@ export default function CareersLiveLanding({ config }: { config: Config }) {
                   value={password}
                   onChange={(e) => { setPassword(e.target.value); setError(''); }}
                   placeholder="Enter password"
-                  autoFocus={loginMode === 'admin'}
+                  autoFocus={false}
                   className="w-full px-4 py-3 rounded-xl text-white placeholder-slate-600 text-center font-mono text-lg tracking-widest focus:outline-none mb-3"
                   style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)' }}
                 />
@@ -359,9 +355,11 @@ export default function CareersLiveLanding({ config }: { config: Config }) {
                 >
                   Cancel
                 </button>
-                {loginMode === 'member' && (
-                  <p className="text-center text-xs text-slate-600 mt-2">Get your password at an LC3 club meeting</p>
-                )}
+                <p className="text-center text-xs text-slate-600 mt-2">
+                  {loginMode === 'member'
+                    ? 'Get your password at an LC3 club meeting'
+                    : 'Admin access is restricted to Club Officers'}
+                </p>
               </div>
             </form>
           )}

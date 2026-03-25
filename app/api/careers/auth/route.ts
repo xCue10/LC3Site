@@ -54,19 +54,31 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Auth not configured — contact your instructor' }, { status: 503 });
   }
 
-  // Admin login (no name required)
+  const members = readJSON<Member[]>('members.json', []);
+
+  // Admin login — name must match a Club Officer in members.json
   if (adminPassword && safeCompare(password, adminPassword)) {
-    return NextResponse.json({ ok: true, role: 'admin', memberId: 'admin', memberName: 'Admin' });
+    if (!name?.trim()) {
+      return NextResponse.json({ error: 'Name required' }, { status: 400 });
+    }
+
+    const match = members.find(
+      (m) => m.name.toLowerCase().trim() === name.toLowerCase().trim() && m.memberType === 'officer'
+    );
+
+    if (!match) {
+      return NextResponse.json({ error: 'Name not found. Admin access is restricted to Club Officers.' }, { status: 401 });
+    }
+
+    return NextResponse.json({ ok: true, role: 'admin', memberId: match.id, memberName: match.name });
   }
 
-  // Member login (name + password)
+  // Member login — name must match any member in members.json
   if (safeCompare(password, memberPassword)) {
     if (!name?.trim()) {
       return NextResponse.json({ error: 'Name required' }, { status: 400 });
     }
 
-    // Validate name against members.json
-    const members = readJSON<Member[]>('members.json', []);
     const match = members.find(
       (m) => m.name.toLowerCase().trim() === name.toLowerCase().trim()
     );
