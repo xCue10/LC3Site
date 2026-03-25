@@ -306,12 +306,6 @@ export default function CareersLiveLanding({ config }: { config: Config }) {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
                 </svg>
               </button>
-              <button
-                onClick={() => { setShowLogin(true); setLoginMode('admin'); }}
-                className="text-xs text-slate-600 hover:text-slate-400 transition-colors"
-              >
-                Admin login
-              </button>
             </div>
           ) : (
             <form onSubmit={handleLogin} className="max-w-sm mx-auto">
