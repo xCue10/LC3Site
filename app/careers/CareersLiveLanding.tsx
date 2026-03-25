@@ -192,7 +192,7 @@ export default function CareersLiveLanding({ config }: { config: Config }) {
               </button>
             </div>
           ) : (
-            <form onSubmit={handleLogin} className="max-w-sm mx-auto">
+            <form onSubmit={handleLogin} className="w-full">
               <div
                 className="rounded-2xl p-6 text-left"
                 style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)' }}
