@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { LS_AUTH, LS_MEMBER_ID, LS_MEMBER_NAME, memberLS } from './types';
 
@@ -9,6 +9,14 @@ interface Config {
   tagline: string;
   description: string;
   features: string[];
+}
+
+interface Member {
+  id: string;
+  name: string;
+  role: string;
+  memberType: string;
+  avatarUrl?: string;
 }
 
 function CareersHeroSVG() {
@@ -130,11 +138,29 @@ export default function CareersLiveLanding({ config }: { config: Config }) {
   const router = useRouter();
   const [showLogin, setShowLogin] = useState(false);
   const [loginMode, setLoginMode] = useState<'member' | 'admin'>('member');
-  const [name, setName] = useState('');
+  const [members, setMembers] = useState<Member[]>([]);
+  const [nameQuery, setNameQuery] = useState('');
+  const [selectedMember, setSelectedMember] = useState<Member | null>(null);
+  const [showSuggestions, setShowSuggestions] = useState(false);
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [checking, setChecking] = useState(true);
+  const nameRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    fetch('/api/members').then(r => r.json()).then(setMembers).catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (nameRef.current && !nameRef.current.contains(e.target as Node)) {
+        setShowSuggestions(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, []);
 
   useEffect(() => {
     try {
@@ -158,17 +184,23 @@ export default function CareersLiveLanding({ config }: { config: Config }) {
     setChecking(false);
   }, [router]);
 
+  const suggestions = nameQuery.trim()
+    ? members
+        .filter(m => {
+          if (loginMode === 'admin' && m.memberType !== 'officer') return false;
+          return m.name.toLowerCase().includes(nameQuery.toLowerCase().trim());
+        })
+        .slice(0, 6)
+    : [];
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!password.trim()) return;
-    if (loginMode === 'member' && !name.trim()) return;
+    if (!password.trim() || !selectedMember) return;
     setLoading(true);
     setError('');
 
     try {
-      const body = loginMode === 'member'
-        ? { password: password.trim(), name: name.trim() }
-        : { password: password.trim() };
+      const body = { password: password.trim(), name: selectedMember.name };
 
       const res = await fetch('/api/careers/auth', {
         method: 'POST',
@@ -291,7 +323,7 @@ export default function CareersLiveLanding({ config }: { config: Config }) {
                 <div className="flex gap-2 mb-4">
                   <button
                     type="button"
-                    onClick={() => { setLoginMode('member'); setError(''); setPassword(''); setName(''); }}
+                    onClick={() => { setLoginMode('member'); setError(''); setPassword(''); setNameQuery(''); setSelectedMember(null); }}
                     className="flex-1 py-1.5 rounded-lg text-xs font-medium transition-all"
                     style={{
                       background: loginMode === 'member' ? 'rgba(59,130,246,0.3)' : 'rgba(255,255,255,0.05)',
@@ -302,7 +334,7 @@ export default function CareersLiveLanding({ config }: { config: Config }) {
                   </button>
                   <button
                     type="button"
-                    onClick={() => { setLoginMode('admin'); setError(''); setPassword(''); setName(''); }}
+                    onClick={() => { setLoginMode('admin'); setError(''); setPassword(''); setNameQuery(''); setSelectedMember(null); }}
                     className="flex-1 py-1.5 rounded-lg text-xs font-medium transition-all"
                     style={{
                       background: loginMode === 'admin' ? 'rgba(139,92,246,0.3)' : 'rgba(255,255,255,0.05)',
@@ -314,15 +346,68 @@ export default function CareersLiveLanding({ config }: { config: Config }) {
                 </div>
 
                 <label className="block text-sm font-medium text-slate-300 mb-2">Your Name</label>
-                <input
-                  type="text"
-                  value={name}
-                  onChange={(e) => { setName(e.target.value); setError(''); }}
-                  placeholder="First Last"
-                  autoFocus
-                  className="w-full px-4 py-3 rounded-xl text-white placeholder-slate-600 focus:outline-none mb-3"
-                  style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)' }}
-                />
+                <div ref={nameRef} className="relative mb-3">
+                  {selectedMember ? (
+                    <div
+                      className="flex items-center gap-3 px-4 py-3 rounded-xl cursor-pointer"
+                      style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)' }}
+                      onClick={() => { setSelectedMember(null); setNameQuery(''); }}
+                    >
+                      {selectedMember.avatarUrl && (
+                        <img src={selectedMember.avatarUrl} alt={selectedMember.name} className="w-7 h-7 rounded-full object-cover shrink-0" />
+                      )}
+                      <div className="flex-1 min-w-0">
+                        <div className="text-white text-sm font-medium">{selectedMember.name}</div>
+                        <div className="text-xs text-slate-500">{selectedMember.role}</div>
+                      </div>
+                      <span className="text-xs text-slate-500">Change</span>
+                    </div>
+                  ) : (
+                    <input
+                      type="text"
+                      value={nameQuery}
+                      onChange={(e) => { setNameQuery(e.target.value); setShowSuggestions(true); setError(''); }}
+                      onFocus={() => setShowSuggestions(true)}
+                      placeholder="Search your name…"
+                      autoComplete="off"
+                      autoFocus
+                      className="w-full px-4 py-3 rounded-xl text-white placeholder-slate-600 focus:outline-none"
+                      style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)' }}
+                    />
+                  )}
+                  {!selectedMember && showSuggestions && suggestions.length > 0 && (
+                    <div
+                      className="absolute top-full mt-1.5 w-full rounded-xl overflow-hidden z-50"
+                      style={{ background: '#0d1117', border: '1px solid rgba(255,255,255,0.1)', boxShadow: '0 8px 32px rgba(0,0,0,0.5)' }}
+                    >
+                      {suggestions.map(m => (
+                        <button
+                          key={m.id}
+                          type="button"
+                          className="w-full flex items-center gap-3 px-4 py-2.5 text-left transition-colors"
+                          style={{ background: 'transparent' }}
+                          onMouseEnter={e => (e.currentTarget.style.background = 'rgba(59,130,246,0.08)')}
+                          onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
+                          onClick={() => { setSelectedMember(m); setNameQuery(''); setShowSuggestions(false); setError(''); }}
+                        >
+                          {m.avatarUrl && <img src={m.avatarUrl} alt={m.name} className="w-7 h-7 rounded-full object-cover shrink-0" />}
+                          <div>
+                            <div className="text-white text-sm font-medium">{m.name}</div>
+                            <div className="text-xs text-slate-500">{m.role}</div>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                  {!selectedMember && showSuggestions && nameQuery.trim() && suggestions.length === 0 && (
+                    <div
+                      className="absolute top-full mt-1.5 w-full rounded-xl px-4 py-3 text-center z-50"
+                      style={{ background: '#0d1117', border: '1px solid rgba(255,255,255,0.1)', fontSize: '13px', color: '#475569' }}
+                    >
+                      No members found. Contact your club admin.
+                    </div>
+                  )}
+                </div>
                 <label className="block text-sm font-medium text-slate-300 mb-2">
                   {loginMode === 'member' ? 'Member password' : 'Admin password'}
                 </label>
@@ -338,7 +423,7 @@ export default function CareersLiveLanding({ config }: { config: Config }) {
                 {error && <p className="text-red-400 text-xs mb-3">{error}</p>}
                 <button
                   type="submit"
-                  disabled={loading || !password.trim() || (loginMode === 'member' && !name.trim())}
+                  disabled={loading || !password.trim() || !selectedMember}
                   className="w-full py-3 rounded-xl font-semibold text-white transition-all hover:opacity-90 disabled:opacity-50"
                   style={{
                     background: loginMode === 'admin'
@@ -350,7 +435,7 @@ export default function CareersLiveLanding({ config }: { config: Config }) {
                 </button>
                 <button
                   type="button"
-                  onClick={() => { setShowLogin(false); setPassword(''); setError(''); }}
+                  onClick={() => { setShowLogin(false); setPassword(''); setError(''); setNameQuery(''); setSelectedMember(null); }}
                   className="w-full text-center text-xs text-slate-600 hover:text-slate-400 mt-3 transition-colors"
                 >
                   Cancel
