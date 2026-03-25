@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Anthropic from '@anthropic-ai/sdk';
+import type { DocumentBlockParam, TextBlockParam, MessageParam } from '@anthropic-ai/sdk/resources/messages/messages';
 
 const client = new Anthropic();
 
@@ -21,25 +22,22 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ text: buffer.toString('utf-8') });
     }
 
-    // PDF — send to Claude as a document block for extraction
+    // PDF — send to Claude as a document block for text extraction
     if (ext === 'pdf') {
-      const base64 = buffer.toString('base64');
+      const docBlock: DocumentBlockParam = {
+        type: 'document',
+        source: { type: 'base64', media_type: 'application/pdf', data: buffer.toString('base64') },
+      };
+      const textBlock: TextBlockParam = {
+        type: 'text',
+        text: 'Extract all text from this resume exactly as written, preserving the layout and structure as plain text. Return only the extracted text — no commentary, no formatting changes.',
+      };
+      const message: MessageParam = { role: 'user', content: [docBlock, textBlock] };
+
       const response = await client.messages.create({
-        model: 'claude-sonnet-4-5-20251001',
+        model: 'claude-haiku-4-5-20251001',
         max_tokens: 4096,
-        messages: [{
-          role: 'user',
-          content: [
-            {
-              type: 'document',
-              source: { type: 'base64', media_type: 'application/pdf', data: base64 },
-            } as Parameters<typeof client.messages.create>[0]['messages'][0]['content'][0],
-            {
-              type: 'text',
-              text: 'Extract all text from this resume exactly as written, preserving the layout and structure as plain text. Return only the extracted text — no commentary, no formatting changes.',
-            },
-          ],
-        }],
+        messages: [message],
       });
 
       const text = response.content[0].type === 'text' ? response.content[0].text : '';
