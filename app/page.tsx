@@ -4,6 +4,8 @@ import ScrollReveal from './components/ScrollReveal';
 import HeroTyping from './components/HeroTyping';
 import AnimatedStat from './components/AnimatedStat';
 import StaggerReveal from './components/StaggerReveal';
+import ShieldDashboardPreview from './components/ShieldDashboardPreview';
+import CareersDashboardPreview from './components/CareersDashboardPreview';
 import type { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
@@ -411,15 +413,11 @@ export default function HomePage() {
                 </Link>
               </div>
 
-              {/* Right side: mini feature list */}
-              <div className="grid grid-cols-2 gap-3">
-                {(homeContent.shieldFeatureCards ?? []).map(({ icon, title, desc }) => (
-                  <div key={title} className="bg-white/60 dark:bg-white/[0.03] border border-slate-200/60 dark:border-white/[0.06] rounded-xl p-4">
-                    <div className="text-xl mb-2">{icon}</div>
-                    <div className="text-sm font-semibold text-slate-900 dark:text-white mb-1">{title}</div>
-                    <div className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">{desc}</div>
-                  </div>
-                ))}
+              {/* Right side: animated dashboard preview */}
+              <div className="flex items-center justify-center">
+                <div className="w-full max-w-sm">
+                  <ShieldDashboardPreview />
+                </div>
               </div>
             </div>
           </div>
@@ -469,20 +467,11 @@ export default function HomePage() {
                 </Link>
               </div>
 
-              {/* Right side: mini feature list */}
-              <div className="grid grid-cols-2 gap-3">
-                {[
-                  { icon: '🎯', title: 'AI Match Scoring', desc: 'Jobs ranked by how well they fit your skills and goals' },
-                  { icon: '✉️', title: 'Cover Letter Gen', desc: 'Personalized cover letters in seconds with Claude AI' },
-                  { icon: '📊', title: 'Skill Gap Analysis', desc: 'Know exactly what to learn for your dream role' },
-                  { icon: '📋', title: 'App Tracker', desc: 'Track every application from saved to offer' },
-                ].map(({ icon, title, desc }) => (
-                  <div key={title} className="bg-white/60 dark:bg-white/[0.03] border border-slate-200/60 dark:border-white/[0.06] rounded-xl p-4">
-                    <div className="text-xl mb-2">{icon}</div>
-                    <div className="text-sm font-semibold text-slate-900 dark:text-white mb-1">{title}</div>
-                    <div className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">{desc}</div>
-                  </div>
-                ))}
+              {/* Right side: animated dashboard preview */}
+              <div className="flex items-center justify-center">
+                <div className="w-full max-w-sm">
+                  <CareersDashboardPreview />
+                </div>
               </div>
             </div>
           </div>
