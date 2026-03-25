@@ -143,7 +143,7 @@ export default function CareersLiveLanding({ config }: { config: Config }) {
   ];
 
   return (
-    <div style={{ background: '#0a0f1e', minHeight: '100vh' }}>
+    <div style={{ background: '#0a0f1e' }}>
       {/* Hero */}
       <section className="relative overflow-hidden">
         {/* Ambient glow blobs */}
@@ -338,7 +338,7 @@ export default function CareersLiveLanding({ config }: { config: Config }) {
       </section>
 
       {/* Features */}
-      <section className="max-w-4xl mx-auto px-4 sm:px-6 pb-20">
+      <section className="max-w-4xl mx-auto px-4 sm:px-6 pb-10">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {features.map((f) => (
             <div
