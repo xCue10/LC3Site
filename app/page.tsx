@@ -126,47 +126,6 @@ export default function HomePage() {
           <div className="absolute top-1/2 left-1/2 w-[700px] h-[700px] bg-violet-600/15 rounded-full blur-3xl hidden dark:block" style={{animation:'hero-blob-a 9s ease-in-out infinite'}} />
           <div className="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-blue-600/15 rounded-full blur-3xl hidden dark:block" style={{animation:'hero-blob-b 11s ease-in-out infinite 1s'}} />
           <div className="absolute bottom-0 right-1/4 w-[300px] h-[300px] bg-purple-600/12 rounded-full blur-3xl hidden dark:block" style={{animation:'hero-blob-c 13s ease-in-out infinite 2s'}} />
-          {/* Tech constellation */}
-          <svg className="absolute inset-0 w-full h-full" viewBox="0 0 1200 500" fill="none" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-            <defs>
-              <style>{`
-                @keyframes hero-node-float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
-                @keyframes hero-node-glow { 0%,100%{opacity:0.25} 50%{opacity:0.6} }
-                @keyframes hero-line-dash { to { stroke-dashoffset: -20; } }
-                @keyframes hero-dot-orbit { from{transform:rotate(0deg) translateX(28px)} to{transform:rotate(360deg) translateX(28px)} }
-              `}</style>
-            </defs>
-            {/* Connection lines */}
-            <line x1="160" y1="120" x2="340" y2="200" stroke="rgba(139,92,246,0.12)" strokeWidth="1" strokeDasharray="4 6" style={{animation:'hero-line-dash 1.8s linear infinite'}}/>
-            <line x1="340" y1="200" x2="560" y2="140" stroke="rgba(59,130,246,0.12)" strokeWidth="1" strokeDasharray="4 6" style={{animation:'hero-line-dash 2.1s linear infinite 0.4s'}}/>
-            <line x1="340" y1="200" x2="480" y2="250" stroke="rgba(99,102,241,0.1)" strokeWidth="1" strokeDasharray="4 6" style={{animation:'hero-line-dash 1.6s linear infinite 0.8s'}}/>
-            <line x1="840" y1="130" x2="1040" y2="220" stroke="rgba(6,182,212,0.12)" strokeWidth="1" strokeDasharray="4 6" style={{animation:'hero-line-dash 1.9s linear infinite 0.6s'}}/>
-            <line x1="1040" y1="220" x2="900" y2="360" stroke="rgba(139,92,246,0.1)" strokeWidth="1" strokeDasharray="4 6" style={{animation:'hero-line-dash 2.2s linear infinite 1s'}}/>
-            <line x1="560" y1="140" x2="840" y2="130" stroke="rgba(59,130,246,0.08)" strokeWidth="1" strokeDasharray="4 6" style={{animation:'hero-line-dash 2.4s linear infinite 1.4s'}}/>
-            <line x1="100" y1="340" x2="340" y2="200" stroke="rgba(34,197,94,0.08)" strokeWidth="1" strokeDasharray="4 6" style={{animation:'hero-line-dash 2s linear infinite 0.3s'}}/>
-            <line x1="1100" y1="380" x2="1040" y2="220" stroke="rgba(245,158,11,0.08)" strokeWidth="1" strokeDasharray="4 6" style={{animation:'hero-line-dash 1.7s linear infinite 1.2s'}}/>
-            {/* Tech nodes */}
-            {[
-              {cx:160, cy:120, r:18, color:'rgba(139,92,246,0.18)', stroke:'rgba(139,92,246,0.35)', dot:'#8b5cf6', label:'React', delay:'0s'},
-              {cx:340, cy:200, r:22, color:'rgba(59,130,246,0.16)', stroke:'rgba(59,130,246,0.38)', dot:'#3b82f6', label:'Azure', delay:'0.6s'},
-              {cx:560, cy:140, r:16, color:'rgba(6,182,212,0.14)', stroke:'rgba(6,182,212,0.32)', dot:'#06b6d4', label:'Cloud', delay:'1.2s'},
-              {cx:840, cy:130, r:19, color:'rgba(99,102,241,0.16)', stroke:'rgba(99,102,241,0.35)', dot:'#6366f1', label:'Node', delay:'0.4s'},
-              {cx:1040, cy:220, r:20, color:'rgba(139,92,246,0.15)', stroke:'rgba(139,92,246,0.32)', dot:'#8b5cf6', label:'AI', delay:'1s'},
-              {cx:480, cy:250, r:14, color:'rgba(34,197,94,0.12)', stroke:'rgba(34,197,94,0.28)', dot:'#22c55e', label:'API', delay:'1.6s'},
-              {cx:900, cy:360, r:15, color:'rgba(245,158,11,0.12)', stroke:'rgba(245,158,11,0.28)', dot:'#f59e0b', label:'Git', delay:'0.8s'},
-              {cx:100, cy:340, r:13, color:'rgba(236,72,153,0.1)', stroke:'rgba(236,72,153,0.24)', dot:'#ec4899', label:'UI', delay:'1.8s'},
-              {cx:1100, cy:380, r:13, color:'rgba(6,182,212,0.1)', stroke:'rgba(6,182,212,0.24)', dot:'#06b6d4', label:'DB', delay:'2.2s'},
-            ].map(({cx,cy,r,color,stroke,dot,label,delay}) => (
-              <g key={label} style={{animation:`hero-node-float ${3+Math.random()}s ease-in-out infinite`, animationDelay:delay, transformOrigin:`${cx}px ${cy}px`}}>
-                <circle cx={cx} cy={cy} r={r} fill={color} stroke={stroke} strokeWidth="1"/>
-                <circle cx={cx} cy={cy} r={r} fill="none" stroke={stroke} strokeWidth="0.8">
-                  <animate attributeName="opacity" values="0.3;0.7;0.3" dur="3s" begin={delay} repeatCount="indefinite"/>
-                </circle>
-                <circle cx={cx} cy={cy} r={4} fill={dot} opacity="0.6"/>
-                <text x={cx} y={cy+r+10} textAnchor="middle" fill={stroke} fontSize="8" fontFamily="monospace" opacity="0.7">{label}</text>
-              </g>
-            ))}
-          </svg>
         </div>
 
         <div className="max-w-6xl mx-auto px-4 sm:px-6 text-center">
@@ -190,7 +149,7 @@ export default function HomePage() {
             @keyframes badge-pulse { 0%,100%{box-shadow:none;border-color:rgb(226,232,240)} 50%{box-shadow:0 0 8px 1px rgba(99,102,241,0.2);border-color:rgba(99,102,241,0.4)} }
             @keyframes badge-pulse-dark { 0%,100%{box-shadow:none} 50%{box-shadow:0 0 10px 2px rgba(139,92,246,0.25)} }
           `}</style>
-          <div className="relative w-full max-w-5xl mx-auto mb-10">
+          <div className="relative w-full max-w-7xl mx-auto mb-10">
             {/* Glow ring */}
             <div className="absolute -inset-[4px] -z-10 rounded-[20px]" style={{background:'linear-gradient(135deg,rgba(99,102,241,0.45),rgba(8,145,178,0.3),rgba(99,102,241,0.45))',filter:'blur(10px)',animation:'banner-glow 3s ease-in-out infinite'}}/>
             {/* Corner accents */}
