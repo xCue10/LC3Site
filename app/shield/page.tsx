@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { readJSON } from '@/lib/data';
+import ShieldDashboardPreview from '@/app/components/ShieldDashboardPreview';
 import type { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
@@ -140,9 +141,11 @@ function ShieldLiveLanding({ config }: { config: ShieldPageConfig }) {
   return (
     <section className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-red-50/20 dark:from-[#080d18] dark:via-[#0a1020] dark:to-[#0d1424]">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 pt-16 pb-20 text-center">
-        {/* Animated SVG hero */}
-        <div className="flex justify-center mb-6">
-          <ShieldHeroSVG />
+        {/* Dashboard preview */}
+        <div className="flex justify-center mb-8">
+          <div className="w-full max-w-md">
+            <ShieldDashboardPreview />
+          </div>
         </div>
 
         <h1 className="text-4xl sm:text-5xl font-bold text-slate-900 dark:text-white mb-4" style={{ letterSpacing: '-0.03em' }}>
@@ -184,9 +187,11 @@ function ShieldComingSoon({ config }: { config: ShieldPageConfig }) {
   return (
     <section className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-red-50/20 dark:from-[#080d18] dark:via-[#0a1020] dark:to-[#0d1424]">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 pt-16 pb-20 text-center">
-        {/* Animated SVG hero */}
-        <div className="flex justify-center mb-6">
-          <ShieldHeroSVG />
+        {/* Dashboard preview */}
+        <div className="flex justify-center mb-8">
+          <div className="w-full max-w-md">
+            <ShieldDashboardPreview />
+          </div>
         </div>
 
         {/* Coming Soon badge */}

@@ -1,6 +1,7 @@
 import { readJSON } from '@/lib/data';
 import type { Metadata } from 'next';
 import CareersLiveLanding from './CareersLiveLanding';
+import CareersDashboardPreview from '@/app/components/CareersDashboardPreview';
 
 export const dynamic = 'force-dynamic';
 
@@ -89,8 +90,10 @@ function CareersOffline({ config }: { config: CareersPageConfig }) {
   return (
     <section className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-blue-50/20 dark:from-[#060b18] dark:via-[#080d1c] dark:to-[#0a1020]">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 pt-16 pb-20 text-center">
-        <div className="flex justify-center mb-6">
-          <CareersHeroSVG />
+        <div className="flex justify-center mb-8">
+          <div className="w-full max-w-md">
+            <CareersDashboardPreview />
+          </div>
         </div>
 
         <div className="flex justify-center mb-6">

@@ -3,6 +3,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { LS_AUTH, LS_MEMBER_ID, LS_MEMBER_NAME, memberLS } from './types';
+import CareersDashboardPreview from '@/app/components/CareersDashboardPreview';
 
 interface Config {
   heading: string;
@@ -272,9 +273,11 @@ export default function CareersLiveLanding({ config }: { config: Config }) {
         </div>
 
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 pt-12 pb-16 text-center">
-          {/* Animated SVG */}
-          <div className="flex justify-center mb-6">
-            <CareersHeroSVG />
+          {/* Dashboard preview */}
+          <div className="flex justify-center mb-8">
+            <div className="w-full max-w-md">
+              <CareersDashboardPreview />
+            </div>
           </div>
 
           {/* Badge */}
