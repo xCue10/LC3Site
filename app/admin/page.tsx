@@ -47,6 +47,7 @@ interface Member {
   website?: string;
   graduationYear?: string;
   customFields?: CustomField[];
+  displayOrder?: number;
 }
 
 interface Event {
@@ -221,7 +222,7 @@ const emptyProject: Omit<Project, 'id'> = {
 };
 
 const emptyMember: Omit<Member, 'id'> = {
-  name: '', role: '', memberType: 'member', majors: [], focusArea: '', status: '', avatarUrl: '', bio: '', skills: [], projects: [], github: '', linkedin: '', twitter: '', website: '', graduationYear: '', customFields: [],
+  name: '', role: '', memberType: 'member', majors: [], focusArea: '', status: '', avatarUrl: '', bio: '', skills: [], projects: [], github: '', linkedin: '', twitter: '', website: '', graduationYear: '', customFields: [], displayOrder: 0,
 };
 
 const emptyEvent: Omit<Event, 'id'> = {
@@ -291,6 +292,19 @@ function MemberModal({
               <option value="officer">Club Officer</option>
               <option value="advisor">Club Advisor</option>
             </select>
+          </div>
+
+          {/* Display Order */}
+          <div>
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Display Order</label>
+            <input
+              name="displayOrder"
+              type="number"
+              value={form.displayOrder ?? 0}
+              onChange={(e) => setForm((p) => ({ ...p, displayOrder: Number(e.target.value) }))}
+              className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+            />
+            <p className="text-xs text-slate-400 mt-1">Lower numbers appear first. Leave 0 for default order.</p>
           </div>
 
           {/* Role (shown for officers and advisors) */}
@@ -960,6 +974,7 @@ function Dashboard() {
   const [careersFeaturesRaw, setCareersFeaturesRaw] = useState('');
   const [homeTechRaw, setHomeTechRaw] = useState('');
   const [shieldTagsRaw, setShieldTagsRaw] = useState('');
+  const [homeAccordion, setHomeAccordion] = useState<string | null>('hero');
   const [aboutTechRaw, setAboutTechRaw] = useState('');
   const [caseStudyModal, setCaseStudyModal] = useState<{ open: boolean; caseStudy: CaseStudy | null }>({ open: false, caseStudy: null });
   const [aboutContent, setAboutContent] = useState<AboutContent>({
@@ -1485,7 +1500,7 @@ function Dashboard() {
                     ))}
                   </div>
                 <div className="space-y-3">
-                  {members.filter((m) => {
+                  {members.slice().sort((a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0)).filter((m) => {
                     const matchesType = memberTypeFilter === 'all' || (memberTypeFilter === 'member' ? (m.memberType === 'member' || !m.memberType) : m.memberType === memberTypeFilter);
                     if (!matchesType) return false;
                     if (!membersSearch.trim()) return true;
@@ -2207,303 +2222,360 @@ function Dashboard() {
                 <p className="text-slate-500 text-sm mt-1">Edit all content that appears on the public home page.</p>
               </div>
 
-              {/* Hero Buttons */}
-              <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl p-6 space-y-4">
-                <p className="text-xs text-slate-500 font-medium uppercase tracking-wider">Hero Buttons</p>
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Primary Button</label>
-                    <input type="text" value={homeContent.primaryButtonLabel}
-                      onChange={(e) => setHomeContent((h) => ({ ...h, primaryButtonLabel: e.target.value }))}
-                      placeholder="Join the Club"
-                      className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Secondary Button</label>
-                    <input type="text" value={homeContent.secondaryButtonLabel}
-                      onChange={(e) => setHomeContent((h) => ({ ...h, secondaryButtonLabel: e.target.value }))}
-                      placeholder="Meet the Team"
-                      className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* Tech Stack */}
-              <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl p-6 space-y-3">
-                <p className="text-xs text-slate-500 font-medium uppercase tracking-wider">Tech Stack Badges</p>
-                <input type="text"
-                  value={homeTechRaw}
-                  onChange={(e) => {
-                    setHomeTechRaw(e.target.value);
-                    setHomeContent((h) => ({ ...h, techStack: e.target.value.split(',').map((s) => s.trim()).filter(Boolean) }));
-                  }}
-                  placeholder="Power Apps, Azure, React, Python..."
-                  className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
-                />
-                {homeContent.techStack.length > 0 && (
-                  <div className="flex flex-wrap gap-2">
-                    {homeContent.techStack.map((t, i) => (
-                      <span key={i} className="text-xs bg-slate-100 border border-slate-200 text-slate-600 dark:bg-white/5 dark:border-white/10 dark:text-slate-400 px-2.5 py-1 rounded-full">{t}</span>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              {/* Company CTA */}
-              <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl p-6 space-y-4">
-                <p className="text-xs text-slate-500 font-medium uppercase tracking-wider">Company CTA Card</p>
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Title</label>
-                  <input type="text" value={homeContent.companyCtaTitle}
-                    onChange={(e) => setHomeContent((h) => ({ ...h, companyCtaTitle: e.target.value }))}
-                    placeholder="Are you a company?"
-                    className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Description</label>
-                  <input type="text" value={homeContent.companyCtaDesc}
-                    onChange={(e) => setHomeContent((h) => ({ ...h, companyCtaDesc: e.target.value }))}
-                    placeholder="Partner with us for projects or offer internships..."
-                    className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
-                  />
-                </div>
-              </div>
-
-              {/* Mission Items */}
-              <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl p-6 space-y-4">
-                <div className="flex items-center justify-between">
-                  <p className="text-xs text-slate-500 font-medium uppercase tracking-wider">Mission Items</p>
+              <div className="space-y-0">
+                {/* Hero accordion */}
+                <div key="hero" className="border border-slate-200 dark:border-[#1e2d45] rounded-xl overflow-hidden mb-2">
                   <button
-                    onClick={() => setHomeContent((h) => ({ ...h, missionItems: [...h.missionItems, { title: '', desc: '' }] }))}
-                    className="flex items-center gap-1 text-xs text-violet-600 dark:text-violet-400 hover:text-violet-700 dark:hover:text-violet-300 font-medium transition-colors"
+                    type="button"
+                    onClick={() => setHomeAccordion(homeAccordion === 'hero' ? null : 'hero')}
+                    className="w-full flex items-center justify-between px-5 py-3.5 bg-white dark:bg-[#0d1424] hover:bg-slate-50 dark:hover:bg-[#111a2e] transition-colors text-left"
                   >
-                    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
-                    Add Item
+                    <span className="font-medium text-slate-900 dark:text-white text-sm">Hero</span>
+                    <svg className={`w-4 h-4 text-slate-400 transition-transform ${homeAccordion === 'hero' ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
                   </button>
-                </div>
-                <div className="grid sm:grid-cols-2 gap-3">
-                  {homeContent.missionItems.map((item, i) => (
-                    <div key={i} className="bg-slate-50 dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] rounded-xl p-4 space-y-2">
-                      <div className="flex items-center justify-between gap-2">
-                        <input type="text" value={item.title}
-                          onChange={(e) => setHomeContent((h) => { const items = [...h.missionItems]; items[i] = { ...items[i], title: e.target.value }; return { ...h, missionItems: items }; })}
-                          placeholder="Item title"
-                          className="flex-1 bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#253650] text-slate-900 dark:text-white placeholder:text-slate-400 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all font-medium"
-                        />
-                        <button onClick={() => setHomeContent((h) => ({ ...h, missionItems: h.missionItems.filter((_, j) => j !== i) }))}
-                          className="flex-shrink-0 w-6 h-6 flex items-center justify-center rounded-md text-slate-400 hover:text-red-400 hover:bg-red-500/10 transition-all">
-                          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
-                        </button>
+                  {homeAccordion === 'hero' && (
+                    <div className="px-5 py-4 border-t border-slate-200 dark:border-[#1e2d45] space-y-4 bg-white dark:bg-[#0d1424]">
+                      <p className="text-xs text-slate-500 font-medium uppercase tracking-wider">Hero Buttons</p>
+                      <div className="grid sm:grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Primary Button</label>
+                          <input type="text" value={homeContent.primaryButtonLabel}
+                            onChange={(e) => setHomeContent((h) => ({ ...h, primaryButtonLabel: e.target.value }))}
+                            placeholder="Join the Club"
+                            className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Secondary Button</label>
+                          <input type="text" value={homeContent.secondaryButtonLabel}
+                            onChange={(e) => setHomeContent((h) => ({ ...h, secondaryButtonLabel: e.target.value }))}
+                            placeholder="Meet the Team"
+                            className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                          />
+                        </div>
                       </div>
-                      <input type="text" value={item.desc}
-                        onChange={(e) => setHomeContent((h) => { const items = [...h.missionItems]; items[i] = { ...items[i], desc: e.target.value }; return { ...h, missionItems: items }; })}
-                        placeholder="Short description..."
-                        className="w-full bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#253650] text-slate-900 dark:text-white placeholder:text-slate-400 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
-                      />
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* About Section */}
-              <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl p-6 space-y-4">
-                <p className="text-xs text-slate-500 font-medium uppercase tracking-wider">About Section</p>
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-slate-400 mb-1.5">Eyebrow</label>
-                    <input type="text" value={homeContent.aboutEyebrow}
-                      onChange={(e) => setHomeContent((h) => ({ ...h, aboutEyebrow: e.target.value }))}
-                      placeholder="Who we are"
-                      className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-slate-400 mb-1.5">Heading</label>
-                    <input type="text" value={homeContent.aboutHeading}
-                      onChange={(e) => setHomeContent((h) => ({ ...h, aboutHeading: e.target.value }))}
-                      placeholder="About LC3"
-                      className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
-                    />
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Paragraph 1</label>
-                  <textarea rows={3} value={homeContent.aboutBody1}
-                    onChange={(e) => setHomeContent((h) => ({ ...h, aboutBody1: e.target.value }))}
-                    className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all resize-none"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Paragraph 2</label>
-                  <textarea rows={2} value={homeContent.aboutBody2}
-                    onChange={(e) => setHomeContent((h) => ({ ...h, aboutBody2: e.target.value }))}
-                    className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all resize-none"
-                  />
-                </div>
-              </div>
-
-              {/* Section Headings */}
-              <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl p-6 space-y-4">
-                <p className="text-xs text-slate-500 font-medium uppercase tracking-wider">Section Headings</p>
-                {([
-                  { eyebrowKey: 'projectsEyebrow', headingKey: 'projectsHeading', label: 'Featured Projects' },
-                  { eyebrowKey: 'eventsEyebrow', headingKey: 'eventsHeading', label: 'Upcoming Events' },
-                  { eyebrowKey: 'blogEyebrow', headingKey: 'blogHeading', label: 'Blog / Latest Updates' },
-                ] as { eyebrowKey: keyof HomeContent; headingKey: keyof HomeContent; label: string }[]).map(({ eyebrowKey, headingKey, label }) => (
-                  <div key={label}>
-                    <p className="text-xs text-slate-400 mb-2">{label}</p>
-                    <div className="grid sm:grid-cols-2 gap-3">
-                      <input type="text" value={homeContent[eyebrowKey] as string}
-                        onChange={(e) => setHomeContent((h) => ({ ...h, [eyebrowKey]: e.target.value }))}
-                        placeholder="Eyebrow text"
+                      <p className="text-xs text-slate-500 font-medium uppercase tracking-wider pt-2">Tech Stack Badges</p>
+                      <input type="text"
+                        value={homeTechRaw}
+                        onChange={(e) => {
+                          setHomeTechRaw(e.target.value);
+                          setHomeContent((h) => ({ ...h, techStack: e.target.value.split(',').map((s) => s.trim()).filter(Boolean) }));
+                        }}
+                        placeholder="Power Apps, Azure, React, Python..."
                         className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
                       />
-                      <input type="text" value={homeContent[headingKey] as string}
-                        onChange={(e) => setHomeContent((h) => ({ ...h, [headingKey]: e.target.value }))}
-                        placeholder="Heading"
-                        className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
-                      />
+                      {homeContent.techStack.length > 0 && (
+                        <div className="flex flex-wrap gap-2">
+                          {homeContent.techStack.map((t, i) => (
+                            <span key={i} className="text-xs bg-slate-100 border border-slate-200 text-slate-600 dark:bg-white/5 dark:border-white/10 dark:text-slate-400 px-2.5 py-1 rounded-full">{t}</span>
+                          ))}
+                        </div>
+                      )}
                     </div>
-                  </div>
-                ))}
-              </div>
+                  )}
+                </div>
 
-              {/* CTA Section */}
-              <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl p-6 space-y-4">
-                <p className="text-xs text-slate-500 font-medium uppercase tracking-wider">CTA Section</p>
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Heading</label>
-                  <input type="text" value={homeContent.ctaHeading}
-                    onChange={(e) => setHomeContent((h) => ({ ...h, ctaHeading: e.target.value }))}
-                    placeholder="Ready to join?"
-                    className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
-                  />
+                {/* About Section accordion */}
+                <div key="about" className="border border-slate-200 dark:border-[#1e2d45] rounded-xl overflow-hidden mb-2">
+                  <button
+                    type="button"
+                    onClick={() => setHomeAccordion(homeAccordion === 'about' ? null : 'about')}
+                    className="w-full flex items-center justify-between px-5 py-3.5 bg-white dark:bg-[#0d1424] hover:bg-slate-50 dark:hover:bg-[#111a2e] transition-colors text-left"
+                  >
+                    <span className="font-medium text-slate-900 dark:text-white text-sm">About Section</span>
+                    <svg className={`w-4 h-4 text-slate-400 transition-transform ${homeAccordion === 'about' ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+                  {homeAccordion === 'about' && (
+                    <div className="px-5 py-4 border-t border-slate-200 dark:border-[#1e2d45] space-y-4 bg-white dark:bg-[#0d1424]">
+                      <div className="grid sm:grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-sm font-medium text-slate-400 mb-1.5">Eyebrow</label>
+                          <input type="text" value={homeContent.aboutEyebrow}
+                            onChange={(e) => setHomeContent((h) => ({ ...h, aboutEyebrow: e.target.value }))}
+                            placeholder="Who we are"
+                            className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-slate-400 mb-1.5">Heading</label>
+                          <input type="text" value={homeContent.aboutHeading}
+                            onChange={(e) => setHomeContent((h) => ({ ...h, aboutHeading: e.target.value }))}
+                            placeholder="About LC3"
+                            className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Paragraph 1</label>
+                        <textarea rows={3} value={homeContent.aboutBody1}
+                          onChange={(e) => setHomeContent((h) => ({ ...h, aboutBody1: e.target.value }))}
+                          className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all resize-none"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Paragraph 2</label>
+                        <textarea rows={2} value={homeContent.aboutBody2}
+                          onChange={(e) => setHomeContent((h) => ({ ...h, aboutBody2: e.target.value }))}
+                          className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all resize-none"
+                        />
+                      </div>
+                      <div>
+                        <div className="flex items-center justify-between mb-2">
+                          <p className="text-xs text-slate-500 font-medium uppercase tracking-wider">Mission Items</p>
+                          <button
+                            onClick={() => setHomeContent((h) => ({ ...h, missionItems: [...h.missionItems, { title: '', desc: '' }] }))}
+                            className="flex items-center gap-1 text-xs text-violet-600 dark:text-violet-400 hover:text-violet-700 dark:hover:text-violet-300 font-medium transition-colors"
+                          >
+                            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
+                            Add Item
+                          </button>
+                        </div>
+                        <div className="grid sm:grid-cols-2 gap-3">
+                          {homeContent.missionItems.map((item, i) => (
+                            <div key={i} className="bg-slate-50 dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] rounded-xl p-4 space-y-2">
+                              <div className="flex items-center justify-between gap-2">
+                                <input type="text" value={item.title}
+                                  onChange={(e) => setHomeContent((h) => { const items = [...h.missionItems]; items[i] = { ...items[i], title: e.target.value }; return { ...h, missionItems: items }; })}
+                                  placeholder="Item title"
+                                  className="flex-1 bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#253650] text-slate-900 dark:text-white placeholder:text-slate-400 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all font-medium"
+                                />
+                                <button onClick={() => setHomeContent((h) => ({ ...h, missionItems: h.missionItems.filter((_, j) => j !== i) }))}
+                                  className="flex-shrink-0 w-6 h-6 flex items-center justify-center rounded-md text-slate-400 hover:text-red-400 hover:bg-red-500/10 transition-all">
+                                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                                </button>
+                              </div>
+                              <input type="text" value={item.desc}
+                                onChange={(e) => setHomeContent((h) => { const items = [...h.missionItems]; items[i] = { ...items[i], desc: e.target.value }; return { ...h, missionItems: items }; })}
+                                placeholder="Short description..."
+                                className="w-full bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#253650] text-slate-900 dark:text-white placeholder:text-slate-400 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                              />
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Description</label>
-                  <textarea rows={2} value={homeContent.ctaDescription}
-                    onChange={(e) => setHomeContent((h) => ({ ...h, ctaDescription: e.target.value }))}
-                    placeholder="Fill out our quick interest form..."
-                    className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all resize-none"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Button Label</label>
-                  <input type="text" value={homeContent.ctaButtonLabel}
-                    onChange={(e) => setHomeContent((h) => ({ ...h, ctaButtonLabel: e.target.value }))}
-                    placeholder="Apply to Join LC3"
-                    className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
-                  />
-                </div>
-              </div>
 
-              {/* LC3 Shield Section */}
-              <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl p-6 space-y-4">
-                <p className="text-xs text-slate-500 font-medium uppercase tracking-wider">LC3 Shield Section</p>
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Badge Label</label>
-                    <input type="text" value={homeContent.shieldBadgeLabel ?? ''}
-                      onChange={(e) => setHomeContent((h) => ({ ...h, shieldBadgeLabel: e.target.value }))}
-                      placeholder="New Tool"
-                      className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Heading Prefix</label>
-                    <input type="text" value={homeContent.shieldHeadingPrefix ?? ''}
-                      onChange={(e) => setHomeContent((h) => ({ ...h, shieldHeadingPrefix: e.target.value }))}
-                      placeholder="Introducing"
-                      className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
-                    />
-                  </div>
-                </div>
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Hero Button Label</label>
-                    <input type="text" value={homeContent.shieldButtonLabel ?? ''}
-                      onChange={(e) => setHomeContent((h) => ({ ...h, shieldButtonLabel: e.target.value }))}
-                      placeholder="LC3 Shield"
-                      className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">CTA Button Label</label>
-                    <input type="text" value={homeContent.shieldCtaLabel ?? ''}
-                      onChange={(e) => setHomeContent((h) => ({ ...h, shieldCtaLabel: e.target.value }))}
-                      placeholder="Explore LC3 Shield"
-                      className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
-                    />
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Description</label>
-                  <textarea rows={3} value={homeContent.shieldDescription ?? ''}
-                    onChange={(e) => setHomeContent((h) => ({ ...h, shieldDescription: e.target.value }))}
-                    placeholder="A hands-on cybersecurity scanner built for..."
-                    className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all resize-none"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Feature Tags <span className="text-slate-400 font-normal">(comma-separated)</span></label>
-                  <input type="text"
-                    value={shieldTagsRaw}
-                    onChange={(e) => {
-                      setShieldTagsRaw(e.target.value);
-                      setHomeContent((h) => ({ ...h, shieldFeatureTags: e.target.value.split(',').map((s) => s.trim()).filter(Boolean) }));
-                    }}
-                    placeholder="URL Scanner, Code Analysis, SSL/TLS..."
-                    className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
-                  />
-                  {(homeContent.shieldFeatureTags ?? []).length > 0 && (
-                    <div className="flex flex-wrap gap-2 mt-2">
-                      {(homeContent.shieldFeatureTags ?? []).map((t, i) => (
-                        <span key={i} className="text-xs bg-red-50 border border-red-200 text-red-600 dark:bg-red-500/10 dark:border-red-500/20 dark:text-red-400 px-2.5 py-1 rounded-full">{t}</span>
+                {/* Section Headings accordion */}
+                <div key="headings" className="border border-slate-200 dark:border-[#1e2d45] rounded-xl overflow-hidden mb-2">
+                  <button
+                    type="button"
+                    onClick={() => setHomeAccordion(homeAccordion === 'headings' ? null : 'headings')}
+                    className="w-full flex items-center justify-between px-5 py-3.5 bg-white dark:bg-[#0d1424] hover:bg-slate-50 dark:hover:bg-[#111a2e] transition-colors text-left"
+                  >
+                    <span className="font-medium text-slate-900 dark:text-white text-sm">Section Headings</span>
+                    <svg className={`w-4 h-4 text-slate-400 transition-transform ${homeAccordion === 'headings' ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+                  {homeAccordion === 'headings' && (
+                    <div className="px-5 py-4 border-t border-slate-200 dark:border-[#1e2d45] space-y-4 bg-white dark:bg-[#0d1424]">
+                      {([
+                        { eyebrowKey: 'projectsEyebrow', headingKey: 'projectsHeading', label: 'Featured Projects' },
+                        { eyebrowKey: 'eventsEyebrow', headingKey: 'eventsHeading', label: 'Upcoming Events' },
+                        { eyebrowKey: 'blogEyebrow', headingKey: 'blogHeading', label: 'Blog / Latest Updates' },
+                      ] as { eyebrowKey: keyof HomeContent; headingKey: keyof HomeContent; label: string }[]).map(({ eyebrowKey, headingKey, label }) => (
+                        <div key={label}>
+                          <p className="text-xs text-slate-400 mb-2">{label}</p>
+                          <div className="grid sm:grid-cols-2 gap-3">
+                            <input type="text" value={homeContent[eyebrowKey] as string}
+                              onChange={(e) => setHomeContent((h) => ({ ...h, [eyebrowKey]: e.target.value }))}
+                              placeholder="Eyebrow text"
+                              className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                            />
+                            <input type="text" value={homeContent[headingKey] as string}
+                              onChange={(e) => setHomeContent((h) => ({ ...h, [headingKey]: e.target.value }))}
+                              placeholder="Heading"
+                              className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                            />
+                          </div>
+                        </div>
                       ))}
                     </div>
                   )}
                 </div>
-                <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">Feature Cards</label>
-                    <button
-                      onClick={() => setHomeContent((h) => ({ ...h, shieldFeatureCards: [...(h.shieldFeatureCards ?? []), { icon: '🔍', title: '', desc: '' }] }))}
-                      className="flex items-center gap-1 text-xs text-violet-600 dark:text-violet-400 hover:text-violet-700 dark:hover:text-violet-300 font-medium transition-colors"
-                    >
-                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
-                      Add Card
-                    </button>
-                  </div>
-                  <div className="grid sm:grid-cols-2 gap-3">
-                    {(homeContent.shieldFeatureCards ?? []).map((card, i) => (
-                      <div key={i} className="bg-slate-50 dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] rounded-xl p-4 space-y-2">
-                        <div className="flex items-center gap-2">
-                          <input type="text" value={card.icon}
-                            onChange={(e) => setHomeContent((h) => { const cards = [...(h.shieldFeatureCards ?? [])]; cards[i] = { ...cards[i], icon: e.target.value }; return { ...h, shieldFeatureCards: cards }; })}
-                            placeholder="🔍"
-                            className="w-14 bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#253650] text-slate-900 dark:text-white rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:border-violet-500/50 text-center"
+
+                {/* Shield Section accordion */}
+                <div key="shield" className="border border-slate-200 dark:border-[#1e2d45] rounded-xl overflow-hidden mb-2">
+                  <button
+                    type="button"
+                    onClick={() => setHomeAccordion(homeAccordion === 'shield' ? null : 'shield')}
+                    className="w-full flex items-center justify-between px-5 py-3.5 bg-white dark:bg-[#0d1424] hover:bg-slate-50 dark:hover:bg-[#111a2e] transition-colors text-left"
+                  >
+                    <span className="font-medium text-slate-900 dark:text-white text-sm">Shield Section</span>
+                    <svg className={`w-4 h-4 text-slate-400 transition-transform ${homeAccordion === 'shield' ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+                  {homeAccordion === 'shield' && (
+                    <div className="px-5 py-4 border-t border-slate-200 dark:border-[#1e2d45] space-y-4 bg-white dark:bg-[#0d1424]">
+                      <div className="grid sm:grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Badge Label</label>
+                          <input type="text" value={homeContent.shieldBadgeLabel ?? ''}
+                            onChange={(e) => setHomeContent((h) => ({ ...h, shieldBadgeLabel: e.target.value }))}
+                            placeholder="New Tool"
+                            className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
                           />
-                          <input type="text" value={card.title}
-                            onChange={(e) => setHomeContent((h) => { const cards = [...(h.shieldFeatureCards ?? [])]; cards[i] = { ...cards[i], title: e.target.value }; return { ...h, shieldFeatureCards: cards }; })}
-                            placeholder="Card title"
-                            className="flex-1 bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#253650] text-slate-900 dark:text-white rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-violet-500/50 font-medium"
-                          />
-                          <button onClick={() => setHomeContent((h) => ({ ...h, shieldFeatureCards: (h.shieldFeatureCards ?? []).filter((_, j) => j !== i) }))}
-                            className="w-6 h-6 flex items-center justify-center rounded-md text-slate-400 hover:text-red-400 hover:bg-red-500/10 transition-all flex-shrink-0">
-                            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
-                          </button>
                         </div>
-                        <input type="text" value={card.desc}
-                          onChange={(e) => setHomeContent((h) => { const cards = [...(h.shieldFeatureCards ?? [])]; cards[i] = { ...cards[i], desc: e.target.value }; return { ...h, shieldFeatureCards: cards }; })}
-                          placeholder="Short description..."
-                          className="w-full bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#253650] text-slate-900 dark:text-white rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-violet-500/50"
+                        <div>
+                          <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Heading Prefix</label>
+                          <input type="text" value={homeContent.shieldHeadingPrefix ?? ''}
+                            onChange={(e) => setHomeContent((h) => ({ ...h, shieldHeadingPrefix: e.target.value }))}
+                            placeholder="Introducing"
+                            className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                          />
+                        </div>
+                      </div>
+                      <div className="grid sm:grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Hero Button Label</label>
+                          <input type="text" value={homeContent.shieldButtonLabel ?? ''}
+                            onChange={(e) => setHomeContent((h) => ({ ...h, shieldButtonLabel: e.target.value }))}
+                            placeholder="LC3 Shield"
+                            className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">CTA Button Label</label>
+                          <input type="text" value={homeContent.shieldCtaLabel ?? ''}
+                            onChange={(e) => setHomeContent((h) => ({ ...h, shieldCtaLabel: e.target.value }))}
+                            placeholder="Explore LC3 Shield"
+                            className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Description</label>
+                        <textarea rows={3} value={homeContent.shieldDescription ?? ''}
+                          onChange={(e) => setHomeContent((h) => ({ ...h, shieldDescription: e.target.value }))}
+                          placeholder="A hands-on cybersecurity scanner built for..."
+                          className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all resize-none"
                         />
                       </div>
-                    ))}
-                  </div>
+                      <div>
+                        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Feature Tags <span className="text-slate-400 font-normal">(comma-separated)</span></label>
+                        <input type="text"
+                          value={shieldTagsRaw}
+                          onChange={(e) => {
+                            setShieldTagsRaw(e.target.value);
+                            setHomeContent((h) => ({ ...h, shieldFeatureTags: e.target.value.split(',').map((s) => s.trim()).filter(Boolean) }));
+                          }}
+                          placeholder="URL Scanner, Code Analysis, SSL/TLS..."
+                          className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                        />
+                        {(homeContent.shieldFeatureTags ?? []).length > 0 && (
+                          <div className="flex flex-wrap gap-2 mt-2">
+                            {(homeContent.shieldFeatureTags ?? []).map((t, i) => (
+                              <span key={i} className="text-xs bg-red-50 border border-red-200 text-red-600 dark:bg-red-500/10 dark:border-red-500/20 dark:text-red-400 px-2.5 py-1 rounded-full">{t}</span>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                      <div>
+                        <div className="flex items-center justify-between mb-2">
+                          <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">Feature Cards</label>
+                          <button
+                            onClick={() => setHomeContent((h) => ({ ...h, shieldFeatureCards: [...(h.shieldFeatureCards ?? []), { icon: '🔍', title: '', desc: '' }] }))}
+                            className="flex items-center gap-1 text-xs text-violet-600 dark:text-violet-400 hover:text-violet-700 dark:hover:text-violet-300 font-medium transition-colors"
+                          >
+                            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
+                            Add Card
+                          </button>
+                        </div>
+                        <div className="grid sm:grid-cols-2 gap-3">
+                          {(homeContent.shieldFeatureCards ?? []).map((card, i) => (
+                            <div key={i} className="bg-slate-50 dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] rounded-xl p-4 space-y-2">
+                              <div className="flex items-center gap-2">
+                                <input type="text" value={card.icon}
+                                  onChange={(e) => setHomeContent((h) => { const cards = [...(h.shieldFeatureCards ?? [])]; cards[i] = { ...cards[i], icon: e.target.value }; return { ...h, shieldFeatureCards: cards }; })}
+                                  placeholder="🔍"
+                                  className="w-14 bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#253650] text-slate-900 dark:text-white rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:border-violet-500/50 text-center"
+                                />
+                                <input type="text" value={card.title}
+                                  onChange={(e) => setHomeContent((h) => { const cards = [...(h.shieldFeatureCards ?? [])]; cards[i] = { ...cards[i], title: e.target.value }; return { ...h, shieldFeatureCards: cards }; })}
+                                  placeholder="Card title"
+                                  className="flex-1 bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#253650] text-slate-900 dark:text-white rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-violet-500/50 font-medium"
+                                />
+                                <button onClick={() => setHomeContent((h) => ({ ...h, shieldFeatureCards: (h.shieldFeatureCards ?? []).filter((_, j) => j !== i) }))}
+                                  className="w-6 h-6 flex items-center justify-center rounded-md text-slate-400 hover:text-red-400 hover:bg-red-500/10 transition-all flex-shrink-0">
+                                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                                </button>
+                              </div>
+                              <input type="text" value={card.desc}
+                                onChange={(e) => setHomeContent((h) => { const cards = [...(h.shieldFeatureCards ?? [])]; cards[i] = { ...cards[i], desc: e.target.value }; return { ...h, shieldFeatureCards: cards }; })}
+                                placeholder="Short description..."
+                                className="w-full bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#253650] text-slate-900 dark:text-white rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-violet-500/50"
+                              />
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* CTA accordion */}
+                <div key="cta" className="border border-slate-200 dark:border-[#1e2d45] rounded-xl overflow-hidden mb-2">
+                  <button
+                    type="button"
+                    onClick={() => setHomeAccordion(homeAccordion === 'cta' ? null : 'cta')}
+                    className="w-full flex items-center justify-between px-5 py-3.5 bg-white dark:bg-[#0d1424] hover:bg-slate-50 dark:hover:bg-[#111a2e] transition-colors text-left"
+                  >
+                    <span className="font-medium text-slate-900 dark:text-white text-sm">CTA</span>
+                    <svg className={`w-4 h-4 text-slate-400 transition-transform ${homeAccordion === 'cta' ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+                  {homeAccordion === 'cta' && (
+                    <div className="px-5 py-4 border-t border-slate-200 dark:border-[#1e2d45] space-y-4 bg-white dark:bg-[#0d1424]">
+                      <div>
+                        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Heading</label>
+                        <input type="text" value={homeContent.ctaHeading}
+                          onChange={(e) => setHomeContent((h) => ({ ...h, ctaHeading: e.target.value }))}
+                          placeholder="Ready to join?"
+                          className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Description</label>
+                        <textarea rows={2} value={homeContent.ctaDescription}
+                          onChange={(e) => setHomeContent((h) => ({ ...h, ctaDescription: e.target.value }))}
+                          placeholder="Fill out our quick interest form..."
+                          className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all resize-none"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Button Label</label>
+                        <input type="text" value={homeContent.ctaButtonLabel}
+                          onChange={(e) => setHomeContent((h) => ({ ...h, ctaButtonLabel: e.target.value }))}
+                          placeholder="Apply to Join LC3"
+                          className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Company CTA Title</label>
+                        <input type="text" value={homeContent.companyCtaTitle}
+                          onChange={(e) => setHomeContent((h) => ({ ...h, companyCtaTitle: e.target.value }))}
+                          placeholder="Are you a company?"
+                          className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Company CTA Description</label>
+                        <input type="text" value={homeContent.companyCtaDesc}
+                          onChange={(e) => setHomeContent((h) => ({ ...h, companyCtaDesc: e.target.value }))}
+                          placeholder="Partner with us for projects or offer internships..."
+                          className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                        />
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
 
