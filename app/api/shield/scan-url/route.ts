@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { askClaude } from '@/lib/shield-claude';
 import { Vulnerability, ScanResult, BadgeId } from '@/lib/shield-types';
 import { calculateGrade } from '@/lib/shield-storage';
 function makeId() { return crypto.randomUUID(); }
@@ -298,8 +297,8 @@ export async function POST(req: NextRequest) {
     }
   }
 
-  // Use Claude to summarize
-  logs.push('Running AI security analysis...');
+  // Calculate score
+  logs.push('Calculating security score...');
   const severityCounts = {
     Critical: vulnerabilities.filter(v => v.severity === 'Critical').length,
     High: vulnerabilities.filter(v => v.severity === 'High').length,

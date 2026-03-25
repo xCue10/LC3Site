@@ -5,8 +5,32 @@ import type { CareerProfile, Job } from '@/app/careers/types';
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 const MODEL = 'claude-sonnet-4-20250514';
 
+// Rate limit: 3 cover letters per IP per day
+const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
+const DAILY_LIMIT = 3;
+
+function checkRateLimit(ip: string): boolean {
+  const now = Date.now();
+  const entry = rateLimitMap.get(ip);
+  if (!entry || now > entry.resetAt) {
+    rateLimitMap.set(ip, { count: 1, resetAt: now + 24 * 60 * 60 * 1000 });
+    return true;
+  }
+  if (entry.count >= DAILY_LIMIT) return false;
+  entry.count++;
+  return true;
+}
+
 export async function POST(req: NextRequest) {
   try {
+    const ip = req.headers.get('x-forwarded-for')?.split(',')[0] ?? 'unknown';
+    if (!checkRateLimit(ip)) {
+      return NextResponse.json(
+        { error: 'Daily limit reached. You can generate 3 cover letters per day.' },
+        { status: 429 }
+      );
+    }
+
     const { profile, job, tone } = await req.json() as {
       profile: CareerProfile;
       job: Job;

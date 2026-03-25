@@ -25,11 +25,11 @@ Salary Range: $${profile.salaryMin.toLocaleString()} - $${profile.salaryMax.toLo
 Dream Job: ${profile.dreamJob}
     `.trim();
 
-    // Process jobs in batches of 10 to avoid token limits
+    // Analyze first 10 jobs only to keep API costs bounded
     const BATCH = 10;
     const enriched: Job[] = [];
 
-    for (let i = 0; i < Math.min(jobs.length, 50); i += BATCH) {
+    for (let i = 0; i < Math.min(jobs.length, 10); i += BATCH) {
       const batch = jobs.slice(i, i + BATCH);
       const jobsList = batch
         .map((j, idx) => `[${idx}] ${j.title} at ${j.company} | ${j.location} | ${j.jobType.join(', ')}\nDescription: ${j.description.slice(0, 300)}`)
@@ -96,9 +96,9 @@ Respond with ONLY the JSON lines, no other text.`;
       }
     }
 
-    // Add remaining jobs (beyond the 50 we analyzed) without enrichment
-    if (jobs.length > 50) {
-      enriched.push(...jobs.slice(50));
+    // Add remaining jobs (beyond the 10 we analyzed) without enrichment
+    if (jobs.length > 10) {
+      enriched.push(...jobs.slice(10));
     }
 
     // Sort by match score descending
