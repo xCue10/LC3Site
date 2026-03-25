@@ -44,7 +44,6 @@ const securityHeaders = [
 ];
 
 const nextConfig = {
-  serverExternalPackages: ['pdf-parse'],
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: '**' },
