@@ -12,6 +12,121 @@ interface Config {
   features: string[];
 }
 
+function CareersHeroSVG() {
+  return (
+    <svg
+      width="320"
+      height="320"
+      viewBox="0 0 320 320"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className="mx-auto"
+    >
+      {/* Outer orbital ring */}
+      <circle cx="160" cy="160" r="148" stroke="rgba(59,130,246,0.3)" strokeWidth="1">
+        <animateTransform attributeName="transform" type="rotate" from="0 160 160" to="360 160 160" dur="20s" repeatCount="indefinite" />
+      </circle>
+
+      {/* Middle orbital ring */}
+      <circle cx="160" cy="160" r="110" stroke="rgba(139,92,246,0.25)" strokeWidth="1">
+        <animateTransform attributeName="transform" type="rotate" from="360 160 160" to="0 160 160" dur="14s" repeatCount="indefinite" />
+      </circle>
+
+      {/* Inner orbital ring */}
+      <circle cx="160" cy="160" r="75" stroke="rgba(59,130,246,0.18)" strokeWidth="1">
+        <animateTransform attributeName="transform" type="rotate" from="0 160 160" to="360 160 160" dur="9s" repeatCount="indefinite" />
+      </circle>
+
+      {/* Pulse rings */}
+      <circle cx="160" cy="160" r="75" stroke="rgba(59,130,246,0.12)" strokeWidth="2">
+        <animate attributeName="r" values="60;90;60" dur="4s" repeatCount="indefinite" />
+        <animate attributeName="opacity" values="0.5;0;0.5" dur="4s" repeatCount="indefinite" />
+      </circle>
+      <circle cx="160" cy="160" r="50" stroke="rgba(139,92,246,0.1)" strokeWidth="2">
+        <animate attributeName="r" values="45;65;45" dur="5s" repeatCount="indefinite" begin="1s" />
+        <animate attributeName="opacity" values="0.4;0;0.4" dur="5s" repeatCount="indefinite" begin="1s" />
+      </circle>
+
+      {/* Selection sweep — like finding the perfect job */}
+      <path d="M160 160 L308 160" stroke="rgba(59,130,246,0.55)" strokeWidth="1.5">
+        <animateTransform attributeName="transform" type="rotate" from="0 160 160" to="360 160 160" dur="5s" repeatCount="indefinite" />
+      </path>
+      <path d="M160 160 L308 160" stroke="rgba(59,130,246,0.12)" strokeWidth="12">
+        <animateTransform attributeName="transform" type="rotate" from="0 160 160" to="360 160 160" dur="5s" repeatCount="indefinite" />
+      </path>
+
+      {/* Briefcase — center icon */}
+      {/* Body */}
+      <rect x="122" y="128" width="76" height="56" rx="7" fill="rgba(59,130,246,0.1)" stroke="rgba(59,130,246,0.65)" strokeWidth="2">
+        <animate attributeName="opacity" values="0.7;1;0.7" dur="3s" repeatCount="indefinite" />
+      </rect>
+      {/* Handle */}
+      <path d="M143 128v-11a6 6 0 016-6h22a6 6 0 016 6v11" stroke="rgba(59,130,246,0.65)" strokeWidth="2" fill="none" strokeLinecap="round">
+        <animate attributeName="opacity" values="0.7;1;0.7" dur="3s" repeatCount="indefinite" />
+      </path>
+      {/* Middle divider */}
+      <line x1="122" y1="156" x2="198" y2="156" stroke="rgba(59,130,246,0.4)" strokeWidth="1.5" />
+      {/* Clasp */}
+      <rect x="154" y="150" width="12" height="12" rx="2.5" fill="rgba(59,130,246,0.25)" stroke="rgba(59,130,246,0.6)" strokeWidth="1.5">
+        <animate attributeName="opacity" values="0.6;1;0.6" dur="3s" repeatCount="indefinite" />
+      </rect>
+
+      {/* Outer ring nodes — job opportunities orbiting */}
+      <circle cx="308" cy="160" r="5" fill="rgba(59,130,246,0.9)">
+        <animateTransform attributeName="transform" type="rotate" from="0 160 160" to="360 160 160" dur="20s" repeatCount="indefinite" />
+        <animate attributeName="opacity" values="0.5;1;0.5" dur="2.5s" repeatCount="indefinite" />
+      </circle>
+      <circle cx="308" cy="160" r="4" fill="rgba(139,92,246,0.8)">
+        <animateTransform attributeName="transform" type="rotate" from="120 160 160" to="480 160 160" dur="20s" repeatCount="indefinite" />
+        <animate attributeName="opacity" values="0.4;1;0.4" dur="2s" repeatCount="indefinite" begin="0.5s" />
+      </circle>
+      <circle cx="308" cy="160" r="3.5" fill="rgba(59,130,246,0.7)">
+        <animateTransform attributeName="transform" type="rotate" from="240 160 160" to="600 160 160" dur="20s" repeatCount="indefinite" />
+        <animate attributeName="opacity" values="0.3;0.9;0.3" dur="3s" repeatCount="indefinite" begin="1s" />
+      </circle>
+
+      {/* Middle ring nodes — AI match points */}
+      <circle cx="270" cy="160" r="3.5" fill="rgba(139,92,246,0.85)">
+        <animateTransform attributeName="transform" type="rotate" from="60 160 160" to="420 160 160" dur="14s" repeatCount="indefinite" />
+        <animate attributeName="opacity" values="0.4;1;0.4" dur="2s" repeatCount="indefinite" />
+      </circle>
+      <circle cx="270" cy="160" r="3" fill="rgba(59,130,246,0.75)">
+        <animateTransform attributeName="transform" type="rotate" from="200 160 160" to="560 160 160" dur="14s" repeatCount="indefinite" />
+        <animate attributeName="opacity" values="0.5;0.9;0.5" dur="2.5s" repeatCount="indefinite" begin="0.7s" />
+      </circle>
+      <circle cx="270" cy="160" r="3" fill="rgba(139,92,246,0.6)">
+        <animateTransform attributeName="transform" type="rotate" from="320 160 160" to="680 160 160" dur="14s" repeatCount="indefinite" />
+        <animate attributeName="opacity" values="0.3;1;0.3" dur="3s" repeatCount="indefinite" begin="1.4s" />
+      </circle>
+
+      {/* Inner ring data dots */}
+      <circle cx="235" cy="160" r="2.5" fill="rgba(59,130,246,0.65)">
+        <animateTransform attributeName="transform" type="rotate" from="0 160 160" to="360 160 160" dur="9s" repeatCount="indefinite" />
+      </circle>
+      <circle cx="235" cy="160" r="2" fill="rgba(139,92,246,0.55)">
+        <animateTransform attributeName="transform" type="rotate" from="120 160 160" to="480 160 160" dur="9s" repeatCount="indefinite" />
+      </circle>
+      <circle cx="235" cy="160" r="2" fill="rgba(59,130,246,0.5)">
+        <animateTransform attributeName="transform" type="rotate" from="240 160 160" to="600 160 160" dur="9s" repeatCount="indefinite" />
+      </circle>
+
+      {/* Corner brackets */}
+      <path d="M28 16 L16 16 L16 28" stroke="rgba(59,130,246,0.5)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <animate attributeName="opacity" values="0.4;0.9;0.4" dur="3s" repeatCount="indefinite" />
+      </path>
+      <path d="M292 16 L304 16 L304 28" stroke="rgba(139,92,246,0.5)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <animate attributeName="opacity" values="0.4;0.9;0.4" dur="3s" repeatCount="indefinite" begin="0.75s" />
+      </path>
+      <path d="M28 304 L16 304 L16 292" stroke="rgba(59,130,246,0.5)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <animate attributeName="opacity" values="0.4;0.9;0.4" dur="3s" repeatCount="indefinite" begin="1.5s" />
+      </path>
+      <path d="M292 304 L304 304 L304 292" stroke="rgba(139,92,246,0.5)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <animate attributeName="opacity" values="0.4;0.9;0.4" dur="3s" repeatCount="indefinite" begin="2.25s" />
+      </path>
+    </svg>
+  );
+}
+
 export default function CareersLiveLanding({ config }: { config: Config }) {
   const router = useRouter();
   const [showLogin, setShowLogin] = useState(false);
@@ -91,59 +206,40 @@ export default function CareersLiveLanding({ config }: { config: Config }) {
     { icon: '📋', title: 'Application Tracker', desc: 'Track every application from saved to offer' },
   ];
 
-  const stats = [
-    { label: 'Jobs Available', value: '150+' },
-    { label: 'Members Helped', value: '200+' },
-    { label: 'Avg Match Score', value: '78%' },
-  ];
-
   return (
     <div style={{ background: '#0a0f1e', minHeight: '100vh' }}>
       {/* Hero */}
       <section className="relative overflow-hidden">
-        {/* Animated background */}
+        {/* Ambient glow blobs */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div
-            className="absolute top-0 left-1/4 w-96 h-96 rounded-full opacity-10 blur-3xl"
+            className="absolute top-0 left-1/4 w-96 h-96 rounded-full opacity-8 blur-3xl"
             style={{ background: 'radial-gradient(circle, #3b82f6, transparent)' }}
           />
           <div
-            className="absolute bottom-0 right-1/4 w-96 h-96 rounded-full opacity-10 blur-3xl"
+            className="absolute bottom-0 right-1/4 w-96 h-96 rounded-full opacity-8 blur-3xl"
             style={{ background: 'radial-gradient(circle, #8b5cf6, transparent)' }}
           />
-          <svg className="absolute inset-0 w-full h-full opacity-5" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                <path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" strokeWidth="0.5" />
-              </pattern>
-            </defs>
-            <rect width="100%" height="100%" fill="url(#grid)" />
-          </svg>
         </div>
 
-        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 pt-20 pb-24 text-center">
+        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 pt-12 pb-16 text-center">
+          {/* Animated SVG */}
+          <div className="flex justify-center mb-6">
+            <CareersHeroSVG />
+          </div>
+
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-8" style={{ background: 'rgba(59,130,246,0.1)', border: '1px solid rgba(59,130,246,0.3)', color: '#60a5fa' }}>
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-6" style={{ background: 'rgba(59,130,246,0.1)', border: '1px solid rgba(59,130,246,0.3)', color: '#60a5fa' }}>
             <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" />
             Now Live for LC3 Members
           </div>
 
-          <h1 className="text-5xl sm:text-6xl font-black text-white mb-6" style={{ letterSpacing: '-0.03em', lineHeight: 1.1 }}>
+          <h1 className="text-5xl sm:text-6xl font-black text-white mb-4" style={{ letterSpacing: '-0.03em', lineHeight: 1.1 }}>
             {config.heading}
           </h1>
           <p className="text-xl text-slate-400 max-w-2xl mx-auto mb-10">
             Find your next opportunity powered by AI
           </p>
-
-          {/* Stats */}
-          <div className="flex justify-center gap-8 mb-12">
-            {stats.map((s) => (
-              <div key={s.label} className="text-center">
-                <div className="text-2xl font-black text-white">{s.value}</div>
-                <div className="text-xs text-slate-500">{s.label}</div>
-              </div>
-            ))}
-          </div>
 
           {/* CTA */}
           {!showLogin ? (
@@ -242,7 +338,7 @@ export default function CareersLiveLanding({ config }: { config: Config }) {
       </section>
 
       {/* Features */}
-      <section className="max-w-5xl mx-auto px-4 sm:px-6 pb-20">
+      <section className="max-w-4xl mx-auto px-4 sm:px-6 pb-20">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {features.map((f) => (
             <div
