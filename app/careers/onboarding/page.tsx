@@ -105,6 +105,7 @@ export default function OnboardingPage() {
 
   const inputClass = 'w-full px-4 py-3 rounded-xl text-white placeholder-slate-600 focus:outline-none transition-all text-sm';
   const inputStyle = { background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' };
+  const selectStyle = { background: '#1e293b', border: '1px solid rgba(255,255,255,0.1)', colorScheme: 'dark' as const };
 
   return (
     <div style={{ background: '#0a0f1e', minHeight: '100vh' }}>
@@ -152,7 +153,7 @@ export default function OnboardingPage() {
               </div>
               <div>
                 <label className="block text-sm text-slate-400 mb-1.5">Major at CSN</label>
-                <select className={inputClass} style={{ ...inputStyle, colorScheme: 'dark' }} value={profile.major} onChange={(e) => save({ major: e.target.value })}>
+                <select className={inputClass} style={selectStyle} value={profile.major} onChange={(e) => save({ major: e.target.value })}>
                   <option value="">Select your major</option>
                   {CSN_MAJORS.map((m) => <option key={m} value={m}>{m}</option>)}
                 </select>

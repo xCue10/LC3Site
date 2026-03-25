@@ -164,6 +164,7 @@ export default function ApplicationsPage() {
 
   const inputStyle = { background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' };
   const inputClass = 'w-full px-3 py-2 rounded-xl text-sm text-white placeholder-slate-600 focus:outline-none';
+  const selectStyle = { background: '#1e293b', border: '1px solid rgba(255,255,255,0.1)', colorScheme: 'dark' as const };
 
   return (
     <div style={{ background: '#0a0f1e', minHeight: '100vh' }}>
@@ -203,7 +204,7 @@ export default function ApplicationsPage() {
               <input className={inputClass} style={inputStyle} placeholder="Company *" value={newApp.company ?? ''} onChange={(e) => setNewApp((n) => ({ ...n, company: e.target.value }))} />
               <input className={inputClass} style={inputStyle} placeholder="Job Title *" value={newApp.jobTitle ?? ''} onChange={(e) => setNewApp((n) => ({ ...n, jobTitle: e.target.value }))} />
               <input type="date" className={inputClass} style={inputStyle} value={newApp.dateApplied ?? ''} onChange={(e) => setNewApp((n) => ({ ...n, dateApplied: e.target.value }))} />
-              <select className={inputClass} style={{ ...inputStyle, colorScheme: 'dark' }} value={newApp.status ?? 'Applied'} onChange={(e) => setNewApp((n) => ({ ...n, status: e.target.value as ApplicationStatus }))}>
+              <select className={inputClass} style={selectStyle} value={newApp.status ?? 'Applied'} onChange={(e) => setNewApp((n) => ({ ...n, status: e.target.value as ApplicationStatus }))}>
                 {STATUSES.map((s) => <option key={s} value={s}>{s}</option>)}
               </select>
               <input className={inputClass + ' sm:col-span-2'} style={inputStyle} placeholder="Job URL (optional)" value={newApp.jobUrl ?? ''} onChange={(e) => setNewApp((n) => ({ ...n, jobUrl: e.target.value }))} />
@@ -282,7 +283,7 @@ export default function ApplicationsPage() {
                           value={app.status}
                           onChange={(e) => updateStatus(app.id, e.target.value as ApplicationStatus)}
                           className="w-full px-3 py-2 rounded-xl text-sm text-white focus:outline-none"
-                          style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', colorScheme: 'dark' }}
+                          style={{ background: '#1e293b', border: '1px solid rgba(255,255,255,0.1)', colorScheme: 'dark' as const }}
                         >
                           {STATUSES.map((s) => <option key={s} value={s}>{s}</option>)}
                         </select>

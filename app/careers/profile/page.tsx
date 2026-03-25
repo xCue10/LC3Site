@@ -94,6 +94,7 @@ export default function ProfilePage() {
 
   const inputClass = 'w-full px-4 py-2.5 rounded-xl text-sm text-white placeholder-slate-600 focus:outline-none';
   const inputStyle = { background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' };
+  const selectStyle = { background: '#1e293b', border: '1px solid rgba(255,255,255,0.1)', colorScheme: 'dark' as const };
   const p = editing && draft ? draft : profile;
 
   return (
@@ -149,13 +150,13 @@ export default function ProfilePage() {
                   </div>
                   <div>
                     <label className="block text-xs text-slate-500 mb-1">Major</label>
-                    <select className={inputClass} style={{ ...inputStyle, colorScheme: 'dark' }} value={draft?.major ?? ''} onChange={(e) => setDraft((d) => d ? { ...d, major: e.target.value } : d)}>
+                    <select className={inputClass} style={selectStyle} value={draft?.major ?? ''} onChange={(e) => setDraft((d) => d ? { ...d, major: e.target.value } : d)}>
                       {CSN_MAJORS.map((m) => <option key={m} value={m}>{m}</option>)}
                     </select>
                   </div>
                   <div>
                     <label className="block text-xs text-slate-500 mb-1">Year</label>
-                    <select className={inputClass} style={{ ...inputStyle, colorScheme: 'dark' }} value={draft?.year ?? ''} onChange={(e) => setDraft((d) => d ? { ...d, year: e.target.value as CareerProfile['year'] } : d)}>
+                    <select className={inputClass} style={selectStyle} value={draft?.year ?? ''} onChange={(e) => setDraft((d) => d ? { ...d, year: e.target.value as CareerProfile['year'] } : d)}>
                       {['Freshman', 'Sophomore', 'Transfer'].map((y) => <option key={y} value={y}>{y}</option>)}
                     </select>
                   </div>
