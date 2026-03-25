@@ -152,7 +152,7 @@ export default function OnboardingPage() {
               </div>
               <div>
                 <label className="block text-sm text-slate-400 mb-1.5">Major at CSN</label>
-                <select className={inputClass} style={inputStyle} value={profile.major} onChange={(e) => save({ major: e.target.value })}>
+                <select className={inputClass} style={{ ...inputStyle, colorScheme: 'dark' }} value={profile.major} onChange={(e) => save({ major: e.target.value })}>
                   <option value="">Select your major</option>
                   {CSN_MAJORS.map((m) => <option key={m} value={m}>{m}</option>)}
                 </select>

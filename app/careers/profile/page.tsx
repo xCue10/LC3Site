@@ -149,13 +149,13 @@ export default function ProfilePage() {
                   </div>
                   <div>
                     <label className="block text-xs text-slate-500 mb-1">Major</label>
-                    <select className={inputClass} style={inputStyle} value={draft?.major ?? ''} onChange={(e) => setDraft((d) => d ? { ...d, major: e.target.value } : d)}>
+                    <select className={inputClass} style={{ ...inputStyle, colorScheme: 'dark' }} value={draft?.major ?? ''} onChange={(e) => setDraft((d) => d ? { ...d, major: e.target.value } : d)}>
                       {CSN_MAJORS.map((m) => <option key={m} value={m}>{m}</option>)}
                     </select>
                   </div>
                   <div>
                     <label className="block text-xs text-slate-500 mb-1">Year</label>
-                    <select className={inputClass} style={inputStyle} value={draft?.year ?? ''} onChange={(e) => setDraft((d) => d ? { ...d, year: e.target.value as CareerProfile['year'] } : d)}>
+                    <select className={inputClass} style={{ ...inputStyle, colorScheme: 'dark' }} value={draft?.year ?? ''} onChange={(e) => setDraft((d) => d ? { ...d, year: e.target.value as CareerProfile['year'] } : d)}>
                       {['Freshman', 'Sophomore', 'Transfer'].map((y) => <option key={y} value={y}>{y}</option>)}
                     </select>
                   </div>
