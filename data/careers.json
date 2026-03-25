@@ -1,0 +1,14 @@
+{
+  "live": false,
+  "heading": "LC3 Careers",
+  "tagline": "Coming Soon",
+  "description": "LC3 Careers is an AI-powered job board built for LC3 Club members at the College of Southern Nevada. Find tech internships, federal roles, and remote jobs — with AI match scoring, cover letter generation, and skill gap analysis.",
+  "features": [
+    "AI Match Scoring",
+    "Cover Letter Generator",
+    "Skill Gap Analysis",
+    "Application Tracker",
+    "Resume Analyzer",
+    "Market Insights"
+  ]
+}

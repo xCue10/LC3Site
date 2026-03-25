@@ -7,6 +7,7 @@ import { useState, useEffect, useRef } from 'react';
 const primaryLinks = [
   { href: '/', label: 'Home' },
   { href: '/shield', label: 'Shield' },
+  { href: '/careers', label: 'Careers' },
   { href: '/events', label: 'Events' },
   { href: '/members', label: 'Members' },
   { href: '/hire', label: 'Partner With Us' },

@@ -53,6 +53,7 @@ export function middleware(request: NextRequest) {
     ['POST', 'PATCH', 'PUT', 'DELETE'].includes(reqMethod) &&
     !PUBLIC_WRITE_PATHS.some((p) => pathname.startsWith(p)) &&
     !pathname.startsWith('/api/shield/') && // Shield routes handle their own auth
+    !pathname.startsWith('/api/careers/') && // Careers routes are public (client-side auth)
     !pathname.endsWith('/rsvp') // event-level RSVP is public
   ) {
     if (!isAdminAuthed(request)) {

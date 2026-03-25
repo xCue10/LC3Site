@@ -924,7 +924,7 @@ interface GalleryImage {
   };
 }
 
-type TabId = 'members' | 'events' | 'contacts' | 'partners' | 'projects' | 'stats' | 'settings' | 'about' | 'home' | 'posts' | 'sponsors' | 'resources' | 'past-work' | 'rsvps' | 'gallery' | 'shield';
+type TabId = 'members' | 'events' | 'contacts' | 'partners' | 'projects' | 'stats' | 'settings' | 'about' | 'home' | 'posts' | 'sponsors' | 'resources' | 'past-work' | 'rsvps' | 'gallery' | 'shield' | 'careers';
 
 interface ShieldPageConfig {
   live: boolean;
@@ -955,6 +955,8 @@ function Dashboard() {
   const [caseStudiesConfig, setCaseStudiesConfig] = useState<CaseStudiesConfig>({ live: false, sectionTitle: 'Past Work', caseStudies: [] });
   const [shieldConfig, setShieldConfig] = useState<ShieldPageConfig>({ live: false, heading: 'LC3 Shield', tagline: 'Coming Soon', description: '', features: [] });
   const [shieldFeaturesRaw, setShieldFeaturesRaw] = useState('');
+  const [careersConfig, setCareersConfig] = useState<ShieldPageConfig>({ live: false, heading: 'LC3 Careers', tagline: 'Coming Soon', description: '', features: [] });
+  const [careersFeaturesRaw, setCareersFeaturesRaw] = useState('');
   const [homeTechRaw, setHomeTechRaw] = useState('');
   const [shieldTagsRaw, setShieldTagsRaw] = useState('');
   const [aboutTechRaw, setAboutTechRaw] = useState('');
@@ -1054,7 +1056,7 @@ function Dashboard() {
     const safe = <T,>(url: string, fallback: T) =>
       fetch(url).then((r) => r.ok ? r.json() as Promise<T> : fallback).catch(() => fallback);
 
-    const [m, e, c, pt, p, s, st, ab, po, sp, rv, rs, cs, hm, gl, sh] = await Promise.all([
+    const [m, e, c, pt, p, s, st, ab, po, sp, rv, rs, cs, hm, gl, sh, ca] = await Promise.all([
       safe('/api/members', []),
       safe('/api/events', []),
       safe('/api/contact', []),
@@ -1071,6 +1073,7 @@ function Dashboard() {
       safe('/api/home', {}),
       safe('/api/gallery', []),
       safe('/api/shield-page', { live: false, heading: 'LC3 Shield', tagline: 'Coming Soon', description: '', features: [] }),
+      safe('/api/careers-page', { live: false, heading: 'LC3 Careers', tagline: 'Coming Soon', description: '', features: [] }),
     ]);
     setMembers(m as Member[]);
     setEvents(e as Event[]);
@@ -1089,6 +1092,9 @@ function Dashboard() {
     const shData = sh as ShieldPageConfig;
     setShieldConfig(shData);
     setShieldFeaturesRaw((shData.features ?? []).join('\n'));
+    const caData = ca as ShieldPageConfig;
+    setCareersConfig(caData);
+    setCareersFeaturesRaw((caData.features ?? []).join('\n'));
     setHomeTechRaw(((hm as HomeContent).techStack ?? []).join(', '));
     setShieldTagsRaw(((hm as HomeContent).shieldFeatureTags ?? []).join(', '));
     setAboutTechRaw(((ab as AboutContent).techStack ?? []).join(', '));
@@ -1205,6 +1211,23 @@ function Dashboard() {
     await fetch('/api/shield-page', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(config) });
   };
 
+  const persistCareers = async (config: ShieldPageConfig) => {
+    await fetch('/api/careers-page', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(config) });
+  };
+
+  const toggleCareersLive = async () => {
+    const next = { ...careersConfig, live: !careersConfig.live };
+    setCareersConfig(next);
+    await persistCareers(next);
+  };
+
+  const saveCareersConfig = async () => {
+    const features = careersFeaturesRaw.split('\n').map((f) => f.trim()).filter(Boolean);
+    const next = { ...careersConfig, features };
+    setCareersConfig(next);
+    await persistCareers(next);
+  };
+
   const toggleShieldLive = async () => {
     const next = { ...shieldConfig, live: !shieldConfig.live };
     setShieldConfig(next);
@@ -1276,6 +1299,7 @@ function Dashboard() {
         { id: 'home' as TabId, label: 'Home', count: null, unread: 0 },
         { id: 'about' as TabId, label: 'About', count: null, unread: 0 },
         { id: 'shield' as TabId, label: 'Shield', count: null, unread: 0 },
+        { id: 'careers' as TabId, label: 'Careers', count: null, unread: 0 },
       ],
     },
     {
@@ -3356,6 +3380,90 @@ function Dashboard() {
               )}
             </div>
           )}
+          {/* Careers Page Tab */}
+          {tab === 'careers' && (
+            <div className="space-y-6">
+              <div>
+                <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Careers Page</h2>
+                <p className="text-slate-500 text-sm mt-1">Control the public <code className="text-xs bg-slate-100 dark:bg-white/10 px-1.5 py-0.5 rounded">/careers</code> landing page.</p>
+              </div>
+
+              {/* Live toggle */}
+              <div className={`rounded-2xl border-2 p-6 flex items-center justify-between gap-6 transition-all ${careersConfig.live ? 'border-green-400/50 bg-green-50 dark:bg-green-500/5' : 'border-slate-200 dark:border-[#1e2d45] bg-white dark:bg-[#0d1424]'}`}>
+                <div>
+                  <p className={`font-semibold text-lg ${careersConfig.live ? 'text-green-700 dark:text-green-400' : 'text-slate-900 dark:text-white'}`}>
+                    LC3 Careers is {careersConfig.live ? 'LIVE' : 'In Progress'}
+                  </p>
+                  <p className="text-slate-500 text-sm mt-0.5">
+                    {careersConfig.live
+                      ? 'Members can access the AI-powered job board at /careers.'
+                      : 'Visitors see the "Coming Soon" page.'}
+                  </p>
+                </div>
+                <button
+                  onClick={toggleCareersLive}
+                  className={`relative flex-shrink-0 w-14 h-8 rounded-full transition-colors focus:outline-none ${careersConfig.live ? 'bg-green-500' : 'bg-slate-300 dark:bg-slate-600'}`}
+                >
+                  <div className={`absolute top-1 left-1 w-6 h-6 rounded-full bg-white shadow-md transition-transform ${careersConfig.live ? 'translate-x-6' : ''}`} />
+                </button>
+              </div>
+
+              {/* Editable fields */}
+              <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl p-6 space-y-5">
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Heading</label>
+                  <input
+                    type="text"
+                    value={careersConfig.heading}
+                    onChange={(e) => setCareersConfig((c) => ({ ...c, heading: e.target.value }))}
+                    placeholder="LC3 Careers"
+                    className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Badge / Tagline <span className="text-slate-400 font-normal">(shown in badge above heading)</span></label>
+                  <input
+                    type="text"
+                    value={careersConfig.tagline}
+                    onChange={(e) => setCareersConfig((c) => ({ ...c, tagline: e.target.value }))}
+                    placeholder="Coming Soon"
+                    className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Description</label>
+                  <textarea
+                    value={careersConfig.description}
+                    onChange={(e) => setCareersConfig((c) => ({ ...c, description: e.target.value }))}
+                    rows={3}
+                    placeholder="LC3 Careers is an AI-powered job board..."
+                    className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all resize-none"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
+                    Features <span className="text-slate-400 font-normal">(one per line)</span>
+                  </label>
+                  <textarea
+                    value={careersFeaturesRaw}
+                    onChange={(e) => setCareersFeaturesRaw(e.target.value)}
+                    rows={6}
+                    placeholder={"AI Match Scoring\nCover Letter Generator\nSkill Gap Analysis\nApplication Tracker"}
+                    className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all font-mono"
+                  />
+                </div>
+                <div className="flex justify-end">
+                  <button
+                    onClick={saveCareersConfig}
+                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-violet-600 text-white text-sm font-medium hover:opacity-90 transition-opacity"
+                  >
+                    Save Changes
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Shield Page Tab */}
           {tab === 'shield' && (
             <div className="space-y-6">
