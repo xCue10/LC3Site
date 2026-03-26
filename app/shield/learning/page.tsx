@@ -132,12 +132,11 @@ export default function LearningPage() {
                 placeholder="Search security terms..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl outline-none transition-all"
+                className="w-full px-4 py-3 rounded-xl outline-none transition-all bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-white/[0.07]"
                 style={{
                   color: '#f1f5f9',
                   fontSize: '14px',
                 }}
-                className="bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-white/[0.07]"
                 onFocus={(e) => { e.target.style.borderColor = 'rgba(59,130,246,0.4)'; e.target.style.boxShadow = '0 0 0 3px rgba(59,130,246,0.08)'; }}
                 onBlur={(e) => { e.target.style.borderColor = 'rgba(255,255,255,0.07)'; e.target.style.boxShadow = 'none'; }}
               />
