@@ -39,7 +39,7 @@ export default function ShieldScannerLayout({ title, description, icon: Icon, ic
         <div className="flex items-center gap-1.5 mb-6" style={{ fontSize: '12px', color: '#64748b' }}>
           <Link href="/shield/dashboard" className="transition-colors hover:text-slate-300">Dashboard</Link>
           <ChevronRight className="w-3 h-3" />
-          <span style={{ color: '#94a3b8' }}>{title}</span>
+          <span className="text-slate-600 dark:text-slate-400">{title}</span>
         </div>
 
         {/* Header */}
@@ -58,7 +58,7 @@ export default function ShieldScannerLayout({ title, description, icon: Icon, ic
             <h1 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight" style={{ letterSpacing: '-0.02em' }}>
               {title}
             </h1>
-            <p style={{ fontSize: '14px', color: '#94a3b8', marginTop: '4px', lineHeight: '1.6' }}>
+            <p className="text-slate-500 dark:text-slate-400" style={{ fontSize: '14px', marginTop: '4px', lineHeight: '1.6' }}>
               {description}
             </p>
           </div>
@@ -73,11 +73,11 @@ export default function ShieldScannerLayout({ title, description, icon: Icon, ic
             </div>
           ) : (
             <div
-              className="shrink-0 flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-medium"
+              className={`shrink-0 flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-medium ${remaining > 3 ? 'text-slate-600 dark:text-slate-400' : ''}`}
               style={{
                 background: remaining === 0 ? 'rgba(239,68,68,0.1)' : remaining <= 3 ? 'rgba(245,158,11,0.1)' : 'rgba(255,255,255,0.05)',
                 border: remaining === 0 ? '1px solid rgba(239,68,68,0.3)' : remaining <= 3 ? '1px solid rgba(245,158,11,0.3)' : '1px solid rgba(255,255,255,0.08)',
-                color: remaining === 0 ? '#f87171' : remaining <= 3 ? '#fbbf24' : '#94a3b8',
+                color: remaining === 0 ? '#f87171' : remaining <= 3 ? '#fbbf24' : undefined,
               }}
             >
               <span

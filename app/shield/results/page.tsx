@@ -151,10 +151,10 @@ function ResultsContent() {
         {/* Back */}
         <button
           onClick={() => router.back()}
-          className="flex items-center gap-2 mb-6 transition-colors"
-          style={{ fontSize: '14px', color: '#94a3b8' }}
+          className="flex items-center gap-2 mb-6 transition-colors text-slate-500 dark:text-slate-400"
+          style={{ fontSize: '14px' }}
           onMouseEnter={(e) => (e.currentTarget.style.color = '#e2e8f0')}
-          onMouseLeave={(e) => (e.currentTarget.style.color = '#94a3b8')}
+          onMouseLeave={(e) => (e.currentTarget.style.color = '')}
         >
           <ArrowLeft className="w-4 h-4" /> Back
         </button>
@@ -288,7 +288,7 @@ function ResultsContent() {
                 </span>
                 {resolvedVulns > 0 && <span style={{ fontSize: '12px', color: '#4ade80', fontWeight: 600 }}>✓ {resolvedVulns} resolved</span>}
                 {newVulns > 0 && <span style={{ fontSize: '12px', color: '#f87171', fontWeight: 600 }}>⚠ {newVulns} new</span>}
-                {newVulns === 0 && resolvedVulns === 0 && <span style={{ fontSize: '12px', color: '#94a3b8' }}>No change in issues</span>}
+                {newVulns === 0 && resolvedVulns === 0 && <span className="text-slate-500 dark:text-slate-400" style={{ fontSize: '12px' }}>No change in issues</span>}
               </div>
               <span style={{ fontSize: '11px', color: '#475569', marginLeft: 'auto' }}>{new Date(prevResult.timestamp).toLocaleDateString()}</span>
             </div>
@@ -347,7 +347,7 @@ function ResultsContent() {
           >
             <CheckCircle className="w-14 h-14 text-emerald-400 mx-auto mb-4" />
             <h2 className="text-xl font-bold text-white mb-2">No Issues Found!</h2>
-            <p style={{ fontSize: '14px', color: '#94a3b8' }}>
+            <p className="text-slate-500 dark:text-slate-400" style={{ fontSize: '14px' }}>
               {mode === 'beginner'
                 ? 'Your security looks great! Keep scanning regularly to catch issues early.'
                 : 'No vulnerabilities detected. Continue monitoring regularly.'}

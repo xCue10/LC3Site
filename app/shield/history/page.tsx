@@ -87,7 +87,7 @@ export default function HistoryPage() {
           <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-1" style={{ letterSpacing: '-0.03em' }}>
             Scan History
           </h1>
-          <p style={{ fontSize: '14px', color: '#94a3b8' }}>
+          <p className="text-slate-500 dark:text-slate-400" style={{ fontSize: '14px' }}>
             {userData.scanHistory.length} total scans completed
           </p>
         </div>
@@ -106,7 +106,7 @@ export default function HistoryPage() {
               <Icon style={{ width: '18px', height: '18px', color }} />
               <div>
                 <div className="text-xl font-black text-slate-900 dark:text-white" style={{ letterSpacing: '-0.04em' }}>{value}</div>
-                <div style={{ fontSize: '11px', color: '#94a3b8' }}>{label}</div>
+                <div className="text-slate-500 dark:text-slate-400" style={{ fontSize: '11px' }}>{label}</div>
               </div>
             </div>
           ))}
@@ -116,10 +116,10 @@ export default function HistoryPage() {
         <div className="flex flex-wrap items-center gap-2 mb-6">
           <button
             onClick={() => setFilter('all')}
-            className="px-3 py-1.5 rounded-full text-[12px] font-medium transition-all"
+            className={`px-3 py-1.5 rounded-full text-[12px] font-medium transition-all ${filter !== 'all' ? 'text-slate-600 dark:text-slate-400' : ''}`}
             style={{
               background: filter === 'all' ? '#3b82f6' : 'rgba(255,255,255,0.05)',
-              color: filter === 'all' ? '#fff' : '#94a3b8',
+              color: filter === 'all' ? '#fff' : undefined,
               border: filter === 'all' ? '1px solid #3b82f6' : '1px solid rgba(255,255,255,0.1)',
             }}
           >
@@ -134,10 +134,10 @@ export default function HistoryPage() {
               <button
                 key={type}
                 onClick={() => setFilter(type)}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-medium transition-all"
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-medium transition-all ${!active ? 'text-slate-600 dark:text-slate-400' : ''}`}
                 style={{
                   background: active ? `${color}20` : 'rgba(255,255,255,0.05)',
-                  color: active ? color : '#94a3b8',
+                  color: active ? color : undefined,
                   border: active ? `1px solid ${color}50` : '1px solid rgba(255,255,255,0.1)',
                 }}
               >
@@ -172,7 +172,7 @@ export default function HistoryPage() {
             className="text-center py-20 rounded-2xl bg-white dark:bg-[#161b27] border border-slate-200/80 dark:border-white/[0.09]"
           >
             <History className="w-12 h-12 mx-auto mb-3" style={{ color: '#334155' }} />
-            <p style={{ color: '#94a3b8', fontSize: '14px' }}>No scans yet. Start scanning to build your history!</p>
+            <p className="text-slate-500 dark:text-slate-400" style={{ fontSize: '14px' }}>No scans yet. Start scanning to build your history!</p>
           </div>
         ) : (
           <div className="space-y-2">
@@ -196,7 +196,7 @@ export default function HistoryPage() {
                         <Icon style={{ width: '16px', height: '16px', color }} />
                       </div>
                       <div className="min-w-0">
-                        <div className="font-medium truncate" style={{ fontSize: '14px', color: '#e2e8f0' }}>
+                        <div className="font-medium truncate text-slate-800 dark:text-slate-200" style={{ fontSize: '14px' }}>
                           {scan.target}
                         </div>
                         <div style={{ fontSize: '11px', color: '#64748b', marginTop: '2px' }}>
@@ -221,31 +221,31 @@ export default function HistoryPage() {
                       <div className="flex gap-1.5">
                         <Link
                           href={`/shield/results?id=${scan.id}`}
-                          className="p-2 rounded-lg transition-colors"
-                          style={{ background: 'rgba(255,255,255,0.05)', color: '#94a3b8' }}
+                          className="p-2 rounded-lg transition-colors text-slate-500 dark:text-slate-400"
+                          style={{ background: 'rgba(255,255,255,0.05)' }}
                           title="View results"
                           onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = '#93c5fd'; (e.currentTarget as HTMLAnchorElement).style.background = 'rgba(59,130,246,0.12)'; }}
-                          onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = '#94a3b8'; (e.currentTarget as HTMLAnchorElement).style.background = 'rgba(255,255,255,0.05)'; }}
+                          onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = ''; (e.currentTarget as HTMLAnchorElement).style.background = 'rgba(255,255,255,0.05)'; }}
                         >
                           <ExternalLink className="w-3.5 h-3.5" />
                         </Link>
                         <button
                           onClick={() => rerunScan(scan)}
-                          className="p-2 rounded-lg transition-colors"
-                          style={{ background: 'rgba(255,255,255,0.05)', color: '#94a3b8' }}
+                          className="p-2 rounded-lg transition-colors text-slate-500 dark:text-slate-400"
+                          style={{ background: 'rgba(255,255,255,0.05)' }}
                           title="Rerun scan"
                           onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.color = '#93c5fd'; (e.currentTarget as HTMLButtonElement).style.background = 'rgba(59,130,246,0.12)'; }}
-                          onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.color = '#94a3b8'; (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.05)'; }}
+                          onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.color = ''; (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.05)'; }}
                         >
                           <RefreshCw className="w-3.5 h-3.5" />
                         </button>
                         <button
                           onClick={() => deleteScan(scan.id)}
-                          className="p-2 rounded-lg transition-colors"
-                          style={{ background: 'rgba(255,255,255,0.05)', color: '#94a3b8' }}
+                          className="p-2 rounded-lg transition-colors text-slate-500 dark:text-slate-400"
+                          style={{ background: 'rgba(255,255,255,0.05)' }}
                           title="Delete scan"
                           onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.color = '#f87171'; (e.currentTarget as HTMLButtonElement).style.background = 'rgba(239,68,68,0.12)'; }}
-                          onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.color = '#94a3b8'; (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.05)'; }}
+                          onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.color = ''; (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.05)'; }}
                         >
                           <Trash2 className="w-3.5 h-3.5" />
                         </button>

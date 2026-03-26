@@ -99,7 +99,7 @@ export default function SensitiveFilesPage() {
 
         <div className="rounded-2xl p-6 bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-white/[0.06]">
           <div className="mb-6">
-            <label className="block text-sm font-medium mb-2" style={{ color: '#94a3b8' }}>Website URL to Check</label>
+            <label className="block text-sm font-medium mb-2 text-slate-600 dark:text-slate-400">Website URL to Check</label>
             <div className="flex flex-col sm:flex-row gap-3">
               <input
                 type="text"
@@ -108,10 +108,9 @@ export default function SensitiveFilesPage() {
                 onKeyDown={(e) => e.key === 'Enter' && !scanning && startScan()}
                 placeholder="https://example.com"
                 disabled={scanning}
-                className="flex-1 rounded-xl px-4 py-3 outline-none transition-all bg-slate-100 dark:bg-[#0d1117]"
+                className="flex-1 rounded-xl px-4 py-3 outline-none transition-all bg-slate-100 dark:bg-[#0d1117] text-slate-900 dark:text-slate-100"
                 style={{
                   border: '1px solid rgba(255,255,255,0.08)',
-                  color: '#e2e8f0',
                   fontSize: '14px',
                 }}
                 onFocus={(e) => { e.target.style.borderColor = 'rgba(239,68,68,0.5)'; e.target.style.boxShadow = '0 0 0 3px rgba(239,68,68,0.08)'; }}
@@ -131,7 +130,7 @@ export default function SensitiveFilesPage() {
 
           {!scanning && logs.length === 0 && (
             <div>
-              <h3 className="text-sm font-semibold mb-3" style={{ color: '#e2e8f0' }}>Files we check ({mode === 'advanced' ? '50+' : sensitiveFiles.length} paths{mode === 'advanced' ? ' — advanced deep scan' : ''}):</h3>
+              <h3 className="text-sm font-semibold mb-3 text-slate-800 dark:text-slate-200">Files we check ({mode === 'advanced' ? '50+' : sensitiveFiles.length} paths{mode === 'advanced' ? ' — advanced deep scan' : ''}):</h3>
               <div className="flex flex-wrap gap-2">
                 {sensitiveFiles.map(f => (
                   <code
@@ -156,8 +155,8 @@ export default function SensitiveFilesPage() {
           )}
         </div>
 
-        <div className="p-4 rounded-xl text-sm" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.05)', color: '#64748b' }}>
-          <strong style={{ color: '#e2e8f0' }}>How to block these files:</strong>
+        <div className="p-4 rounded-xl text-sm text-slate-600 dark:text-slate-400" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.05)' }}>
+          <strong className="text-slate-800 dark:text-slate-200">How to block these files:</strong>
           <pre
             className="mt-2 text-xs overflow-x-auto p-3 rounded-lg"
             style={{ background: 'rgba(0,0,0,0.4)', color: '#4ade80', fontFamily: "'JetBrains Mono', monospace" }}

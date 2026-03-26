@@ -113,7 +113,7 @@ export default function CodeScannerPage() {
               <div className="w-3 h-3 rounded-full" style={{ background: 'rgba(234,179,8,0.5)' }} />
               <div className="w-3 h-3 rounded-full" style={{ background: 'rgba(34,197,94,0.5)' }} />
             </div>
-            <span className="text-xs font-mono" style={{ color: '#94a3b8' }}>{language.toLowerCase()}</span>
+            <span className="text-xs font-mono text-slate-500 dark:text-slate-400">{language.toLowerCase()}</span>
             <button
               onClick={() => setCode(EXAMPLE_CODE)}
               className="text-xs transition-colors"
@@ -130,10 +130,9 @@ export default function CodeScannerPage() {
             placeholder={`Paste your ${language} code here...\n\nThe AI will scan for:\n• Exposed API keys and secrets\n• SQL injection risks\n• Hardcoded passwords\n• Insecure functions (eval, exec)\n• Input validation issues\n• And much more...`}
             disabled={scanning}
             rows={20}
-            className="w-full px-4 py-4 outline-none resize-none"
+            className="w-full px-4 py-4 outline-none resize-none text-slate-900 dark:text-slate-100"
             style={{
               background: 'transparent',
-              color: '#e2e8f0',
               fontSize: '13px',
               fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
             }}
@@ -152,7 +151,7 @@ export default function CodeScannerPage() {
             {scanning ? 'Claude AI is analyzing...' : 'Scan Code'}
           </button>
           {scanning && (
-            <span className="text-sm" style={{ color: '#94a3b8', animation: 'pulse 2s ease-in-out infinite' }}>
+            <span className="text-sm text-slate-500 dark:text-slate-400" style={{ animation: 'pulse 2s ease-in-out infinite' }}>
               This may take 15–30 seconds for Claude to analyze your code...
             </span>
           )}
@@ -167,7 +166,7 @@ export default function CodeScannerPage() {
 
         {/* What we scan for */}
         <div className="p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.05)' }}>
-          <h3 className="text-sm font-semibold mb-3" style={{ color: '#e2e8f0' }}>What Claude AI scans for:</h3>
+          <h3 className="text-sm font-semibold mb-3 text-slate-800 dark:text-slate-200">What Claude AI scans for:</h3>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
             {[
               'Exposed API keys & secrets',

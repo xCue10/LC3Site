@@ -224,7 +224,7 @@ export default function ShieldSidebar() {
               {userData.accessCode === 'LC3MEMBER' ? 'LC' : 'CS'}
             </div>
             <div className="min-w-0">
-              <div style={{ fontSize: '12px', fontWeight: 600, color: '#cbd5e1' }}>
+              <div className="text-slate-700 dark:text-slate-300" style={{ fontSize: '12px', fontWeight: 600 }}>
                 {userData.accessCode === 'LC3MEMBER' ? 'LC3 Club Member' : 'CSN Student'}
               </div>
               <div style={{ fontSize: '10px', color: '#64748b' }}>{userData.totalScans} scans</div>

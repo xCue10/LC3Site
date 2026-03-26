@@ -168,7 +168,7 @@ export default function CookieCheckerPage() {
 
         <div className="rounded-2xl p-6 bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-white/[0.06]">
           <div className="mb-6">
-            <label className="block text-sm font-medium mb-2" style={{ color: '#94a3b8' }}>
+            <label className="block text-sm font-medium mb-2 text-slate-600 dark:text-slate-400">
               Website URL to Audit
             </label>
             <div className="flex flex-col sm:flex-row gap-3">
@@ -179,10 +179,9 @@ export default function CookieCheckerPage() {
                 onKeyDown={(e) => e.key === 'Enter' && !scanning && startScan()}
                 placeholder="https://example.com"
                 disabled={scanning}
-                className="flex-1 rounded-xl px-4 py-3 outline-none transition-all bg-slate-100 dark:bg-[#0d1117]"
+                className="flex-1 rounded-xl px-4 py-3 outline-none transition-all bg-slate-100 dark:bg-[#0d1117] text-slate-900 dark:text-slate-100"
                 style={{
                   border: '1px solid rgba(255,255,255,0.08)',
-                  color: '#e2e8f0',
                   fontSize: '14px',
                 }}
                 onFocus={(e) => { e.target.style.borderColor = 'rgba(59,130,246,0.5)'; e.target.style.boxShadow = '0 0 0 3px rgba(59,130,246,0.08)'; }}
@@ -211,7 +210,7 @@ export default function CookieCheckerPage() {
 
           {!scanning && (
             <div className="mt-4 p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.05)' }}>
-              <h3 className="text-sm font-semibold mb-2" style={{ color: '#e2e8f0' }}>How to check cookies in DevTools:</h3>
+              <h3 className="text-sm font-semibold mb-2 text-slate-800 dark:text-slate-200">How to check cookies in DevTools:</h3>
               <ol className="text-xs space-y-1 list-decimal list-inside" style={{ color: '#64748b' }}>
                 <li>Open Chrome/Firefox DevTools (F12)</li>
                 <li>Go to the Network tab</li>

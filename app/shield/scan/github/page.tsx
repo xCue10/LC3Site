@@ -97,7 +97,7 @@ export default function GithubScannerPage() {
         className="rounded-2xl p-6 bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-white/[0.06]"
       >
         <div className="mb-6">
-          <label className="block text-sm font-medium mb-2" style={{ color: '#94a3b8' }}>
+          <label className="block text-sm font-medium mb-2 text-slate-600 dark:text-slate-400">
             Public GitHub Repository URL
           </label>
           <div className="flex flex-col sm:flex-row gap-3">
@@ -108,10 +108,9 @@ export default function GithubScannerPage() {
               onKeyDown={(e) => e.key === 'Enter' && !scanning && startScan()}
               placeholder="https://github.com/username/repository"
               disabled={scanning}
-              className="flex-1 rounded-xl px-4 py-3 outline-none transition-all bg-slate-100 dark:bg-[#0d1117]"
+              className="flex-1 rounded-xl px-4 py-3 outline-none transition-all bg-slate-100 dark:bg-[#0d1117] text-slate-900 dark:text-slate-100"
               style={{
                 border: '1px solid rgba(255,255,255,0.08)',
-                color: '#e2e8f0',
                 fontSize: '14px',
               }}
               onFocus={(e) => { e.target.style.borderColor = 'rgba(59,130,246,0.5)'; e.target.style.boxShadow = '0 0 0 3px rgba(59,130,246,0.08)'; }}
@@ -131,7 +130,7 @@ export default function GithubScannerPage() {
 
         {!scanning && logs.length === 0 && (
           <div className="mb-6 rounded-xl p-4" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.05)' }}>
-            <h3 className="text-sm font-semibold mb-3" style={{ color: '#e2e8f0' }}>What we scan for:</h3>
+            <h3 className="text-sm font-semibold mb-3 text-slate-800 dark:text-slate-200">What we scan for:</h3>
             <div className="grid grid-cols-2 gap-2">
               {[
                 'Committed .env files',

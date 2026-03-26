@@ -38,7 +38,7 @@ export default function BadgesPage() {
           <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-1" style={{ letterSpacing: '-0.03em' }}>
             Badges
           </h1>
-          <p style={{ fontSize: '14px', color: '#94a3b8' }}>
+          <p className="text-slate-500 dark:text-slate-400" style={{ fontSize: '14px' }}>
             Earn badges by completing scans and fixing security issues.
           </p>
         </div>
@@ -89,7 +89,7 @@ export default function BadgesPage() {
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
-                      <h3 style={{ fontSize: '13px', fontWeight: 600, color: earned ? '#fbbf24' : '#94a3b8' }}>
+                      <h3 className={earned ? '' : 'text-slate-600 dark:text-slate-400'} style={{ fontSize: '13px', fontWeight: 600, color: earned ? '#fbbf24' : undefined }}>
                         {badge.name}
                       </h3>
                       {earned ? (
@@ -100,7 +100,7 @@ export default function BadgesPage() {
                         <Lock className="w-3 h-3 shrink-0" style={{ color: '#475569' }} />
                       )}
                     </div>
-                    <p style={{ fontSize: '12px', color: earned ? '#94a3b8' : '#64748b', lineHeight: 1.5 }}>
+                    <p className={earned ? 'text-slate-500 dark:text-slate-400' : 'text-slate-500 dark:text-slate-500'} style={{ fontSize: '12px', lineHeight: 1.5 }}>
                       {badge.description}
                     </p>
                   </div>

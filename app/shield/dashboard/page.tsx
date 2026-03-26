@@ -101,7 +101,7 @@ export default function DashboardPage() {
           <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-1" style={{ letterSpacing: '-0.03em' }}>
             Dashboard
           </h1>
-          <p style={{ fontSize: '14px', color: '#94a3b8' }}>
+          <p className="text-slate-500 dark:text-slate-400" style={{ fontSize: '14px' }}>
             {userData.isAdmin ? 'LC3 Admin' : 'LC3 Club Member'}
             {' · '}
             <span style={{ color: userData.mode === 'beginner' ? '#4ade80' : '#60a5fa' }}>
@@ -125,7 +125,7 @@ export default function DashboardPage() {
               <Icon style={{ width: '18px', height: '18px', color }} />
               <div>
                 <div className="text-xl font-black text-slate-900 dark:text-white" style={{ letterSpacing: '-0.04em' }}>{value}</div>
-                <div style={{ fontSize: '11px', color: '#94a3b8' }}>{label}</div>
+                <div className="text-slate-500 dark:text-slate-400" style={{ fontSize: '11px' }}>{label}</div>
               </div>
             </div>
           ))}
@@ -137,7 +137,7 @@ export default function DashboardPage() {
         >
           <div className="px-5 py-4 border-b border-slate-200/80 dark:border-white/[0.07]">
             <h2 className="text-slate-900 dark:text-white font-semibold" style={{ fontSize: '15px' }}>Run a Scan</h2>
-            <p style={{ fontSize: '12px', color: '#94a3b8', marginTop: '2px' }}>Choose a scanner to get started</p>
+            <p className="text-slate-500 dark:text-slate-400" style={{ fontSize: '12px', marginTop: '2px' }}>Choose a scanner to get started</p>
           </div>
           <div className="p-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2">
             {SCANNERS.map(({ href, icon: Icon, label, color }) => (
@@ -162,7 +162,7 @@ export default function DashboardPage() {
                 >
                   <Icon style={{ width: '16px', height: '16px', color }} />
                 </div>
-                <span style={{ fontSize: '11px', fontWeight: 500, color: '#cbd5e1', lineHeight: 1.3 }}>{label}</span>
+                <span className="text-slate-600 dark:text-slate-300" style={{ fontSize: '11px', fontWeight: 500, lineHeight: 1.3 }}>{label}</span>
               </Link>
             ))}
           </div>
@@ -183,15 +183,15 @@ export default function DashboardPage() {
                 <Link
                   key={href}
                   href={href}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all"
-                  style={{ background: `${color}14`, border: `1px solid ${color}30`, fontSize: '12px', color: '#cbd5e1', fontWeight: 500 }}
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all text-slate-600 dark:text-slate-300"
+                  style={{ background: `${color}14`, border: `1px solid ${color}30`, fontSize: '12px', fontWeight: 500 }}
                   onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = 'white'; }}
-                  onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = '#cbd5e1'; }}
+                  onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = ''; }}
                 >
                   <Icon style={{ width: '12px', height: '12px', color }} />
                   {label}
                   {!userData.scanHistory.some(h => h.type === type) && (
-                    <span style={{ fontSize: '10px', color: '#94a3b8', marginLeft: '2px' }}>· new</span>
+                    <span className="text-slate-500 dark:text-slate-400" style={{ fontSize: '10px', marginLeft: '2px' }}>· new</span>
                   )}
                 </Link>
               ))}
@@ -234,7 +234,7 @@ export default function DashboardPage() {
                     onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
                   >
                     <div className="flex-1 min-w-0">
-                      <div className="font-medium truncate" style={{ fontSize: '13px', color: '#e2e8f0' }}>
+                      <div className="font-medium truncate text-slate-800 dark:text-slate-200" style={{ fontSize: '13px' }}>
                         {scan.target}
                       </div>
                       <div style={{ fontSize: '11px', color: '#64748b', marginTop: '2px' }}>
@@ -253,10 +253,10 @@ export default function DashboardPage() {
                       </div>
                       <Link
                         href={`/shield/results?id=${scan.id}`}
-                        className="p-2 rounded-lg transition-colors"
-                        style={{ background: 'rgba(255,255,255,0.05)', color: '#94a3b8' }}
+                        className="p-2 rounded-lg transition-colors text-slate-500 dark:text-slate-400"
+                        style={{ background: 'rgba(255,255,255,0.05)' }}
                         onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = '#93c5fd'; }}
-                        onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = '#94a3b8'; }}
+                        onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = ''; }}
                       >
                         <ExternalLink className="w-3.5 h-3.5" />
                       </Link>
@@ -308,7 +308,7 @@ export default function DashboardPage() {
               {/* Unearned badges with hints */}
               {unearnedBadges.length > 0 && (
                 <div style={{ borderTop: earnedBadges.length > 0 ? '1px solid rgba(255,255,255,0.07)' : 'none', paddingTop: earnedBadges.length > 0 ? '12px' : 0 }}>
-                  <div style={{ fontSize: '10px', color: '#64748b', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.06em', fontWeight: 600 }}>
+                  <div className="text-slate-500 dark:text-slate-500" style={{ fontSize: '10px', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.06em', fontWeight: 600 }}>
                     To unlock
                   </div>
                   <div className="space-y-2">

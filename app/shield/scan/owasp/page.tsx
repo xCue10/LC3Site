@@ -101,8 +101,8 @@ export default function OwaspPage() {
         {/* Progress */}
         <div className="rounded-xl p-4 bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-white/[0.06]">
           <div className="flex justify-between text-sm mb-2">
-            <span style={{ color: '#64748b' }}>Progress</span>
-            <span className="font-medium" style={{ color: '#e2e8f0' }}>{totalAnswered}/{totalQuestions} answered</span>
+            <span className="text-slate-500 dark:text-slate-500">Progress</span>
+            <span className="font-medium text-slate-700 dark:text-slate-200">{totalAnswered}/{totalQuestions} answered</span>
           </div>
           <div className="h-2 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.06)' }}>
             <div
@@ -150,7 +150,7 @@ export default function OwaspPage() {
             >
               A0{activeCategory + 1}
             </span>
-            <h2 className="text-lg font-bold" style={{ color: '#e2e8f0' }}>{CATEGORIES[activeCategory]}</h2>
+            <h2 className="text-lg font-bold text-slate-800 dark:text-slate-200">{CATEGORIES[activeCategory]}</h2>
           </div>
 
           <div className="space-y-4">
@@ -169,7 +169,7 @@ export default function OwaspPage() {
                     >
                       {q.failSeverity}
                     </span>
-                    <p className="text-sm" style={{ color: '#c4cfe8' }}>{q.question}</p>
+                    <p className="text-sm text-slate-700 dark:text-slate-300">{q.question}</p>
                   </div>
                   <div className="flex gap-2">
                     {(['yes', 'no', 'unsure'] as Answer[]).map((ans) => {

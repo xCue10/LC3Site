@@ -111,7 +111,7 @@ export default function DependenciesScannerPage() {
             className="flex items-center justify-between px-4 py-3"
             style={{ borderBottom: '1px solid rgba(255,255,255,0.06)', background: 'rgba(255,255,255,0.02)' }}
           >
-            <span className="text-xs font-mono" style={{ color: '#94a3b8' }}>package.json</span>
+            <span className="text-xs font-mono text-slate-500 dark:text-slate-400">package.json</span>
             <button
               onClick={() => setPackageJson(EXAMPLE_PACKAGE_JSON)}
               className="text-xs transition-colors"
@@ -128,10 +128,9 @@ export default function DependenciesScannerPage() {
             placeholder={'Paste your package.json contents here...\n\nExample:\n{\n  "dependencies": {\n    "express": "4.17.1",\n    "lodash": "4.17.15"\n  }\n}'}
             disabled={scanning}
             rows={16}
-            className="w-full px-4 py-4 outline-none resize-none"
+            className="w-full px-4 py-4 outline-none resize-none text-slate-900 dark:text-slate-100"
             style={{
               background: 'transparent',
-              color: '#e2e8f0',
               fontSize: '13px',
               fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
             }}
@@ -161,9 +160,9 @@ export default function DependenciesScannerPage() {
 
         {!scanning && (
           <div className="p-4 rounded-xl text-sm" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.05)' }}>
-            <p style={{ color: '#64748b' }}>
+            <p className="text-slate-600 dark:text-slate-400">
               This scanner checks your packages against the{' '}
-              <strong style={{ color: '#e2e8f0' }}>OSV (Open Source Vulnerabilities)</strong> database at{' '}
+              <strong className="text-slate-800 dark:text-slate-200">OSV (Open Source Vulnerabilities)</strong> database at{' '}
               <code style={{ color: '#60a5fa' }}>osv.dev</code> — the same database used by GitHub Dependabot and Google's security team.
               For each vulnerability found, you'll get the CVE ID, severity score, affected versions, and the exact npm command to fix it.
             </p>

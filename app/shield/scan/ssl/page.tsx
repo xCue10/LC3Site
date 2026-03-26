@@ -102,7 +102,7 @@ export default function SslScannerPage() {
       <div className="space-y-4">
         <div className="rounded-2xl p-6 bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-white/[0.06]">
           <div className="mb-6">
-            <label className="block text-sm font-medium mb-2" style={{ color: '#94a3b8' }}>
+            <label className="block text-sm font-medium mb-2 text-slate-600 dark:text-slate-400">
               Domain Name
             </label>
             <div className="flex flex-col sm:flex-row gap-3">
@@ -113,10 +113,9 @@ export default function SslScannerPage() {
                 onKeyDown={(e) => e.key === 'Enter' && !scanning && startScan()}
                 placeholder="example.com (without https://)"
                 disabled={scanning}
-                className="flex-1 rounded-xl px-4 py-3 outline-none transition-all bg-slate-100 dark:bg-[#0d1117]"
+                className="flex-1 rounded-xl px-4 py-3 outline-none transition-all bg-slate-100 dark:bg-[#0d1117] text-slate-900 dark:text-slate-100"
                 style={{
                   border: '1px solid rgba(255,255,255,0.08)',
-                  color: '#e2e8f0',
                   fontSize: '14px',
                 }}
                 onFocus={(e) => { e.target.style.borderColor = 'rgba(59,130,246,0.5)'; e.target.style.boxShadow = '0 0 0 3px rgba(59,130,246,0.08)'; }}
@@ -143,7 +142,7 @@ export default function SslScannerPage() {
                   style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.05)' }}
                 >
                   <div className="text-2xl mb-1">{icon}</div>
-                  <div className="text-xs font-medium" style={{ color: '#94a3b8' }}>{title}</div>
+                  <div className="text-xs font-medium text-slate-600 dark:text-slate-400">{title}</div>
                   <div className="text-xs" style={{ color: '#64748b' }}>{desc}</div>
                 </div>
               ))}
@@ -161,8 +160,8 @@ export default function SslScannerPage() {
         </div>
 
         {!scanning && (
-          <div className="p-4 rounded-xl text-sm" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.05)', color: '#64748b' }}>
-            <strong style={{ color: '#e2e8f0' }}>Pro tip:</strong> Set up certificate auto-renewal with Let's Encrypt to avoid expired certificates.
+          <div className="p-4 rounded-xl text-sm text-slate-600 dark:text-slate-400" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.05)' }}>
+            <strong className="text-slate-800 dark:text-slate-200">Pro tip:</strong> Set up certificate auto-renewal with Let's Encrypt to avoid expired certificates.
             Use <code style={{ color: '#60a5fa', background: 'rgba(255,255,255,0.06)', padding: '0 4px', borderRadius: '4px' }}>certbot renew --force-renewal</code> or
             add a cron job to automatically renew before expiry.
           </div>

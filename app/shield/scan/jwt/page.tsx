@@ -61,7 +61,7 @@ export default function JwtAnalyzerPage() {
       <div className="space-y-4">
         {/* Explainer */}
         <div className="p-4 rounded-xl bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-white/[0.06]">
-          <h3 className="text-sm font-semibold mb-2" style={{ color: '#e2e8f0' }}>What is a JWT?</h3>
+          <h3 className="text-sm font-semibold mb-2 text-slate-800 dark:text-slate-200">What is a JWT?</h3>
           <p className="text-xs" style={{ color: '#64748b' }}>
             {mode === 'beginner'
               ? "A JWT (JSON Web Token) is like a digital ID card your app gives to logged-in users. It contains information about who they are and what they're allowed to do. But if it's not set up correctly, attackers can forge fake ones!"
@@ -84,7 +84,7 @@ export default function JwtAnalyzerPage() {
             className="flex items-center justify-between px-4 py-3"
             style={{ borderBottom: '1px solid rgba(255,255,255,0.06)', background: 'rgba(255,255,255,0.02)' }}
           >
-            <span className="text-xs font-mono" style={{ color: '#94a3b8' }}>JWT Token</span>
+            <span className="text-xs font-mono text-slate-500 dark:text-slate-400">JWT Token</span>
             <button
               onClick={() => setToken(EXAMPLE_JWT)}
               className="text-xs transition-colors"
@@ -101,10 +101,9 @@ export default function JwtAnalyzerPage() {
             placeholder={"Paste your JWT token here...\n\nExample format:\neyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxMjMifQ.abc123..."}
             disabled={scanning}
             rows={6}
-            className="w-full px-4 py-4 outline-none resize-none break-all"
+            className="w-full px-4 py-4 outline-none resize-none break-all text-slate-900 dark:text-slate-100"
             style={{
               background: 'transparent',
-              color: '#e2e8f0',
               fontSize: '13px',
               fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
             }}
@@ -132,7 +131,7 @@ export default function JwtAnalyzerPage() {
 
         {/* What we check */}
         <div className="p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.05)' }}>
-          <h3 className="text-sm font-semibold mb-3" style={{ color: '#e2e8f0' }}>What we analyze:</h3>
+          <h3 className="text-sm font-semibold mb-3 text-slate-800 dark:text-slate-200">What we analyze:</h3>
           <div className="grid grid-cols-2 gap-2">
             {[
               'Algorithm (alg:none attack)',
