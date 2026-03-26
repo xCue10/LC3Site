@@ -7,15 +7,15 @@ const FADE_DURATION = 280;
 
 function BrowserChrome({ url, children }: { url: string; children: React.ReactNode }) {
   return (
-    <div className="rounded-xl overflow-hidden shadow-2xl" style={{ background: '#0d1117', border: '1px solid rgba(255,255,255,0.08)' }}>
+    <div className="rounded-xl overflow-hidden shadow-2xl bg-white dark:bg-[#0d1117] border border-slate-200/80 dark:border-white/[0.08]">
       {/* Title bar */}
-      <div className="flex items-center gap-2 px-3 py-2.5" style={{ background: '#161b22', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+      <div className="flex items-center gap-2 px-3 py-2.5 bg-slate-100 dark:bg-[#161b22] border-b border-slate-200/80 dark:border-white/[0.06]">
         <div className="flex gap-1.5">
           <div className="w-2.5 h-2.5 rounded-full bg-red-500/70" />
           <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/70" />
           <div className="w-2.5 h-2.5 rounded-full bg-green-500/70" />
         </div>
-        <div className="flex-1 mx-2 px-2.5 py-0.5 rounded text-xs text-slate-500 font-mono truncate" style={{ background: '#0d1117', border: '1px solid rgba(255,255,255,0.06)' }}>
+        <div className="flex-1 mx-2 px-2.5 py-0.5 rounded text-xs text-slate-500 font-mono truncate bg-white dark:bg-[#0d1117] border border-slate-200/60 dark:border-white/[0.06]">
           {url}
         </div>
       </div>
@@ -38,7 +38,7 @@ function ScreenDashboard() {
   return (
     <div>
       {/* User bar */}
-      <div className="flex items-center justify-between mb-3 pb-2.5" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+      <div className="flex items-center justify-between mb-3 pb-2.5 border-b border-slate-200/60 dark:border-white/[0.06]">
         <div className="flex items-center gap-2">
           <div className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white" style={{ background: 'linear-gradient(135deg,#ef4444,#8b5cf6)' }}>A</div>
           <span className="text-xs text-slate-300 font-medium">Alex M.</span>
@@ -51,8 +51,7 @@ function ScreenDashboard() {
       {/* Scanner grid */}
       <div className="grid grid-cols-3 gap-1.5">
         {tools.map(({ icon, label, color }) => (
-          <div key={label} className="rounded-lg p-2 flex flex-col items-center gap-1 cursor-pointer transition-all hover:scale-[1.03]"
-            style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+          <div key={label} className="rounded-lg p-2 flex flex-col items-center gap-1 cursor-pointer transition-all hover:scale-[1.03] bg-slate-50 dark:bg-white/[0.03] border border-slate-200/60 dark:border-white/[0.06]">
             <span className="text-base leading-none">{icon}</span>
             <span className="text-[9px] text-center leading-tight" style={{ color }}>{label}</span>
           </div>
@@ -76,12 +75,12 @@ function ScreenURLScan() {
   return (
     <div>
       <div className="flex items-center gap-2 mb-2.5">
-        <span className="text-xs font-semibold text-white">URL Scanner</span>
+        <span className="text-xs font-semibold text-slate-900 dark:text-white">URL Scanner</span>
         <span className="text-[9px] px-1.5 py-0.5 rounded font-bold text-white" style={{ background: '#f59e0b' }}>B+</span>
       </div>
       {/* URL input */}
       <div className="flex gap-1.5 mb-3">
-        <div className="flex-1 text-[10px] font-mono px-2 py-1.5 rounded-md text-slate-400 truncate" style={{ background: '#161b22', border: '1px solid rgba(255,255,255,0.08)' }}>
+        <div className="flex-1 text-[10px] font-mono px-2 py-1.5 rounded-md text-slate-400 truncate bg-slate-100 dark:bg-[#161b22] border border-slate-200/60 dark:border-white/[0.08]">
           https://example.com
         </div>
         <div className="px-2 py-1.5 rounded-md text-[10px] font-semibold text-white" style={{ background: '#3b82f6' }}>Scan</div>
@@ -103,11 +102,11 @@ function ScreenCodeScan() {
   return (
     <div>
       <div className="flex items-center gap-2 mb-2.5">
-        <span className="text-xs font-semibold text-white">Code Scanner</span>
+        <span className="text-xs font-semibold text-slate-900 dark:text-white">Code Scanner</span>
         <span className="text-[9px] px-1.5 py-0.5 rounded font-bold text-white" style={{ background: '#ef4444' }}>2 issues</span>
       </div>
       {/* Code block */}
-      <div className="rounded-md p-2.5 mb-2.5 font-mono text-[9px] leading-relaxed overflow-hidden" style={{ background: '#161b22', border: '1px solid rgba(255,255,255,0.06)' }}>
+      <div className="rounded-md p-2.5 mb-2.5 font-mono text-[9px] leading-relaxed overflow-hidden bg-slate-100 dark:bg-[#161b22] border border-slate-200/60 dark:border-white/[0.06]">
         <div className="text-slate-500">{'// user login handler'}</div>
         <div className="text-blue-300">{'const query = '}<span className="text-red-400 underline decoration-red-500">{'`SELECT * FROM users'}</span></div>
         <div className="text-red-400 underline decoration-red-500">{'  WHERE id = ${userId}`'}</div>
@@ -135,11 +134,11 @@ function ScreenSSL() {
   return (
     <div>
       <div className="flex items-center gap-2 mb-2.5">
-        <span className="text-xs font-semibold text-white">SSL/TLS Checker</span>
+        <span className="text-xs font-semibold text-slate-900 dark:text-white">SSL/TLS Checker</span>
         <span className="text-[9px] px-1.5 py-0.5 rounded font-bold text-white" style={{ background: '#22c55e' }}>A</span>
       </div>
       {/* Certificate info */}
-      <div className="rounded-md p-2.5 mb-2" style={{ background: '#161b22', border: '1px solid rgba(255,255,255,0.06)' }}>
+      <div className="rounded-md p-2.5 mb-2 bg-slate-100 dark:bg-[#161b22] border border-slate-200/60 dark:border-white/[0.06]">
         <div className="flex justify-between items-center mb-2">
           <span className="text-[9px] text-slate-400 font-medium">example.com</span>
           <span className="text-[9px] text-green-400 font-semibold">✓ Valid</span>

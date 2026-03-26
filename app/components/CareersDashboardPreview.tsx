@@ -7,15 +7,15 @@ const FADE_DURATION = 280;
 
 function BrowserChrome({ url, children }: { url: string; children: React.ReactNode }) {
   return (
-    <div className="rounded-xl overflow-hidden shadow-2xl" style={{ background: '#0d1117', border: '1px solid rgba(255,255,255,0.08)' }}>
+    <div className="rounded-xl overflow-hidden shadow-2xl bg-white dark:bg-[#0d1117] border border-slate-200/80 dark:border-white/[0.08]">
       {/* Title bar */}
-      <div className="flex items-center gap-2 px-3 py-2.5" style={{ background: '#161b22', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+      <div className="flex items-center gap-2 px-3 py-2.5 bg-slate-100 dark:bg-[#161b22] border-b border-slate-200/80 dark:border-white/[0.06]">
         <div className="flex gap-1.5">
           <div className="w-2.5 h-2.5 rounded-full bg-red-500/70" />
           <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/70" />
           <div className="w-2.5 h-2.5 rounded-full bg-green-500/70" />
         </div>
-        <div className="flex-1 mx-2 px-2.5 py-0.5 rounded text-xs text-slate-500 font-mono truncate" style={{ background: '#0d1117', border: '1px solid rgba(255,255,255,0.06)' }}>
+        <div className="flex-1 mx-2 px-2.5 py-0.5 rounded text-xs text-slate-500 font-mono truncate bg-white dark:bg-[#0d1117] border border-slate-200/60 dark:border-white/[0.06]">
           {url}
         </div>
       </div>
@@ -42,13 +42,13 @@ function ScreenJobs() {
         {jobs.map(({ title, company, location, salary, match, source, sourceColor }) => {
           const matchColor = match >= 80 ? '#22c55e' : match >= 60 ? '#f59e0b' : '#ef4444';
           return (
-            <div key={title} className="rounded-lg p-2.5" style={{ background: '#161b22', border: '1px solid rgba(255,255,255,0.06)' }}>
+            <div key={title} className="rounded-lg p-2.5 bg-slate-50 dark:bg-[#161b22] border border-slate-200/60 dark:border-white/[0.06]">
               <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0">
                   <div className="flex items-center gap-1.5 mb-0.5">
                     <span className="text-[8px] font-semibold px-1.5 py-0.5 rounded" style={{ background: `${sourceColor}22`, color: sourceColor }}>{source}</span>
                   </div>
-                  <div className="text-[10px] font-semibold text-white leading-tight">{title}</div>
+                  <div className="text-[10px] font-semibold text-slate-900 dark:text-white leading-tight">{title}</div>
                   <div className="text-[9px] text-slate-400">{company} · {location}</div>
                 </div>
                 <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-md shrink-0" style={{ color: matchColor, background: `${matchColor}18`, border: `1px solid ${matchColor}33` }}>
@@ -84,17 +84,17 @@ function ScreenCoverLetter() {
   return (
     <div>
       <div className="flex items-center justify-between mb-2.5">
-        <span className="text-xs font-semibold text-white">Cover Letter</span>
+        <span className="text-xs font-semibold text-slate-900 dark:text-white">Cover Letter</span>
         <span className="text-[9px] px-1.5 py-0.5 rounded font-semibold" style={{ background: 'rgba(139,92,246,0.15)', color: '#a78bfa' }}>✦ Claude AI</span>
       </div>
       {/* Job selector */}
-      <div className="flex items-center gap-1.5 mb-2.5 px-2 py-1.5 rounded-md text-[9px]" style={{ background: '#161b22', border: '1px solid rgba(255,255,255,0.08)' }}>
+      <div className="flex items-center gap-1.5 mb-2.5 px-2 py-1.5 rounded-md text-[9px] bg-slate-100 dark:bg-[#161b22] border border-slate-200/60 dark:border-white/[0.08]">
         <span className="text-slate-400">Job:</span>
         <span className="text-blue-300 font-medium">Cloud Engineer · Google</span>
         <span className="text-slate-600 ml-auto">▼</span>
       </div>
       {/* Letter body */}
-      <div className="rounded-md p-2.5 text-[9px] leading-relaxed" style={{ background: '#161b22', border: '1px solid rgba(255,255,255,0.06)' }}>
+      <div className="rounded-md p-2.5 text-[9px] leading-relaxed bg-slate-100 dark:bg-[#161b22] border border-slate-200/60 dark:border-white/[0.06]">
         {lines.map((line, i) => (
           <div key={i} className={line === '' ? 'h-2' : ''}>
             {line && <span className="text-slate-300">{line}</span>}
@@ -120,7 +120,7 @@ function ScreenResume() {
   return (
     <div>
       <div className="flex items-center justify-between mb-2.5">
-        <span className="text-xs font-semibold text-white">Resume Analysis</span>
+        <span className="text-xs font-semibold text-slate-900 dark:text-white">Resume Analysis</span>
         <span className="text-[9px] font-bold text-emerald-400">78% match</span>
       </div>
       {/* Skills bars */}
@@ -131,7 +131,7 @@ function ScreenResume() {
               <span className="text-slate-300">{name}</span>
               <span className="font-semibold" style={{ color }}>{pct}%</span>
             </div>
-            <div className="h-1.5 rounded-full" style={{ background: 'rgba(255,255,255,0.06)' }}>
+            <div className="h-1.5 rounded-full bg-slate-200 dark:bg-white/[0.06]">
               <div className="h-1.5 rounded-full transition-all" style={{ width: `${pct}%`, background: color }} />
             </div>
           </div>
@@ -155,13 +155,13 @@ function ScreenInsights() {
   return (
     <div>
       <div className="flex items-center justify-between mb-2.5">
-        <span className="text-xs font-semibold text-white">Market Insights</span>
+        <span className="text-xs font-semibold text-slate-900 dark:text-white">Market Insights</span>
         <span className="text-[9px] text-slate-500">Updated today</span>
       </div>
       <div className="grid grid-cols-3 gap-1.5 mb-2.5">
         {stats.map(({ label, value, delta, up }) => (
-          <div key={label} className="rounded-lg p-2 text-center" style={{ background: '#161b22', border: '1px solid rgba(255,255,255,0.06)' }}>
-            <div className="text-sm font-bold text-white">{value}</div>
+          <div key={label} className="rounded-lg p-2 text-center bg-slate-50 dark:bg-[#161b22] border border-slate-200/60 dark:border-white/[0.06]">
+            <div className="text-sm font-bold text-slate-900 dark:text-white">{value}</div>
             <div className="text-[8px] text-slate-400">{label}</div>
             <div className={`text-[8px] mt-0.5 ${up ? 'text-green-400' : 'text-amber-400'}`}>{delta}</div>
           </div>
@@ -170,7 +170,7 @@ function ScreenInsights() {
       {/* Trending roles */}
       <div className="text-[9px] text-slate-500 mb-1.5">Trending roles in Las Vegas, NV</div>
       {['Cloud Architect', 'DevOps Engineer', 'Security Analyst'].map(r => (
-        <div key={r} className="flex items-center justify-between text-[9px] py-1" style={{ borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
+        <div key={r} className="flex items-center justify-between text-[9px] py-1 border-b border-slate-200/40 dark:border-white/[0.04]">
           <span className="text-slate-300">{r}</span>
           <span className="text-green-400">↑ High demand</span>
         </div>

@@ -120,12 +120,11 @@ export default function DashboardPage() {
           ].map(({ label, value, icon: Icon, color }) => (
             <div
               key={label}
-              className="flex items-center gap-3 rounded-xl px-5 py-3.5"
-              style={{ background: '#161b27', border: '1px solid rgba(255,255,255,0.09)' }}
+              className="flex items-center gap-3 rounded-xl px-5 py-3.5 bg-white dark:bg-[#161b27] border border-slate-200/80 dark:border-white/[0.09]"
             >
               <Icon style={{ width: '18px', height: '18px', color }} />
               <div>
-                <div className="text-xl font-black text-white" style={{ letterSpacing: '-0.04em' }}>{value}</div>
+                <div className="text-xl font-black text-slate-900 dark:text-white" style={{ letterSpacing: '-0.04em' }}>{value}</div>
                 <div style={{ fontSize: '11px', color: '#94a3b8' }}>{label}</div>
               </div>
             </div>
@@ -134,11 +133,10 @@ export default function DashboardPage() {
 
         {/* Scanner grid */}
         <div
-          className="rounded-2xl overflow-hidden mb-4"
-          style={{ background: '#161b27', border: '1px solid rgba(255,255,255,0.09)' }}
+          className="rounded-2xl overflow-hidden mb-4 bg-white dark:bg-[#161b27] border border-slate-200/80 dark:border-white/[0.09]"
         >
-          <div className="px-5 py-4" style={{ borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
-            <h2 className="text-white font-semibold" style={{ fontSize: '15px' }}>Run a Scan</h2>
+          <div className="px-5 py-4 border-b border-slate-200/80 dark:border-white/[0.07]">
+            <h2 className="text-slate-900 dark:text-white font-semibold" style={{ fontSize: '15px' }}>Run a Scan</h2>
             <p style={{ fontSize: '12px', color: '#94a3b8', marginTop: '2px' }}>Choose a scanner to get started</p>
           </div>
           <div className="p-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2">
@@ -146,16 +144,15 @@ export default function DashboardPage() {
               <Link
                 key={href}
                 href={href}
-                className="flex flex-col items-center gap-2 p-3.5 rounded-xl text-center transition-all duration-200"
-                style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}
+                className="flex flex-col items-center gap-2 p-3.5 rounded-xl text-center transition-all duration-200 bg-slate-50 dark:bg-white/[0.03] border border-slate-200/60 dark:border-white/[0.07]"
                 onMouseEnter={(e) => {
                   (e.currentTarget as HTMLAnchorElement).style.background = `${color}12`;
                   (e.currentTarget as HTMLAnchorElement).style.borderColor = `${color}50`;
                   (e.currentTarget as HTMLAnchorElement).style.transform = 'translateY(-2px)';
                 }}
                 onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLAnchorElement).style.background = 'rgba(255,255,255,0.03)';
-                  (e.currentTarget as HTMLAnchorElement).style.borderColor = 'rgba(255,255,255,0.07)';
+                  (e.currentTarget as HTMLAnchorElement).style.background = '';
+                  (e.currentTarget as HTMLAnchorElement).style.borderColor = '';
                   (e.currentTarget as HTMLAnchorElement).style.transform = 'translateY(0)';
                 }}
               >
@@ -207,14 +204,10 @@ export default function DashboardPage() {
 
           {/* Recent scans */}
           <div
-            className="lg:col-span-2 rounded-2xl overflow-hidden"
-            style={{ background: '#161b27', border: '1px solid rgba(255,255,255,0.09)' }}
+            className="lg:col-span-2 rounded-2xl overflow-hidden bg-white dark:bg-[#161b27] border border-slate-200/80 dark:border-white/[0.09]"
           >
-            <div
-              className="flex items-center justify-between px-5 py-4"
-              style={{ borderBottom: '1px solid rgba(255,255,255,0.07)' }}
-            >
-              <h2 className="text-white font-semibold" style={{ fontSize: '15px' }}>Recent Scans</h2>
+            <div className="flex items-center justify-between px-5 py-4 border-b border-slate-200/80 dark:border-white/[0.07]">
+              <h2 className="text-slate-900 dark:text-white font-semibold" style={{ fontSize: '15px' }}>Recent Scans</h2>
               <Link
                 href="/shield/history"
                 className="flex items-center gap-1 text-[12px] transition-colors"
@@ -232,7 +225,7 @@ export default function DashboardPage() {
                 <p style={{ fontSize: '14px', color: '#64748b' }}>No scans yet — pick a scanner above to start!</p>
               </div>
             ) : (
-              <div className="divide-y" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
+              <div className="divide-y divide-slate-200/80 dark:divide-white/[0.06]">
                 {recentScans.map((scan) => (
                   <div
                     key={scan.id}
@@ -276,16 +269,12 @@ export default function DashboardPage() {
 
           {/* Badges */}
           <div
-            className="rounded-2xl overflow-hidden"
-            style={{ background: '#161b27', border: '1px solid rgba(255,255,255,0.09)' }}
+            className="rounded-2xl overflow-hidden bg-white dark:bg-[#161b27] border border-slate-200/80 dark:border-white/[0.09]"
           >
-            <div
-              className="flex items-center justify-between px-5 py-4"
-              style={{ borderBottom: '1px solid rgba(255,255,255,0.07)' }}
-            >
+            <div className="flex items-center justify-between px-5 py-4 border-b border-slate-200/80 dark:border-white/[0.07]">
               <div className="flex items-center gap-2">
                 <Trophy className="w-4 h-4 text-amber-400" />
-                <h2 className="text-white font-semibold" style={{ fontSize: '15px' }}>Badges</h2>
+                <h2 className="text-slate-900 dark:text-white font-semibold" style={{ fontSize: '15px' }}>Badges</h2>
               </div>
               <span style={{ fontSize: '12px', color: '#64748b' }}>
                 {userData.badges.length}/{BADGES.length}
