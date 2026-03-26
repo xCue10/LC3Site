@@ -101,12 +101,11 @@ export default function HistoryPage() {
           ].map(({ label, value, icon: Icon, color }) => (
             <div
               key={label}
-              className="flex items-center gap-3 rounded-xl px-5 py-3.5"
-              style={{ background: '#161b27', border: '1px solid rgba(255,255,255,0.09)' }}
+              className="flex items-center gap-3 rounded-xl px-5 py-3.5 bg-white dark:bg-[#161b27] border border-slate-200/80 dark:border-white/[0.09]"
             >
               <Icon style={{ width: '18px', height: '18px', color }} />
               <div>
-                <div className="text-xl font-black text-white" style={{ letterSpacing: '-0.04em' }}>{value}</div>
+                <div className="text-xl font-black text-slate-900 dark:text-white" style={{ letterSpacing: '-0.04em' }}>{value}</div>
                 <div style={{ fontSize: '11px', color: '#94a3b8' }}>{label}</div>
               </div>
             </div>
@@ -170,8 +169,7 @@ export default function HistoryPage() {
         {/* Results */}
         {filtered.length === 0 ? (
           <div
-            className="text-center py-20 rounded-2xl"
-            style={{ background: '#161b27', border: '1px solid rgba(255,255,255,0.09)' }}
+            className="text-center py-20 rounded-2xl bg-white dark:bg-[#161b27] border border-slate-200/80 dark:border-white/[0.09]"
           >
             <History className="w-12 h-12 mx-auto mb-3" style={{ color: '#334155' }} />
             <p style={{ color: '#94a3b8', fontSize: '14px' }}>No scans yet. Start scanning to build your history!</p>
@@ -185,10 +183,9 @@ export default function HistoryPage() {
               return (
                 <div
                   key={scan.id}
-                  className="rounded-xl transition-all"
-                  style={{ background: '#161b27', border: '1px solid rgba(255,255,255,0.09)' }}
+                  className="rounded-xl transition-all bg-white dark:bg-[#161b27] border border-slate-200/80 dark:border-white/[0.09]"
                   onMouseEnter={(e) => (e.currentTarget.style.borderColor = 'rgba(255,255,255,0.16)')}
-                  onMouseLeave={(e) => (e.currentTarget.style.borderColor = 'rgba(255,255,255,0.09)')}
+                  onMouseLeave={(e) => (e.currentTarget.style.borderColor = '')}
                 >
                   <div className="flex items-center justify-between px-4 py-3.5 gap-3">
                     <div className="flex items-center gap-3 flex-1 min-w-0">

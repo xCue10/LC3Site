@@ -18,8 +18,7 @@ function ShieldBanner() {
 
   return (
     <div
-      className="hidden lg:flex flex-col items-center justify-center relative overflow-hidden"
-      style={{ background: 'linear-gradient(135deg, #0d1117 0%, #0f1923 50%, #0d1117 100%)' }}
+      className="hidden lg:flex flex-col items-center justify-center relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-slate-100 dark:from-[#0d1117] dark:via-[#0f1923] dark:to-[#0d1117]"
     >
       {/* Grid background */}
       <div
@@ -214,7 +213,7 @@ function ShieldBanner() {
         {nodes.map(({ cx, cy, dur, label, color }) => (
           <g key={label}>
             <rect x={cx - 18} y={cy - 10} width="36" height="20" rx="4"
-              fill="rgba(13,17,23,0.92)" stroke={`${color}55`} strokeWidth="1">
+              fill="rgba(13,17,23,0.88)" stroke={`${color}55`} strokeWidth="1">
               <animate attributeName="opacity" values="0.6;1;0.6" dur={dur} repeatCount="indefinite" />
             </rect>
             <text x={cx} y={cy + 4} textAnchor="middle" fill={color} fontSize="8" fontFamily="monospace" fontWeight="bold">
@@ -316,7 +315,7 @@ function ShieldBanner() {
       {/* Text below SVG */}
       <div className="relative z-10 text-center mt-2 px-8">
         <h2 className="text-2xl font-bold mb-2" style={{ letterSpacing: '-0.03em' }}>
-          <span className="text-white">LC3</span>
+          <span className="text-slate-900 dark:text-white">LC3</span>
           <span style={{ color: '#f87171' }}> Shield</span>
         </h2>
         <p style={{ fontSize: '13px', color: '#475569', lineHeight: '1.6', maxWidth: '280px', margin: '0 auto' }}>
@@ -430,8 +429,7 @@ export default function ShieldLoginPage() {
 
       {/* Right — login form */}
       <div
-        className="flex flex-col items-center justify-center px-6 py-10"
-        style={{ borderLeft: '1px solid rgba(255,255,255,0.06)' }}
+        className="flex flex-col items-center justify-center px-6 py-10 border-l border-slate-200/80 dark:border-white/[0.06]"
       >
         {/* Mobile logo (hidden on lg) */}
         <div className="flex lg:hidden items-center gap-3 mb-8">
@@ -495,12 +493,8 @@ export default function ShieldLoginPage() {
                       onFocus={() => setShowSuggestions(true)}
                       placeholder="Search your name…"
                       autoComplete="off"
-                      className="w-full px-4 py-3 rounded-xl outline-none transition-all text-white"
-                      style={{
-                        background: 'rgba(255,255,255,0.03)',
-                        border: '1.5px solid rgba(255,255,255,0.07)',
-                        fontSize: '14px',
-                      }}
+                      className="w-full px-4 py-3 rounded-xl outline-none transition-all text-slate-900 dark:text-white bg-slate-100 dark:bg-white/[0.03] border border-slate-200 dark:border-white/[0.07]"
+                      style={{ fontSize: '14px' }}
                     />
                     {showSuggestions && suggestions.length > 0 && (
                       <div
@@ -556,10 +550,9 @@ export default function ShieldLoginPage() {
                 onChange={(e) => { setPassword(e.target.value); setError(''); }}
                 placeholder={adminMode ? 'Admin password' : 'Enter your password'}
                 autoComplete="current-password"
-                className="w-full px-4 py-3 rounded-xl outline-none transition-all text-white"
+                className="w-full px-4 py-3 rounded-xl outline-none transition-all text-slate-900 dark:text-white bg-slate-100 dark:bg-white/[0.03]"
                 style={{
-                  background: 'rgba(255,255,255,0.03)',
-                  border: error ? '1.5px solid rgba(239,68,68,0.5)' : '1.5px solid rgba(255,255,255,0.07)',
+                  border: error ? '1.5px solid rgba(239,68,68,0.5)' : '1.5px solid rgba(203,213,225,0.8)',
                   fontSize: '14px',
                 }}
                 onFocus={(e) => {

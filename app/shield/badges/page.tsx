@@ -45,17 +45,16 @@ export default function BadgesPage() {
 
         {/* Progress */}
         <div
-          className="rounded-2xl p-5 mb-8"
-          style={{ background: '#161b27', border: '1px solid rgba(255,255,255,0.09)' }}
+          className="rounded-2xl p-5 mb-8 bg-white dark:bg-[#161b27] border border-slate-200/80 dark:border-white/[0.09]"
         >
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
               <Trophy className="w-5 h-5 text-amber-400" />
-              <span className="font-semibold text-white">{earnedCount} / {totalCount} earned</span>
+              <span className="font-semibold text-slate-900 dark:text-white">{earnedCount} / {totalCount} earned</span>
             </div>
             <span style={{ fontSize: '13px', fontWeight: 600, color: '#fbbf24' }}>{pct}%</span>
           </div>
-          <div className="h-2 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.08)' }}>
+          <div className="h-2 rounded-full overflow-hidden bg-slate-200 dark:bg-white/[0.08]">
             <div
               className="h-full rounded-full transition-all duration-700"
               style={{
@@ -74,12 +73,8 @@ export default function BadgesPage() {
             return (
               <div
                 key={badge.id}
-                className="rounded-xl p-4 transition-all"
-                style={{
-                  background: earned ? 'rgba(245,158,11,0.07)' : '#161b27',
-                  border: earned ? '1px solid rgba(245,158,11,0.25)' : '1px solid rgba(255,255,255,0.09)',
-                  opacity: earned ? 1 : 0.6,
-                }}
+                className={`rounded-xl p-4 transition-all ${earned ? 'bg-amber-50 dark:bg-amber-500/[0.07] border border-amber-200 dark:border-amber-500/25' : 'bg-white dark:bg-[#161b27] border border-slate-200/80 dark:border-white/[0.09]'}`}
+                style={{ opacity: earned ? 1 : 0.6 }}
               >
                 <div className="flex items-start gap-3">
                   <div
@@ -117,11 +112,10 @@ export default function BadgesPage() {
 
         {earnedCount === 0 && (
           <div
-            className="mt-4 py-10 rounded-2xl text-center"
-            style={{ background: '#161b27', border: '1px solid rgba(255,255,255,0.09)' }}
+            className="mt-4 py-10 rounded-2xl text-center bg-white dark:bg-[#161b27] border border-slate-200/80 dark:border-white/[0.09]"
           >
             <Trophy className="w-10 h-10 mx-auto mb-3" style={{ color: '#334155' }} />
-            <p className="text-white font-semibold mb-1">No badges yet</p>
+            <p className="text-slate-900 dark:text-white font-semibold mb-1">No badges yet</p>
             <p style={{ fontSize: '13px', color: '#64748b' }}>Start scanning to earn your first badge.</p>
           </div>
         )}
