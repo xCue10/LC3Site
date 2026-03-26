@@ -60,7 +60,7 @@ export default function JwtAnalyzerPage() {
     >
       <div className="space-y-4">
         {/* Explainer */}
-        <div className="p-4 rounded-xl" style={{ background: '#111827', border: '1px solid rgba(255,255,255,0.06)' }}>
+        <div className="p-4 rounded-xl bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-white/[0.06]">
           <h3 className="text-sm font-semibold mb-2" style={{ color: '#e2e8f0' }}>What is a JWT?</h3>
           <p className="text-xs" style={{ color: '#64748b' }}>
             {mode === 'beginner'
@@ -79,7 +79,7 @@ export default function JwtAnalyzerPage() {
         </div>
 
         {/* Token input */}
-        <div className="rounded-xl overflow-hidden" style={{ background: '#111827', border: '1px solid rgba(255,255,255,0.06)' }}>
+        <div className="rounded-xl overflow-hidden bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-white/[0.06]">
           <div
             className="flex items-center justify-between px-4 py-3"
             style={{ borderBottom: '1px solid rgba(255,255,255,0.06)', background: 'rgba(255,255,255,0.02)' }}

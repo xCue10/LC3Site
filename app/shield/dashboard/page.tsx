@@ -98,7 +98,7 @@ export default function DashboardPage() {
 
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-white mb-1" style={{ letterSpacing: '-0.03em' }}>
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-1" style={{ letterSpacing: '-0.03em' }}>
             Dashboard
           </h1>
           <p style={{ fontSize: '14px', color: '#94a3b8' }}>

@@ -98,7 +98,7 @@ export default function ShieldSecurityChat({ context }: Props) {
       {/* Chat panel */}
       {open && (
         <div
-          className="fixed z-50 flex flex-col overflow-hidden"
+          className="fixed z-50 flex flex-col overflow-hidden bg-white dark:bg-[#0d1117] border border-slate-200 dark:border-white/[0.08]"
           style={{
             bottom: '80px',
             right: '16px',
@@ -107,8 +107,6 @@ export default function ShieldSecurityChat({ context }: Props) {
             marginLeft: 'auto',
             height: '520px',
             maxHeight: 'calc(100vh - 100px)',
-            background: '#0d1117',
-            border: '1px solid rgba(255,255,255,0.08)',
             borderRadius: '16px',
             boxShadow: '0 24px 64px rgba(0,0,0,0.6)',
           }}

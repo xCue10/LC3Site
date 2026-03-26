@@ -99,7 +99,7 @@ export default function OwaspPage() {
     >
       <div className="space-y-4">
         {/* Progress */}
-        <div className="rounded-xl p-4" style={{ background: '#111827', border: '1px solid rgba(255,255,255,0.06)' }}>
+        <div className="rounded-xl p-4 bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-white/[0.06]">
           <div className="flex justify-between text-sm mb-2">
             <span style={{ color: '#64748b' }}>Progress</span>
             <span className="font-medium" style={{ color: '#e2e8f0' }}>{totalAnswered}/{totalQuestions} answered</span>
@@ -142,7 +142,7 @@ export default function OwaspPage() {
         </div>
 
         {/* Current category */}
-        <div className="rounded-2xl p-6" style={{ background: '#111827', border: '1px solid rgba(255,255,255,0.06)' }}>
+        <div className="rounded-2xl p-6 bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-white/[0.06]">
           <div className="flex items-center gap-3 mb-4">
             <span
               className="px-3 py-1 text-xs font-bold rounded-full"

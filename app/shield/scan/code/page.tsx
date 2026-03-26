@@ -103,7 +103,7 @@ export default function CodeScannerPage() {
         </div>
 
         {/* Code input */}
-        <div className="rounded-xl overflow-hidden" style={{ background: '#111827', border: '1px solid rgba(255,255,255,0.06)' }}>
+        <div className="rounded-xl overflow-hidden bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-white/[0.06]">
           <div
             className="flex items-center justify-between px-4 py-3"
             style={{ borderBottom: '1px solid rgba(255,255,255,0.06)', background: 'rgba(255,255,255,0.02)' }}

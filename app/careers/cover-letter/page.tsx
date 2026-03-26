@@ -96,16 +96,16 @@ function CoverLetterContent() {
   };
 
   return (
-    <div style={{ background: '#0a0f1e', minHeight: '100vh' }}>
+    <div className="min-h-screen bg-slate-50 dark:bg-[#0a0f1e]">
       <CareersNav />
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
-        <h1 className="text-xl font-bold text-white mb-2">Cover Letter Generator</h1>
+        <h1 className="text-xl font-bold text-slate-900 dark:text-white mb-2">Cover Letter Generator</h1>
         <p className="text-slate-400 text-sm mb-8">AI-generated, personalized to your profile and the job</p>
 
         <div className="space-y-5">
           {/* Job selector */}
-          <div className="rounded-2xl p-5" style={{ background: '#111827', border: '1px solid rgba(255,255,255,0.06)' }}>
-            <label className="block text-sm font-medium text-slate-300 mb-2">Select a Job</label>
+          <div className="rounded-2xl p-5 bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-white/[0.06]">
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Select a Job</label>
             {jobs.length === 0 ? (
               <p className="text-slate-500 text-sm">No jobs loaded. <a href="/careers/jobs" className="text-blue-400">Visit Job Feed first</a></p>
             ) : (
@@ -132,8 +132,8 @@ function CoverLetterContent() {
           </div>
 
           {/* Tone selector */}
-          <div className="rounded-2xl p-5" style={{ background: '#111827', border: '1px solid rgba(255,255,255,0.06)' }}>
-            <label className="block text-sm font-medium text-slate-300 mb-3">Tone</label>
+          <div className="rounded-2xl p-5 bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-white/[0.06]">
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-3">Tone</label>
             <div className="flex gap-3">
               {(['Professional', 'Enthusiastic', 'Concise'] as const).map((t) => (
                 <button
@@ -166,7 +166,7 @@ function CoverLetterContent() {
 
           {/* Letter output */}
           {letter && (
-            <div className="rounded-2xl overflow-hidden" style={{ background: '#111827', border: '1px solid rgba(255,255,255,0.06)' }}>
+            <div className="rounded-2xl overflow-hidden bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-white/[0.06]">
               <div className="flex items-center justify-between px-5 py-3" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
                 <span className="text-sm font-medium text-slate-300">Generated Cover Letter</span>
                 <div className="flex gap-2">
@@ -214,7 +214,7 @@ function CoverLetterContent() {
 
 export default function CoverLetterPage() {
   return (
-    <Suspense fallback={<div style={{ background: '#0a0f1e', minHeight: '100vh' }} />}>
+    <Suspense fallback={<div className="min-h-screen bg-slate-50 dark:bg-[#0a0f1e]" />}>
       <CoverLetterContent />
     </Suspense>
   );

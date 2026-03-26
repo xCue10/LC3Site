@@ -415,11 +415,11 @@ export default function ShieldLoginPage() {
 
   return (
     <div
+      className="bg-slate-50 dark:bg-[#0d1117]"
       style={{
         position: 'fixed',
         inset: 0,
         zIndex: 9999,
-        background: '#0d1117',
         overflow: 'auto',
         display: 'grid',
         gridTemplateColumns: '1fr 1fr',
@@ -453,7 +453,7 @@ export default function ShieldLoginPage() {
         </div>
 
         <div className="w-full max-w-sm">
-          <h1 className="text-2xl font-bold text-white mb-1" style={{ letterSpacing: '-0.02em' }}>
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-1" style={{ letterSpacing: '-0.02em' }}>
             {adminMode ? 'Admin Access' : 'Sign in'}
           </h1>
           <p style={{ fontSize: '14px', color: '#64748b', marginBottom: '28px' }}>
@@ -481,7 +481,7 @@ export default function ShieldLoginPage() {
                       <img src={selectedMember.avatarUrl} alt={selectedMember.name} className="w-7 h-7 rounded-full object-cover shrink-0" />
                     )}
                     <div className="flex-1 min-w-0">
-                      <div className="text-white font-medium text-sm">{selectedMember.name}</div>
+                      <div className="text-slate-900 dark:text-white font-medium text-sm">{selectedMember.name}</div>
                       <div style={{ fontSize: '11px', color: '#64748b' }}>{selectedMember.role}</div>
                     </div>
                     <span style={{ fontSize: '11px', color: '#475569' }}>Change</span>
@@ -504,8 +504,8 @@ export default function ShieldLoginPage() {
                     />
                     {showSuggestions && suggestions.length > 0 && (
                       <div
-                        className="absolute top-full mt-1.5 w-full rounded-xl overflow-hidden z-50"
-                        style={{ background: '#0d1117', border: '1px solid rgba(255,255,255,0.1)', boxShadow: '0 8px 32px rgba(0,0,0,0.5)' }}
+                        className="absolute top-full mt-1.5 w-full rounded-xl overflow-hidden z-50 bg-white dark:bg-[#0d1117] border border-slate-200 dark:border-white/10"
+                        style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.5)' }}
                       >
                         {suggestions.map(m => (
                           <button
@@ -519,7 +519,7 @@ export default function ShieldLoginPage() {
                           >
                             {m.avatarUrl && <img src={m.avatarUrl} alt={m.name} className="w-7 h-7 rounded-full object-cover shrink-0" />}
                             <div>
-                              <div className="text-white text-sm font-medium">{m.name}</div>
+                              <div className="text-slate-900 dark:text-white text-sm font-medium">{m.name}</div>
                               <div style={{ fontSize: '11px', color: '#475569' }}>{m.role} · {m.memberType}</div>
                             </div>
                           </button>
@@ -528,8 +528,8 @@ export default function ShieldLoginPage() {
                     )}
                     {showSuggestions && nameQuery.trim() && suggestions.length === 0 && (
                       <div
-                        className="absolute top-full mt-1.5 w-full rounded-xl px-4 py-3 text-center z-50"
-                        style={{ background: '#0d1117', border: '1px solid rgba(255,255,255,0.1)', fontSize: '13px', color: '#475569' }}
+                        className="absolute top-full mt-1.5 w-full rounded-xl px-4 py-3 text-center z-50 bg-white dark:bg-[#0d1117] border border-slate-200 dark:border-white/10 text-slate-500"
+                        style={{ fontSize: '13px' }}
                       >
                         No members found. Contact your club admin.
                       </div>

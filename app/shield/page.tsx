@@ -88,11 +88,10 @@ function ShieldLiveLanding({ config }: { config: ShieldPageConfig }) {
           {SHIELD_FEATURE_CARDS.map((f) => (
             <div
               key={f.title}
-              className="rounded-2xl p-6 transition-all hover:scale-[1.02]"
-              style={{ background: '#111827', border: '1px solid rgba(255,255,255,0.06)' }}
+              className="rounded-2xl p-6 transition-all hover:scale-[1.02] bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-white/[0.06]"
             >
               <div className="text-3xl mb-3">{f.icon}</div>
-              <h3 className="font-semibold text-white text-sm mb-1">{f.title}</h3>
+              <h3 className="font-semibold text-slate-900 dark:text-white text-sm mb-1">{f.title}</h3>
               <p className="text-xs text-slate-500 leading-relaxed">{f.desc}</p>
             </div>
           ))}

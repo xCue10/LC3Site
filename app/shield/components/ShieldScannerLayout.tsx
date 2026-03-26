@@ -55,7 +55,7 @@ export default function ShieldScannerLayout({ title, description, icon: Icon, ic
             <Icon style={{ width: '22px', height: '22px', color: iconColor }} />
           </div>
           <div className="pt-0.5 flex-1 min-w-0">
-            <h1 className="text-2xl font-bold text-white tracking-tight" style={{ letterSpacing: '-0.02em' }}>
+            <h1 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight" style={{ letterSpacing: '-0.02em' }}>
               {title}
             </h1>
             <p style={{ fontSize: '14px', color: '#94a3b8', marginTop: '4px', lineHeight: '1.6' }}>

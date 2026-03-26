@@ -121,16 +121,16 @@ export default function ResumePage() {
   const inputStyle = { background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' };
 
   return (
-    <div style={{ background: '#0a0f1e', minHeight: '100vh' }}>
+    <div className="min-h-screen bg-slate-50 dark:bg-[#0a0f1e]">
       <CareersNav />
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
-        <h1 className="text-xl font-bold text-white mb-2">Resume Analyzer</h1>
+        <h1 className="text-xl font-bold text-slate-900 dark:text-white mb-2">Resume Analyzer</h1>
         <p className="text-slate-400 text-sm mb-8">Get AI-powered feedback on your resume with ATS score and improvement suggestions</p>
 
         <div className="space-y-5">
           {/* Target role */}
-          <div className="rounded-2xl p-5" style={{ background: '#111827', border: '1px solid rgba(255,255,255,0.06)' }}>
-            <label className="block text-sm font-medium text-slate-300 mb-2">Target Role <span className="text-slate-600">(optional)</span></label>
+          <div className="rounded-2xl p-5 bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-white/[0.06]">
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Target Role <span className="text-slate-600">(optional)</span></label>
             <input
               type="text"
               value={targetRole}
@@ -142,8 +142,8 @@ export default function ResumePage() {
           </div>
 
           {/* Resume upload */}
-          <div className="rounded-2xl p-5" style={{ background: '#111827', border: '1px solid rgba(255,255,255,0.06)' }}>
-            <label className="block text-sm font-medium text-slate-300 mb-3">Resume</label>
+          <div className="rounded-2xl p-5 bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-white/[0.06]">
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-3">Resume</label>
 
             {/* Drop zone */}
             <div
@@ -217,7 +217,7 @@ export default function ResumePage() {
           {analysis && (
             <div className="space-y-4">
               {/* Score overview */}
-              <div className="rounded-2xl p-6 flex items-center gap-8 flex-wrap" style={{ background: '#111827', border: '1px solid rgba(255,255,255,0.06)' }}>
+              <div className="rounded-2xl p-6 flex items-center gap-8 flex-wrap bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-white/[0.06]">
                 <ScoreBadge score={analysis.overallScore} />
                 <div className="flex-1 min-w-48">
                   <div className="flex items-center justify-between mb-2">
@@ -241,7 +241,7 @@ export default function ResumePage() {
 
               {/* Strengths & Weaknesses */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="rounded-2xl p-5" style={{ background: '#111827', border: '1px solid rgba(34,197,94,0.15)' }}>
+                <div className="rounded-2xl p-5 bg-white dark:bg-[#111827] border border-green-200/80 dark:border-[rgba(34,197,94,0.15)]">
                   <h3 className="text-sm font-semibold text-green-400 mb-3">✓ Strengths</h3>
                   <ul className="space-y-2">
                     {analysis.strengths.map((s, i) => (
@@ -251,7 +251,7 @@ export default function ResumePage() {
                     ))}
                   </ul>
                 </div>
-                <div className="rounded-2xl p-5" style={{ background: '#111827', border: '1px solid rgba(239,68,68,0.15)' }}>
+                <div className="rounded-2xl p-5 bg-white dark:bg-[#111827] border border-red-200/80 dark:border-[rgba(239,68,68,0.15)]">
                   <h3 className="text-sm font-semibold text-red-400 mb-3">✗ Weaknesses</h3>
                   <ul className="space-y-2">
                     {analysis.weaknesses.map((w, i) => (
@@ -265,7 +265,7 @@ export default function ResumePage() {
 
               {/* Missing Keywords */}
               {analysis.missingKeywords?.length > 0 && (
-                <div className="rounded-2xl p-5" style={{ background: '#111827', border: '1px solid rgba(245,158,11,0.15)' }}>
+                <div className="rounded-2xl p-5 bg-white dark:bg-[#111827] border border-amber-200/80 dark:border-[rgba(245,158,11,0.15)]">
                   <h3 className="text-sm font-semibold text-amber-400 mb-3">Missing Keywords</h3>
                   <div className="flex flex-wrap gap-2">
                     {analysis.missingKeywords.map((kw) => (
@@ -279,8 +279,8 @@ export default function ResumePage() {
 
               {/* Section Feedback */}
               {analysis.sectionFeedback && Object.keys(analysis.sectionFeedback).length > 0 && (
-                <div className="rounded-2xl p-5 space-y-4" style={{ background: '#111827', border: '1px solid rgba(255,255,255,0.06)' }}>
-                  <h3 className="text-sm font-semibold text-white">Section Feedback</h3>
+                <div className="rounded-2xl p-5 space-y-4 bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-white/[0.06]">
+                  <h3 className="text-sm font-semibold text-slate-900 dark:text-white">Section Feedback</h3>
                   {Object.entries(analysis.sectionFeedback).map(([section, feedback]) => (
                     feedback && (
                       <div key={section}>
@@ -294,7 +294,7 @@ export default function ResumePage() {
 
               {/* Improved bullets */}
               {analysis.improvedBullets?.length > 0 && (
-                <div className="rounded-2xl p-5 space-y-4" style={{ background: '#111827', border: '1px solid rgba(139,92,246,0.15)' }}>
+                <div className="rounded-2xl p-5 space-y-4 bg-white dark:bg-[#111827] border border-violet-200/80 dark:border-[rgba(139,92,246,0.15)]">
                   <h3 className="text-sm font-semibold text-violet-400">Stronger Bullet Points</h3>
                   {analysis.improvedBullets.map((b, i) => (
                     <div key={i} className="space-y-1.5">

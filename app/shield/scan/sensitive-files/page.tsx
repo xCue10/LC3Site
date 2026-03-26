@@ -97,7 +97,7 @@ export default function SensitiveFilesPage() {
           </div>
         </div>
 
-        <div className="rounded-2xl p-6" style={{ background: '#111827', border: '1px solid rgba(255,255,255,0.06)' }}>
+        <div className="rounded-2xl p-6 bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-white/[0.06]">
           <div className="mb-6">
             <label className="block text-sm font-medium mb-2" style={{ color: '#94a3b8' }}>Website URL to Check</label>
             <div className="flex flex-col sm:flex-row gap-3">
@@ -108,9 +108,8 @@ export default function SensitiveFilesPage() {
                 onKeyDown={(e) => e.key === 'Enter' && !scanning && startScan()}
                 placeholder="https://example.com"
                 disabled={scanning}
-                className="flex-1 rounded-xl px-4 py-3 outline-none transition-all"
+                className="flex-1 rounded-xl px-4 py-3 outline-none transition-all bg-slate-100 dark:bg-[#0d1117]"
                 style={{
-                  background: '#0d1117',
                   border: '1px solid rgba(255,255,255,0.08)',
                   color: '#e2e8f0',
                   fontSize: '14px',

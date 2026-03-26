@@ -128,7 +128,7 @@ export default function CareersLiveLanding({ config }: { config: Config }) {
 
   if (checking) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: '#0a0f1e' }}>
+      <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-[#0a0f1e]">
         <div className="w-6 h-6 rounded-full border-2 border-blue-500 border-t-transparent animate-spin" />
       </div>
     );
@@ -142,7 +142,7 @@ export default function CareersLiveLanding({ config }: { config: Config }) {
   ];
 
   return (
-    <div style={{ background: '#0a0f1e' }}>
+    <div className="bg-slate-50 dark:bg-[#0a0f1e]">
       {/* Hero */}
       <section className="relative overflow-hidden">
         {/* Ambient glow blobs */}
@@ -164,7 +164,7 @@ export default function CareersLiveLanding({ config }: { config: Config }) {
               <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" />
               Now Live for LC3 Members
             </div>
-            <h1 className="text-5xl sm:text-6xl font-black text-white mb-4" style={{ letterSpacing: '-0.03em', lineHeight: 1.1 }}>
+            <h1 className="text-5xl sm:text-6xl font-black text-slate-900 dark:text-white mb-4" style={{ letterSpacing: '-0.03em', lineHeight: 1.1 }}>
               {config.heading}
             </h1>
             <p className="text-xl text-slate-400">
@@ -177,8 +177,7 @@ export default function CareersLiveLanding({ config }: { config: Config }) {
           <div>
           <form onSubmit={handleLogin} className="w-full">
               <div
-                className="rounded-2xl p-6 text-left"
-                style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)' }}
+                className="rounded-2xl p-6 text-left bg-slate-100/80 dark:bg-white/[0.04] border border-slate-200 dark:border-white/10"
               >
                 {/* Mode tabs */}
                 <div className="flex gap-2 mb-4">
@@ -206,19 +205,18 @@ export default function CareersLiveLanding({ config }: { config: Config }) {
                   </button>
                 </div>
 
-                <label className="block text-sm font-medium text-slate-300 mb-2">Your Name</label>
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Your Name</label>
                 <div ref={nameRef} className="relative mb-3">
                   {selectedMember ? (
                     <div
-                      className="flex items-center gap-3 px-4 py-3 rounded-xl cursor-pointer"
-                      style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)' }}
+                      className="flex items-center gap-3 px-4 py-3 rounded-xl cursor-pointer bg-slate-100 dark:bg-white/[0.06] border border-slate-200 dark:border-white/10"
                       onClick={() => { setSelectedMember(null); setNameQuery(''); }}
                     >
                       {selectedMember.avatarUrl && (
                         <img src={selectedMember.avatarUrl} alt={selectedMember.name} className="w-7 h-7 rounded-full object-cover shrink-0" />
                       )}
                       <div className="flex-1 min-w-0">
-                        <div className="text-white text-sm font-medium">{selectedMember.name}</div>
+                        <div className="text-slate-900 dark:text-white text-sm font-medium">{selectedMember.name}</div>
                         <div className="text-xs text-slate-500">{selectedMember.role}</div>
                       </div>
                       <span className="text-xs text-slate-500">Change</span>
@@ -232,14 +230,13 @@ export default function CareersLiveLanding({ config }: { config: Config }) {
                       placeholder="Search your name…"
                       autoComplete="off"
                       autoFocus
-                      className="w-full px-4 py-3 rounded-xl text-white placeholder-slate-600 focus:outline-none"
-                      style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)' }}
+                      className="w-full px-4 py-3 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none bg-slate-100 dark:bg-white/[0.06] border border-slate-200 dark:border-white/10"
                     />
                   )}
                   {!selectedMember && showSuggestions && suggestions.length > 0 && (
                     <div
-                      className="absolute top-full mt-1.5 w-full rounded-xl overflow-hidden z-50"
-                      style={{ background: '#0d1117', border: '1px solid rgba(255,255,255,0.1)', boxShadow: '0 8px 32px rgba(0,0,0,0.5)' }}
+                      className="absolute top-full mt-1.5 w-full rounded-xl overflow-hidden z-50 bg-white dark:bg-[#0d1117] border border-slate-200 dark:border-white/10"
+                      style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.5)' }}
                     >
                       {suggestions.map(m => (
                         <button
@@ -253,7 +250,7 @@ export default function CareersLiveLanding({ config }: { config: Config }) {
                         >
                           {m.avatarUrl && <img src={m.avatarUrl} alt={m.name} className="w-7 h-7 rounded-full object-cover shrink-0" />}
                           <div>
-                            <div className="text-white text-sm font-medium">{m.name}</div>
+                            <div className="text-slate-900 dark:text-white text-sm font-medium">{m.name}</div>
                             <div className="text-xs text-slate-500">{m.role}</div>
                           </div>
                         </button>
@@ -262,14 +259,14 @@ export default function CareersLiveLanding({ config }: { config: Config }) {
                   )}
                   {!selectedMember && showSuggestions && nameQuery.trim() && suggestions.length === 0 && (
                     <div
-                      className="absolute top-full mt-1.5 w-full rounded-xl px-4 py-3 text-center z-50"
-                      style={{ background: '#0d1117', border: '1px solid rgba(255,255,255,0.1)', fontSize: '13px', color: '#475569' }}
+                      className="absolute top-full mt-1.5 w-full rounded-xl px-4 py-3 text-center z-50 bg-white dark:bg-[#0d1117] border border-slate-200 dark:border-white/10 text-slate-500"
+                      style={{ fontSize: '13px' }}
                     >
                       No members found. Contact your club admin.
                     </div>
                   )}
                 </div>
-                <label className="block text-sm font-medium text-slate-300 mb-2">
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                   {loginMode === 'member' ? 'Member password' : 'Admin password'}
                 </label>
                 <input
@@ -278,8 +275,7 @@ export default function CareersLiveLanding({ config }: { config: Config }) {
                   onChange={(e) => { setPassword(e.target.value); setError(''); }}
                   placeholder="Enter password"
                   autoFocus={false}
-                  className="w-full px-4 py-3 rounded-xl text-white placeholder-slate-600 text-center font-mono text-lg tracking-widest focus:outline-none mb-3"
-                  style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)' }}
+                  className="w-full px-4 py-3 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-600 text-center font-mono text-lg tracking-widest focus:outline-none mb-3 bg-slate-100 dark:bg-white/[0.06] border border-slate-200 dark:border-white/10"
                 />
                 {error && <p className="text-red-400 text-xs mb-3">{error}</p>}
                 <button
@@ -318,11 +314,10 @@ export default function CareersLiveLanding({ config }: { config: Config }) {
           {features.map((f) => (
             <div
               key={f.title}
-              className="rounded-2xl p-6 transition-all hover:scale-[1.02]"
-              style={{ background: '#111827', border: '1px solid rgba(255,255,255,0.06)' }}
+              className="rounded-2xl p-6 transition-all hover:scale-[1.02] bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-white/[0.06]"
             >
               <div className="text-3xl mb-3">{f.icon}</div>
-              <h3 className="font-semibold text-white text-sm mb-1">{f.title}</h3>
+              <h3 className="font-semibold text-slate-900 dark:text-white text-sm mb-1">{f.title}</h3>
               <p className="text-xs text-slate-500 leading-relaxed">{f.desc}</p>
             </div>
           ))}

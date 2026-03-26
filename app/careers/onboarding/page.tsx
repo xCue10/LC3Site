@@ -108,11 +108,11 @@ export default function OnboardingPage() {
   const selectStyle = { background: '#1e293b', border: '1px solid rgba(255,255,255,0.1)', colorScheme: 'dark' as const };
 
   return (
-    <div style={{ background: '#0a0f1e', minHeight: '100vh' }}>
+    <div className="min-h-screen bg-slate-50 dark:bg-[#0a0f1e]">
       <div className="max-w-2xl mx-auto px-4 py-12">
         {/* Header */}
         <div className="text-center mb-10">
-          <h1 className="text-2xl font-bold text-white mb-2">Set up your profile</h1>
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Set up your profile</h1>
           <p className="text-slate-400 text-sm">Help us find the best jobs for you</p>
         </div>
 
@@ -141,12 +141,12 @@ export default function OnboardingPage() {
         </div>
 
         {/* Step content */}
-        <div className="rounded-2xl p-6 sm:p-8" style={{ background: '#111827', border: '1px solid rgba(255,255,255,0.06)' }}>
+        <div className="rounded-2xl p-6 sm:p-8 bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-white/[0.06]">
 
           {/* Step 1: Basic Info */}
           {step === 0 && (
             <div className="space-y-5">
-              <h2 className="text-lg font-semibold text-white">Basic Information</h2>
+              <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Basic Information</h2>
               <div>
                 <label className="block text-sm text-slate-400 mb-1.5">Full Name</label>
                 <input className={inputClass} style={inputStyle} placeholder="Jane Doe" value={profile.fullName} onChange={(e) => save({ fullName: e.target.value })} />
@@ -187,7 +187,7 @@ export default function OnboardingPage() {
           {/* Step 2: Skills */}
           {step === 1 && (
             <div className="space-y-5">
-              <h2 className="text-lg font-semibold text-white">Your Skills</h2>
+              <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Your Skills</h2>
               <div className="flex gap-2">
                 <input
                   className={inputClass + ' flex-1'}
@@ -280,7 +280,7 @@ export default function OnboardingPage() {
           {/* Step 3: Job Preferences */}
           {step === 2 && (
             <div className="space-y-6">
-              <h2 className="text-lg font-semibold text-white">Job Preferences</h2>
+              <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Job Preferences</h2>
               <div>
                 <label className="block text-sm text-slate-400 mb-2">Job Types <span className="text-slate-600">(select all that apply)</span></label>
                 <div className="flex flex-wrap gap-2">

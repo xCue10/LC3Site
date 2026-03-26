@@ -91,7 +91,7 @@ export default function LearningPage() {
 
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-white mb-1" style={{ letterSpacing: '-0.03em' }}>Learning Center</h1>
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-1" style={{ letterSpacing: '-0.03em' }}>Learning Center</h1>
           <p style={{ fontSize: '14px', color: '#94a3b8' }}>
             Security glossary, recommended courses, real breach stories, and daily tips.
           </p>
@@ -99,8 +99,7 @@ export default function LearningPage() {
 
         {/* Tabs */}
         <div
-          className="flex gap-1 p-1 rounded-xl mb-6 overflow-x-auto"
-          style={{ background: '#111827', border: '1px solid rgba(255,255,255,0.07)' }}
+          className="flex gap-1 p-1 rounded-xl mb-6 overflow-x-auto bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-white/[0.07]"
         >
           {TABS.map(({ id, label, icon: Icon }) => {
             const active = activeSection === id;
@@ -135,11 +134,10 @@ export default function LearningPage() {
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full px-4 py-3 rounded-xl outline-none transition-all"
                 style={{
-                  background: '#111827',
-                  border: '1px solid rgba(255,255,255,0.07)',
                   color: '#f1f5f9',
                   fontSize: '14px',
                 }}
+                className="bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-white/[0.07]"
                 onFocus={(e) => { e.target.style.borderColor = 'rgba(59,130,246,0.4)'; e.target.style.boxShadow = '0 0 0 3px rgba(59,130,246,0.08)'; }}
                 onBlur={(e) => { e.target.style.borderColor = 'rgba(255,255,255,0.07)'; e.target.style.boxShadow = 'none'; }}
               />
@@ -149,8 +147,7 @@ export default function LearningPage() {
               return (
                 <div
                   key={term}
-                  className="rounded-xl overflow-hidden"
-                  style={{ background: '#111827', border: `1px solid ${expanded ? 'rgba(59,130,246,0.2)' : 'rgba(255,255,255,0.07)'}` }}
+                  className={`rounded-xl overflow-hidden bg-white dark:bg-[#111827] ${expanded ? 'border border-blue-200 dark:border-blue-500/20' : 'border border-slate-200/80 dark:border-white/[0.07]'}`}
                 >
                   <button
                     className="w-full flex items-center justify-between p-4 text-left"
@@ -186,13 +183,12 @@ export default function LearningPage() {
             {COURSES.map(({ name, provider, level, duration, cost, desc, icon, levelColor }) => (
               <div
                 key={name}
-                className="rounded-xl p-5"
-                style={{ background: '#111827', border: '1px solid rgba(255,255,255,0.07)' }}
+                className="rounded-xl p-5 bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-white/[0.07]"
               >
                 <div className="flex items-start gap-3 mb-3">
                   <span className="text-2xl">{icon}</span>
                   <div>
-                    <h3 className="font-semibold text-white" style={{ fontSize: '14px' }}>{name}</h3>
+                    <h3 className="font-semibold text-slate-900 dark:text-white" style={{ fontSize: '14px' }}>{name}</h3>
                     <div style={{ fontSize: '12px', color: '#94a3b8' }}>{provider}</div>
                   </div>
                 </div>
@@ -225,11 +221,10 @@ export default function LearningPage() {
             {BREACH_STORIES.map(({ company, vulnerability, impact, lesson, category }) => (
               <div
                 key={company}
-                className="rounded-xl p-5"
-                style={{ background: '#111827', border: '1px solid rgba(239,68,68,0.12)' }}
+                className="rounded-xl p-5 bg-white dark:bg-[#111827] border border-red-100 dark:border-red-500/[0.12]"
               >
                 <div className="flex items-start justify-between mb-3">
-                  <h3 className="font-semibold text-white" style={{ fontSize: '14px' }}>{company}</h3>
+                  <h3 className="font-semibold text-slate-900 dark:text-white" style={{ fontSize: '14px' }}>{company}</h3>
                   <span
                     className="px-2 py-0.5 rounded-full text-[11px] font-semibold shrink-0 ml-3"
                     style={{ background: 'rgba(239,68,68,0.1)', color: '#f87171', border: '1px solid rgba(239,68,68,0.2)' }}
@@ -259,8 +254,7 @@ export default function LearningPage() {
             {DAILY_TIPS.map((tip, i) => (
               <div
                 key={i}
-                className="flex items-start gap-4 p-4 rounded-xl"
-                style={{ background: '#111827', border: '1px solid rgba(255,255,255,0.07)' }}
+                className="flex items-start gap-4 p-4 rounded-xl bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-white/[0.07]"
               >
                 <div
                   className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 font-bold"

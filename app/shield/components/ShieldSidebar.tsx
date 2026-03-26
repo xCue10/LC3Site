@@ -289,11 +289,9 @@ export default function ShieldSidebar() {
     <>
       {/* Desktop sidebar */}
       <aside
-        className="fixed top-0 left-0 bottom-0 hidden md:flex flex-col z-40 transition-all duration-200"
+        className="fixed top-0 left-0 bottom-0 hidden md:flex flex-col z-40 transition-all duration-200 bg-slate-100 dark:bg-[#0d1117] border-r border-slate-200 dark:border-white/[0.08]"
         style={{
           width: collapsed ? '64px' : '240px',
-          background: '#0d1117',
-          borderRight: '1px solid rgba(255,255,255,0.08)',
         }}
       >
         <SidebarContent />
@@ -301,8 +299,7 @@ export default function ShieldSidebar() {
 
       {/* Mobile hamburger */}
       <button
-        className="fixed top-4 left-4 z-[60] md:hidden flex items-center justify-center w-10 h-10 rounded-xl"
-        style={{ background: '#0d1117', border: '1px solid rgba(255,255,255,0.12)' }}
+        className="fixed top-4 left-4 z-[60] md:hidden flex items-center justify-center w-10 h-10 rounded-xl bg-slate-100 dark:bg-[#0d1117] border border-slate-200 dark:border-white/[0.12]"
         onClick={() => setMobileOpen(!mobileOpen)}
       >
         {mobileOpen ? <X className="w-5 h-5 text-slate-300" /> : <Menu className="w-5 h-5 text-slate-300" />}
@@ -317,8 +314,8 @@ export default function ShieldSidebar() {
             onClick={() => setMobileOpen(false)}
           />
           <aside
-            className="fixed top-0 left-0 bottom-0 z-50 md:hidden flex flex-col"
-            style={{ width: '260px', background: '#0d1117', borderRight: '1px solid rgba(255,255,255,0.1)' }}
+            className="fixed top-0 left-0 bottom-0 z-50 md:hidden flex flex-col bg-slate-100 dark:bg-[#0d1117] border-r border-slate-200 dark:border-white/10"
+            style={{ width: '260px' }}
           >
             <SidebarContent mobile />
           </aside>

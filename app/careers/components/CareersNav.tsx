@@ -36,11 +36,9 @@ export default function CareersNav() {
 
   return (
     <nav
-      className="sticky top-0 z-50 border-b"
+      className="sticky top-0 z-50 border-b bg-white/95 dark:bg-[rgba(10,15,30,0.95)] border-slate-200/80 dark:border-white/[0.08]"
       style={{
-        background: 'rgba(10, 15, 30, 0.95)',
         backdropFilter: 'blur(12px)',
-        borderColor: 'rgba(255,255,255,0.08)',
       }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
@@ -55,7 +53,7 @@ export default function CareersNav() {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
               </svg>
             </div>
-            <span className="font-bold text-white text-sm">
+            <span className="font-bold text-slate-900 dark:text-white text-sm">
               LC3 <span style={{ background: 'linear-gradient(135deg, #3b82f6, #8b5cf6)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Careers</span>
             </span>
           </Link>

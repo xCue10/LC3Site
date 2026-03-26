@@ -93,7 +93,7 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
 
   if (notFound) {
     return (
-      <div style={{ background: '#0a0f1e', minHeight: '100vh' }}>
+      <div className="min-h-screen bg-slate-50 dark:bg-[#0a0f1e]">
         <CareersNav />
         <div className="max-w-2xl mx-auto px-4 py-20 text-center">
           <p className="text-4xl mb-4">💼</p>
@@ -107,7 +107,7 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
 
   if (!job) {
     return (
-      <div style={{ background: '#0a0f1e', minHeight: '100vh' }}>
+      <div className="min-h-screen bg-slate-50 dark:bg-[#0a0f1e]">
         <CareersNav />
         <div className="max-w-3xl mx-auto px-4 py-12 animate-pulse space-y-4">
           <div className="h-6 w-3/4 rounded" style={{ background: 'rgba(255,255,255,0.08)' }} />
@@ -123,7 +123,7 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
     : '#6b7280';
 
   return (
-    <div style={{ background: '#0a0f1e', minHeight: '100vh' }}>
+    <div className="min-h-screen bg-slate-50 dark:bg-[#0a0f1e]">
       <CareersNav />
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
         {/* Back */}
@@ -135,7 +135,7 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
         </Link>
 
         {/* Header card */}
-        <div className="rounded-2xl p-6 mb-6" style={{ background: '#111827', border: '1px solid rgba(255,255,255,0.06)' }}>
+        <div className="rounded-2xl p-6 mb-6 bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-white/[0.06]">
           <div className="flex items-start justify-between gap-4 flex-wrap">
             <div>
               <div className="flex flex-wrap gap-2 mb-2">
@@ -143,7 +143,7 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
                   <span key={t} className="text-xs px-2 py-0.5 rounded text-slate-400" style={{ background: 'rgba(255,255,255,0.06)' }}>{t}</span>
                 ))}
               </div>
-              <h1 className="text-xl font-bold text-white mb-1">{job.title}</h1>
+              <h1 className="text-xl font-bold text-slate-900 dark:text-white mb-1">{job.title}</h1>
               <p className="text-slate-400">{job.company}</p>
               <div className="flex flex-wrap gap-4 mt-3 text-sm text-slate-500">
                 <span>📍 {job.location}</span>
@@ -200,8 +200,8 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
 
         {/* AI Analysis */}
         {(job.matchReason || (job.skillGaps && job.skillGaps.length > 0)) && (
-          <div className="rounded-2xl p-6 mb-6 space-y-5" style={{ background: '#111827', border: '1px solid rgba(59,130,246,0.15)' }}>
-            <h2 className="font-semibold text-white flex items-center gap-2">
+          <div className="rounded-2xl p-6 mb-6 space-y-5 bg-white dark:bg-[#111827] border border-blue-100 dark:border-blue-500/15">
+            <h2 className="font-semibold text-slate-900 dark:text-white flex items-center gap-2">
               <span className="w-6 h-6 rounded-lg flex items-center justify-center text-xs" style={{ background: 'rgba(59,130,246,0.2)' }}>AI</span>
               AI Analysis
             </h2>
@@ -236,8 +236,8 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
         )}
 
         {/* Job Description */}
-        <div className="rounded-2xl p-6" style={{ background: '#111827', border: '1px solid rgba(255,255,255,0.06)' }}>
-          <h2 className="font-semibold text-white mb-4">Job Description</h2>
+        <div className="rounded-2xl p-6 bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-white/[0.06]">
+          <h2 className="font-semibold text-slate-900 dark:text-white mb-4">Job Description</h2>
           <div className="text-sm text-slate-400 leading-relaxed whitespace-pre-wrap">
             {job.description || 'No description available. Click Apply Now to view the full listing.'}
           </div>

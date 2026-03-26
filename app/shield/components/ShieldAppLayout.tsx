@@ -9,11 +9,11 @@ interface Props {
 export default function ShieldAppLayout({ children }: Props) {
   return (
     <div
+      className="bg-slate-50 dark:bg-[#0d1117]"
       style={{
         position: 'fixed',
         inset: 0,
         zIndex: 9999,
-        background: '#0d1117',
         overflow: 'auto',
         display: 'flex',
       }}

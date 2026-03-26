@@ -83,7 +83,7 @@ export default function ProfilePage() {
 
   if (!profile) {
     return (
-      <div style={{ background: '#0a0f1e', minHeight: '100vh' }}>
+      <div className="min-h-screen bg-slate-50 dark:bg-[#0a0f1e]">
         <CareersNav />
         <div className="max-w-2xl mx-auto px-4 py-20 text-center">
           <div className="w-8 h-8 rounded-full border-2 border-blue-500 border-t-transparent animate-spin mx-auto" />
@@ -98,13 +98,13 @@ export default function ProfilePage() {
   const p = editing && draft ? draft : profile;
 
   return (
-    <div style={{ background: '#0a0f1e', minHeight: '100vh' }}>
+    <div className="min-h-screen bg-slate-50 dark:bg-[#0a0f1e]">
       <CareersNav />
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
         {/* Header */}
         <div className="flex items-center justify-between mb-8 flex-wrap gap-3">
           <div>
-            <h1 className="text-xl font-bold text-white">Profile</h1>
+            <h1 className="text-xl font-bold text-slate-900 dark:text-white">Profile</h1>
             <p className="text-slate-400 text-sm">{profile.major} at CSN</p>
           </div>
           {!editing ? (
@@ -130,8 +130,8 @@ export default function ProfilePage() {
             { label: 'Saved Jobs', value: stats.saved },
             { label: 'Applications', value: stats.applied },
           ].map((s) => (
-            <div key={s.label} className="rounded-2xl p-4 text-center" style={{ background: '#111827', border: '1px solid rgba(255,255,255,0.06)' }}>
-              <div className="text-2xl font-black text-white">{s.value}</div>
+            <div key={s.label} className="rounded-2xl p-4 text-center bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-white/[0.06]">
+              <div className="text-2xl font-black text-slate-900 dark:text-white">{s.value}</div>
               <div className="text-xs text-slate-500">{s.label}</div>
             </div>
           ))}
@@ -139,8 +139,8 @@ export default function ProfilePage() {
 
         <div className="space-y-5">
           {/* Basic Info */}
-          <div className="rounded-2xl p-5" style={{ background: '#111827', border: '1px solid rgba(255,255,255,0.06)' }}>
-            <h2 className="text-sm font-semibold text-white mb-4">Basic Information</h2>
+          <div className="rounded-2xl p-5 bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-white/[0.06]">
+            <h2 className="text-sm font-semibold text-slate-900 dark:text-white mb-4">Basic Information</h2>
             {editing ? (
               <div className="space-y-3">
                 <div className="grid grid-cols-2 gap-3">
@@ -178,20 +178,20 @@ export default function ProfilePage() {
               </div>
             ) : (
               <div className="grid grid-cols-2 gap-3 text-sm">
-                <div><span className="text-slate-500 text-xs">Name</span><p className="text-white mt-0.5">{p.fullName || '—'}</p></div>
-                <div><span className="text-slate-500 text-xs">Major</span><p className="text-white mt-0.5">{p.major || '—'}</p></div>
-                <div><span className="text-slate-500 text-xs">Year</span><p className="text-white mt-0.5">{p.year}</p></div>
-                <div><span className="text-slate-500 text-xs">Graduation</span><p className="text-white mt-0.5">{p.graduationDate || '—'}</p></div>
+                <div><span className="text-slate-500 text-xs">Name</span><p className="text-slate-900 dark:text-white mt-0.5">{p.fullName || '—'}</p></div>
+                <div><span className="text-slate-500 text-xs">Major</span><p className="text-slate-900 dark:text-white mt-0.5">{p.major || '—'}</p></div>
+                <div><span className="text-slate-500 text-xs">Year</span><p className="text-slate-900 dark:text-white mt-0.5">{p.year}</p></div>
+                <div><span className="text-slate-500 text-xs">Graduation</span><p className="text-slate-900 dark:text-white mt-0.5">{p.graduationDate || '—'}</p></div>
                 {p.dreamJob && (
-                  <div className="col-span-2"><span className="text-slate-500 text-xs">Dream Job</span><p className="text-white mt-0.5 text-xs leading-relaxed">{p.dreamJob}</p></div>
+                  <div className="col-span-2"><span className="text-slate-500 text-xs">Dream Job</span><p className="text-slate-900 dark:text-white mt-0.5 text-xs leading-relaxed">{p.dreamJob}</p></div>
                 )}
               </div>
             )}
           </div>
 
           {/* Skills */}
-          <div className="rounded-2xl p-5" style={{ background: '#111827', border: '1px solid rgba(255,255,255,0.06)' }}>
-            <h2 className="text-sm font-semibold text-white mb-4">Skills ({p.skills.length})</h2>
+          <div className="rounded-2xl p-5 bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-white/[0.06]">
+            <h2 className="text-sm font-semibold text-slate-900 dark:text-white mb-4">Skills ({p.skills.length})</h2>
             {editing ? (
               <div className="space-y-3">
                 <input
@@ -258,8 +258,8 @@ export default function ProfilePage() {
 
           {/* Preferences (edit mode) */}
           {editing && (
-            <div className="rounded-2xl p-5 space-y-4" style={{ background: '#111827', border: '1px solid rgba(255,255,255,0.06)' }}>
-              <h2 className="text-sm font-semibold text-white">Job Preferences</h2>
+            <div className="rounded-2xl p-5 space-y-4 bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-white/[0.06]">
+              <h2 className="text-sm font-semibold text-slate-900 dark:text-white">Job Preferences</h2>
               <div>
                 <label className="text-xs text-slate-500 mb-2 block">Job Types</label>
                 <div className="flex flex-wrap gap-2">
@@ -305,8 +305,8 @@ export default function ProfilePage() {
           )}
 
           {/* Achievements */}
-          <div className="rounded-2xl p-5" style={{ background: '#111827', border: '1px solid rgba(255,255,255,0.06)' }}>
-            <h2 className="text-sm font-semibold text-white mb-4">Achievements</h2>
+          <div className="rounded-2xl p-5 bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-white/[0.06]">
+            <h2 className="text-sm font-semibold text-slate-900 dark:text-white mb-4">Achievements</h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
               {achievements.map((ach) => {
                 const earned = p.achievements.includes(ach.id);

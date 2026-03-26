@@ -167,13 +167,13 @@ export default function ApplicationsPage() {
   const selectStyle = { background: '#1e293b', border: '1px solid rgba(255,255,255,0.1)', colorScheme: 'dark' as const };
 
   return (
-    <div style={{ background: '#0a0f1e', minHeight: '100vh' }}>
+    <div className="min-h-screen bg-slate-50 dark:bg-[#0a0f1e]">
       <CareersNav />
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
         {/* Header */}
         <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
           <div>
-            <h1 className="text-xl font-bold text-white">Application Tracker</h1>
+            <h1 className="text-xl font-bold text-slate-900 dark:text-white">Application Tracker</h1>
             <p className="text-slate-400 text-sm">{totalApps} applications tracked</p>
           </div>
           <div className="flex gap-2">
@@ -198,8 +198,8 @@ export default function ApplicationsPage() {
 
         {/* Add form */}
         {showAdd && (
-          <div className="rounded-2xl p-5 mb-6" style={{ background: '#111827', border: '1px solid rgba(59,130,246,0.2)' }}>
-            <h2 className="text-sm font-semibold text-white mb-4">Add Application</h2>
+          <div className="rounded-2xl p-5 mb-6 bg-white dark:bg-[#111827] border border-blue-200/80 dark:border-[rgba(59,130,246,0.2)]">
+            <h2 className="text-sm font-semibold text-slate-900 dark:text-white mb-4">Add Application</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
               <input className={inputClass} style={inputStyle} placeholder="Company *" value={newApp.company ?? ''} onChange={(e) => setNewApp((n) => ({ ...n, company: e.target.value }))} />
               <input className={inputClass} style={inputStyle} placeholder="Job Title *" value={newApp.jobTitle ?? ''} onChange={(e) => setNewApp((n) => ({ ...n, jobTitle: e.target.value }))} />
@@ -226,7 +226,7 @@ export default function ApplicationsPage() {
               { label: 'Interviews', value: interviews, color: '#f59e0b' },
               { label: 'Offers', value: offers, color: '#22c55e' },
             ].map((s) => (
-              <div key={s.label} className="rounded-2xl p-4 text-center" style={{ background: '#111827', border: '1px solid rgba(255,255,255,0.06)' }}>
+              <div key={s.label} className="rounded-2xl p-4 text-center bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-white/[0.06]">
                 <div className="text-2xl font-black" style={{ color: s.color }}>{s.value}</div>
                 <div className="text-xs text-slate-500">{s.label}</div>
               </div>
@@ -237,7 +237,7 @@ export default function ApplicationsPage() {
         {/* Chart + table layout */}
         <div className="flex gap-6 flex-wrap">
           {apps.length > 0 && (
-            <div className="rounded-2xl p-5" style={{ background: '#111827', border: '1px solid rgba(255,255,255,0.06)', minWidth: '200px' }}>
+            <div className="rounded-2xl p-5 bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-white/[0.06]" style={{ minWidth: '200px' }}>
               <h2 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-4">By Status</h2>
               <DonutChart apps={apps} />
             </div>
@@ -245,7 +245,7 @@ export default function ApplicationsPage() {
 
           <div className="flex-1 min-w-0 space-y-2">
             {apps.length === 0 ? (
-              <div className="text-center py-16 rounded-2xl" style={{ background: '#111827', border: '1px solid rgba(255,255,255,0.06)' }}>
+              <div className="text-center py-16 rounded-2xl bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-white/[0.06]">
                 <div className="text-3xl mb-3">📋</div>
                 <p className="text-slate-400 font-medium">No applications yet</p>
                 <p className="text-slate-600 text-sm mt-1">Add your first application above</p>
@@ -254,8 +254,7 @@ export default function ApplicationsPage() {
               apps.map((app) => (
                 <div
                   key={app.id}
-                  className="rounded-2xl overflow-hidden"
-                  style={{ background: '#111827', border: '1px solid rgba(255,255,255,0.06)' }}
+                  className="rounded-2xl overflow-hidden bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-white/[0.06]"
                 >
                   <div
                     className="flex items-center justify-between px-4 py-3 cursor-pointer hover:bg-white/[0.02]"
@@ -263,7 +262,7 @@ export default function ApplicationsPage() {
                   >
                     <div className="flex items-center gap-3 min-w-0">
                       <div className="min-w-0">
-                        <p className="text-sm font-medium text-white truncate">{app.jobTitle}</p>
+                        <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{app.jobTitle}</p>
                         <p className="text-xs text-slate-500">{app.company} · {app.dateApplied}</p>
                       </div>
                     </div>

@@ -42,14 +42,14 @@ export default function SavedJobsPage() {
     score === undefined ? '#6b7280' : score >= 70 ? '#22c55e' : score >= 40 ? '#f59e0b' : '#ef4444';
 
   return (
-    <div style={{ background: '#0a0f1e', minHeight: '100vh' }}>
+    <div className="min-h-screen bg-slate-50 dark:bg-[#0a0f1e]">
       <CareersNav />
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
-        <h1 className="text-xl font-bold text-white mb-2">Saved Jobs</h1>
+        <h1 className="text-xl font-bold text-slate-900 dark:text-white mb-2">Saved Jobs</h1>
         <p className="text-slate-400 text-sm mb-8">{savedJobs.length} saved job{savedJobs.length !== 1 ? 's' : ''}</p>
 
         {savedJobs.length === 0 ? (
-          <div className="text-center py-20 rounded-2xl" style={{ background: '#111827', border: '1px solid rgba(255,255,255,0.06)' }}>
+          <div className="text-center py-20 rounded-2xl bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-white/[0.06]">
             <div className="text-4xl mb-4">★</div>
             <p className="text-slate-400 font-medium">No saved jobs yet</p>
             <p className="text-slate-600 text-sm mt-1 mb-6">Bookmark jobs from the Job Feed</p>
@@ -69,12 +69,11 @@ export default function SavedJobsPage() {
               return (
                 <div
                   key={saved.id}
-                  className="rounded-2xl p-5 flex flex-col gap-3"
-                  style={{ background: '#111827', border: '1px solid rgba(255,255,255,0.06)' }}
+                  className="rounded-2xl p-5 flex flex-col gap-3 bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-white/[0.06]"
                 >
                   <div className="flex items-start justify-between gap-2">
                     <div className="flex-1 min-w-0">
-                      <h3 className="font-semibold text-white text-sm leading-snug truncate">{job.title}</h3>
+                      <h3 className="font-semibold text-slate-900 dark:text-white text-sm leading-snug truncate">{job.title}</h3>
                       <p className="text-slate-400 text-xs mt-0.5">{job.company}</p>
                       <p className="text-slate-600 text-xs mt-0.5">📍 {job.location}</p>
                     </div>

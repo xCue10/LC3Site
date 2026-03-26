@@ -109,10 +109,10 @@ export default function SkillsPage() {
   };
 
   return (
-    <div style={{ background: '#0a0f1e', minHeight: '100vh' }}>
+    <div className="min-h-screen bg-slate-50 dark:bg-[#0a0f1e]">
       <CareersNav />
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
-        <h1 className="text-xl font-bold text-white mb-2">Skill Gap Dashboard</h1>
+        <h1 className="text-xl font-bold text-slate-900 dark:text-white mb-2">Skill Gap Dashboard</h1>
         <p className="text-slate-400 text-sm mb-8">Understand what skills to learn to unlock more job opportunities</p>
 
         {!profile ? (
@@ -120,8 +120,8 @@ export default function SkillsPage() {
         ) : !data ? (
           <div className="space-y-6">
             {/* Profile summary */}
-            <div className="rounded-2xl p-5" style={{ background: '#111827', border: '1px solid rgba(255,255,255,0.06)' }}>
-              <h2 className="text-sm font-semibold text-white mb-3">Your Current Skills</h2>
+            <div className="rounded-2xl p-5 bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-white/[0.06]">
+              <h2 className="text-sm font-semibold text-slate-900 dark:text-white mb-3">Your Current Skills</h2>
               {profile.skills.length === 0 ? (
                 <p className="text-slate-500 text-sm">No skills added yet. <a href="/careers/profile" className="text-blue-400">Add skills in your profile →</a></p>
               ) : (
@@ -155,8 +155,8 @@ export default function SkillsPage() {
         ) : (
           <div className="space-y-6">
             {/* Market demand chart */}
-            <div className="rounded-2xl p-6" style={{ background: '#111827', border: '1px solid rgba(255,255,255,0.06)' }}>
-              <h2 className="text-sm font-semibold text-white mb-4">Market Demand vs Your Skills</h2>
+            <div className="rounded-2xl p-6 bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-white/[0.06]">
+              <h2 className="text-sm font-semibold text-slate-900 dark:text-white mb-4">Market Demand vs Your Skills</h2>
               <div className="space-y-3">
                 {data.marketDemand.map((item) => (
                   <div key={item.skill} className="flex items-center gap-3">
@@ -202,18 +202,18 @@ export default function SkillsPage() {
 
             {/* Skill gaps */}
             <div>
-              <h2 className="text-sm font-semibold text-white mb-4">Priority Skill Gaps</h2>
+              <h2 className="text-sm font-semibold text-slate-900 dark:text-white mb-4">Priority Skill Gaps</h2>
               <div className="space-y-4">
                 {data.skillGaps.map((gap) => (
                   <div
                     key={gap.skill}
-                    className="rounded-2xl p-5"
-                    style={{ background: '#111827', border: `1px solid ${importanceColors[gap.importance] ?? '#334155'}22` }}
+                    className="rounded-2xl p-5 bg-white dark:bg-[#111827]"
+                    style={{ border: `1px solid ${importanceColors[gap.importance] ?? '#334155'}22` }}
                   >
                     <div className="flex items-start justify-between gap-3 mb-3">
                       <div>
                         <div className="flex items-center gap-2 mb-1">
-                          <h3 className="font-semibold text-white">{gap.skill}</h3>
+                          <h3 className="font-semibold text-slate-900 dark:text-white">{gap.skill}</h3>
                           <span
                             className="text-[10px] font-bold px-2 py-0.5 rounded uppercase"
                             style={{
@@ -258,7 +258,7 @@ export default function SkillsPage() {
 
             {/* Roadmap */}
             <div>
-              <h2 className="text-sm font-semibold text-white mb-4">Learning Roadmap</h2>
+              <h2 className="text-sm font-semibold text-slate-900 dark:text-white mb-4">Learning Roadmap</h2>
               <div className="flex gap-2 mb-4 flex-wrap">
                 {data.roadmap.map((phase) => (
                   <button
@@ -275,8 +275,8 @@ export default function SkillsPage() {
                 ))}
               </div>
               {data.roadmap.filter((p) => p.phase === activePhase).map((phase) => (
-                <div key={phase.phase} className="rounded-2xl p-5" style={{ background: '#111827', border: '1px solid rgba(255,255,255,0.06)' }}>
-                  <h3 className="font-semibold text-white mb-1">{phase.title}</h3>
+                <div key={phase.phase} className="rounded-2xl p-5 bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-white/[0.06]">
+                  <h3 className="font-semibold text-slate-900 dark:text-white mb-1">{phase.title}</h3>
                   <p className="text-xs text-slate-400 mb-4">{phase.goal}</p>
                   <div className="flex flex-wrap gap-2">
                     {phase.skills.map((s) => (

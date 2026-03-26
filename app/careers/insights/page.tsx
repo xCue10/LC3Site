@@ -66,7 +66,7 @@ export default function InsightsPage() {
 
   if (loading) {
     return (
-      <div style={{ background: '#0a0f1e', minHeight: '100vh' }}>
+      <div className="min-h-screen bg-slate-50 dark:bg-[#0a0f1e]">
         <CareersNav />
         <div className="max-w-4xl mx-auto px-4 py-20 text-center">
           <div className="w-8 h-8 rounded-full border-2 border-blue-500 border-t-transparent animate-spin mx-auto mb-4" />
@@ -78,7 +78,7 @@ export default function InsightsPage() {
 
   if (error) {
     return (
-      <div style={{ background: '#0a0f1e', minHeight: '100vh' }}>
+      <div className="min-h-screen bg-slate-50 dark:bg-[#0a0f1e]">
         <CareersNav />
         <div className="max-w-4xl mx-auto px-4 py-20 text-center">
           <p className="text-red-400 mb-4">{error}</p>
@@ -91,12 +91,12 @@ export default function InsightsPage() {
   if (!insights) return null;
 
   return (
-    <div style={{ background: '#0a0f1e', minHeight: '100vh' }}>
+    <div className="min-h-screen bg-slate-50 dark:bg-[#0a0f1e]">
       <CareersNav />
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
         <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
           <div>
-            <h1 className="text-xl font-bold text-white">Market Insights</h1>
+            <h1 className="text-xl font-bold text-slate-900 dark:text-white">Market Insights</h1>
             <p className="text-slate-400 text-sm">Tech job market data for Las Vegas & remote roles</p>
           </div>
           <button
@@ -115,8 +115,8 @@ export default function InsightsPage() {
           </div>
 
           {/* Top Skills */}
-          <div className="rounded-2xl p-6" style={{ background: '#111827', border: '1px solid rgba(255,255,255,0.06)' }}>
-            <h2 className="text-sm font-semibold text-white mb-5">Most In-Demand Skills</h2>
+          <div className="rounded-2xl p-6 bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-white/[0.06]">
+            <h2 className="text-sm font-semibold text-slate-900 dark:text-white mb-5">Most In-Demand Skills</h2>
             <div className="space-y-3">
               {insights.topSkills.map((s) => (
                 <div key={s.skill} className="flex items-center gap-3">
@@ -142,8 +142,8 @@ export default function InsightsPage() {
           </div>
 
           {/* Salary by Role */}
-          <div className="rounded-2xl p-6" style={{ background: '#111827', border: '1px solid rgba(255,255,255,0.06)' }}>
-            <h2 className="text-sm font-semibold text-white mb-5">Average Salaries</h2>
+          <div className="rounded-2xl p-6 bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-white/[0.06]">
+            <h2 className="text-sm font-semibold text-slate-900 dark:text-white mb-5">Average Salaries</h2>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
@@ -167,13 +167,13 @@ export default function InsightsPage() {
           </div>
 
           {/* Trending Categories */}
-          <div className="rounded-2xl p-6" style={{ background: '#111827', border: '1px solid rgba(255,255,255,0.06)' }}>
-            <h2 className="text-sm font-semibold text-white mb-4">Trending Job Categories</h2>
+          <div className="rounded-2xl p-6 bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-white/[0.06]">
+            <h2 className="text-sm font-semibold text-slate-900 dark:text-white mb-4">Trending Job Categories</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {insights.trendingCategories.map((cat) => (
                 <div key={cat.category} className="rounded-xl p-4" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-sm font-medium text-white">{cat.category}</span>
+                    <span className="text-sm font-medium text-slate-900 dark:text-white">{cat.category}</span>
                     <span className="text-xs font-bold text-green-400">{cat.growth}</span>
                   </div>
                   <p className="text-xs text-slate-500">{cat.description}</p>
@@ -189,8 +189,8 @@ export default function InsightsPage() {
           </div>
 
           {/* Top Companies */}
-          <div className="rounded-2xl p-6" style={{ background: '#111827', border: '1px solid rgba(255,255,255,0.06)' }}>
-            <h2 className="text-sm font-semibold text-white mb-4">Top Companies Hiring Students</h2>
+          <div className="rounded-2xl p-6 bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-white/[0.06]">
+            <h2 className="text-sm font-semibold text-slate-900 dark:text-white mb-4">Top Companies Hiring Students</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {insights.topCompaniesHiring.map((co) => (
                 <div key={co.company} className="flex items-center gap-3 rounded-xl p-3" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
@@ -201,7 +201,7 @@ export default function InsightsPage() {
                     {co.company[0]}
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-white">{co.company}</p>
+                    <p className="text-sm font-medium text-slate-900 dark:text-white">{co.company}</p>
                     <p className="text-xs text-slate-500">{co.type} · {co.hiring}</p>
                   </div>
                 </div>

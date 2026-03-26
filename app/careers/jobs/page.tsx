@@ -32,8 +32,7 @@ function JobCard({ job, onSave, saved }: { job: Job; onSave: (job: Job) => void;
 
   return (
     <div
-      className="rounded-2xl p-5 flex flex-col gap-3 transition-all hover:scale-[1.01] hover:border-white/20"
-      style={{ background: '#111827', border: '1px solid rgba(255,255,255,0.06)' }}
+      className="rounded-2xl p-5 flex flex-col gap-3 transition-all hover:scale-[1.01] hover:border-white/20 bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-white/[0.06]"
     >
       <div className="flex items-start justify-between gap-3">
         <div className="flex-1 min-w-0">
@@ -48,7 +47,7 @@ function JobCard({ job, onSave, saved }: { job: Job; onSave: (job: Job) => void;
               <span key={t} className="text-[10px] px-1.5 py-0.5 rounded text-slate-500" style={{ background: 'rgba(255,255,255,0.05)' }}>{t}</span>
             ))}
           </div>
-          <h3 className="font-semibold text-white text-sm leading-snug line-clamp-2">{job.title}</h3>
+          <h3 className="font-semibold text-slate-900 dark:text-white text-sm leading-snug line-clamp-2">{job.title}</h3>
           <p className="text-slate-400 text-xs mt-0.5">{job.company}</p>
         </div>
         <MatchBadge score={job.matchScore} />
@@ -127,7 +126,7 @@ function JobCard({ job, onSave, saved }: { job: Job; onSave: (job: Job) => void;
 
 function SkeletonCard() {
   return (
-    <div className="rounded-2xl p-5 animate-pulse" style={{ background: '#111827', border: '1px solid rgba(255,255,255,0.06)' }}>
+    <div className="rounded-2xl p-5 animate-pulse bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-white/[0.06]">
       <div className="flex gap-2 mb-2">
         <div className="h-4 w-12 rounded" style={{ background: 'rgba(255,255,255,0.08)' }} />
         <div className="h-4 w-16 rounded" style={{ background: 'rgba(255,255,255,0.05)' }} />
@@ -280,13 +279,13 @@ export default function JobFeedPage() {
   const totalPages = Math.ceil(filtered.length / PER_PAGE);
 
   return (
-    <div style={{ background: '#0a0f1e', minHeight: '100vh' }}>
+    <div className="min-h-screen bg-slate-50 dark:bg-[#0a0f1e]">
       <CareersNav />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
         {/* Header */}
         <div className="flex items-center justify-between mb-6 gap-4 flex-wrap">
           <div>
-            <h1 className="text-xl font-bold text-white">Job Feed</h1>
+            <h1 className="text-xl font-bold text-slate-900 dark:text-white">Job Feed</h1>
             <p className="text-xs text-slate-500 mt-0.5">
               {loading ? 'Fetching jobs...' : `${filtered.length} jobs found`}
               {fetchedAt && !loading && (
@@ -321,8 +320,7 @@ export default function JobFeedPage() {
             placeholder="Search jobs by title, company, or keyword..."
             value={search}
             onChange={(e) => { setSearch(e.target.value); setPage(1); }}
-            className="w-full px-4 py-3 rounded-xl text-sm text-white placeholder-slate-600 focus:outline-none"
-            style={{ background: '#111827', border: '1px solid rgba(255,255,255,0.08)' }}
+            className="w-full px-4 py-3 rounded-xl text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none bg-white dark:bg-[#111827] border border-slate-200 dark:border-white/[0.08]"
           />
         </div>
 
