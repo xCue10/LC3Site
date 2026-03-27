@@ -2696,7 +2696,7 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 9996;
+  z-index: 9998;
   width: 580px;
   background: #ece9d8;
   border: 1px solid #0a246a;
@@ -2704,9 +2704,17 @@ body {
   border-radius: 6px 6px 0 0;
   font-family: 'Tahoma', sans-serif;
   font-size: 11px;
-  animation: tm-fadein 0.2s ease-out;
+  animation: lw-fadein 0.15s ease-out;
+  display: flex;
+  flex-direction: column;
 }
-.rb-titlebar { border-radius: 5px 5px 0 0; }
+.rb-titlebar {
+  border-radius: 5px 5px 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 3px 0 6px;
+}
 .rb-toolbar {
   display: flex;
   align-items: center;
