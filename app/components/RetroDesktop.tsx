@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 
@@ -199,6 +199,13 @@ export default function RetroDesktop() {
   const [showLimeWire, setShowLimeWire] = useState(false);
   const [lwStage, setLwStage] = useState<'idle' | 'downloading' | 'done' | 'infected'>('idle');
   const [lwProgress, setLwProgress] = useState(0);
+  const [showBsod, setShowBsod] = useState(false);
+  const [bsodRecovered, setBsodRecovered] = useState(false);
+  const [showClockDialog, setShowClockDialog] = useState(false);
+  const [clockTime, setClockTime] = useState('');
+  const [balloons, setBalloons] = useState<{ id: number; msg: string }[]>([]);
+  const konamiRef = useRef<string[]>([]);
+  const balloonIdRef = useRef(0);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -241,6 +248,77 @@ export default function RetroDesktop() {
     tick();
     const id = setInterval(tick, 5000);
     return () => clearInterval(id);
+  }, [isRetro]);
+
+  // ── Konami code → BSOD ──────────────────────────────────────────────
+  useEffect(() => {
+    if (!isRetro) return;
+    const KONAMI = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+    const onKey = (e: KeyboardEvent) => {
+      const seq = konamiRef.current;
+      seq.push(e.key);
+      if (seq.length > KONAMI.length) seq.shift();
+      if (seq.join(',') === KONAMI.join(',')) {
+        konamiRef.current = [];
+        setShowBsod(true);
+        setBsodRecovered(false);
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [isRetro]);
+
+  useEffect(() => {
+    if (!showBsod) return;
+    const onAnyKey = () => {
+      setShowBsod(false);
+      setBsodRecovered(true);
+      setTimeout(() => setBsodRecovered(false), 4000);
+    };
+    window.addEventListener('keydown', onAnyKey, { once: true });
+    // Auto-dismiss after 10s
+    const t = setTimeout(onAnyKey, 10000);
+    return () => { window.removeEventListener('keydown', onAnyKey); clearTimeout(t); };
+  }, [showBsod]);
+
+  // ── Clock dialog live time ───────────────────────────────────────────
+  useEffect(() => {
+    if (!showClockDialog) return;
+    const tick = () => {
+      const now = new Date();
+      const h = now.getHours().toString().padStart(2, '0');
+      const m = now.getMinutes().toString().padStart(2, '0');
+      const s = now.getSeconds().toString().padStart(2, '0');
+      setClockTime(`${h}:${m}:${s}`);
+    };
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
+  }, [showClockDialog]);
+
+  // ── System tray balloons ─────────────────────────────────────────────
+  const BALLOON_MSGS = [
+    'Your virus definitions are out of date.',
+    'Low disk space on C:\\ — only 2 MB remaining.',
+    'New hardware found: Unknown USB Device.',
+    'Windows Update: 47 critical updates available.',
+    'Your computer has not been restarted in 14 days.',
+  ];
+  useEffect(() => {
+    if (!isRetro) { setBalloons([]); return; }
+    const show = (msgIndex: number) => {
+      const id = ++balloonIdRef.current;
+      setBalloons(b => [...b, { id, msg: BALLOON_MSGS[msgIndex % BALLOON_MSGS.length] }]);
+      setTimeout(() => setBalloons(b => b.filter(x => x.id !== id)), 6000);
+    };
+    const timers = [
+      setTimeout(() => show(0), 18000),
+      setTimeout(() => show(1), 40000),
+      setTimeout(() => show(2), 70000),
+      setTimeout(() => show(3), 105000),
+      setTimeout(() => show(4), 145000),
+    ];
+    return () => timers.forEach(clearTimeout);
   }, [isRetro]);
 
   const startLwDownload = () => {
@@ -518,9 +596,97 @@ export default function RetroDesktop() {
           <span>LC3 &ndash; Lowcode Cloud Club</span>
         </div>
         <div className="rd-taskbar-tray">
-          <span className="rd-clock" aria-live="polite">{time}</span>
+          <button className="rd-clock rd-clock-btn" aria-live="polite" onClick={() => setShowClockDialog(c => !c)} title="Click to open Date/Time Properties">{time}</button>
         </div>
       </div>
+
+      {/* Balloon notifications */}
+      <div className="rd-balloons">
+        {balloons.map(b => (
+          <div key={b.id} className="rd-balloon">
+            <span className="rd-balloon-title">Windows</span>
+            <button className="rd-balloon-close" onClick={() => setBalloons(bl => bl.filter(x => x.id !== b.id))}>×</button>
+            <p className="rd-balloon-msg">{b.msg}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* Clock / Date-Time dialog */}
+      {showClockDialog && (
+        <div className="rd-alert-overlay" onClick={() => setShowClockDialog(false)}>
+          <div className="rd-clock-dialog" onClick={e => e.stopPropagation()}>
+            <div className="rd-alert-titlebar">
+              <span className="rd-alert-title">Date/Time Properties</span>
+              <button className="aim-wbtn aim-wbtn-close" onClick={() => setShowClockDialog(false)}>×</button>
+            </div>
+            <div className="rd-clock-tabs">
+              <div className="rd-clock-tab rd-clock-tab-active">Date &amp; Time</div>
+              <div className="rd-clock-tab">Time Zone</div>
+              <div className="rd-clock-tab">Internet Time</div>
+            </div>
+            <div className="rd-clock-body">
+              <div className="rd-clock-section">
+                <p className="rd-clock-label">Date</p>
+                <div className="rd-clock-date-row">
+                  <select className="rd-clock-select" defaultValue="March">
+                    {['January','February','March','April','May','June','July','August','September','October','November','December'].map(m => (
+                      <option key={m}>{m}</option>
+                    ))}
+                  </select>
+                  <input className="rd-clock-year-input" defaultValue="1998" readOnly />
+                </div>
+              </div>
+              <div className="rd-clock-section">
+                <p className="rd-clock-label">Time</p>
+                <div className="rd-clock-time-display">{clockTime}</div>
+                <p className="rd-clock-note">* Year locked to 1998 for Y2K compliance</p>
+              </div>
+            </div>
+            <div className="rd-clock-footer">
+              <button className="rd-alert-ok" onClick={() => setShowClockDialog(false)}>OK</button>
+              <button className="rd-alert-ok" onClick={() => setShowClockDialog(false)}>Cancel</button>
+              <button className="rd-alert-ok">Apply</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* BSOD */}
+      {showBsod && (
+        <div className="rd-bsod">
+          <div className="rd-bsod-inner">
+            <p className="rd-bsod-header">Windows</p>
+            <br />
+            <p>A fatal exception 0E has occurred at 0028:C0011E36 in VXD VMM(01) +</p>
+            <p>00010E36. The current application will be terminated.</p>
+            <br />
+            <p>&nbsp;&nbsp;* Press any key to terminate the current application.</p>
+            <p>&nbsp;&nbsp;* Press CTRL+ALT+DEL again to restart your computer. You will</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;lose any unsaved information in all applications.</p>
+            <br />
+            <p className="rd-bsod-prompt">Press any key to continue <span className="rd-bsod-cursor">_</span></p>
+          </div>
+        </div>
+      )}
+
+      {/* BSOD recovery dialog */}
+      {bsodRecovered && (
+        <div className="rd-alert-overlay">
+          <div className="rd-alert-dialog">
+            <div className="rd-alert-titlebar">
+              <span className="rd-alert-title">System Recovery</span>
+              <button className="aim-wbtn aim-wbtn-close" onClick={() => setBsodRecovered(false)}>×</button>
+            </div>
+            <div className="rd-alert-body">
+              <span className="rd-alert-icon">🛡️</span>
+              <p style={{ fontWeight: 'bold' }}>Windows has recovered from a serious error.</p>
+              <p>A log of this error has been created.</p>
+              <p style={{ fontSize: '10px', color: '#666' }}>Error ID: 0x0000000E — VMM.VXD</p>
+              <button className="rd-alert-ok" onClick={() => setBsodRecovered(false)}>OK</button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }
