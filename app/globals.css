@@ -2175,7 +2175,7 @@ body {
   gap: 8px;
   font-family: 'Tahoma', sans-serif;
   font-size: 12px;
-  max-height: 420px;
+  max-height: 560px;
   overflow-y: auto;
 }
 .hijack-banner {
@@ -2372,7 +2372,7 @@ body {
 .lw-results {
   background: #fff;
   border-bottom: 1px solid #aaa;
-  max-height: 100px;
+  max-height: 200px;
   overflow-y: auto;
 }
 .lw-result {
@@ -2390,8 +2390,8 @@ body {
 .lw-result-selected .lw-sources { color: #fff; }
 .lw-sources { color: #166534; font-weight: bold; }
 .lw-status-row {
-  padding: 8px 8px 6px;
-  min-height: 36px;
+  padding: 10px 10px 10px;
+  min-height: 52px;
   display: flex;
   align-items: center;
 }
