@@ -20,6 +20,7 @@ const ICONS = [
   { label: 'LimeWire',    href: '#limewire',    color: '#22c55e', type: 'limewire'    },
   { label: 'readme.txt',  href: '#notepad',     color: '#000080', type: 'notepad'     },
   { label: 'Recycle Bin', href: '#recyclebin',  color: '#c0c0c0', type: 'recyclebin'  },
+  { label: 'SparkNotes',  href: '#sparknotes',  color: '#f5c518', type: 'sparknotes'  },
 ];
 
 function WinLogo() {
@@ -179,6 +180,16 @@ function PageIcon({ type, color }: { type: string; color: string }) {
           <rect x="8"  y="21" width="10" height="1.5" rx="0.5" fill="#9ca3af" />
         </svg>
       );
+    case 'sparknotes':
+      return (
+        <svg {...s}>
+          {/* Book */}
+          <rect x="5" y="4" width="18" height="24" rx="1" fill={color} stroke="#c8a000" strokeWidth="1.2" />
+          <rect x="5" y="4" width="4"  height="24" rx="1" fill="#c8a000" />
+          {/* Lightning bolt */}
+          <polygon points="20,5 14,16 18,16 12,27 22,14 17,14" fill="#1a1a1a" />
+        </svg>
+      );
     case 'recyclebin':
       return (
         <svg {...s}>
@@ -240,6 +251,9 @@ export default function RetroDesktop() {
   const [showNotepad, setShowNotepad] = useState(false);
   const [showHijack, setShowHijack] = useState(false);
   const [showRecycleBin, setShowRecycleBin] = useState(false);
+  const [showSparkNotes, setShowSparkNotes] = useState(false);
+  const [sparkTab, setSparkTab] = useState<'summary'|'characters'|'themes'|'quotes'|'quiz'>('summary');
+  const [quizAnswers, setQuizAnswers] = useState<Record<number,string>>({});
   const [showBsod, setShowBsod] = useState(false);
   const [bsodRecovered, setBsodRecovered] = useState(false);
   const [showClockDialog, setShowClockDialog] = useState(false);
@@ -440,6 +454,14 @@ export default function RetroDesktop() {
           if (type === 'recyclebin') {
             return (
               <div key={href} className="rd-icon" onClick={() => setShowRecycleBin(true)} style={{ cursor: 'pointer' }}>
+                <PageIcon type={type} color={color} />
+                <span className="rd-icon-label">{label}</span>
+              </div>
+            );
+          }
+          if (type === 'sparknotes') {
+            return (
+              <div key={href} className="rd-icon" onClick={() => { setShowSparkNotes(true); setSparkTab('summary'); setQuizAnswers({}); }} style={{ cursor: 'pointer' }}>
                 <PageIcon type={type} color={color} />
                 <span className="rd-icon-label">{label}</span>
               </div>
@@ -765,6 +787,146 @@ Built with Microsoft FrontPage 2000.
           </div>
         </div>
       )}
+
+      {/* SparkNotes window */}
+      {showSparkNotes && (() => {
+        const TABS = ['summary','characters','themes','quotes','quiz'] as const;
+        const QUIZ = [
+          { q: 'How long do Romeo & Juliet know each other before marrying?', opts: ['One year','Three months','About 24 hours','Two weeks'], correct: 'About 24 hours' },
+          { q: '"Wherefore art thou Romeo" — what does "wherefore" mean?', opts: ['Where','Who','How','Why'], correct: 'Why' },
+          { q: 'Whose idea was the fake-death potion plan?', opts: ['Romeo','Juliet','The Nurse','Friar Lawrence'], correct: 'Friar Lawrence' },
+          { q: 'Who kills Mercutio?', opts: ['Romeo','Paris','Capulet','Tybalt'], correct: 'Tybalt' },
+          { q: 'When is your essay due?', opts: ['Next week','I already did it','What essay','Tomorrow'], correct: 'Tomorrow' },
+        ];
+        return (
+          <div className="sn-wrap">
+            {/* Title bar */}
+            <div className="rd-alert-titlebar sn-titlebar">
+              <div style={{ display:'flex', alignItems:'center', gap:5 }}>
+                <span className="sn-logo-bolt">⚡</span>
+                <span className="rd-alert-title" style={{ color:'#fff' }}>SparkNotes — Romeo and Juliet</span>
+              </div>
+              <div className="aim-winbtns">
+                <button className="aim-wbtn aim-wbtn-min">_</button>
+                <button className="aim-wbtn">□</button>
+                <button className="aim-wbtn aim-wbtn-close" onClick={() => setShowSparkNotes(false)}>×</button>
+              </div>
+            </div>
+
+            {/* Site header */}
+            <div className="sn-header">
+              <div className="sn-brand">⚡ <strong>SparkNotes</strong> <span className="sn-tagline">Today&apos;s Most Popular Study Guides</span></div>
+              <div className="sn-book-title">Romeo and Juliet — by William Shakespeare</div>
+            </div>
+
+            {/* Tab bar */}
+            <div className="sn-tabs">
+              {TABS.map(t => (
+                <button key={t} className={`sn-tab${sparkTab === t ? ' sn-tab-active' : ''}`} onClick={() => setSparkTab(t)}>
+                  {t.charAt(0).toUpperCase() + t.slice(1)}
+                </button>
+              ))}
+            </div>
+
+            {/* Content */}
+            <div className="sn-body">
+
+              {sparkTab === 'summary' && (
+                <div className="sn-content">
+                  <p className="sn-section-title">Plot Overview</p>
+                  <p>Romeo and Juliet is a play about two teenagers who meet at a party, fall in love, get secretly married, and are both dead within <strong>five days</strong>. Shakespeare called it a tragedy. Students call it a Thursday.</p>
+                  <p className="sn-act"><strong>Act 1:</strong> Romeo is extremely sad about a girl named Rosaline. His friends drag him to a Capulet party he wasn&apos;t invited to. He sees Juliet, immediately forgets Rosaline, and they kiss within 5 minutes. Juliet is 13. Romeo is 16. Nobody thinks this is a problem.</p>
+                  <p className="sn-act"><strong>Act 2:</strong> The balcony scene. Romeo hides in Juliet&apos;s garden like a normal person. They declare eternal love. They arrange a secret marriage for the <em>very next morning</em>. Friar Lawrence agrees to perform the ceremony because he thinks it will end the family feud. It does not end the family feud.</p>
+                  <p className="sn-act"><strong>Act 3:</strong> Romeo&apos;s best friend Mercutio is stabbed by Juliet&apos;s cousin Tybalt. Romeo kills Tybalt. Romeo is banished. Juliet is told to marry someone named Paris. Rough week.</p>
+                  <p className="sn-act"><strong>Act 4:</strong> Juliet refuses to marry Paris. Friar Lawrence hands her a potion that simulates death. The plan: fake death, Romeo comes, they escape together. He sends a letter explaining everything. The letter does not arrive.</p>
+                  <p className="sn-act"><strong>Act 5:</strong> Romeo hears Juliet is dead. Does not wait for more information. Buys poison, goes to the tomb, drinks it. Juliet wakes up. Sees Romeo dead. Stabs herself. The two families finally agree to stop fighting. Six people are dead. Great lesson everyone.</p>
+                </div>
+              )}
+
+              {sparkTab === 'characters' && (
+                <div className="sn-content">
+                  <p className="sn-section-title">Character List</p>
+                  <div className="sn-char"><strong>Romeo Montague</strong> — 16 years old. In love with Rosaline on Monday. Married to Juliet by Wednesday. Dead by Friday. Makes every major life decision within 30 seconds of having a new feeling.</div>
+                  <div className="sn-char"><strong>Juliet Capulet</strong> — 13 years old. Considerably smarter than Romeo. Goes along with it anyway. Invents the phrase "what&apos;s in a name." Does not survive the play.</div>
+                  <div className="sn-char"><strong>Friar Lawrence</strong> — A monk. Secretly marries teenagers. Distributes unregulated potions. His plans have a 0% success rate. Means well.</div>
+                  <div className="sn-char"><strong>Mercutio</strong> — Romeo&apos;s best friend. Funny, loud, not a Montague or Capulet. Dies in Act 3. The best character in the play. Gone too soon.</div>
+                  <div className="sn-char"><strong>Tybalt</strong> — Juliet&apos;s cousin. Angry at all times. Responsible for approximately 60% of the plot. Hates Romeo for reasons he cannot explain.</div>
+                  <div className="sn-char"><strong>The Nurse</strong> — Juliet&apos;s caretaker. Knows everything. Tells Juliet to just marry Paris. Not helpful.</div>
+                  <div className="sn-char"><strong>Count Paris</strong> — Rich, handsome, wants to marry Juliet. Has done nothing wrong. Dies anyway.</div>
+                </div>
+              )}
+
+              {sparkTab === 'themes' && (
+                <div className="sn-content">
+                  <p className="sn-section-title">Major Themes</p>
+                  <div className="sn-theme"><strong>Love at First Sight</strong><br/>Shakespeare argues it is real and powerful. Historians argue it is a 5-day relationship that results in 6 deaths and could have been avoided with a cell phone.</div>
+                  <div className="sn-theme"><strong>Fate vs. Free Will</strong><br/>The prologue calls them &quot;star-crossed lovers,&quot; suggesting fate. However, most of the tragedy happens because a letter got delayed, Romeo didn&apos;t wait 10 minutes, and nobody communicated clearly. Arguably a free will problem.</div>
+                  <div className="sn-theme"><strong>Family Conflict</strong><br/>The Montague-Capulet feud drives the entire play. The reason for the feud is never stated. It is very old. It is very dumb. Six people die before the families agree it was a bad idea.</div>
+                  <div className="sn-theme"><strong>Youth and Impulsiveness</strong><br/>Every major decision in this play is made in under five minutes by someone under 20. Shakespeare may be trying to tell you something.</div>
+                </div>
+              )}
+
+              {sparkTab === 'quotes' && (
+                <div className="sn-content">
+                  <p className="sn-section-title">Key Quotes — What They Really Mean</p>
+                  <div className="sn-quote">
+                    <p className="sn-quote-text">&ldquo;O Romeo, Romeo, wherefore art thou Romeo?&rdquo;</p>
+                    <p className="sn-quote-note">⚠️ <strong>This is on every test:</strong> &quot;Wherefore&quot; means <em>why</em>, not <em>where</em>. Juliet is not asking where Romeo is. She is asking why he has to be a Montague. He is standing right below her.</p>
+                  </div>
+                  <div className="sn-quote">
+                    <p className="sn-quote-text">&ldquo;A plague on both your houses!&rdquo;</p>
+                    <p className="sn-quote-note">Mercutio, dying, cursing both the Montagues and Capulets. A fair and proportionate response.</p>
+                  </div>
+                  <div className="sn-quote">
+                    <p className="sn-quote-text">&ldquo;What&apos;s in a name? That which we call a rose / By any other name would smell as sweet.&rdquo;</p>
+                    <p className="sn-quote-note">Juliet argues that Romeo&apos;s last name (Montague) shouldn&apos;t matter. He keeps his last name. This does not help.</p>
+                  </div>
+                  <div className="sn-quote">
+                    <p className="sn-quote-text">&ldquo;For never was a story of more woe / Than this of Juliet and her Romeo.&rdquo;</p>
+                    <p className="sn-quote-note">The Prince, wrapping things up at the end. Shakespeare writing his own five-star review.</p>
+                  </div>
+                </div>
+              )}
+
+              {sparkTab === 'quiz' && (
+                <div className="sn-content">
+                  <p className="sn-section-title">Quick Quiz — Test Your Knowledge</p>
+                  {QUIZ.map((q, qi) => (
+                    <div key={qi} className="sn-quiz-q">
+                      <p className="sn-quiz-qtext"><strong>{qi + 1}.</strong> {q.q}</p>
+                      <div className="sn-quiz-opts">
+                        {q.opts.map(opt => {
+                          const picked = quizAnswers[qi] === opt;
+                          const isCorrect = opt === q.correct;
+                          const answered = quizAnswers[qi] != null;
+                          let cls = 'sn-quiz-opt';
+                          if (answered && isCorrect) cls += ' sn-quiz-correct';
+                          else if (picked && !isCorrect) cls += ' sn-quiz-wrong';
+                          return (
+                            <button key={opt} className={cls} onClick={() => !answered && setQuizAnswers(a => ({ ...a, [qi]: opt }))}>
+                              {opt}
+                            </button>
+                          );
+                        })}
+                      </div>
+                      {quizAnswers[qi] != null && (
+                        <p className={`sn-quiz-feedback ${quizAnswers[qi] === q.correct ? 'sn-fb-correct' : 'sn-fb-wrong'}`}>
+                          {quizAnswers[qi] === q.correct ? '✓ Correct! Good luck on that essay.' : `✗ Incorrect. The answer is "${q.correct}." Maybe re-read the SparkNotes.`}
+                        </p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+
+            </div>
+
+            <div className="sn-footer">
+              © 2003 SparkNotes LLC. All Rights Reserved. &nbsp;|&nbsp; <span className="sn-footer-link">Order the book on Amazon.com</span> &nbsp;|&nbsp; <span className="sn-footer-link">Get the No Fear Shakespeare edition</span>
+            </div>
+          </div>
+        );
+      })()}
 
       {/* Start menu */}
       {showStartMenu && (
