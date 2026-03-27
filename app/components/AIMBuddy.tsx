@@ -5,14 +5,35 @@ import Link from 'next/link';
 
 type Member = { id: string; name: string; role?: string; };
 
+function RunningMan({ size = 38 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 40 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+      {/* Head */}
+      <circle cx="22" cy="6" r="5" fill="#FFD700" />
+      {/* Body */}
+      <line x1="21" y1="11" x2="19" y2="24" stroke="#FFD700" strokeWidth="3" strokeLinecap="round"/>
+      {/* Right arm (forward/up) */}
+      <line x1="21" y1="15" x2="30" y2="11" stroke="#FFD700" strokeWidth="2.5" strokeLinecap="round"/>
+      {/* Left arm (back/down) */}
+      <line x1="20" y1="16" x2="10" y2="21" stroke="#FFD700" strokeWidth="2.5" strokeLinecap="round"/>
+      {/* Right leg (forward) */}
+      <line x1="19" y1="24" x2="28" y2="33" stroke="#FFD700" strokeWidth="3" strokeLinecap="round"/>
+      {/* Left leg (back) */}
+      <line x1="19" y1="24" x2="12" y2="36" stroke="#FFD700" strokeWidth="3" strokeLinecap="round"/>
+    </svg>
+  );
+}
+
 export default function AIMBuddy() {
-  const [isRetro, setIsRetro]       = useState(false);
-  const [members, setMembers]       = useState<Member[]>([]);
-  const [showIM, setShowIM]         = useState(false);
-  const [minimized, setMinimized]   = useState(false);
-  const [name, setName]             = useState('');
-  const [email, setEmail]           = useState('');
-  const [sent, setSent]             = useState(false);
+  const [isRetro, setIsRetro]     = useState(false);
+  const [members, setMembers]     = useState<Member[]>([]);
+  const [showIM, setShowIM]       = useState(false);
+  const [minimized, setMinimized] = useState(false);
+  const [signed, setSigned]       = useState(false);
+  const [signingOn, setSigningOn] = useState(false);
+  const [inputName, setInputName] = useState('');
+  const [email, setEmail]         = useState('');
+  const [sent, setSent]           = useState(false);
 
   useEffect(() => {
     const check = () => setIsRetro(document.documentElement.classList.contains('retro'));
@@ -23,14 +44,25 @@ export default function AIMBuddy() {
   }, []);
 
   useEffect(() => {
-    if (!isRetro) return;
+    if (!isRetro || !signed) return;
     fetch('/api/members')
       .then(r => r.json())
       .then(data => setMembers(Array.isArray(data) ? data.slice(0, 14) : []))
       .catch(() => setMembers([]));
-  }, [isRetro]);
+  }, [isRetro, signed]);
 
   if (!isRetro) return null;
+
+  const handleSignOn = () => {
+    setSigningOn(true);
+    setTimeout(() => { setSigningOn(false); setSigned(true); }, 1400);
+  };
+
+  const handleSignOff = () => {
+    setSigned(false);
+    setShowIM(false);
+    setMembers([]);
+  };
 
   const handleSend = (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,13 +70,71 @@ export default function AIMBuddy() {
     setTimeout(() => {
       setShowIM(false);
       setSent(false);
-      setName('');
+      setInputName('');
       setEmail('');
     }, 2200);
   };
 
   const msgTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
+  /* ─── Sign On Window ──────────────────────────────── */
+  if (!signed) {
+    return (
+      <div className="aim-signon-wrap">
+        {/* Title bar */}
+        <div className="aim-titlebar">
+          <span className="aim-title-text" style={{ fontSize: 11 }}>Sign On</span>
+          <div className="aim-winbtns">
+            <button className="aim-wbtn aim-wbtn-min">_</button>
+            <button className="aim-wbtn aim-wbtn-close">×</button>
+          </div>
+        </div>
+
+        {/* AOL header */}
+        <div className="aim-signon-header">
+          <div className="aim-signon-man"><RunningMan size={46} /></div>
+          <div className="aim-signon-branding">
+            <div className="aim-signon-aol">AOL</div>
+            <div className="aim-signon-product">Instant Messenger™</div>
+          </div>
+        </div>
+
+        {/* Form body */}
+        <div className="aim-signon-body">
+          <div className="aim-signon-field">
+            <label className="aim-field-label">Screen Name</label>
+            <input className="aim-field-input" defaultValue="LC3Club" readOnly />
+          </div>
+          <div className="aim-signon-field">
+            <label className="aim-field-label">Password</label>
+            <input className="aim-field-input" type="password" />
+          </div>
+
+          <div className="aim-signon-links">
+            <a className="aim-signon-link" href="#">Get a Screen Name</a>
+            <a className="aim-signon-link" href="#">Forgot Password?</a>
+          </div>
+
+          <div className="aim-signon-checks">
+            <label className="aim-check-label"><input type="checkbox" defaultChecked /> Save password</label>
+            <label className="aim-check-label"><input type="checkbox" /> Auto-login</label>
+          </div>
+
+          <button
+            className="aim-signon-btn"
+            onClick={handleSignOn}
+            disabled={signingOn}
+          >
+            {signingOn ? 'Signing On…' : 'Sign On'}
+          </button>
+        </div>
+
+        <div className="aim-signon-version">Version: 5.9.3702</div>
+      </div>
+    );
+  }
+
+  /* ─── Signed-in View ──────────────────────────────── */
   return (
     <>
       {/* ── IM Chat Window ─────────────────────────────── */}
@@ -75,7 +165,7 @@ export default function AIMBuddy() {
             <div className="aim-im-bubble">
               <span className="aim-im-sender">LC3Bot</span>
               <span className="aim-im-time"> ({msgTime}): </span>
-              <span className="aim-im-text">Hey! Interested in joining <b>LC3 &mdash; Lowcode Cloud Club</b>? Drop your info below and we&apos;ll reach out. You can also check the Join page!</span>
+              <span className="aim-im-text">Hey! Interested in joining <b>LC3 &mdash; Lowcode Cloud Club</b>? Drop your info and we&apos;ll reach out, or visit our Contact page!</span>
             </div>
             {sent && (
               <div className="aim-im-bubble" style={{marginTop: 4}}>
@@ -92,8 +182,8 @@ export default function AIMBuddy() {
               <input
                 className="aim-im-input"
                 placeholder="Your name..."
-                value={name}
-                onChange={e => setName(e.target.value)}
+                value={inputName}
+                onChange={e => setInputName(e.target.value)}
                 required
               />
               <input
@@ -105,8 +195,8 @@ export default function AIMBuddy() {
                 required
               />
               <div className="aim-im-actions">
-                <button type="button" className="aim-action-btn" title="Warn">Warn</button>
-                <button type="button" className="aim-action-btn" title="Block">Block</button>
+                <button type="button" className="aim-action-btn">Warn</button>
+                <button type="button" className="aim-action-btn">Block</button>
                 <Link href="/contact" className="aim-action-btn" style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}>
                   Info ↗
                 </Link>
@@ -123,50 +213,67 @@ export default function AIMBuddy() {
       <div className="aim-wrap">
         {/* Title bar */}
         <div className="aim-titlebar">
-          <span className="aim-title-icon">🏃</span>
           <span className="aim-title-text">Buddy List</span>
           <div className="aim-winbtns">
-            <button className="aim-wbtn" onClick={() => setMinimized(m => !m)} title={minimized ? 'Restore' : 'Minimize'}>
-              {minimized ? '▲' : '_'}
-            </button>
-            <button className="aim-wbtn aim-wbtn-close" onClick={() => setShowIM(false)} title="Close IM">×</button>
+            <button className="aim-wbtn" onClick={() => setMinimized(m => !m)}>{minimized ? '▲' : '_'}</button>
+            <button className="aim-wbtn aim-wbtn-close" onClick={handleSignOff}>×</button>
           </div>
         </div>
 
         {!minimized && (
           <>
-            {/* Screen name header */}
-            <div className="aim-header">
-              <div className="aim-screenname-row">
-                <span className="aim-running-man">🏃</span>
-                <div>
-                  <div className="aim-screenname">LC3Club</div>
-                  <div className="aim-status-text">● Online</div>
+            {/* Menu bar */}
+            <div className="aim-menubar">
+              <span className="aim-menu-item">My AIM</span>
+              <span className="aim-menu-item">People</span>
+              <span className="aim-menu-item">Help</span>
+            </div>
+
+            {/* AOL header with running man + tabs */}
+            <div className="aim-bl-header">
+              <div className="aim-bl-header-top">
+                <div className="aim-bl-man"><RunningMan size={32} /></div>
+                <div className="aim-bl-branding">
+                  <div className="aim-bl-aol">AOL</div>
+                  <div className="aim-bl-product">Instant Messenger</div>
                 </div>
+                <div className="aim-bl-screenname-badge">
+                  <div className="aim-bl-sn">LC3Club</div>
+                  <div className="aim-bl-status">● Online</div>
+                </div>
+              </div>
+              <div className="aim-tabs">
+                <div className="aim-tab aim-tab-active">Online</div>
+                <div className="aim-tab">List Setup</div>
               </div>
             </div>
 
             {/* Buddy list */}
             <div className="aim-list">
               <div className="aim-category">
-                <span className="aim-cat-arrow">▼</span> Buddies ({members.length} online)
+                <span className="aim-cat-arrow">▼</span> Buddies ({members.length}/{members.length + 58} online)
               </div>
               {members.length === 0 ? (
                 <div className="aim-buddy aim-buddy-empty">Loading members...</div>
               ) : (
                 members.map(m => (
-                  <div
-                    key={m.id}
-                    className="aim-buddy"
-                    onClick={() => setShowIM(true)}
-                    title="Click to IM"
-                  >
+                  <div key={m.id} className="aim-buddy" onClick={() => setShowIM(true)} title="Click to IM">
                     <span className="aim-buddy-icon">■</span>
                     <span className="aim-buddy-name">{m.name}</span>
                     {m.role && <span className="aim-buddy-role">{m.role}</span>}
                   </div>
                 ))
               )}
+              <div className="aim-category" style={{marginTop: 2}}>
+                <span className="aim-cat-arrow">▼</span> Co-Workers (1/5)
+              </div>
+              <div className="aim-buddy" onClick={() => setShowIM(true)}>
+                <span className="aim-buddy-icon">■</span>
+                <span className="aim-buddy-name aim-buddy-online">LC3Admin</span>
+              </div>
+              <div className="aim-category" style={{marginTop: 2}}>
+                <span className="aim-cat-arrow">▶</span> Offline (80/86)
+              </div>
             </div>
 
             {/* Footer buttons */}
@@ -179,7 +286,7 @@ export default function AIMBuddy() {
 
             {/* Sign Off */}
             <div className="aim-signoff-row">
-              <button className="aim-signoff-btn">Sign Off</button>
+              <button className="aim-signoff-btn" onClick={handleSignOff}>Sign Off</button>
             </div>
           </>
         )}
