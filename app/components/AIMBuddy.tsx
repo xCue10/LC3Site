@@ -107,8 +107,8 @@ export default function AIMBuddy() {
               <div className="aim-im-actions">
                 <button type="button" className="aim-action-btn" title="Warn">Warn</button>
                 <button type="button" className="aim-action-btn" title="Block">Block</button>
-                <Link href="/join" className="aim-action-btn" style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}>
-                  Join ↗
+                <Link href="/contact" className="aim-action-btn" style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}>
+                  Info ↗
                 </Link>
                 <button type="submit" className="aim-send-btn">Send</button>
               </div>
@@ -173,7 +173,7 @@ export default function AIMBuddy() {
             <div className="aim-footer">
               <button className="aim-footer-btn" onClick={() => setShowIM(true)} title="Send Instant Message">IM</button>
               <button className="aim-footer-btn" title="Chat">Chat</button>
-              <Link href="/join" className="aim-footer-btn aim-footer-link" title="Get Info">Info</Link>
+              <Link href="/contact" className="aim-footer-btn aim-footer-link" title="Get Info">Info</Link>
               <button className="aim-footer-btn" title="Set Away Message">Away</button>
             </div>
 
