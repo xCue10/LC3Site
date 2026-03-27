@@ -10,7 +10,23 @@ const PLAYLIST = [
   },
 ];
 
-const EQ_ANIMS = ['wp-eq-a', 'wp-eq-b', 'wp-eq-c', 'wp-eq-d', 'wp-eq-e'];
+const EQ_ANIMS = ['wmp-eq-a', 'wmp-eq-b', 'wmp-eq-c', 'wmp-eq-d', 'wmp-eq-e'];
+
+function WmpOrb() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+      <defs>
+        <radialGradient id="wmp-orb" cx="38%" cy="32%" r="65%">
+          <stop offset="0%"   stopColor="#6ec8f0" />
+          <stop offset="55%"  stopColor="#1a72d4" />
+          <stop offset="100%" stopColor="#082888" />
+        </radialGradient>
+      </defs>
+      <circle cx="8" cy="8" r="7.2" fill="url(#wmp-orb)" stroke="#0a2060" strokeWidth="0.6" />
+      <polygon points="6.2,4.8 12,8 6.2,11.2" fill="white" opacity="0.92" />
+    </svg>
+  );
+}
 
 export default function RetroMusic() {
   const [isRetro, setIsRetro]     = useState(false);
@@ -21,10 +37,9 @@ export default function RetroMusic() {
   const [volume, setVolume]       = useState(75);
   const [trackIdx]                = useState(0);
 
-  const audioRef       = useRef<HTMLAudioElement | null>(null);
-  const elapsedIntRef  = useRef<ReturnType<typeof setInterval> | null>(null);
+  const audioRef      = useRef<HTMLAudioElement | null>(null);
+  const elapsedIntRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  // ── Watch retro class ──────────────────────────────────────────────
   useEffect(() => {
     const check = () => setIsRetro(document.documentElement.classList.contains('retro'));
     check();
@@ -33,16 +48,13 @@ export default function RetroMusic() {
     return () => obs.disconnect();
   }, []);
 
-  // ── Stop when retro mode exits ─────────────────────────────────────
   useEffect(() => { if (!isRetro) stopMusic(); }, [isRetro]);
   useEffect(() => () => stopMusic(), []);
 
-  // ── Volume → audio element ─────────────────────────────────────────
   useEffect(() => {
     if (audioRef.current) audioRef.current.volume = volume / 100;
   }, [volume]);
 
-  // ── Helpers ────────────────────────────────────────────────────────
   const stopElapsedTimer = () => {
     if (elapsedIntRef.current) { clearInterval(elapsedIntRef.current); elapsedIntRef.current = null; }
   };
@@ -100,86 +112,94 @@ export default function RetroMusic() {
   if (!isRetro) return null;
 
   return (
-    <div className="wp-wrap">
+    <div className="wmp-wrap">
 
-      {/* ── Title bar ─────────────────────────────────── */}
-      <div className="wp-titlebar">
-        <span className="wp-title-text">♫ LC3 MUSIC</span>
-        <div className="wp-winbtns">
-          <button className="wp-wbtn" onClick={() => setMinimized(m => !m)} title={minimized ? 'Restore' : 'Minimize'}>
-            {minimized ? '▲' : '_'}
-          </button>
-          <button className="wp-wbtn wp-wbtn-close" onClick={stopMusic} title="Stop">×</button>
+      {/* ── Title bar ─────────────────────────────── */}
+      <div className="wmp-titlebar">
+        <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+          <WmpOrb />
+          <span className="wmp-title-text">Windows Media Player</span>
+        </div>
+        <div className="aim-winbtns">
+          <button className="aim-wbtn" onClick={() => setMinimized(m => !m)} title={minimized ? 'Restore' : 'Minimize'}>_</button>
+          <button className="aim-wbtn">□</button>
+          <button className="aim-wbtn aim-wbtn-close" onClick={stopMusic} title="Close">×</button>
         </div>
       </div>
 
       {!minimized && (
         <>
-          {/* ── LED display ───────────────────────────── */}
-          <div className="wp-display">
-            <div className="wp-marquee-wrap">
-              <span className={`wp-marquee${playing && !paused ? ' wp-marquee-anim' : ''}`}>
-                {playing
-                  ? `♫  ${track.title} — ${track.artist}  ♫  ${track.title} — ${track.artist}  `
-                  : `— LC3 MUSIC —   SELECT A TRACK   — LC3 MUSIC —   SELECT A TRACK   `}
-              </span>
+          {/* ── Menu bar ──────────────────────────── */}
+          <div className="wmp-menubar">
+            {['File','View','Play','Tools','Help'].map(m => (
+              <span key={m} className="rd-br-menu-item">{m}</span>
+            ))}
+          </div>
+
+          {/* ── Visualization area ────────────────── */}
+          <div className="wmp-viz">
+            <div className="wmp-eq-wrap">
+              {Array.from({ length: 18 }).map((_, i) => (
+                <div
+                  key={i}
+                  className={`wmp-bar${playing && !paused ? ' wmp-bar-play' : ''}`}
+                  style={{
+                    animationName: playing && !paused ? EQ_ANIMS[i % 5] : 'none',
+                    animationDelay: `${i * 0.09}s`,
+                  }}
+                />
+              ))}
             </div>
-            <div className="wp-info-row">
-              <span className="wp-elapsed">{formatTime(elapsed)}</span>
-              <span className="wp-status-dot">
-                {playing && !paused ? '▶ PLAYING' : paused ? '❚❚ PAUSED' : '■ STOPPED'}
-              </span>
-              <span className="wp-kbps">128 kbps</span>
+            <div className="wmp-viz-info">
+              {playing
+                ? <><span className="wmp-viz-title">{track.title}</span><span className="wmp-viz-artist">{track.artist}</span></>
+                : <span className="wmp-viz-title wmp-viz-idle">No media playing</span>
+              }
             </div>
           </div>
 
-          {/* ── EQ visualizer bars ────────────────────── */}
-          <div className="wp-eq-wrap">
-            {Array.from({ length: 14 }).map((_, i) => (
-              <div
-                key={i}
-                className={`wp-bar${playing && !paused ? ' wp-bar-play' : ''}`}
-                style={{
-                  animationName: playing && !paused ? EQ_ANIMS[i % 5] : 'none',
-                  animationDelay: `${i * 0.11}s`,
-                }}
+          {/* ── Seek bar ──────────────────────────── */}
+          <div className="wmp-seek-row">
+            <span className="wmp-time">{formatTime(elapsed)}</span>
+            <div className="wmp-seekbar">
+              <div className="wmp-seekbar-fill" style={{ width: playing ? '40%' : '0%' }} />
+              {playing && <div className="wmp-seekbar-thumb" style={{ left: '40%' }} />}
+            </div>
+            <span className="wmp-time">3:28</span>
+          </div>
+
+          {/* ── Transport + volume ────────────────── */}
+          <div className="wmp-controls">
+            <div className="wmp-transport">
+              <button className="wmp-btn" disabled title="Previous">⏮</button>
+              <button className="wmp-btn" disabled title="Rewind">⏪</button>
+              {playing && !paused ? (
+                <button className="wmp-btn wmp-btn-play" onClick={pauseMusic} title="Pause">⏸</button>
+              ) : paused ? (
+                <button className="wmp-btn wmp-btn-play" onClick={resumeMusic} title="Resume">▶</button>
+              ) : (
+                <button className="wmp-btn wmp-btn-play" onClick={startMusic} title="Play">▶</button>
+              )}
+              <button className="wmp-btn" onClick={stopMusic} disabled={!playing} title="Stop">⏹</button>
+              <button className="wmp-btn" disabled title="Fast Forward">⏩</button>
+              <button className="wmp-btn" disabled title="Next">⏭</button>
+            </div>
+            <div className="wmp-vol-row">
+              <span className="wmp-vol-icon">🔊</span>
+              <input
+                type="range" min={0} max={100} value={volume}
+                onChange={e => setVolume(Number(e.target.value))}
+                className="wmp-vol-slider"
               />
-            ))}
+            </div>
           </div>
 
-          {/* ── Volume row ────────────────────────────── */}
-          <div className="wp-vol-row">
-            <span className="wp-vol-label">VOL</span>
-            <input
-              type="range" min={0} max={100} value={volume}
-              onChange={e => setVolume(Number(e.target.value))}
-              className="wp-slider"
-            />
-            <span className="wp-vol-val">{volume}%</span>
-          </div>
-
-          {/* ── Transport buttons ─────────────────────── */}
-          <div className="wp-transport">
-            <button className="wp-btn" title="Previous" disabled>⏮</button>
-            {playing && !paused ? (
-              <button className="wp-btn wp-btn-active" onClick={pauseMusic} title="Pause">❚❚</button>
-            ) : paused ? (
-              <button className="wp-btn wp-btn-active" onClick={resumeMusic} title="Resume">▶</button>
-            ) : (
-              <button className="wp-btn" onClick={startMusic} title="Play">▶</button>
-            )}
-            <button className="wp-btn" onClick={stopMusic} title="Stop" disabled={!playing}>⏹</button>
-            <button className="wp-btn" title="Next" disabled>⏭</button>
-          </div>
-
-          {/* ── Playlist strip ────────────────────────── */}
-          <div className="wp-playlist">
-            {PLAYLIST.map((t, i) => (
-              <div key={i} className={`wp-pl-item${i === trackIdx ? ' wp-pl-active' : ''}`}>
-                <span className="wp-pl-num">{i + 1}.</span>
-                <span className="wp-pl-title">{t.title} — {t.artist}</span>
-              </div>
-            ))}
+          {/* ── Status bar ────────────────────────── */}
+          <div className="wmp-status">
+            <span>128 kbps · 44100 Hz · Stereo</span>
+            <span className="wmp-status-state">
+              {playing && !paused ? '▶ Playing' : paused ? '⏸ Paused' : '⏹ Stopped'}
+            </span>
           </div>
         </>
       )}
