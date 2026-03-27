@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @custom-variant dark (&:where(.dark, .dark *));
+@custom-variant retro (&:where(.retro, .retro *));
 
 @theme inline {
   --font-sans: var(--font-geist-sans);
@@ -31,3 +32,171 @@ body {
 .dark ::-webkit-scrollbar-thumb { background: #253650; }
 ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
 .dark ::-webkit-scrollbar-thumb:hover { background: #2e4268; }
+
+/* =============================================
+   RETRO / 8-BIT SYNTHWAVE THEME
+   ============================================= */
+
+/* Scanline overlay on the html element */
+.retro::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 3px,
+    rgba(0, 0, 0, 0.12) 3px,
+    rgba(0, 0, 0, 0.12) 4px
+  );
+  pointer-events: none;
+  z-index: 9998;
+}
+
+/* Body */
+.retro body {
+  background-color: #0d0221;
+  color: #05d9e8;
+  background-image:
+    linear-gradient(rgba(5, 217, 232, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(5, 217, 232, 0.05) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* Apply pixel font to the navbar */
+.retro header,
+.retro header * {
+  font-family: var(--font-retro), 'Courier New', monospace !important;
+}
+
+/* Headings */
+.retro h1,
+.retro h2,
+.retro h3 {
+  font-family: var(--font-retro), 'Courier New', monospace !important;
+  color: #ffffff !important;
+  text-shadow: 3px 3px 0 #ff2a6d !important;
+  line-height: 1.8 !important;
+  letter-spacing: 0.05em;
+}
+
+.retro h4,
+.retro h5,
+.retro h6 {
+  font-family: var(--font-retro), 'Courier New', monospace !important;
+  color: #ffd700 !important;
+  text-shadow: 2px 2px 0 #ff2a6d !important;
+  line-height: 1.8 !important;
+}
+
+/* Paragraphs and body text */
+.retro p,
+.retro li {
+  font-family: var(--font-retro), 'Courier New', monospace !important;
+  font-size: 0.7em !important;
+  line-height: 2 !important;
+  color: #05d9e8;
+}
+
+/* Links */
+.retro a {
+  color: #05d9e8 !important;
+  text-decoration: none !important;
+}
+.retro a:hover {
+  color: #ffd700 !important;
+  text-shadow: 0 0 8px rgba(255, 215, 0, 0.6) !important;
+}
+
+/* Selection */
+.retro ::selection {
+  background: rgba(255, 42, 109, 0.5);
+  color: #fff;
+}
+
+/* Scrollbar */
+.retro ::-webkit-scrollbar-track { background: #0d0221; }
+.retro ::-webkit-scrollbar-thumb { background: #ff2a6d; border-radius: 0; }
+.retro ::-webkit-scrollbar-thumb:hover { background: #05d9e8; }
+
+/* Input fields */
+.retro input,
+.retro textarea,
+.retro select {
+  font-family: var(--font-retro), 'Courier New', monospace !important;
+  font-size: 0.65em !important;
+  background: #1a0533 !important;
+  border: 2px solid #05d9e8 !important;
+  color: #05d9e8 !important;
+  border-radius: 0 !important;
+}
+.retro input:focus,
+.retro textarea:focus {
+  outline: none !important;
+  border-color: #ffd700 !important;
+  box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.25) !important;
+}
+.retro input::placeholder,
+.retro textarea::placeholder {
+  color: rgba(5, 217, 232, 0.4) !important;
+}
+
+/* ── Retro Music Player ─────────────────────── */
+.retro-music-btn {
+  font-family: var(--font-retro), 'Courier New', monospace;
+  font-size: 10px;
+  background: #1a0533;
+  border: 3px solid #05d9e8;
+  color: #05d9e8;
+  padding: 10px 16px;
+  box-shadow: 4px 4px 0 #ff2a6d;
+  cursor: pointer;
+  transition: transform 0.1s, box-shadow 0.1s, color 0.1s, border-color 0.1s;
+  white-space: nowrap;
+  letter-spacing: 0.05em;
+}
+.retro-music-btn:hover {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 #ff2a6d;
+  color: #ffd700;
+  border-color: #ffd700;
+}
+.retro-music-btn:active {
+  transform: translate(4px, 4px);
+  box-shadow: none;
+}
+
+.retro-music-label {
+  font-family: var(--font-retro), 'Courier New', monospace;
+  font-size: 8px;
+  color: #ffd700;
+  text-shadow: 1px 1px 0 #ff2a6d;
+  animation: retro-blink 1s step-end infinite;
+  letter-spacing: 0.05em;
+}
+
+/* ── Retro Animations ───────────────────────── */
+@keyframes retro-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@keyframes retro-neon-pulse {
+  0%, 100% {
+    text-shadow: 3px 3px 0 #ff2a6d, 0 0 10px rgba(255, 42, 109, 0.4);
+  }
+  50% {
+    text-shadow: 3px 3px 0 #ff2a6d, 0 0 25px rgba(255, 42, 109, 0.9),
+      0 0 50px rgba(255, 42, 109, 0.3);
+  }
+}
+
+@keyframes retro-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes retro-scanline {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}

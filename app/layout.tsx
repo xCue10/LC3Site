@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Press_Start_2P } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import CursorTrail from "./components/CursorTrail";
 import AnnouncementBanner from "./components/AnnouncementBanner";
+import RetroMusic from "./components/RetroMusic";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -13,6 +14,12 @@ const geistSans = Geist({
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+
+const pressStart2P = Press_Start_2P({
+  variable: "--font-retro",
+  weight: "400",
   subsets: ["latin"],
 });
 
@@ -44,10 +51,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth" suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} ${pressStart2P.variable} antialiased min-h-screen flex flex-col`}>
         <script
           dangerouslySetInnerHTML={{
-            __html: `try{const t=localStorage.getItem('lc3-theme');if(t==='dark')document.documentElement.classList.add('dark');}catch{}`,
+            __html: `try{const t=localStorage.getItem('lc3-theme');if(t==='dark')document.documentElement.classList.add('dark');else if(t==='retro')document.documentElement.classList.add('retro');}catch{}`,
           }}
         />
         <CursorTrail />
@@ -55,6 +62,7 @@ export default function RootLayout({
         <Navbar />
         <main className="flex-1">{children}</main>
         <Footer />
+        <RetroMusic />
       </body>
     </html>
   );
