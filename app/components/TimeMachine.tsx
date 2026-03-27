@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 
 type Phase = 'idle' | 'boot' | 'flash' | 'depart';
 
-const DEPART_YEARS = [1998, 2003, 2007, 2012, 2016, 2020, 2026];
+const DEPART_YEARS = [2001, 2004, 2007, 2012, 2016, 2020, 2026];
 const WARP_COLORS  = ['#ffcc00', '#ff9900', '#ffffff', '#ffaa33', '#ffe066', '#ffffff'];
 
 export default function TimeMachine() {
@@ -155,7 +155,7 @@ export default function TimeMachine() {
   const runDeactivate = useCallback(() => {
     clearAll();
     setOverlayOpacity(1);
-    setYear(1998);
+    setYear(2001);
     setP('depart');
     playDepartAudio();
     startWarp();

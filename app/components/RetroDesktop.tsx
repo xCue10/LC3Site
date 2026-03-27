@@ -204,9 +204,7 @@ export default function RetroDesktop() {
   const [bsodRecovered, setBsodRecovered] = useState(false);
   const [showClockDialog, setShowClockDialog] = useState(false);
   const [clockTime, setClockTime] = useState('');
-  const [balloons, setBalloons] = useState<{ id: number; msg: string }[]>([]);
   const konamiRef = useRef<string[]>([]);
-  const balloonIdRef = useRef(0);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -297,30 +295,6 @@ export default function RetroDesktop() {
     return () => clearInterval(id);
   }, [showClockDialog]);
 
-  // ── System tray balloons ─────────────────────────────────────────────
-  const BALLOON_MSGS = [
-    'Your virus definitions are out of date.',
-    'Low disk space on C:\\ — only 2 MB remaining.',
-    'New hardware found: Unknown USB Device.',
-    'Windows Update: 47 critical updates available.',
-    'Your computer has not been restarted in 14 days.',
-  ];
-  useEffect(() => {
-    if (!isRetro) { setBalloons([]); return; }
-    const show = (msgIndex: number) => {
-      const id = ++balloonIdRef.current;
-      setBalloons(b => [...b, { id, msg: BALLOON_MSGS[msgIndex % BALLOON_MSGS.length] }]);
-      setTimeout(() => setBalloons(b => b.filter(x => x.id !== id)), 6000);
-    };
-    const timers = [
-      setTimeout(() => show(0), 18000),
-      setTimeout(() => show(1), 40000),
-      setTimeout(() => show(2), 70000),
-      setTimeout(() => show(3), 105000),
-      setTimeout(() => show(4), 145000),
-    ];
-    return () => timers.forEach(clearTimeout);
-  }, [isRetro]);
 
   const startLwDownload = () => {
     setLwStage('downloading');
@@ -606,17 +580,6 @@ export default function RetroDesktop() {
         <div className="rd-taskbar-tray">
           <button className="rd-clock rd-clock-btn" aria-live="polite" onClick={() => setShowClockDialog(c => !c)} title="Click to open Date/Time Properties">{time}</button>
         </div>
-      </div>
-
-      {/* Balloon notifications */}
-      <div className="rd-balloons">
-        {balloons.map(b => (
-          <div key={b.id} className="rd-balloon">
-            <span className="rd-balloon-title">Windows</span>
-            <button className="rd-balloon-close" onClick={() => setBalloons(bl => bl.filter(x => x.id !== b.id))}>×</button>
-            <p className="rd-balloon-msg">{b.msg}</p>
-          </div>
-        ))}
       </div>
 
       {/* Clock / Date-Time dialog */}
