@@ -37,7 +37,91 @@ body {
    RETRO / GTA VICE CITY THEME
    ============================================= */
 
-/* Subtle scanline overlay */
+/* ── Remap the entire Tailwind color palette ──
+   Tailwind v4 exposes all colors as CSS custom
+   properties. Overriding them here propagates
+   Vice City colors to every utility class.
+   ──────────────────────────────────────────── */
+.retro {
+  /* White → deep Vice City navy */
+  --color-white: #0e0828;
+
+  /* Slate scale → dark navy ↔ soft lavender */
+  --color-slate-50:  #100a2e;
+  --color-slate-100: #160c3c;
+  --color-slate-200: rgba(255, 30, 120, 0.24);
+  --color-slate-300: rgba(255, 30, 120, 0.40);
+  --color-slate-400: rgba(210, 188, 240, 0.52);
+  --color-slate-500: rgba(210, 188, 240, 0.70);
+  --color-slate-600: #c8b8e8;
+  --color-slate-700: #d8c8f4;
+  --color-slate-800: #e8d8ff;
+  --color-slate-900: #f2ecff;
+
+  /* Violet → Vice City hot pink */
+  --color-violet-50:  rgba(255, 30, 120, 0.08);
+  --color-violet-100: rgba(255, 30, 120, 0.14);
+  --color-violet-200: rgba(255, 30, 120, 0.28);
+  --color-violet-300: rgba(255, 30, 120, 0.46);
+  --color-violet-400: #ff4d95;
+  --color-violet-500: #ff2a7f;
+  --color-violet-600: #ff1e78;
+  --color-violet-700: #e01068;
+
+  /* Blue → neon cyan */
+  --color-blue-50:  rgba(0, 220, 255, 0.08);
+  --color-blue-100: rgba(0, 220, 255, 0.14);
+  --color-blue-200: rgba(0, 220, 255, 0.28);
+  --color-blue-300: rgba(0, 220, 255, 0.46);
+  --color-blue-400: #00e8ff;
+  --color-blue-500: #00dcff;
+  --color-blue-600: #00cef0;
+  --color-blue-700: #00b8d8;
+
+  /* Emerald → neon mint */
+  --color-emerald-50:  rgba(0, 255, 176, 0.08);
+  --color-emerald-200: rgba(0, 255, 176, 0.28);
+  --color-emerald-400: #00ffb4;
+  --color-emerald-500: #00f0a8;
+  --color-emerald-600: #00d894;
+
+  /* Amber → Vice City gold/yellow */
+  --color-amber-50:  rgba(255, 224, 0, 0.08);
+  --color-amber-200: rgba(255, 224, 0, 0.28);
+  --color-amber-400: #ffe800;
+  --color-amber-500: #ffe100;
+  --color-amber-600: #e8cc00;
+
+  /* Red → hot pink */
+  --color-red-50:  rgba(255, 30, 120, 0.08);
+  --color-red-200: rgba(255, 30, 120, 0.28);
+  --color-red-500: #ff1e78;
+  --color-red-600: #e01068;
+}
+
+/* ── Perspective grid + scanline overlays ───── */
+
+/* Bottom horizon grid — classic synthwave floor */
+.retro body::before {
+  content: '';
+  position: fixed;
+  bottom: 0;
+  left: -20%;
+  right: -20%;
+  height: 52vh;
+  background:
+    linear-gradient(rgba(255, 30, 120, 0.28) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 220, 255, 0.18) 1px, transparent 1px);
+  background-size: 80px 50px;
+  transform: perspective(600px) rotateX(72deg);
+  transform-origin: bottom center;
+  pointer-events: none;
+  z-index: 0;
+  mask-image: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 80%);
+  -webkit-mask-image: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 80%);
+}
+
+/* Scanline overlay */
 .retro::after {
   content: '';
   position: fixed;
@@ -46,26 +130,39 @@ body {
     0deg,
     transparent,
     transparent 3px,
-    rgba(0, 0, 0, 0.07) 3px,
-    rgba(0, 0, 0, 0.07) 4px
+    rgba(0, 0, 0, 0.08) 3px,
+    rgba(0, 0, 0, 0.08) 4px
   );
   pointer-events: none;
   z-index: 9998;
 }
 
-/* Body — deep Miami night */
+/* ── Body — Miami night sky ──────────────────── */
 .retro body {
-  background-color: #0b0b1e;
+  background-color: #080618;
   color: #eddeff;
   background-image:
-    /* Pink sky glow at top */
-    radial-gradient(ellipse 80% 40% at 50% 0%, rgba(255, 30, 120, 0.18) 0%, transparent 70%),
-    /* Cyan horizon glow */
-    radial-gradient(ellipse 100% 30% at 50% 100%, rgba(0, 220, 255, 0.1) 0%, transparent 60%),
-    /* Grid lines */
-    linear-gradient(rgba(255, 30, 120, 0.07) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 30, 120, 0.07) 1px, transparent 1px);
-  background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
+    /* Bright hot-pink sky glow */
+    radial-gradient(ellipse 130% 55% at 50% -5%,  rgba(255, 30, 120, 0.45) 0%, transparent 65%),
+    /* Purple mid-sky */
+    radial-gradient(ellipse 100% 60% at 50% 35%, rgba(150, 0, 210, 0.18) 0%, transparent 60%),
+    /* Neon cyan horizon line */
+    radial-gradient(ellipse 120% 6%  at 50% 72%, rgba(0, 220, 255, 0.55) 0%, transparent 100%),
+    /* Cyan lower glow */
+    radial-gradient(ellipse 100% 30% at 50% 90%, rgba(0, 180, 255, 0.14) 0%, transparent 70%);
+}
+
+/* ── Override project's hardcoded dark values ─ */
+.retro [class*="bg-\\[\\#0d1424\\]"],
+.retro [class*="bg-\\[\\#080d18\\]"],
+.retro [class*="bg-\\[\\#111a2e\\]"],
+.retro [class*="bg-\\[\\#0a1020\\]"],
+.retro [class*="bg-\\[\\#0d0e1a\\]"] {
+  background-color: rgba(12, 6, 35, 0.92) !important;
+}
+
+.retro [class*="border-\\[\\#1e2d45\\]"] {
+  border-color: rgba(255, 30, 120, 0.32) !important;
 }
 
 /* ── Headings — Vice City impact style ─────── */
@@ -73,12 +170,13 @@ body {
   font-family: var(--font-vice), Impact, 'Arial Black', sans-serif !important;
   font-style: italic !important;
   text-transform: uppercase !important;
-  letter-spacing: 0.04em !important;
+  letter-spacing: 0.05em !important;
   color: #ff1e78 !important;
   text-shadow:
-    3px 3px 0 #00dcff,
-    6px 6px 0 rgba(255, 30, 120, 0.25) !important;
-  line-height: 1.1 !important;
+    4px 4px 0 #00dcff,
+    8px 8px 0 rgba(255, 30, 120, 0.22),
+    0 0 40px rgba(255, 30, 120, 0.55) !important;
+  line-height: 1.05 !important;
 }
 
 .retro h2 {
@@ -87,8 +185,10 @@ body {
   text-transform: uppercase !important;
   letter-spacing: 0.04em !important;
   color: #ff1e78 !important;
-  text-shadow: 2px 2px 0 #00dcff !important;
-  line-height: 1.2 !important;
+  text-shadow:
+    3px 3px 0 #00dcff,
+    0 0 24px rgba(255, 30, 120, 0.5) !important;
+  line-height: 1.15 !important;
 }
 
 .retro h3 {
@@ -97,19 +197,21 @@ body {
   text-transform: uppercase !important;
   letter-spacing: 0.03em !important;
   color: #ffe100 !important;
-  text-shadow: 1px 1px 0 rgba(255, 30, 120, 0.6) !important;
-  line-height: 1.3 !important;
+  text-shadow:
+    2px 2px 0 rgba(255, 30, 120, 0.7),
+    0 0 16px rgba(255, 225, 0, 0.45) !important;
+  line-height: 1.25 !important;
 }
 
 .retro h4,
 .retro h5,
 .retro h6 {
   color: #00dcff !important;
-  text-shadow: 0 0 12px rgba(0, 220, 255, 0.5) !important;
+  text-shadow: 0 0 16px rgba(0, 220, 255, 0.65) !important;
   letter-spacing: 0.02em !important;
 }
 
-/* ── Body text — clean and readable ────────── */
+/* ── Body text — readable ───────────────────── */
 .retro p {
   color: #d8c8f0 !important;
   line-height: 1.75 !important;
@@ -122,6 +224,76 @@ body {
   line-height: 1.75 !important;
 }
 
+/* Text color overrides for common slate classes */
+.retro [class~="text-slate-900"],
+.retro [class~="text-slate-800"],
+.retro [class~="text-slate-700"] {
+  color: #f0e8ff !important;
+}
+.retro [class~="text-slate-600"],
+.retro [class~="text-slate-500"] {
+  color: #c8b8e8 !important;
+}
+.retro [class~="text-slate-400"],
+.retro [class~="text-slate-300"] {
+  color: rgba(200, 184, 232, 0.65) !important;
+}
+
+/* ── Gradient text clips — remap to pink/cyan ─ */
+.retro [class*="from-blue"][class*="to-violet"],
+.retro [class*="from-violet"][class*="to-blue"] {
+  background-image: linear-gradient(to right, #ff1e78, #00dcff) !important;
+}
+
+/* ── Primary CTA buttons ─────────────────────── */
+.retro [class*="from-blue-6"],
+.retro [class*="from-blue-5"] {
+  background-image: linear-gradient(135deg, #ff1e78 0%, #cc00cc 50%, #00dcff 100%) !important;
+  box-shadow: 0 0 24px rgba(255, 30, 120, 0.5), 0 4px 15px rgba(255, 30, 120, 0.3) !important;
+  border: none !important;
+}
+.retro [class*="from-blue-6"]:hover,
+.retro [class*="from-blue-5"]:hover {
+  box-shadow: 0 0 36px rgba(255, 30, 120, 0.7), 0 4px 20px rgba(255, 30, 120, 0.4) !important;
+}
+
+/* ── Card / panel surfaces ──────────────────── */
+/* Catch all rounded panels with light backgrounds */
+.retro [class~="bg-white"] {
+  background-color: rgba(14, 8, 40, 0.88) !important;
+  border-color: rgba(255, 30, 120, 0.28) !important;
+  box-shadow: 0 0 0 1px rgba(255, 30, 120, 0.15), 0 0 30px rgba(255, 30, 120, 0.06) !important;
+}
+.retro [class~="bg-slate-50"],
+.retro [class~="bg-slate-100"] {
+  background-color: rgba(16, 10, 44, 0.82) !important;
+  border-color: rgba(255, 30, 120, 0.22) !important;
+}
+
+/* Feature/mission gradient boxes */
+.retro [class*="from-blue-50"],
+.retro [class*="from-violet-50"],
+.retro [class*="via-violet-50"] {
+  background: linear-gradient(135deg,
+    rgba(255,30,120,0.07) 0%,
+    rgba(150,0,220,0.05) 50%,
+    transparent 100%) !important;
+  border-color: rgba(255, 30, 120, 0.2) !important;
+}
+
+/* Icon boxes */
+.retro [class~="bg-slate-100"],
+.retro [class*="bg-blue-50"],
+.retro [class*="bg-violet-50"] {
+  background-color: rgba(255, 30, 120, 0.1) !important;
+  border-color: rgba(255, 30, 120, 0.25) !important;
+}
+
+/* Round all border radii — keep rounded in Vice City */
+.retro [class~="rounded-full"] {
+  border-radius: 9999px !important;
+}
+
 /* ── Links ──────────────────────────────────── */
 .retro a {
   color: #00dcff !important;
@@ -130,17 +302,17 @@ body {
 }
 .retro a:hover {
   color: #ff1e78 !important;
-  text-shadow: 0 0 10px rgba(255, 30, 120, 0.6) !important;
+  text-shadow: 0 0 12px rgba(255, 30, 120, 0.65) !important;
 }
 
 /* ── Selection ──────────────────────────────── */
 .retro ::selection {
-  background: rgba(255, 30, 120, 0.4);
+  background: rgba(255, 30, 120, 0.45);
   color: #fff;
 }
 
 /* ── Scrollbar ──────────────────────────────── */
-.retro ::-webkit-scrollbar-track { background: #0b0b1e; }
+.retro ::-webkit-scrollbar-track { background: #080618; }
 .retro ::-webkit-scrollbar-thumb { background: #ff1e78; border-radius: 2px; }
 .retro ::-webkit-scrollbar-thumb:hover { background: #00dcff; }
 
@@ -148,8 +320,8 @@ body {
 .retro input,
 .retro textarea,
 .retro select {
-  background: rgba(255, 30, 120, 0.05) !important;
-  border: 1px solid rgba(255, 30, 120, 0.35) !important;
+  background: rgba(255, 30, 120, 0.06) !important;
+  border: 1px solid rgba(255, 30, 120, 0.38) !important;
   color: #eddeff !important;
   border-radius: 2px !important;
 }
@@ -157,22 +329,22 @@ body {
 .retro textarea:focus {
   outline: none !important;
   border-color: #ff1e78 !important;
-  box-shadow: 0 0 0 2px rgba(255, 30, 120, 0.2), 0 0 15px rgba(255, 30, 120, 0.1) !important;
+  box-shadow: 0 0 0 2px rgba(255, 30, 120, 0.22), 0 0 18px rgba(255, 30, 120, 0.12) !important;
 }
 .retro input::placeholder,
 .retro textarea::placeholder {
-  color: rgba(237, 222, 255, 0.3) !important;
+  color: rgba(237, 222, 255, 0.28) !important;
 }
 
 /* ── Music Player ───────────────────────────── */
 .retro-music-btn {
   font-family: var(--font-retro), 'Courier New', monospace;
   font-size: 10px;
-  background: rgba(11, 11, 30, 0.95);
+  background: rgba(8, 6, 24, 0.96);
   border: 2px solid #ff1e78;
   color: #ff1e78;
   padding: 10px 16px;
-  box-shadow: 0 0 12px rgba(255, 30, 120, 0.4), inset 0 0 8px rgba(255, 30, 120, 0.05);
+  box-shadow: 0 0 16px rgba(255, 30, 120, 0.5), inset 0 0 10px rgba(255, 30, 120, 0.06);
   cursor: pointer;
   transition: color 0.2s, border-color 0.2s, box-shadow 0.2s;
   white-space: nowrap;
@@ -182,17 +354,14 @@ body {
 .retro-music-btn:hover {
   color: #00dcff;
   border-color: #00dcff;
-  box-shadow: 0 0 18px rgba(0, 220, 255, 0.5), inset 0 0 8px rgba(0, 220, 255, 0.05);
-}
-.retro-music-btn:active {
-  box-shadow: 0 0 6px rgba(0, 220, 255, 0.3);
+  box-shadow: 0 0 22px rgba(0, 220, 255, 0.6), inset 0 0 10px rgba(0, 220, 255, 0.06);
 }
 
 .retro-music-label {
   font-family: var(--font-retro), 'Courier New', monospace;
   font-size: 8px;
   color: #ffe100;
-  text-shadow: 0 0 8px rgba(255, 225, 0, 0.7);
+  text-shadow: 0 0 10px rgba(255, 225, 0, 0.8);
   animation: retro-blink 1.2s step-end infinite;
   letter-spacing: 0.1em;
 }
@@ -205,10 +374,10 @@ body {
 
 @keyframes retro-neon-pulse {
   0%, 100% {
-    text-shadow: 3px 3px 0 #00dcff, 0 0 10px rgba(255, 30, 120, 0.4);
+    text-shadow: 4px 4px 0 #00dcff, 0 0 16px rgba(255, 30, 120, 0.5);
   }
   50% {
-    text-shadow: 3px 3px 0 #00dcff, 0 0 30px rgba(255, 30, 120, 0.9),
-      0 0 60px rgba(255, 30, 120, 0.3);
+    text-shadow: 4px 4px 0 #00dcff, 0 0 36px rgba(255, 30, 120, 1),
+      0 0 70px rgba(255, 30, 120, 0.4);
   }
 }
