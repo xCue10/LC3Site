@@ -43,17 +43,17 @@ body {
 .retro {
   --color-white: #ffffff;
 
-  /* Slate → purple-navy scale (readable on white) */
-  --color-slate-50:  #faf5ff;
-  --color-slate-100: #f3e8ff;
-  --color-slate-200: #e9d5ff;
-  --color-slate-300: #d8b4fe;
-  --color-slate-400: #a78bfa;
-  --color-slate-500: #8b5cf6;
-  --color-slate-600: #7c3aed;
-  --color-slate-700: #6d28d9;
-  --color-slate-800: #3b0764;
-  --color-slate-900: #1e1b4b;
+  /* Slate → neutral gray (clean white/light backgrounds, dark readable text) */
+  --color-slate-50:  #fafafa;
+  --color-slate-100: #f4f4f5;
+  --color-slate-200: #e4e4e7;
+  --color-slate-300: #d4d4d8;
+  --color-slate-400: #a1a1aa;
+  --color-slate-500: #71717a;
+  --color-slate-600: #52525b;
+  --color-slate-700: #3f3f46;
+  --color-slate-800: #27272a;
+  --color-slate-900: #18181b;
 
   /* Violet → Disney bright purple */
   --color-violet-50:  #faf5ff;
@@ -115,7 +115,7 @@ body {
   top: 10px;
   left: 50%;
   transform: translateX(-50%);
-  width: min(960px, calc(100vw - 160px));
+  width: min(1280px, calc(100vw - 160px));
   height: calc(100vh - 84px);  /* 10px top + 38px taskbar + 24px stand + 12px base */
   background: #c8c4bc;
   border-radius: 10px 10px 6px 6px;
@@ -259,30 +259,30 @@ body {
 
 /* ── Body text — dark on white ──────────────── */
 .retro p {
-  color: #374151 !important;
+  color: #3f3f46 !important;
   line-height: 1.75 !important;
   font-size: 1rem !important;
   font-family: inherit !important;
 }
 
 .retro li {
-  color: #374151 !important;
+  color: #3f3f46 !important;
   line-height: 1.75 !important;
 }
 
-/* Text color overrides */
+/* Text color overrides — readable dark tones on white */
 .retro [class~="text-slate-900"],
 .retro [class~="text-slate-800"],
 .retro [class~="text-slate-700"] {
-  color: #1e1b4b !important;
+  color: #18181b !important;   /* near-black */
 }
 .retro [class~="text-slate-600"],
 .retro [class~="text-slate-500"] {
-  color: #4c1d95 !important;
+  color: #52525b !important;   /* readable dark gray */
 }
 .retro [class~="text-slate-400"],
 .retro [class~="text-slate-300"] {
-  color: #7c3aed !important;
+  color: #71717a !important;   /* medium gray */
 }
 
 /* ── Gradient text — Disney orange to purple ── */
@@ -308,13 +308,13 @@ body {
 /* ── Card / panel surfaces ──────────────────── */
 .retro [class~="bg-white"] {
   background-color: #ffffff !important;
-  border-color: #d8b4fe !important;
+  border-color: #e4e4e7 !important;
   box-shadow: none !important;
 }
 .retro [class~="bg-slate-50"],
 .retro [class~="bg-slate-100"] {
-  background-color: #faf5ff !important;
-  border-color: #e9d5ff !important;
+  background-color: #fafafa !important;
+  border-color: #e4e4e7 !important;
 }
 
 /* Feature/mission gradient boxes */
@@ -322,8 +322,8 @@ body {
 .retro [class*="from-violet-50"],
 .retro [class*="via-violet-50"] {
   background: linear-gradient(135deg,
-    rgba(124, 58, 237, 0.06) 0%,
-    rgba(234, 88, 12, 0.04) 50%,
+    rgba(124, 58, 237, 0.05) 0%,
+    rgba(234, 88, 12, 0.03) 50%,
     transparent 100%) !important;
   border-color: #e9d5ff !important;
 }
@@ -332,8 +332,8 @@ body {
 .retro [class~="bg-slate-100"],
 .retro [class*="bg-blue-50"],
 .retro [class*="bg-violet-50"] {
-  background-color: #f3e8ff !important;
-  border-color: #d8b4fe !important;
+  background-color: #f4f4f5 !important;
+  border-color: #e4e4e7 !important;
 }
 
 /* Override hardcoded dark bg values */
@@ -346,27 +346,31 @@ body {
 }
 
 .retro [class*="border-\\[\\#1e2d45\\]"] {
-  border-color: #d8b4fe !important;
+  border-color: #e4e4e7 !important;
 }
 
-/* ── Links (general, overridden by header rules above) ── */
-.retro a {
-  color: #2563eb !important;
-  text-decoration: underline !important;
-  transition: color 0.2s !important;
-  text-shadow: none !important;
-}
-.retro a:hover {
-  color: #7c3aed !important;
-  text-shadow: none !important;
-}
-/* Header links override — white text on Win98 dark blue bar */
+/* ── Links — only underline prose/body links ── */
+/* Header links: white on Win98 blue bar */
 .retro #site-wrapper header a,
 .retro #site-wrapper header nav a,
 .retro #site-wrapper header button {
   color: #ffffff !important;
   text-decoration: none !important;
   text-shadow: none !important;
+}
+/* Navigation-style links (card labels, "view all" etc): blue, no underline */
+.retro a {
+  color: #2563eb !important;
+  text-decoration: none !important;
+  transition: color 0.15s !important;
+}
+.retro a:hover {
+  color: #7c3aed !important;
+}
+/* Prose body links: underline for readability */
+.retro main p a,
+.retro main li a {
+  text-decoration: underline !important;
 }
 
 /* ── Selection ──────────────────────────────── */
