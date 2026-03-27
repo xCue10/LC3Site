@@ -174,19 +174,19 @@ const ADS = [
     id: 0,
     title: 'Macromedia Flash Player Required',
     body: '🎉 You are visitor #1,000,000!\nClick to claim your FREE prize!',
-    pos: { top: 120, right: 20 },
+    pos: { top: '15%', left: '22%' },
   },
   {
     id: 1,
     title: 'Security Alert',
     body: '⚠️ WARNING: 47 viruses detected!\nClick HERE to remove them NOW for FREE!',
-    pos: { top: 280, left: 60 },
+    pos: { top: '42%', left: '6%' },
   },
   {
     id: 2,
     title: 'FREE AOL Offer — Limited Time!',
     body: '📀 Get 1000 FREE hours with AOL\nInstant Messenger! Don\'t miss out!',
-    pos: { top: 420, right: 120 },
+    pos: { top: '62%', left: '30%' },
   },
 ];
 

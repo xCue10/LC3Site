@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 
 type Phase = 'idle' | 'boot' | 'flash' | 'depart';
 
-const DEPART_YEARS = [1998, 2003, 2007, 2012, 2016, 2020, 2025];
+const DEPART_YEARS = [1998, 2003, 2007, 2012, 2016, 2020, 2026];
 const WARP_COLORS  = ['#ffcc00', '#ff9900', '#ffffff', '#ffaa33', '#ffe066', '#ffffff'];
 
 export default function TimeMachine() {
@@ -236,12 +236,12 @@ export default function TimeMachine() {
       {/* Depart warp — exit */}
       {phase === 'depart' && (
         <div className="tm-warp-wrap">
-          <p className="tm-warp-label" style={{ color: '#ffcc00' }}>►► RETURNING TO 2025 ►►</p>
+          <p className="tm-warp-label" style={{ color: '#ffcc00' }}>►► RETURNING TO 2026 ►►</p>
           <p className="tm-year-caption">CURRENT YEAR</p>
           <div className="tm-year-display" key={year} style={{ color: '#ffcc00', textShadow: '0 0 24px #ff9900, 0 0 8px #ffcc00' }}>{year}</div>
           <p className="tm-velocity">
             FAST FORWARD&nbsp;
-            <span className="tm-velocity-val" style={{ color: '#ffcc00' }}>►► 2025</span>
+            <span className="tm-velocity-val" style={{ color: '#ffcc00' }}>►► 2026</span>
           </p>
         </div>
       )}
