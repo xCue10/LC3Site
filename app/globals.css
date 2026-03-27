@@ -305,6 +305,19 @@ body {
   background-image: linear-gradient(180deg, #fb923c 0%, #f97316 100%) !important;
 }
 
+/* ── Fix: bg-clip-text elements must NOT get button color override ── */
+.retro [class*="bg-clip-text"][class*="from-blue"],
+.retro [class*="bg-clip-text"][class*="to-violet"] {
+  background-image: linear-gradient(to right, #ea580c, #7c3aed) !important;
+  color: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+/* Stat labels */
+.retro [class~="text-slate-500"][class~="mt-1"] {
+  color: #3f3f46 !important;
+}
+
 /* ── Card / panel surfaces ──────────────────── */
 .retro [class~="bg-white"] {
   background-color: #ffffff !important;
@@ -417,55 +430,58 @@ body {
   color: #9ca3af !important;
 }
 
-/* ── Winamp Player ──────────────────────────── */
+/* ── LC3 Music Player (Winamp-style) ────────── */
 .wp-wrap {
   position: fixed;
   bottom: 48px;
   right: 8px;
   z-index: 9997;
-  width: 360px;
-  background: #232323;
-  border-top: 1px solid #555;
-  border-left: 1px solid #555;
-  border-right: 1px solid #111;
-  border-bottom: 1px solid #111;
-  box-shadow: 2px 2px 16px rgba(0,0,0,0.9);
+  width: 320px;
+  background: #0a0e1a;
+  border-top: 2px solid #00ccff;
+  border-left: 2px solid #00ccff;
+  border-right: 2px solid #004466;
+  border-bottom: 2px solid #004466;
+  box-shadow:
+    0 0 20px rgba(0,204,255,0.25),
+    2px 2px 0 #000,
+    inset 0 0 40px rgba(0,0,0,0.6);
   font-family: 'Tahoma', 'Arial', sans-serif;
   user-select: none;
   pointer-events: auto;
 }
 
+/* ── Title bar ──────────────────────────────── */
 .wp-titlebar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 28px;
-  padding: 0 5px 0 9px;
-  background: linear-gradient(90deg, #1a3a80 0%, #3a70d0 60%, #1a3a80 100%);
+  height: 24px;
+  padding: 0 4px 0 8px;
+  background: linear-gradient(90deg, #000080 0%, #0030c0 50%, #000080 100%);
+  border-bottom: 1px solid #00ccff;
   cursor: default;
 }
 
 .wp-title-text {
-  color: #ffffff;
-  font-size: 13px;
+  color: #00ccff;
+  font-size: 11px;
   font-weight: bold;
-  letter-spacing: 1.5px;
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+  letter-spacing: 2px;
+  text-shadow: 0 0 8px rgba(0,204,255,0.8);
+  text-transform: uppercase;
 }
 
-.wp-winbtns {
-  display: flex;
-  gap: 3px;
-}
+.wp-winbtns { display: flex; gap: 2px; }
 
 .wp-wbtn {
-  width: 18px;
-  height: 16px;
-  background: linear-gradient(180deg, #ddd 0%, #aaa 100%);
+  width: 16px;
+  height: 13px;
+  background: #c0c0c0;
   border: none;
   box-shadow: inset 1px 1px 0 #fff, inset -1px -1px 0 #555;
   color: #000;
-  font-size: 11px;
+  font-size: 9px;
   font-weight: bold;
   cursor: pointer;
   padding: 0;
@@ -474,95 +490,99 @@ body {
   justify-content: center;
   line-height: 1;
 }
-.wp-wbtn:active {
-  box-shadow: inset -1px -1px 0 #fff, inset 1px 1px 0 #555;
-}
-.wp-wbtn-close { background: linear-gradient(180deg, #e08080 0%, #a04040 100%); color: #fff; }
+.wp-wbtn:active { box-shadow: inset -1px -1px 0 #fff, inset 1px 1px 0 #555; }
+.wp-wbtn-close { background: #c06060; color: #fff; }
 
 /* ── LED Display ──────────────────────────── */
 .wp-display {
-  background: #0a0a0a;
-  margin: 5px 5px 0;
-  padding: 7px 9px 6px;
-  border: 1px solid #111;
-  box-shadow: inset 1px 1px 3px rgba(0,0,0,0.9);
+  background: #000510;
+  margin: 5px 6px 4px;
+  padding: 6px 8px 5px;
+  border: 1px solid #004466;
+  box-shadow:
+    inset 0 0 12px rgba(0,0,0,0.9),
+    0 0 4px rgba(0,204,255,0.1);
   overflow: hidden;
 }
 
 .wp-marquee-wrap {
   overflow: hidden;
   white-space: nowrap;
-  height: 18px;
-  margin-bottom: 5px;
+  height: 16px;
+  margin-bottom: 6px;
+  border-bottom: 1px solid #001a2a;
+  padding-bottom: 4px;
 }
 
 .wp-marquee {
   display: inline-block;
   white-space: nowrap;
-  color: #00e600;
+  color: #00ccff;
   font-family: 'Courier New', monospace;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: bold;
-  letter-spacing: 0.5px;
+  letter-spacing: 1px;
+  text-shadow: 0 0 6px rgba(0,204,255,0.7);
 }
 
-.wp-marquee-anim {
-  animation: wp-scroll 14s linear infinite;
-}
+.wp-marquee-anim { animation: wp-scroll 14s linear infinite; }
 
 @keyframes wp-scroll {
-  0%   { transform: translateX(360px); }
+  0%   { transform: translateX(320px); }
   100% { transform: translateX(-100%); }
 }
 
 .wp-info-row {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   gap: 8px;
 }
 
 .wp-elapsed {
-  color: #00e600;
+  color: #00ccff;
   font-family: 'Courier New', monospace;
-  font-size: 26px;
+  font-size: 28px;
   font-weight: bold;
-  letter-spacing: 4px;
-  text-shadow: 0 0 8px rgba(0,230,0,0.5);
+  letter-spacing: 5px;
+  text-shadow: 0 0 12px rgba(0,204,255,0.6);
   line-height: 1;
+  flex-shrink: 0;
 }
 
 .wp-status-dot {
-  color: #009900;
+  color: #0088aa;
   font-family: 'Courier New', monospace;
-  font-size: 11px;
+  font-size: 9px;
   flex: 1;
+  letter-spacing: 1px;
 }
 
 .wp-kbps {
-  color: #006600;
+  color: #004466;
   font-family: 'Courier New', monospace;
-  font-size: 10px;
+  font-size: 9px;
 }
 
 /* ── EQ Bars ──────────────────────────────── */
 .wp-eq-wrap {
   display: flex;
   align-items: flex-end;
-  gap: 3px;
-  height: 52px;
-  background: #0a0a0a;
-  margin: 4px 5px;
-  padding: 5px 6px 4px;
-  border: 1px solid #111;
-  box-shadow: inset 1px 1px 3px rgba(0,0,0,0.9);
+  gap: 2px;
+  height: 48px;
+  background: #000510;
+  margin: 0 6px 4px;
+  padding: 4px 5px 3px;
+  border: 1px solid #004466;
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.9);
 }
 
 .wp-bar {
   flex: 1;
   height: 15%;
   min-height: 2px;
-  background: linear-gradient(to top, #00ff00, #00cc00 60%, #009900);
+  background: linear-gradient(to top, #00ccff, #0088cc 60%, #004488);
   border-radius: 1px 1px 0 0;
+  box-shadow: 0 0 3px rgba(0,204,255,0.4);
 }
 
 .wp-bar-play {
@@ -582,19 +602,20 @@ body {
 .wp-vol-row {
   display: flex;
   align-items: center;
-  gap: 7px;
-  padding: 5px 9px 6px;
-  background: #1e1e1e;
-  border-top: 1px solid #111;
+  gap: 6px;
+  padding: 4px 8px 5px;
+  background: #050a14;
+  border-top: 1px solid #001a2a;
 }
 
 .wp-vol-label {
-  color: #777;
-  font-size: 11px;
+  color: #0088aa;
+  font-size: 9px;
   font-weight: bold;
   letter-spacing: 1px;
-  width: 26px;
+  width: 22px;
   font-family: 'Courier New', monospace;
+  text-transform: uppercase;
 }
 
 .wp-slider {
@@ -602,94 +623,99 @@ body {
   height: 4px;
   -webkit-appearance: none;
   appearance: none;
-  background: #444;
+  background: #001a2a;
   border-radius: 2px;
   cursor: pointer;
   outline: none;
+  border: 1px solid #004466;
 }
 .wp-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   width: 10px;
   height: 16px;
-  background: linear-gradient(180deg, #ddd 0%, #999 100%);
-  box-shadow: inset 1px 1px 0 #fff, inset -1px -1px 0 #555;
+  background: linear-gradient(180deg, #00ccff 0%, #0066aa 100%);
   border-radius: 1px;
   cursor: pointer;
+  box-shadow: 0 0 4px rgba(0,204,255,0.5);
 }
 
 .wp-vol-val {
-  color: #555;
-  font-size: 11px;
+  color: #004466;
+  font-size: 9px;
   font-family: 'Courier New', monospace;
-  width: 32px;
+  width: 26px;
   text-align: right;
 }
 
 /* ── Transport buttons ────────────────────── */
 .wp-transport {
   display: flex;
-  gap: 4px;
-  padding: 5px 8px 7px;
-  background: #1a1a1a;
-  border-top: 1px solid #111;
+  gap: 3px;
+  padding: 5px 7px 6px;
+  background: #050a14;
+  border-top: 1px solid #001a2a;
 }
 
 .wp-btn {
   flex: 1;
-  height: 30px;
-  background: linear-gradient(180deg, #4a4a4a 0%, #333 100%);
-  border: none;
-  box-shadow: inset 1px 1px 0 #5e5e5e, inset -1px -1px 0 #1a1a1a;
-  color: #ccc;
-  font-size: 14px;
+  height: 26px;
+  background: linear-gradient(180deg, #0a1428 0%, #050a14 100%);
+  border: 1px solid #004466;
+  color: #0088aa;
+  font-size: 12px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 1px;
-  transition: background 0.05s, color 0.05s;
+  transition: all 0.08s;
+  box-shadow: inset 0 1px 0 rgba(0,204,255,0.1);
 }
 .wp-btn:hover:not(:disabled) {
-  background: linear-gradient(180deg, #5a5a5a 0%, #444 100%);
-  color: #fff;
+  border-color: #00ccff;
+  color: #00ccff;
+  background: linear-gradient(180deg, #001a2a 0%, #000d1a 100%);
+  box-shadow: 0 0 6px rgba(0,204,255,0.3), inset 0 1px 0 rgba(0,204,255,0.2);
 }
 .wp-btn:active:not(:disabled) {
-  box-shadow: inset -1px -1px 0 #5e5e5e, inset 1px 1px 0 #1a1a1a;
+  background: #000510;
+  box-shadow: inset 0 1px 4px rgba(0,0,0,0.8);
 }
-.wp-btn:disabled {
-  opacity: 0.35;
-  cursor: default;
-}
+.wp-btn:disabled { opacity: 0.2; cursor: default; }
 .wp-btn-active {
-  color: #00e600;
-  text-shadow: 0 0 6px rgba(0,230,0,0.7);
-  background: linear-gradient(180deg, #2a2a2a 0%, #1e1e1e 100%);
-  box-shadow: inset -1px -1px 0 #5e5e5e, inset 1px 1px 0 #1a1a1a;
+  color: #00ccff;
+  border-color: #00ccff;
+  background: linear-gradient(180deg, #001a2a 0%, #000d1a 100%);
+  box-shadow: 0 0 8px rgba(0,204,255,0.4), inset 0 1px 0 rgba(0,204,255,0.2);
+  text-shadow: 0 0 6px rgba(0,204,255,0.8);
 }
 
 /* ── Playlist strip ───────────────────────── */
 .wp-playlist {
-  background: #111;
-  border-top: 1px solid #000;
-  padding: 4px 0;
-  max-height: 88px;
+  background: #030710;
+  border-top: 1px solid #001a2a;
+  padding: 3px 0;
+  max-height: 72px;
   overflow-y: auto;
 }
 .wp-pl-item {
   display: flex;
   align-items: center;
   gap: 5px;
-  padding: 3px 9px;
-  font-size: 12px;
-  color: #4a8a4a;
+  padding: 3px 8px;
+  font-size: 11px;
+  color: #004466;
   font-family: 'Courier New', monospace;
   cursor: default;
+  letter-spacing: 0.5px;
 }
 .wp-pl-active {
-  background: #003080;
-  color: #00e600;
+  background: #000d1a;
+  color: #00ccff;
+  text-shadow: 0 0 4px rgba(0,204,255,0.5);
+  border-left: 2px solid #00ccff;
 }
-.wp-pl-num { opacity: 0.6; flex-shrink: 0; }
+.wp-pl-num { opacity: 0.5; flex-shrink: 0; }
 .wp-pl-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 /* ── Animations ─────────────────────────────── */
