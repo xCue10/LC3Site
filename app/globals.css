@@ -2689,4 +2689,102 @@ body {
 .rd-bsod-header { font-weight: bold; font-size: 16px; }
 .rd-bsod-prompt { margin-top: 8px; }
 @keyframes bsod-blink { 0%,49%{opacity:1} 50%,100%{opacity:0} }
+
+/* ── BonziBuddy ──────────────────────────────── */
+@keyframes bonzi-bounce {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  30%       { transform: translateY(-6px) rotate(-2deg); }
+  70%       { transform: translateY(-3px) rotate(2deg); }
+}
+.bonzi-wrap {
+  position: fixed;
+  bottom: 48px;
+  left: 16px;
+  z-index: 9994;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  animation: tm-fadein 0.3s ease-out;
+}
+.bonzi-bubble {
+  background: #ffffcc;
+  border: 1.5px solid #555;
+  border-radius: 2px;
+  padding: 8px 22px 8px 10px;
+  max-width: 195px;
+  min-width: 155px;
+  font-family: 'Tahoma', sans-serif;
+  font-size: 11px;
+  color: #000;
+  line-height: 1.45;
+  box-shadow: 2px 2px 0 #888;
+  position: relative;
+}
+.bonzi-bubble p { margin: 0 0 3px 0; }
+.bonzi-bubble-close {
+  position: absolute;
+  top: 2px;
+  right: 4px;
+  background: none;
+  border: none;
+  font-size: 13px;
+  cursor: pointer;
+  color: #555;
+  padding: 0 2px;
+  line-height: 1;
+}
+.bonzi-bubble-close:hover { color: #000; }
+.bonzi-bubble-btns {
+  display: flex;
+  gap: 4px;
+  justify-content: flex-end;
+  margin-top: 6px;
+}
+.bonzi-btn {
+  background: linear-gradient(180deg, #fefefe 0%, #dcdbd4 100%);
+  border: 1px solid #aaaaaa;
+  border-radius: 3px;
+  font-size: 11px;
+  font-family: 'Tahoma', sans-serif;
+  padding: 2px 8px;
+  cursor: pointer;
+  color: #000;
+  min-width: 42px;
+}
+.bonzi-btn:active { background: linear-gradient(180deg, #dcdbd4 0%, #fefefe 100%); }
+.bonzi-btn-yes {
+  background: linear-gradient(180deg, #c8e8ff 0%, #88bce8 100%);
+  border-color: #4499cc;
+  font-weight: bold;
+}
+.bonzi-btn-yes:active { background: linear-gradient(180deg, #88bce8 0%, #c8e8ff 100%); }
+.bonzi-body {
+  position: relative;
+  cursor: pointer;
+  display: inline-flex;
+}
+.bonzi-gorilla {
+  animation: bonzi-bounce 2.2s ease-in-out infinite;
+  filter: drop-shadow(2px 3px 5px rgba(0,0,0,0.45));
+}
+.bonzi-dismiss {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  width: 15px;
+  height: 15px;
+  background: linear-gradient(180deg, #e85050 0%, #c82020 100%);
+  border: 1px solid #9e1818;
+  border-radius: 2px;
+  font-size: 10px;
+  cursor: pointer;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  line-height: 1;
+}
+.bonzi-dismiss:active { background: linear-gradient(180deg, #c82020 0%, #e85050 100%); }
 .rd-bsod-cursor { animation: bsod-blink 1s step-end infinite; }
