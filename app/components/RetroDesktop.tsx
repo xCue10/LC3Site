@@ -25,7 +25,7 @@ function WinLogo() {
 
 function DocIcon({ bg }: { bg: string }) {
   return (
-    <svg viewBox="0 0 32 32" width="32" height="32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <svg viewBox="0 0 32 32" width="52" height="52" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <rect x="4" y="2" width="22" height="28" rx="2" fill="#ffffff" stroke="#d1d5db" strokeWidth="1.5" />
       <rect x="4" y="2" width="15" height="7" rx="2" fill={bg} />
       <path d="M19 2 L26 9 L19 9 Z" fill="#e5e7eb" />

@@ -260,11 +260,16 @@ export default function Navbar() {
           {/* Retro toggle — separate button with Vice City star */}
           <button
             onClick={toggleRetro}
-            className={retroBtnCls}
+            className={`${retroBtnCls} flex items-center gap-1.5`}
             aria-label={isRetro ? 'Exit Y2K mode' : 'Enter Y2K mode'}
             title={isRetro ? 'Exit Y2K mode' : 'Enter Y2K mode'}
           >
             <StarIcon active={isRetro} />
+            {!isRetro && (
+              <span className="text-xs font-medium text-slate-400 hover:text-[#00ccff] whitespace-nowrap">
+                Throwback?
+              </span>
+            )}
           </button>
         </nav>
 
