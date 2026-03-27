@@ -8,6 +8,7 @@ import AnnouncementBanner from "./components/AnnouncementBanner";
 import RetroMusic from "./components/RetroMusic";
 import TimeMachine from "./components/TimeMachine";
 import RetroDesktop from "./components/RetroDesktop";
+import AIMBuddy from "./components/AIMBuddy";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -75,6 +76,7 @@ export default function RootLayout({
           </div>
         </div>
         <RetroDesktop />
+        <AIMBuddy />
         <RetroMusic />
         <TimeMachine />
       </body>

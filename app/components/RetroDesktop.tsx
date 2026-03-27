@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 
 const ICONS = [
@@ -158,6 +159,7 @@ function PageIcon({ type, color }: { type: string; color: string }) {
 export default function RetroDesktop() {
   const [isRetro, setIsRetro] = useState(false);
   const [time, setTime] = useState('');
+  const pathname = usePathname();
 
   useEffect(() => {
     const check = () => setIsRetro(document.documentElement.classList.contains('retro'));
@@ -183,8 +185,55 @@ export default function RetroDesktop() {
 
   if (!isRetro) return null;
 
+  const displayUrl = `http://www.lc3club.com${pathname === '/' ? '' : pathname}`;
+
   return (
     <>
+      {/* ── IE6 Browser Chrome ─────────────────────── */}
+      <div className="rd-browser">
+        {/* Title bar */}
+        <div className="rd-br-titlebar">
+          <div className="rd-br-title-left">
+            <span className="rd-br-ie-logo">e</span>
+            <span className="rd-br-title-text">LC3 — Lowcode Cloud Club — Microsoft Internet Explorer</span>
+          </div>
+          <div className="rd-br-winbtns">
+            <span className="rd-br-wbtn">_</span>
+            <span className="rd-br-wbtn">□</span>
+            <span className="rd-br-wbtn rd-br-wbtn-close">×</span>
+          </div>
+        </div>
+
+        {/* Menu bar */}
+        <div className="rd-br-menubar">
+          {['File','Edit','View','Favorites','Tools','Help'].map(item => (
+            <span key={item} className="rd-br-menu-item">{item}</span>
+          ))}
+        </div>
+
+        {/* Toolbar */}
+        <div className="rd-br-toolbar">
+          <button className="rd-br-tbtn" title="Back">◄ Back</button>
+          <button className="rd-br-tbtn" title="Forward">Forward ►</button>
+          <button className="rd-br-tbtn" title="Stop">✕</button>
+          <button className="rd-br-tbtn" title="Refresh">↻</button>
+          <button className="rd-br-tbtn" title="Home">⌂</button>
+          <div className="rd-br-sep" />
+          <span className="rd-br-addr-label">Address</span>
+          <div className="rd-br-addr-bar">{displayUrl}</div>
+          <button className="rd-br-go">Go</button>
+        </div>
+      </div>
+
+      {/* Status bar (bottom of browser) */}
+      <div className="rd-br-statusbar">
+        <span className="rd-br-status-text">✔ Done</span>
+        <div className="rd-br-zone">
+          <span>🌐</span>
+          <span>Internet</span>
+        </div>
+      </div>
+
       {/* Desktop icons — left side, 2-column grid */}
       <div className="rd-icons-panel">
         {ICONS.map(({ label, href, color, type }) => (
@@ -194,11 +243,6 @@ export default function RetroDesktop() {
           </Link>
         ))}
       </div>
-
-      {/* Monitor stand */}
-      <div className="rd-stand" aria-hidden="true" />
-      {/* Monitor base */}
-      <div className="rd-base" aria-hidden="true" />
 
       {/* Win98 Taskbar */}
       <div className="rd-taskbar" role="toolbar" aria-label="Taskbar">
