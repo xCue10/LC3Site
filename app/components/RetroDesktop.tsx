@@ -17,8 +17,9 @@ const ICONS = [
   { label: 'Shield',    href: '/shield',    color: '#dc2626', type: 'shield'    },
   { label: 'Contact',   href: '/contact',   color: '#0d9488', type: 'contact'   },
   { label: 'Partner',   href: '/hire',      color: '#ea580c', type: 'hire'      },
-  { label: 'LimeWire',  href: '#limewire',  color: '#22c55e', type: 'limewire'  },
-  { label: 'readme.txt', href: '#notepad', color: '#000080', type: 'notepad'   },
+  { label: 'LimeWire',    href: '#limewire',    color: '#22c55e', type: 'limewire'    },
+  { label: 'readme.txt',  href: '#notepad',     color: '#000080', type: 'notepad'     },
+  { label: 'Recycle Bin', href: '#recyclebin',  color: '#c0c0c0', type: 'recyclebin'  },
 ];
 
 function WinLogo() {
@@ -178,6 +179,24 @@ function PageIcon({ type, color }: { type: string; color: string }) {
           <rect x="8"  y="21" width="10" height="1.5" rx="0.5" fill="#9ca3af" />
         </svg>
       );
+    case 'recyclebin':
+      return (
+        <svg {...s}>
+          {/* Bin body */}
+          <path d="M7,13 L9,31 L23,31 L25,13 Z" fill="#c8d0d8" stroke="#8090a0" strokeWidth="1.2" strokeLinejoin="round" />
+          {/* Bin lid */}
+          <rect x="5" y="10" width="22" height="4" rx="1" fill="#b0bcc8" stroke="#8090a0" strokeWidth="1.2" />
+          {/* Handle on lid */}
+          <rect x="13" y="7" width="6" height="4" rx="1" fill="#b0bcc8" stroke="#8090a0" strokeWidth="1.2" />
+          {/* Recycling arrows on bin body */}
+          <path d="M16,18 L13,22 L15,22 Q15,26 19,26 L19,24 Q17,24 17,22 L19,22 Z" fill="#5a8090" />
+          <path d="M16,18 L19,22 L17,22 Q17,26 13,26 L13,24 Q15,24 15,22 L13,22 Z" fill="#5a8090" opacity="0.7" />
+          {/* Vertical lines on bin */}
+          <line x1="13" y1="14" x2="12" y2="30" stroke="#8090a0" strokeWidth="0.8" />
+          <line x1="16" y1="14" x2="16" y2="30" stroke="#8090a0" strokeWidth="0.8" />
+          <line x1="19" y1="14" x2="20" y2="30" stroke="#8090a0" strokeWidth="0.8" />
+        </svg>
+      );
     default:
       return (
         <svg {...s}>
@@ -220,6 +239,7 @@ export default function RetroDesktop() {
   const [lwProgress, setLwProgress] = useState(0);
   const [showNotepad, setShowNotepad] = useState(false);
   const [showHijack, setShowHijack] = useState(false);
+  const [showRecycleBin, setShowRecycleBin] = useState(false);
   const [showBsod, setShowBsod] = useState(false);
   const [bsodRecovered, setBsodRecovered] = useState(false);
   const [showClockDialog, setShowClockDialog] = useState(false);
@@ -412,6 +432,14 @@ export default function RetroDesktop() {
           if (type === 'notepad') {
             return (
               <div key={href} className="rd-icon" onClick={() => setShowNotepad(true)} style={{ cursor: 'pointer' }}>
+                <PageIcon type={type} color={color} />
+                <span className="rd-icon-label">{label}</span>
+              </div>
+            );
+          }
+          if (type === 'recyclebin') {
+            return (
+              <div key={href} className="rd-icon" onClick={() => setShowRecycleBin(true)} style={{ cursor: 'pointer' }}>
                 <PageIcon type={type} color={color} />
                 <span className="rd-icon-label">{label}</span>
               </div>
@@ -670,6 +698,72 @@ We are sorry for the inconvenience.
 (c) 2001 LC3 Club. All Rights Reserved.
 Built with Microsoft FrontPage 2000.
 ------------------------------------------`}</pre>
+        </div>
+      )}
+
+      {/* Recycle Bin window */}
+      {showRecycleBin && (
+        <div className="rb-wrap">
+          <div className="rd-alert-titlebar rb-titlebar">
+            <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+              <svg width="14" height="14" viewBox="0 0 32 32" aria-hidden="true">
+                <path d="M7,13 L9,31 L23,31 L25,13 Z" fill="#c8d0d8" stroke="#8090a0" strokeWidth="1.5" />
+                <rect x="5" y="10" width="22" height="4" rx="1" fill="#b0bcc8" stroke="#8090a0" strokeWidth="1.5" />
+                <rect x="13" y="7" width="6" height="4" rx="1" fill="#b0bcc8" stroke="#8090a0" strokeWidth="1.5" />
+              </svg>
+              <span className="rd-alert-title">Recycle Bin</span>
+            </div>
+            <div className="aim-winbtns">
+              <button className="aim-wbtn aim-wbtn-min">_</button>
+              <button className="aim-wbtn">□</button>
+              <button className="aim-wbtn aim-wbtn-close" onClick={() => setShowRecycleBin(false)}>×</button>
+            </div>
+          </div>
+          <div className="np-menubar">
+            {['File','Edit','View','Favorites','Tools','Help'].map(m => (
+              <span key={m} className="rd-br-menu-item">{m}</span>
+            ))}
+          </div>
+          <div className="rb-toolbar">
+            <button className="rd-br-tbtn rb-empty-btn" onClick={() => setShowRecycleBin(false)}>
+              🗑 Empty Recycle Bin
+            </button>
+            <div className="rd-br-sep" />
+            <div className="rb-addr-row">
+              <span className="rd-br-addr-label">Address</span>
+              <div className="rd-br-addr-bar">Recycle Bin</div>
+            </div>
+          </div>
+          <div className="rb-col-header">
+            <span className="rb-col rb-col-name">Name</span>
+            <span className="rb-col rb-col-loc">Original Location</span>
+            <span className="rb-col rb-col-date">Date Deleted</span>
+            <span className="rb-col rb-col-size">Size</span>
+            <span className="rb-col rb-col-type">Type</span>
+          </div>
+          <div className="rb-files">
+            {[
+              { name: 'bonzibuddy_setup.exe',                loc: 'C:\\Program Files\\',    date: '3/14/2003',  size: '2.3 MB',  type: 'Application'    },
+              { name: 'my_diary_PRIVATE.doc',                loc: 'C:\\My Documents\\',     date: '11/22/2002', size: '47 KB',   type: 'Word Document'  },
+              { name: 'NOT PORN.zip',                        loc: 'C:\\Windows\\Temp\\',    date: '8/7/2003',   size: '683 MB',  type: 'ZIP File'       },
+              { name: 'coolwebsearch_toolbar_v2.exe',        loc: 'C:\\Downloads\\',        date: '5/18/2003',  size: '1.1 MB',  type: 'Application'    },
+              { name: 'definitely_not_a_virus.mp3.exe',      loc: 'C:\\Shared\\Music\\',    date: '9/2/2002',   size: '512 KB',  type: 'Application'    },
+              { name: 'homework_final_FINAL_v2_REAL.doc',    loc: 'C:\\My Documents\\',     date: '1/30/2003',  size: '23 KB',   type: 'Word Document'  },
+              { name: 'geocities_backup_lc3fan.html',        loc: 'C:\\Desktop\\',          date: '6/11/2002',  size: '8 KB',    type: 'HTML File'      },
+              { name: 'README_IMPORTANT_READ_THIS.txt',      loc: 'C:\\Desktop\\',          date: '4/1/2003',   size: '1 KB',    type: 'Text Document'  },
+            ].map((f, i) => (
+              <div key={i} className={`rb-file${i % 2 === 0 ? '' : ' rb-file-alt'}`}>
+                <span className="rb-col rb-col-name">📄 {f.name}</span>
+                <span className="rb-col rb-col-loc">{f.loc}</span>
+                <span className="rb-col rb-col-date">{f.date}</span>
+                <span className="rb-col rb-col-size">{f.size}</span>
+                <span className="rb-col rb-col-type">{f.type}</span>
+              </div>
+            ))}
+          </div>
+          <div className="rb-statusbar">
+            8 object(s) &nbsp;|&nbsp; Total size: 687 MB
+          </div>
         </div>
       )}
 
