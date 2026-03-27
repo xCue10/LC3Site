@@ -22,11 +22,12 @@ const ICONS = [
 
 function WinLogo() {
   return (
-    <svg viewBox="0 0 14 14" width="14" height="14" aria-hidden="true">
-      <rect x="0" y="0" width="6" height="6" fill="#ff6b6b" />
-      <rect x="8" y="0" width="6" height="6" fill="#69db7c" />
-      <rect x="0" y="8" width="6" height="6" fill="#74c0fc" />
-      <rect x="8" y="8" width="6" height="6" fill="#ffd43b" />
+    <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+      {/* XP waving flag — 4 quadrants with slight perspective skew */}
+      <path d="M1,2 L7.5,1 L7.5,7.5 L1,8 Z"       fill="#e74c3c" />
+      <path d="M8.5,0.8 L15,0 L15,7 L8.5,7.5 Z"   fill="#4caf50" />
+      <path d="M1,8.5 L7.5,8.5 L7.5,15 L1,14 Z"   fill="#2196f3" />
+      <path d="M8.5,8.5 L15,8.5 L15,16 L8.5,15.2 Z" fill="#ffc107" />
     </svg>
   );
 }
@@ -534,7 +535,7 @@ export default function RetroDesktop() {
             </div>
             <div className="rd-alert-body">
               <span className="rd-alert-icon">⚠️</span>
-              <p>© 1998 LC3 Club. All rights reserved.</p>
+              <p>© 2001 LC3 Club. All rights reserved.</p>
               <p>Right-clicking has been disabled on this page.</p>
               <button className="rd-alert-ok" onClick={() => setShowRightClickDialog(false)}>OK</button>
             </div>
@@ -550,8 +551,15 @@ export default function RetroDesktop() {
             onClick={() => setShowStartMenu(false)}
           />
           <div className="rd-start-menu">
-            <div className="rd-sm-sidebar">
-              <span className="rd-sm-sidebar-text">Windows 98</span>
+            <div className="rd-sm-header">
+              <div className="rd-sm-avatar">
+                <svg viewBox="0 0 32 32" width="38" height="38" aria-hidden="true">
+                  <circle cx="16" cy="16" r="16" fill="#2a5bd4" />
+                  <circle cx="16" cy="12" r="6" fill="#c8d8f8" />
+                  <path d="M4 30 Q4 22 16 22 Q28 22 28 30" fill="#c8d8f8" />
+                </svg>
+              </div>
+              <span className="rd-sm-username">LC3Club</span>
             </div>
             <div className="rd-sm-items">
               {ICONS.map(({ label, href }) => (

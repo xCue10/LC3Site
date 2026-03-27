@@ -211,24 +211,26 @@ export default function TimeMachine() {
       {/* CRT scanlines */}
       <div className="tm-scanlines" />
 
-      {/* Win98 boot screen — activate */}
-      {(phase === 'boot' || phase === 'flash') && (
-        <div className="tm-win98-boot">
-          <div className="tm-win98-logo">
-            <div className="tm-win98-squares">
-              <span style={{ background: '#ff3333' }} />
-              <span style={{ background: '#33cc33' }} />
-              <span style={{ background: '#3399ff' }} />
-              <span style={{ background: '#ffcc00' }} />
+      {/* XP boot screen — activate */}
+      {phase === 'boot' && (
+        <div className="tm-xp-boot">
+          <div className="tm-xp-logo-row">
+            <div className="tm-xp-flag">
+              <span style={{ background: '#e74c3c' }} />
+              <span style={{ background: '#4caf50' }} />
+              <span style={{ background: '#2196f3' }} />
+              <span style={{ background: '#ffc107' }} />
             </div>
-            <div className="tm-win98-wordmark">
-              <span>Windows</span>
-              <em>98</em>
+            <div className="tm-xp-wordmark">
+              <span>
+                <span className="tm-xp-windows">Windows</span>
+                <em className="tm-xp-xp"> XP</em>
+              </span>
             </div>
           </div>
-          <p className="tm-win98-starting">Starting Windows 98...</p>
-          <div className="tm-win98-progressrow">
-            {[...Array(10)].map((_, i) => <span key={i} className="tm-win98-block" />)}
+          <p className="tm-xp-edition">Professional</p>
+          <div className="tm-xp-loadbar-track">
+            <div className="tm-xp-loadbar-fill" />
           </div>
         </div>
       )}
@@ -248,9 +250,9 @@ export default function TimeMachine() {
 
       {/* VHS HUD corners */}
       <span className="tm-hud tm-hud-tl">●REC</span>
-      <span className="tm-hud tm-hud-tr">WIN98●</span>
+      <span className="tm-hud tm-hud-tr">WIN XP●</span>
       <span className="tm-hud tm-hud-bl">00:00:00</span>
-      <span className="tm-hud tm-hud-br">AOL●</span>
+      <span className="tm-hud tm-hud-br">XP●</span>
     </div>
   );
 }
