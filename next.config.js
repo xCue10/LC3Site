@@ -32,7 +32,7 @@ const securityHeaders = [
       "frame-src https://hcaptcha.com https://*.hcaptcha.com",
       // No plugins or embedded objects
       "object-src 'none'",
-      "media-src 'none'",
+      "media-src 'self'",
       // Prevent this site from being framed anywhere
       "frame-ancestors 'none'",
       // Only allow forms to submit to same origin
