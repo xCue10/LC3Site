@@ -2204,7 +2204,11 @@ body {
   box-shadow: 0 0 0 1px #4a8ede, 3px 3px 8px rgba(0,0,0,0.4);
   font-family: 'Tahoma', 'Arial', sans-serif;
   z-index: 9998;
-  animation: tm-fadein 0.15s ease-out;
+  animation: lw-fadein 0.15s ease-out;
+}
+@keyframes lw-fadein {
+  from { opacity: 0; transform: translate(-50%, -50%) scale(0.96); }
+  to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
 }
 .lw-titlebar {
   height: 26px;
