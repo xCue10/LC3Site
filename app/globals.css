@@ -110,12 +110,42 @@ body {
 .retro::after { display: none; }
 
 /* ── Browser frame (IE6 window) ─────────────── */
+/* ── Retro desktop scale variables ──────────── */
+.retro {
+  --frame-w:    min(1000px, calc(100vw - 560px));
+  --frame-half: min(500px,  calc(50vw  - 280px));
+  --aim-w:      210px;
+  --music-w:    260px;
+  --icon-col-w: 70px;
+  --icon-size:  40px;
+}
+@media (min-width: 1600px) {
+  .retro {
+    --frame-w:    min(1200px, calc(100vw - 560px));
+    --frame-half: min(600px,  calc(50vw  - 280px));
+    --aim-w:      235px;
+    --music-w:    290px;
+    --icon-col-w: 82px;
+    --icon-size:  48px;
+  }
+}
+@media (min-width: 1920px) {
+  .retro {
+    --frame-w:    min(1440px, calc(100vw - 600px));
+    --frame-half: min(720px,  calc(50vw  - 300px));
+    --aim-w:      260px;
+    --music-w:    320px;
+    --icon-col-w: 94px;
+    --icon-size:  56px;
+  }
+}
+
 .retro #monitor-frame {
   position: fixed !important;
   top: 4px !important;
   left: 50% !important;
   transform: translateX(-50%) !important;
-  width: min(1000px, calc(100vw - 560px)) !important;
+  width: var(--frame-w) !important;
   height: calc(100vh - 50px) !important;
   background: #c0c0c0 !important;
   border-radius: 0 !important;
@@ -152,7 +182,7 @@ body {
   top: 4px;
   left: 50%;
   transform: translateX(-50%);
-  width: min(1000px, calc(100vw - 560px));
+  width: var(--frame-w);
   z-index: 43;
   pointer-events: none;
 }
@@ -312,7 +342,7 @@ body {
   position: fixed;
   left: 50%;
   transform: translateX(-50%);
-  width: min(1000px, calc(100vw - 560px));
+  width: var(--frame-w);
   bottom: 46px;
   height: 20px;
   background: #c0c0c0;
@@ -346,9 +376,9 @@ body {
 .aim-wrap {
   position: fixed;
   top: 52px;
-  right: 8px;
+  left: calc(50% + var(--frame-half) + 8px);
   z-index: 9995;
-  width: 210px;
+  width: var(--aim-w);
   background: #ffffff;
   border-top: 2px solid #ffffff;
   border-left: 2px solid #ffffff;
@@ -1049,9 +1079,9 @@ body {
 .wp-wrap {
   position: fixed;
   bottom: 48px;
-  right: 8px;
+  left: calc(50% + var(--frame-half) + 8px);
   z-index: 9997;
-  width: 260px;
+  width: var(--music-w);
   background: #0a0e1a;
   border-top: 2px solid #00ccff;
   border-left: 2px solid #00ccff;
@@ -1143,7 +1173,7 @@ body {
 .wp-marquee-anim { animation: wp-scroll 14s linear infinite; }
 
 @keyframes wp-scroll {
-  0%   { transform: translateX(260px); }
+  0%   { transform: translateX(var(--music-w, 260px)); }
   100% { transform: translateX(-100%); }
 }
 
@@ -1681,8 +1711,14 @@ body {
   left: 14px;
   z-index: 43;
   display: grid;
-  grid-template-columns: repeat(2, 70px);
+  grid-template-columns: repeat(2, var(--icon-col-w));
   gap: 4px;
+}
+@media (min-width: 1600px) {
+  .rd-icons-panel { left: max(14px, calc(50% - var(--frame-half) - 180px)); gap: 6px; }
+}
+@media (min-width: 1920px) {
+  .rd-icons-panel { left: max(14px, calc(50% - var(--frame-half) - 200px)); gap: 8px; }
 }
 
 .rd-icon {
@@ -1691,7 +1727,7 @@ body {
   align-items: center;
   gap: 4px;
   padding: 5px 3px;
-  width: 70px;
+  width: var(--icon-col-w);
   cursor: pointer;
   text-decoration: none !important;
   border: 1px dotted transparent;
@@ -1704,9 +1740,11 @@ body {
   border-color: rgba(255, 255, 255, 0.55);
 }
 
+.rd-icon svg { width: var(--icon-size); height: var(--icon-size); }
+
 .rd-icon-label {
   font-family: 'Tahoma', 'Arial', var(--font-geist-sans), sans-serif;
-  font-size: 11px;
+  font-size: clamp(11px, calc(var(--icon-col-w) * 0.15), 14px);
   color: #ffffff !important;
   text-align: center;
   line-height: 1.3;
