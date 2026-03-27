@@ -34,94 +34,72 @@ body {
 .dark ::-webkit-scrollbar-thumb:hover { background: #2e4268; }
 
 /* =============================================
-   RETRO / GTA VICE CITY THEME
+   RETRO / BLOCKBUSTER VIDEO THEME
    ============================================= */
 
 /* ── Remap the entire Tailwind color palette ──
    Tailwind v4 exposes all colors as CSS custom
    properties. Overriding them here propagates
-   Vice City colors to every utility class.
+   Blockbuster colors to every utility class.
    ──────────────────────────────────────────── */
 .retro {
-  /* White → deep Vice City navy */
-  --color-white: #0e0828;
+  /* White → deep Blockbuster navy */
+  --color-white: #0a1528;
 
-  /* Slate scale → dark navy ↔ soft lavender */
-  --color-slate-50:  #100a2e;
-  --color-slate-100: #160c3c;
-  --color-slate-200: rgba(255, 30, 120, 0.24);
-  --color-slate-300: rgba(255, 30, 120, 0.40);
-  --color-slate-400: rgba(210, 188, 240, 0.52);
-  --color-slate-500: rgba(210, 188, 240, 0.70);
-  --color-slate-600: #c8b8e8;
-  --color-slate-700: #d8c8f4;
-  --color-slate-800: #e8d8ff;
-  --color-slate-900: #f2ecff;
+  /* Slate scale → dark navy variations */
+  --color-slate-50:  #0d1a35;
+  --color-slate-100: #0f1f3d;
+  --color-slate-200: rgba(0, 48, 135, 0.30);
+  --color-slate-300: rgba(0, 48, 135, 0.50);
+  --color-slate-400: rgba(200, 215, 240, 0.55);
+  --color-slate-500: rgba(200, 215, 240, 0.72);
+  --color-slate-600: #b8c8e8;
+  --color-slate-700: #d0dcf0;
+  --color-slate-800: #e0eaff;
+  --color-slate-900: #eef4ff;
 
-  /* Violet → Vice City hot pink */
-  --color-violet-50:  rgba(255, 30, 120, 0.08);
-  --color-violet-100: rgba(255, 30, 120, 0.14);
-  --color-violet-200: rgba(255, 30, 120, 0.28);
-  --color-violet-300: rgba(255, 30, 120, 0.46);
-  --color-violet-400: #ff4d95;
-  --color-violet-500: #ff2a7f;
-  --color-violet-600: #ff1e78;
-  --color-violet-700: #e01068;
+  /* Violet → Blockbuster Blue */
+  --color-violet-50:  rgba(0, 48, 135, 0.08);
+  --color-violet-100: rgba(0, 48, 135, 0.14);
+  --color-violet-200: rgba(0, 48, 135, 0.28);
+  --color-violet-300: rgba(0, 48, 135, 0.46);
+  --color-violet-400: #1a5adf;
+  --color-violet-500: #0044cc;
+  --color-violet-600: #003087;
+  --color-violet-700: #002470;
 
-  /* Blue → neon cyan */
-  --color-blue-50:  rgba(0, 220, 255, 0.08);
-  --color-blue-100: rgba(0, 220, 255, 0.14);
-  --color-blue-200: rgba(0, 220, 255, 0.28);
-  --color-blue-300: rgba(0, 220, 255, 0.46);
-  --color-blue-400: #00e8ff;
-  --color-blue-500: #00dcff;
-  --color-blue-600: #00cef0;
-  --color-blue-700: #00b8d8;
+  /* Blue → Blockbuster Yellow */
+  --color-blue-50:  rgba(255, 210, 0, 0.08);
+  --color-blue-100: rgba(255, 210, 0, 0.14);
+  --color-blue-200: rgba(255, 210, 0, 0.28);
+  --color-blue-300: rgba(255, 210, 0, 0.46);
+  --color-blue-400: #ffe033;
+  --color-blue-500: #FFD200;
+  --color-blue-600: #e6bd00;
+  --color-blue-700: #ccaa00;
 
-  /* Emerald → neon mint */
-  --color-emerald-50:  rgba(0, 255, 176, 0.08);
-  --color-emerald-200: rgba(0, 255, 176, 0.28);
-  --color-emerald-400: #00ffb4;
-  --color-emerald-500: #00f0a8;
-  --color-emerald-600: #00d894;
+  /* Emerald → yellow accent */
+  --color-emerald-50:  rgba(255, 210, 0, 0.08);
+  --color-emerald-200: rgba(255, 210, 0, 0.28);
+  --color-emerald-400: #FFD200;
+  --color-emerald-500: #e6bd00;
+  --color-emerald-600: #ccaa00;
 
-  /* Amber → Vice City gold/yellow */
-  --color-amber-50:  rgba(255, 224, 0, 0.08);
-  --color-amber-200: rgba(255, 224, 0, 0.28);
-  --color-amber-400: #ffe800;
-  --color-amber-500: #ffe100;
-  --color-amber-600: #e8cc00;
+  /* Amber → Blockbuster Yellow */
+  --color-amber-50:  rgba(255, 210, 0, 0.08);
+  --color-amber-200: rgba(255, 210, 0, 0.28);
+  --color-amber-400: #FFD200;
+  --color-amber-500: #FFD200;
+  --color-amber-600: #e6bd00;
 
-  /* Red → hot pink */
-  --color-red-50:  rgba(255, 30, 120, 0.08);
-  --color-red-200: rgba(255, 30, 120, 0.28);
-  --color-red-500: #ff1e78;
-  --color-red-600: #e01068;
+  /* Red → Blockbuster Blue */
+  --color-red-50:  rgba(0, 48, 135, 0.08);
+  --color-red-200: rgba(0, 48, 135, 0.28);
+  --color-red-500: #003087;
+  --color-red-600: #002470;
 }
 
-/* ── Perspective grid + scanline overlays ───── */
-
-/* Bottom horizon grid — classic synthwave floor */
-.retro body::before {
-  content: '';
-  position: fixed;
-  bottom: 0;
-  left: -20%;
-  right: -20%;
-  height: 52vh;
-  background:
-    linear-gradient(rgba(255, 30, 120, 0.28) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 220, 255, 0.18) 1px, transparent 1px);
-  background-size: 80px 50px;
-  transform: perspective(600px) rotateX(72deg);
-  transform-origin: bottom center;
-  pointer-events: none;
-  z-index: 0;
-  mask-image: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 80%);
-  -webkit-mask-image: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 80%);
-}
-
-/* Scanline overlay */
+/* ── Scanline overlay ───────────────────────── */
 .retro::after {
   content: '';
   position: fixed;
@@ -130,26 +108,21 @@ body {
     0deg,
     transparent,
     transparent 3px,
-    rgba(0, 0, 0, 0.08) 3px,
-    rgba(0, 0, 0, 0.08) 4px
+    rgba(0, 0, 0, 0.06) 3px,
+    rgba(0, 0, 0, 0.06) 4px
   );
   pointer-events: none;
   z-index: 9998;
 }
 
-/* ── Body — Miami night sky ──────────────────── */
+/* ── Body — Blockbuster night ────────────────── */
 .retro body {
-  background-color: #080618;
-  color: #eddeff;
+  background-color: #07111f;
+  color: #e8f0ff;
   background-image:
-    /* Bright hot-pink sky glow */
-    radial-gradient(ellipse 130% 55% at 50% -5%,  rgba(255, 30, 120, 0.45) 0%, transparent 65%),
-    /* Purple mid-sky */
-    radial-gradient(ellipse 100% 60% at 50% 35%, rgba(150, 0, 210, 0.18) 0%, transparent 60%),
-    /* Neon cyan horizon line */
-    radial-gradient(ellipse 120% 6%  at 50% 72%, rgba(0, 220, 255, 0.55) 0%, transparent 100%),
-    /* Cyan lower glow */
-    radial-gradient(ellipse 100% 30% at 50% 90%, rgba(0, 180, 255, 0.14) 0%, transparent 70%);
+    radial-gradient(ellipse 100% 40% at 50% 0%, rgba(0, 48, 135, 0.38) 0%, transparent 65%),
+    radial-gradient(ellipse 80% 25% at 50% 100%, rgba(0, 48, 135, 0.22) 0%, transparent 70%),
+    linear-gradient(180deg, transparent 55%, rgba(255, 210, 0, 0.025) 80%, transparent 100%);
 }
 
 /* ── Override project's hardcoded dark values ─ */
@@ -158,24 +131,24 @@ body {
 .retro [class*="bg-\\[\\#111a2e\\]"],
 .retro [class*="bg-\\[\\#0a1020\\]"],
 .retro [class*="bg-\\[\\#0d0e1a\\]"] {
-  background-color: rgba(12, 6, 35, 0.92) !important;
+  background-color: rgba(13, 26, 53, 0.92) !important;
 }
 
 .retro [class*="border-\\[\\#1e2d45\\]"] {
-  border-color: rgba(255, 30, 120, 0.32) !important;
+  border-color: rgba(0, 48, 135, 0.45) !important;
 }
 
-/* ── Headings — Vice City impact style ─────── */
+/* ── Headings — Blockbuster style ───────────── */
 .retro h1 {
   font-family: var(--font-vice), Impact, 'Arial Black', sans-serif !important;
   font-style: italic !important;
   text-transform: uppercase !important;
   letter-spacing: 0.05em !important;
-  color: #ff1e78 !important;
+  color: #FFD200 !important;
   text-shadow:
-    4px 4px 0 #00dcff,
-    8px 8px 0 rgba(255, 30, 120, 0.22),
-    0 0 40px rgba(255, 30, 120, 0.55) !important;
+    4px 4px 0 #003087,
+    8px 8px 0 rgba(0, 48, 135, 0.30),
+    0 0 30px rgba(255, 210, 0, 0.40) !important;
   line-height: 1.05 !important;
 }
 
@@ -184,10 +157,10 @@ body {
   font-style: italic !important;
   text-transform: uppercase !important;
   letter-spacing: 0.04em !important;
-  color: #ff1e78 !important;
+  color: #FFD200 !important;
   text-shadow:
-    3px 3px 0 #00dcff,
-    0 0 24px rgba(255, 30, 120, 0.5) !important;
+    3px 3px 0 #003087,
+    0 0 20px rgba(255, 210, 0, 0.35) !important;
   line-height: 1.15 !important;
 }
 
@@ -196,31 +169,31 @@ body {
   font-style: italic !important;
   text-transform: uppercase !important;
   letter-spacing: 0.03em !important;
-  color: #ffe100 !important;
+  color: #FFD200 !important;
   text-shadow:
-    2px 2px 0 rgba(255, 30, 120, 0.7),
-    0 0 16px rgba(255, 225, 0, 0.45) !important;
+    2px 2px 0 rgba(0, 48, 135, 0.80),
+    0 0 14px rgba(255, 210, 0, 0.30) !important;
   line-height: 1.25 !important;
 }
 
 .retro h4,
 .retro h5,
 .retro h6 {
-  color: #00dcff !important;
-  text-shadow: 0 0 16px rgba(0, 220, 255, 0.65) !important;
+  color: #b8d0ff !important;
+  text-shadow: 0 0 12px rgba(0, 48, 135, 0.50) !important;
   letter-spacing: 0.02em !important;
 }
 
 /* ── Body text — readable ───────────────────── */
 .retro p {
-  color: #d8c8f0 !important;
+  color: #ccd8f0 !important;
   line-height: 1.75 !important;
   font-size: 1rem !important;
   font-family: inherit !important;
 }
 
 .retro li {
-  color: #d8c8f0 !important;
+  color: #ccd8f0 !important;
   line-height: 1.75 !important;
 }
 
@@ -228,46 +201,47 @@ body {
 .retro [class~="text-slate-900"],
 .retro [class~="text-slate-800"],
 .retro [class~="text-slate-700"] {
-  color: #f0e8ff !important;
+  color: #e8f0ff !important;
 }
 .retro [class~="text-slate-600"],
 .retro [class~="text-slate-500"] {
-  color: #c8b8e8 !important;
+  color: #b8c8e8 !important;
 }
 .retro [class~="text-slate-400"],
 .retro [class~="text-slate-300"] {
-  color: rgba(200, 184, 232, 0.65) !important;
+  color: rgba(184, 200, 232, 0.65) !important;
 }
 
-/* ── Gradient text clips — remap to pink/cyan ─ */
+/* ── Gradient text clips — remap to yellow/blue ─ */
 .retro [class*="from-blue"][class*="to-violet"],
 .retro [class*="from-violet"][class*="to-blue"] {
-  background-image: linear-gradient(to right, #ff1e78, #00dcff) !important;
+  background-image: linear-gradient(to right, #FFD200, #003087) !important;
 }
 
 /* ── Primary CTA buttons ─────────────────────── */
 .retro [class*="from-blue-6"],
 .retro [class*="from-blue-5"] {
-  background-image: linear-gradient(135deg, #ff1e78 0%, #cc00cc 50%, #00dcff 100%) !important;
-  box-shadow: 0 0 24px rgba(255, 30, 120, 0.5), 0 4px 15px rgba(255, 30, 120, 0.3) !important;
-  border: none !important;
+  background-image: none !important;
+  background-color: #FFD200 !important;
+  color: #003087 !important;
+  box-shadow: 0 4px 16px rgba(255, 210, 0, 0.40), 0 2px 8px rgba(0, 48, 135, 0.30) !important;
+  border: 2px solid #003087 !important;
 }
 .retro [class*="from-blue-6"]:hover,
 .retro [class*="from-blue-5"]:hover {
-  box-shadow: 0 0 36px rgba(255, 30, 120, 0.7), 0 4px 20px rgba(255, 30, 120, 0.4) !important;
+  box-shadow: 0 6px 24px rgba(255, 210, 0, 0.55), 0 2px 10px rgba(0, 48, 135, 0.40) !important;
 }
 
 /* ── Card / panel surfaces ──────────────────── */
-/* Catch all rounded panels with light backgrounds */
 .retro [class~="bg-white"] {
-  background-color: rgba(14, 8, 40, 0.88) !important;
-  border-color: rgba(255, 30, 120, 0.28) !important;
-  box-shadow: 0 0 0 1px rgba(255, 30, 120, 0.15), 0 0 30px rgba(255, 30, 120, 0.06) !important;
+  background-color: #0d1a35 !important;
+  border-color: rgba(0, 48, 135, 0.50) !important;
+  box-shadow: 0 0 0 1px rgba(0, 48, 135, 0.25), inset 0 0 20px rgba(255, 210, 0, 0.03) !important;
 }
 .retro [class~="bg-slate-50"],
 .retro [class~="bg-slate-100"] {
-  background-color: rgba(16, 10, 44, 0.82) !important;
-  border-color: rgba(255, 30, 120, 0.22) !important;
+  background-color: #0f1f3d !important;
+  border-color: rgba(0, 48, 135, 0.35) !important;
 }
 
 /* Feature/mission gradient boxes */
@@ -275,93 +249,89 @@ body {
 .retro [class*="from-violet-50"],
 .retro [class*="via-violet-50"] {
   background: linear-gradient(135deg,
-    rgba(255,30,120,0.07) 0%,
-    rgba(150,0,220,0.05) 50%,
+    rgba(0, 48, 135, 0.10) 0%,
+    rgba(255, 210, 0, 0.04) 50%,
     transparent 100%) !important;
-  border-color: rgba(255, 30, 120, 0.2) !important;
+  border-color: rgba(0, 48, 135, 0.25) !important;
 }
 
 /* Icon boxes */
 .retro [class~="bg-slate-100"],
 .retro [class*="bg-blue-50"],
 .retro [class*="bg-violet-50"] {
-  background-color: rgba(255, 30, 120, 0.1) !important;
-  border-color: rgba(255, 30, 120, 0.25) !important;
-}
-
-/* Round all border radii — keep rounded in Vice City */
-.retro [class~="rounded-full"] {
-  border-radius: 9999px !important;
+  background-color: rgba(0, 48, 135, 0.12) !important;
+  border-color: rgba(0, 48, 135, 0.30) !important;
 }
 
 /* ── Links ──────────────────────────────────── */
 .retro a {
-  color: #00dcff !important;
+  color: #FFD200 !important;
   text-decoration: none !important;
   transition: color 0.2s, text-shadow 0.2s !important;
 }
 .retro a:hover {
-  color: #ff1e78 !important;
-  text-shadow: 0 0 12px rgba(255, 30, 120, 0.65) !important;
+  color: #b8d0ff !important;
+  text-shadow: 0 0 10px rgba(0, 48, 135, 0.50) !important;
 }
 
 /* ── Selection ──────────────────────────────── */
 .retro ::selection {
-  background: rgba(255, 30, 120, 0.45);
-  color: #fff;
+  background: rgba(0, 48, 135, 0.55);
+  color: #FFD200;
 }
 
 /* ── Scrollbar ──────────────────────────────── */
-.retro ::-webkit-scrollbar-track { background: #080618; }
-.retro ::-webkit-scrollbar-thumb { background: #ff1e78; border-radius: 2px; }
-.retro ::-webkit-scrollbar-thumb:hover { background: #00dcff; }
+.retro ::-webkit-scrollbar-track { background: #07111f; }
+.retro ::-webkit-scrollbar-thumb { background: #003087; border-radius: 2px; }
+.retro ::-webkit-scrollbar-thumb:hover { background: #FFD200; }
 
 /* ── Inputs ─────────────────────────────────── */
 .retro input,
 .retro textarea,
 .retro select {
-  background: rgba(255, 30, 120, 0.06) !important;
-  border: 1px solid rgba(255, 30, 120, 0.38) !important;
-  color: #eddeff !important;
+  background: rgba(0, 48, 135, 0.08) !important;
+  border: 1px solid rgba(0, 48, 135, 0.45) !important;
+  color: #e8f0ff !important;
   border-radius: 2px !important;
 }
 .retro input:focus,
 .retro textarea:focus {
   outline: none !important;
-  border-color: #ff1e78 !important;
-  box-shadow: 0 0 0 2px rgba(255, 30, 120, 0.22), 0 0 18px rgba(255, 30, 120, 0.12) !important;
+  border-color: #003087 !important;
+  box-shadow: 0 0 0 2px rgba(0, 48, 135, 0.25), 0 0 14px rgba(255, 210, 0, 0.10) !important;
 }
 .retro input::placeholder,
 .retro textarea::placeholder {
-  color: rgba(237, 222, 255, 0.28) !important;
+  color: rgba(232, 240, 255, 0.30) !important;
 }
 
 /* ── Music Player ───────────────────────────── */
 .retro-music-btn {
   font-family: var(--font-retro), 'Courier New', monospace;
   font-size: 10px;
-  background: rgba(8, 6, 24, 0.96);
-  border: 2px solid #ff1e78;
-  color: #ff1e78;
+  background: rgba(7, 17, 31, 0.96);
+  border: 2px solid #FFD200;
+  color: #FFD200;
   padding: 10px 16px;
-  box-shadow: 0 0 16px rgba(255, 30, 120, 0.5), inset 0 0 10px rgba(255, 30, 120, 0.06);
+  box-shadow: 0 0 14px rgba(255, 210, 0, 0.40), inset 0 0 8px rgba(255, 210, 0, 0.05);
   cursor: pointer;
-  transition: color 0.2s, border-color 0.2s, box-shadow 0.2s;
+  transition: color 0.2s, border-color 0.2s, background 0.2s, box-shadow 0.2s;
   white-space: nowrap;
   letter-spacing: 0.08em;
   border-radius: 2px;
 }
 .retro-music-btn:hover {
-  color: #00dcff;
-  border-color: #00dcff;
-  box-shadow: 0 0 22px rgba(0, 220, 255, 0.6), inset 0 0 10px rgba(0, 220, 255, 0.06);
+  color: #003087;
+  border-color: #FFD200;
+  background: #FFD200;
+  box-shadow: 0 0 20px rgba(255, 210, 0, 0.60);
 }
 
 .retro-music-label {
   font-family: var(--font-retro), 'Courier New', monospace;
   font-size: 8px;
-  color: #ffe100;
-  text-shadow: 0 0 10px rgba(255, 225, 0, 0.8);
+  color: #FFD200;
+  text-shadow: 0 0 10px rgba(255, 210, 0, 0.80);
   animation: retro-blink 1.2s step-end infinite;
   letter-spacing: 0.1em;
 }
@@ -374,11 +344,11 @@ body {
 
 @keyframes retro-neon-pulse {
   0%, 100% {
-    text-shadow: 4px 4px 0 #00dcff, 0 0 16px rgba(255, 30, 120, 0.5);
+    text-shadow: 4px 4px 0 #003087, 0 0 16px rgba(255, 210, 0, 0.40);
   }
   50% {
-    text-shadow: 4px 4px 0 #00dcff, 0 0 36px rgba(255, 30, 120, 1),
-      0 0 70px rgba(255, 30, 120, 0.4);
+    text-shadow: 4px 4px 0 #003087, 0 0 36px rgba(255, 210, 0, 0.80),
+      0 0 60px rgba(255, 210, 0, 0.30);
   }
 }
 
@@ -426,7 +396,7 @@ body {
   border: 3px solid transparent;
   background:
     linear-gradient(#000, #000) padding-box,
-    linear-gradient(180deg, rgba(255,30,120,0.5) 0%, rgba(0,220,255,0.5) 100%) border-box;
+    linear-gradient(180deg, rgba(0,48,135,0.6) 0%, rgba(255,210,0,0.6) 100%) border-box;
   pointer-events: none;
   z-index: 2;
 }
@@ -455,7 +425,7 @@ body {
 .tm-alert-tag {
   font-family: var(--font-retro), monospace;
   font-size: clamp(0.5rem, 1.5vw, 0.65rem);
-  color: #00dcff;
+  color: #FFD200;
   letter-spacing: 0.35em;
   animation: retro-blink 0.6s step-end infinite;
 }
@@ -466,17 +436,17 @@ body {
   font-size: clamp(2.2rem, 9vw, 5.5rem);
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: #ff1e78;
+  color: #FFD200;
   line-height: 1;
   /* Full neon sign effect */
   text-shadow:
     0 0 7px  #fff,
     0 0 12px #fff,
-    0 0 22px #fff,
-    0 0 42px #ff1e78,
-    0 0 82px #ff1e78,
-    0 0 96px #ff1e78,
-    4px 4px 0 #00dcff;
+    0 0 22px #ffe88a,
+    0 0 42px #FFD200,
+    0 0 82px #FFD200,
+    0 0 96px #FFD200,
+    4px 4px 0 #003087;
   animation: tm-neon-flicker 2.5s linear infinite;
 }
 
@@ -495,13 +465,13 @@ body {
   line-height: inherit;
 }
 .tm-glitch::before {
-  color: #00dcff;
+  color: #003087;
   text-shadow: none;
   animation: tm-glitch-a 0.35s infinite;
   clip-path: polygon(0 15%, 100% 15%, 100% 32%, 0 32%);
 }
 .tm-glitch::after {
-  color: #ff1e78;
+  color: #FFD200;
   text-shadow: none;
   animation: tm-glitch-b 0.45s infinite;
   clip-path: polygon(0 66%, 100% 66%, 100% 82%, 0 82%);
@@ -510,7 +480,7 @@ body {
 .tm-subtext {
   font-family: var(--font-retro), monospace;
   font-size: clamp(0.45rem, 1.2vw, 0.6rem);
-  color: #00dcff;
+  color: #FFD200;
   letter-spacing: 0.2em;
   animation: retro-blink 0.9s step-end infinite;
 }
@@ -518,33 +488,33 @@ body {
 .tm-progress-bar {
   width: min(320px, 80vw);
   height: 6px;
-  background: rgba(255, 30, 120, 0.12);
-  border: 1px solid rgba(255, 30, 120, 0.45);
+  background: rgba(0, 48, 135, 0.15);
+  border: 1px solid rgba(0, 48, 135, 0.55);
   overflow: hidden;
   margin-top: 0.25rem;
 }
 .tm-progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, #ff1e78, #cc00ff, #00dcff);
-  box-shadow: 0 0 10px #ff1e78;
+  background: linear-gradient(90deg, #003087, #0055cc, #FFD200);
+  box-shadow: 0 0 10px rgba(255, 210, 0, 0.60);
   animation: tm-bar 1.2s ease-out forwards;
 }
 
 .tm-coord-row {
   font-family: var(--font-retro), monospace;
   font-size: clamp(0.45rem, 1.2vw, 0.6rem);
-  color: rgba(0, 220, 255, 0.7);
+  color: rgba(255, 210, 0, 0.75);
   letter-spacing: 0.15em;
   display: flex;
   align-items: center;
   gap: 1rem;
 }
-.tm-coord-sep { color: #ff1e78; }
+.tm-coord-sep { color: #003087; }
 
 .tm-footnote {
   font-family: var(--font-retro), monospace;
   font-size: clamp(0.4rem, 1vw, 0.55rem);
-  color: rgba(255, 225, 0, 0.6);
+  color: rgba(255, 210, 0, 0.65);
   letter-spacing: 0.25em;
   margin-top: 0.25rem;
 }
@@ -561,7 +531,7 @@ body {
 .tm-warp-label {
   font-family: var(--font-retro), monospace;
   font-size: clamp(0.45rem, 1.2vw, 0.6rem);
-  color: rgba(0, 220, 255, 0.75);
+  color: rgba(255, 210, 0, 0.85);
   letter-spacing: 0.3em;
   animation: retro-blink 1.1s step-end infinite;
 }
@@ -569,7 +539,7 @@ body {
 .tm-year-caption {
   font-family: var(--font-retro), monospace;
   font-size: clamp(0.4rem, 1vw, 0.55rem);
-  color: rgba(255, 30, 120, 0.7);
+  color: rgba(184, 208, 255, 0.75);
   letter-spacing: 0.3em;
   margin-top: 0.5rem;
 }
@@ -592,12 +562,12 @@ body {
 .tm-velocity {
   font-family: var(--font-retro), monospace;
   font-size: clamp(0.4rem, 1vw, 0.55rem);
-  color: rgba(0, 220, 255, 0.6);
+  color: rgba(255, 210, 0, 0.65);
   letter-spacing: 0.12em;
   margin-top: 0.5rem;
 }
 .tm-velocity-val {
-  color: #00dcff;
+  color: #FFD200;
   animation: retro-blink 0.25s step-end infinite;
 }
 
@@ -613,7 +583,7 @@ body {
 .tm-arrive-label {
   font-family: var(--font-retro), monospace;
   font-size: clamp(0.5rem, 1.5vw, 0.7rem);
-  color: #00dcff;
+  color: #FFD200;
   letter-spacing: 0.35em;
   animation: retro-blink 0.5s step-end infinite;
 }
@@ -624,25 +594,25 @@ body {
   font-size: clamp(6rem, 28vw, 16rem);
   letter-spacing: 0.04em;
   line-height: 0.85;
-  color: #ff1e78;
+  color: #FFD200;
   text-shadow:
     0 0 7px  #fff,
-    0 0 12px #fff,
-    0 0 22px #fff,
-    0 0 42px #ff1e78,
-    0 0 82px #ff1e78,
-    0 0 100px #ff1e78,
-    0 0 140px rgba(255, 30, 120, 0.6),
-    6px 6px 0 #00dcff;
+    0 0 12px #ffe88a,
+    0 0 22px #ffe88a,
+    0 0 42px #FFD200,
+    0 0 82px #FFD200,
+    0 0 100px #FFD200,
+    0 0 140px rgba(255, 210, 0, 0.55),
+    6px 6px 0 #003087;
   animation: tm-neon-on 0.6s ease-out, tm-neon-flicker 3s linear 0.7s infinite;
 }
 
 .tm-welcome-text {
   font-family: var(--font-retro), monospace;
   font-size: clamp(0.5rem, 1.5vw, 0.7rem);
-  color: #ffe100;
+  color: #FFD200;
   letter-spacing: 0.35em;
-  text-shadow: 0 0 10px rgba(255, 225, 0, 0.7);
+  text-shadow: 0 0 10px rgba(255, 210, 0, 0.75);
   margin-top: 0.25rem;
 }
 
@@ -655,10 +625,10 @@ body {
   z-index: 4;
   animation: retro-blink 2s step-end infinite;
 }
-.tm-hud-tl { top: 1.25rem; left: 1.25rem; color: #ff1e78; }
-.tm-hud-tr { top: 1.25rem; right: 1.25rem; color: #ff1e78; }
-.tm-hud-bl { bottom: 1.25rem; left: 1.25rem; color: #00dcff; }
-.tm-hud-br { bottom: 1.25rem; right: 1.25rem; color: #00dcff; }
+.tm-hud-tl { top: 1.25rem; left: 1.25rem; color: #FFD200; }
+.tm-hud-tr { top: 1.25rem; right: 1.25rem; color: #FFD200; }
+.tm-hud-bl { bottom: 1.25rem; left: 1.25rem; color: rgba(184, 208, 255, 0.80); }
+.tm-hud-br { bottom: 1.25rem; right: 1.25rem; color: rgba(184, 208, 255, 0.80); }
 
 /* ── Keyframes ──────────────────────────────── */
 @keyframes tm-fadein {

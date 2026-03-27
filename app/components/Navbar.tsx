@@ -40,7 +40,7 @@ function MoonIcon() {
   );
 }
 
-// Vice City star — filled when retro is active
+// Blockbuster star — filled when retro is active
 function StarIcon({ active }: { active: boolean }) {
   return (
     <svg className="w-4 h-4" viewBox="0 0 24 24" fill={active ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth={1.5} strokeLinejoin="round">
@@ -155,8 +155,8 @@ export default function Navbar() {
     : 'p-2 rounded-lg transition-all text-slate-500 hover:text-slate-700 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-white dark:hover:bg-white/5';
 
   const retroBtnCls = isRetro
-    ? 'ml-1 p-2 transition-all text-[#ff1e78] drop-shadow-[0_0_6px_rgba(255,30,120,0.8)]'
-    : 'ml-1 p-2 rounded-lg transition-all text-slate-400 hover:text-[#ff1e78] hover:bg-slate-100 dark:hover:bg-white/5';
+    ? 'ml-1 p-2 transition-all text-[#FFD200] drop-shadow-[0_0_6px_rgba(255,210,0,0.8)]'
+    : 'ml-1 p-2 rounded-lg transition-all text-slate-400 hover:text-[#FFD200] hover:bg-slate-100 dark:hover:bg-white/5';
 
   const hamLineCls = isRetro
     ? 'block h-0.5 w-5 bg-[#ff1e78] transition-all duration-200'
@@ -261,8 +261,8 @@ export default function Navbar() {
           <button
             onClick={toggleRetro}
             className={retroBtnCls}
-            aria-label={isRetro ? 'Exit Vice City mode' : 'Enter Vice City mode'}
-            title={isRetro ? 'Exit Vice City mode' : 'Enter Vice City mode'}
+            aria-label={isRetro ? 'Exit Blockbuster mode' : 'Enter Blockbuster mode'}
+            title={isRetro ? 'Exit Blockbuster mode' : 'Enter Blockbuster mode'}
           >
             <StarIcon active={isRetro} />
           </button>
@@ -279,8 +279,8 @@ export default function Navbar() {
           </button>
           <button
             onClick={toggleRetro}
-            className={`p-2 transition-all ${isRetro ? 'text-[#ff1e78] drop-shadow-[0_0_6px_rgba(255,30,120,0.8)]' : 'rounded-lg text-slate-400 hover:text-[#ff1e78] hover:bg-slate-100 dark:hover:bg-white/5'}`}
-            aria-label="Toggle Vice City mode"
+            className={`p-2 transition-all ${isRetro ? 'text-[#FFD200] drop-shadow-[0_0_6px_rgba(255,210,0,0.8)]' : 'rounded-lg text-slate-400 hover:text-[#FFD200] hover:bg-slate-100 dark:hover:bg-white/5'}`}
+            aria-label="Toggle Blockbuster mode"
           >
             <StarIcon active={isRetro} />
           </button>

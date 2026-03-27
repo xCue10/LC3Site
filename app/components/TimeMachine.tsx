@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 
 type Phase = 'idle' | 'engage' | 'warp' | 'arrive' | 'flash';
 
-const YEAR_SEQUENCE = [2025, 2020, 2015, 2010, 2005, 2001, 1998, 1995, 1992, 1989];
+const YEAR_SEQUENCE = [2025, 2020, 2015, 2010, 2005, 2001, 1999, 1997, 1995, 1994];
 
 export default function TimeMachine() {
   const [phase, setPhase] = useState<Phase>('idle');
@@ -261,11 +261,11 @@ export default function TimeMachine() {
               <div className="tm-progress-fill" />
             </div>
             <div className="tm-coord-row">
-              <span>25°46′N</span>
+              <span>32°47′N</span>
               <span className="tm-coord-sep">◆</span>
-              <span>80°11′W</span>
+              <span>96°48′W</span>
             </div>
-            <p className="tm-footnote">MIAMI — VICE CITY — 1989</p>
+            <p className="tm-footnote">DALLAS — BLOCKBUSTER — 1994</p>
           </div>
         )}
 
@@ -286,8 +286,8 @@ export default function TimeMachine() {
         {phase === 'arrive' && (
           <div className="tm-arrive-wrap">
             <p className="tm-arrive-label">✦ DESTINATION REACHED ✦</p>
-            <div className="tm-arrived-year">1989</div>
-            <p className="tm-welcome-text">WELCOME TO THE 80s</p>
+            <div className="tm-arrived-year">1994</div>
+            <p className="tm-welcome-text">⏪ BE KIND, REWIND ⏪</p>
           </div>
         )}
 
