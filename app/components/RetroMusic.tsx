@@ -2,59 +2,12 @@
 
 import { useState, useEffect, useRef } from 'react';
 
-// ── Note frequencies (Hz) ────────────────────────────────────────────
-const F: Record<string, number> = {
-  A2: 110.00, C3: 130.81, D3: 146.83, E3: 164.81, F3: 174.61,
-  G3: 196.00, A3: 220.00, Bb3: 233.08, B3: 246.94,
-  C4: 261.63, D4: 293.66, Eb4: 311.13, E4: 329.63, F4: 349.23,
-  G4: 392.00, Ab4: 415.30, A4: 440.00, Bb4: 466.16, B4: 493.88,
-  C5: 523.25, D5: 587.33, Eb5: 622.25, E5: 659.25, F5: 698.46,
-  G5: 783.99, A5: 880.00,
-  R: 0,
-};
-
-const B = 0.79;
-const q  = B;
-const h  = B * 2;
-const dh = B * 3;
-const w  = B * 4;
-
-const MELODY: [string, number][] = [
-  ['R', h], ['R', h], ['R', h], ['R', h],
-  ['A4', h], ['G4', q], ['F4', q],
-  ['E4', dh], ['D4', q],
-  ['C4', q], ['D4', q], ['E4', q], ['F4', q],
-  ['E4', h], ['D4', h],
-  ['A3', w],
-  ['A4', h], ['Bb4', q], ['A4', q],
-  ['G4', dh], ['F4', q],
-  ['E4', q], ['F4', q], ['G4', q], ['A4', q],
-  ['G4', h], ['F4', h],
-  ['E4', w],
-  ['C5', h], ['D5', q], ['C5', q],
-  ['B4', dh], ['A4', q],
-  ['G4', q], ['A4', q], ['B4', q], ['C5', q],
-  ['B4', h], ['A4', h],
-  ['A4', w],
-  ['E5', h], ['D5', q], ['C5', q],
-  ['B4', h], ['A4', h],
-  ['G4', q], ['A4', q], ['B4', q], ['A4', q],
-  ['G4', h], ['F4', h],
-  ['E4', w],
-  ['A4', h], ['G4', q], ['F4', q],
-  ['E4', dh], ['D4', q],
-  ['C4', q], ['D4', q], ['E4', q], ['F4', q],
-  ['E4', h], ['D4', h],
-  ['A3', w],
-  ['C4', h], ['D4', h],
-  ['E4', h], ['F4', h],
-  ['E4', dh], ['D4', q],
-  ['A3', w],
-  ['R', w],
-];
-
 const PLAYLIST = [
-  { title: 'AQUATIC AMBIENCE', artist: 'DAVID WISE' },
+  {
+    title: 'BAD HABIT (FEAT. ZAUG)',
+    artist: 'ZAUG, JÉJA',
+    src: '/audio/Zaug, Jéja - Bad Habit (feat. Zaug) [NCS Release].mp3',
+  },
 ];
 
 const EQ_ANIMS = ['wp-eq-a', 'wp-eq-b', 'wp-eq-c', 'wp-eq-d', 'wp-eq-e'];
@@ -68,12 +21,7 @@ export default function RetroMusic() {
   const [volume, setVolume]       = useState(75);
   const [trackIdx]                = useState(0);
 
-  const ctxRef         = useRef<AudioContext | null>(null);
-  const timerRef       = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const playingRef     = useRef(false);
-  const idxRef         = useRef(0);
-  const schedTimeRef   = useRef(0);
-  const masterGainRef  = useRef<GainNode | null>(null);
+  const audioRef       = useRef<HTMLAudioElement | null>(null);
   const elapsedIntRef  = useRef<ReturnType<typeof setInterval> | null>(null);
 
   // ── Watch retro class ──────────────────────────────────────────────
@@ -85,14 +33,13 @@ export default function RetroMusic() {
     return () => obs.disconnect();
   }, []);
 
-  // ── Volume → master gain ───────────────────────────────────────────
+  // ── Stop when retro mode exits ─────────────────────────────────────
+  useEffect(() => { if (!isRetro) stopMusic(); }, [isRetro]);
+  useEffect(() => () => stopMusic(), []);
+
+  // ── Volume → audio element ─────────────────────────────────────────
   useEffect(() => {
-    if (masterGainRef.current) {
-      masterGainRef.current.gain.linearRampToValueAtTime(
-        volume / 100,
-        (ctxRef.current?.currentTime ?? 0) + 0.05,
-      );
-    }
+    if (audioRef.current) audioRef.current.volume = volume / 100;
   }, [volume]);
 
   // ── Helpers ────────────────────────────────────────────────────────
@@ -102,15 +49,15 @@ export default function RetroMusic() {
 
   const startElapsedTimer = () => {
     stopElapsedTimer();
-    elapsedIntRef.current = setInterval(() => setElapsed(e => e + 1), 1000);
+    elapsedIntRef.current = setInterval(() => {
+      setElapsed(Math.floor(audioRef.current?.currentTime ?? 0));
+    }, 500);
   };
 
   const stopMusic = () => {
-    playingRef.current = false;
-    if (timerRef.current) clearTimeout(timerRef.current);
-    ctxRef.current?.close();
-    ctxRef.current = null;
-    masterGainRef.current = null;
+    audioRef.current?.pause();
+    if (audioRef.current) audioRef.current.currentTime = 0;
+    audioRef.current = null;
     stopElapsedTimer();
     setElapsed(0);
     setPlaying(false);
@@ -118,85 +65,29 @@ export default function RetroMusic() {
   };
 
   const pauseMusic = () => {
-    ctxRef.current?.suspend();
+    audioRef.current?.pause();
     stopElapsedTimer();
     setPaused(true);
   };
 
   const resumeMusic = () => {
-    ctxRef.current?.resume();
+    audioRef.current?.play();
     startElapsedTimer();
     setPaused(false);
   };
 
-  const playNoteAt = (
-    freq: number, startTime: number, duration: number,
-    ctx: AudioContext, reverbInput: AudioNode, master: GainNode,
-  ) => {
-    if (!freq) return;
-    const osc  = ctx.createOscillator();
-    const gain = ctx.createGain();
-    const dry  = ctx.createGain();
-    osc.type = 'sine';
-    osc.frequency.value = freq;
-    osc.connect(gain);
-    gain.connect(dry);
-    gain.connect(reverbInput);
-    dry.connect(master);
-    dry.gain.value = 0.55;
-    const attack  = 0.08;
-    const release = Math.min(0.45, duration * 0.35);
-    gain.gain.setValueAtTime(0, startTime);
-    gain.gain.linearRampToValueAtTime(0.13, startTime + attack);
-    gain.gain.setValueAtTime(0.13, Math.max(startTime + attack, startTime + duration - release));
-    gain.gain.linearRampToValueAtTime(0, startTime + duration);
-    osc.start(startTime);
-    osc.stop(startTime + duration + 0.1);
-  };
-
   const startMusic = () => {
-    ctxRef.current?.close();
-    const ctx = new AudioContext();
-    const master = ctx.createGain();
-    master.gain.value = volume / 100;
-    master.connect(ctx.destination);
-    masterGainRef.current = master;
-    ctxRef.current = ctx;
-    playingRef.current = true;
-    idxRef.current = 0;
+    stopMusic();
+    const audio = new Audio(PLAYLIST[trackIdx].src);
+    audio.volume = volume / 100;
+    audio.loop = true;
+    audio.play().catch(() => {});
+    audioRef.current = audio;
     setElapsed(0);
     setPlaying(true);
     setPaused(false);
     startElapsedTimer();
-
-    const delay    = ctx.createDelay(2.0);
-    const feedback = ctx.createGain();
-    const wetGain  = ctx.createGain();
-    delay.delayTime.value = 0.32;
-    feedback.gain.value   = 0.38;
-    wetGain.gain.value    = 0.42;
-    delay.connect(feedback);
-    feedback.connect(delay);
-    delay.connect(wetGain);
-    wetGain.connect(master);
-
-    schedTimeRef.current = ctx.currentTime + 0.05;
-
-    const scheduleNext = () => {
-      if (!playingRef.current) return;
-      const [note, dur] = MELODY[idxRef.current];
-      playNoteAt(F[note] ?? 0, schedTimeRef.current, dur, ctx, delay, master);
-      schedTimeRef.current += dur;
-      idxRef.current = (idxRef.current + 1) % MELODY.length;
-      const msUntilNext = (schedTimeRef.current - ctx.currentTime - 0.1) * 1000;
-      timerRef.current = setTimeout(scheduleNext, Math.max(0, msUntilNext));
-    };
-
-    scheduleNext();
   };
-
-  useEffect(() => { if (!isRetro) stopMusic(); }, [isRetro]);
-  useEffect(() => () => { stopMusic(); }, []);
 
   const formatTime = (s: number) => {
     const m   = Math.floor(s / 60);
