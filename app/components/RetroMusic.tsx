@@ -6,7 +6,7 @@ const PLAYLIST = [
   {
     title: 'BAD HABIT (FEAT. ZAUG)',
     artist: 'ZAUG, JÉJA',
-    src: '/audio/Zaug, Jéja - Bad Habit (feat. Zaug) [NCS Release].mp3',
+    src: `/audio/${encodeURIComponent('Zaug, Jéja - Bad Habit (feat. Zaug) [NCS Release].mp3')}`,
   },
 ];
 
@@ -81,7 +81,7 @@ export default function RetroMusic() {
     const audio = new Audio(PLAYLIST[trackIdx].src);
     audio.volume = volume / 100;
     audio.loop = true;
-    audio.play().catch(() => {});
+    audio.play().catch((err) => console.error('[LC3 Music] play failed:', err));
     audioRef.current = audio;
     setElapsed(0);
     setPlaying(true);
