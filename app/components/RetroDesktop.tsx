@@ -216,7 +216,7 @@ export default function RetroDesktop() {
   const [visibleAds, setVisibleAds] = useState<number[]>([]);
   const [showRightClickDialog, setShowRightClickDialog] = useState(false);
   const [showLimeWire, setShowLimeWire] = useState(false);
-  const [lwStage, setLwStage] = useState<'idle' | 'downloading' | 'done' | 'infected'>('idle');
+  const [lwStage, setLwStage] = useState<'idle' | 'downloading' | 'done'>('idle');
   const [lwProgress, setLwProgress] = useState(0);
   const [showNotepad, setShowNotepad] = useState(false);
   const [showHijack, setShowHijack] = useState(false);
@@ -327,7 +327,7 @@ export default function RetroDesktop() {
         clearInterval(iv);
         setLwProgress(100);
         setLwStage('done');
-        setTimeout(() => setLwStage('infected'), 1200);
+        setTimeout(() => infectAndHijack(), 1200);
       } else {
         setLwProgress(Math.floor(p));
       }
@@ -516,30 +516,6 @@ export default function RetroDesktop() {
             )}
           </div>
 
-          {/* Infected alert */}
-          {lwStage === 'infected' && (
-            <div className="lw-infected-overlay">
-              <div className="rd-alert-dialog" style={{ width: 300 }}>
-                <div className="rd-alert-titlebar">
-                  <span className="rd-alert-title">Setup Wizard</span>
-                  <button className="aim-wbtn aim-wbtn-close" onClick={closeLimeWire}>×</button>
-                </div>
-                <div className="rd-alert-body" style={{ gap: 4 }}>
-                  <span style={{ fontSize: 26 }}>🎉</span>
-                  <p style={{ fontWeight: 'bold' }}>Installation complete!</p>
-                  <p style={{ textAlign: 'left', lineHeight: 1.6 }}>
-                    The following programs were installed:<br />
-                    • MyWebSearch Toolbar v3.2<br />
-                    • CoolWebSearch™ Homepage Hijacker<br />
-                    • BonziBuddy FREE Edition<br />
-                    • AskJeeves Toolbar (1 of 47)
-                  </p>
-                  <p style={{ color: '#666', fontSize: '10px !important' }}>Your homepage has been set to http://www.coolwebsearch.com</p>
-                  <button className="rd-alert-ok" onClick={infectAndHijack}>OK</button>
-                </div>
-              </div>
-            </div>
-          )}
         </div>
       )}
 
