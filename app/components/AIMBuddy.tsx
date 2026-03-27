@@ -123,7 +123,6 @@ export default function AIMBuddy() {
   const openIM = () => { playIMChime(); setShowIM(true); };
 
   const handleSignOn = () => {
-    playDoorCreak();
     setSigningOn(true);
     setTimeout(() => { setSigningOn(false); setSigned(true); }, 1400);
   };

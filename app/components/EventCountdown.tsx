@@ -21,7 +21,7 @@ function TimeUnit({ value, label }: { value: number; label: string }) {
       <div className="relative">
         <div className="absolute inset-0 bg-gradient-to-b from-blue-500/15 to-violet-500/15 rounded-xl blur-sm" />
         <div className="relative bg-white dark:bg-[#0a1628] border border-blue-200/70 dark:border-blue-500/25 rounded-xl px-3 py-2.5 sm:px-5 sm:py-3 min-w-[58px] sm:min-w-[80px] text-center shadow-sm">
-          <span className="text-3xl sm:text-5xl font-bold bg-gradient-to-b from-blue-500 to-violet-600 bg-clip-text text-transparent tabular-nums leading-none">
+          <span className="text-3xl sm:text-5xl font-bold text-slate-900 dark:text-white tabular-nums leading-none">
             {String(value).padStart(2, '0')}
           </span>
         </div>
