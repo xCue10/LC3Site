@@ -2191,6 +2191,51 @@ body {
 }
 .rd-alert-ok:active { background: linear-gradient(180deg, #dcdbd4 0%, #fefefe 100%); border-color: #7a7a7a; }
 
+/* ── Notepad easter egg ──────────────────────── */
+.np-wrap {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 480px;
+  background: #ece9d8;
+  border: 1px solid #0a246a;
+  border-radius: 6px 6px 0 0;
+  box-shadow: 0 0 0 1px #4a8ede, 3px 3px 8px rgba(0,0,0,0.4);
+  z-index: 9998;
+  animation: lw-fadein 0.15s ease-out;
+  display: flex;
+  flex-direction: column;
+}
+.np-titlebar {
+  border-radius: 5px 5px 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 3px 0 6px;
+}
+.np-menubar {
+  background: #ece9d8;
+  border-bottom: 1px solid #aaa;
+  display: flex;
+  gap: 0;
+  padding: 1px 2px;
+}
+.np-body {
+  font-family: 'Courier New', 'Lucida Console', monospace;
+  font-size: 11px;
+  line-height: 1.55;
+  color: #000;
+  background: #fff;
+  margin: 0;
+  padding: 8px 10px;
+  white-space: pre;
+  overflow: auto;
+  max-height: 420px;
+  border: 1px inset #aaa;
+  flex: 1;
+}
+
 /* ── LimeWire window ─────────────────────────── */
 .lw-wrap {
   position: fixed;
