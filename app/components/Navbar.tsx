@@ -4,8 +4,6 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState, useEffect, useRef } from 'react';
 
-type Theme = 'light' | 'dark' | 'retro';
-
 const primaryLinks = [
   { href: '/', label: 'Home' },
   { href: '/shield', label: 'Shield' },
@@ -42,28 +40,11 @@ function MoonIcon() {
   );
 }
 
-// Pixel mushroom icon for retro theme
-function PixelIcon() {
+// Vice City star — filled when retro is active
+function StarIcon({ active }: { active: boolean }) {
   return (
-    <svg
-      className="w-4 h-4"
-      viewBox="0 0 8 8"
-      fill="currentColor"
-      style={{ imageRendering: 'pixelated', shapeRendering: 'crispEdges' }}
-    >
-      {/* Mushroom cap */}
-      <rect x="2" y="0" width="4" height="1" />
-      <rect x="1" y="1" width="6" height="1" />
-      <rect x="0" y="2" width="8" height="1" />
-      {/* Spots (gaps in cap row) */}
-      <rect x="0" y="3" width="1" height="1" />
-      <rect x="3" y="3" width="2" height="1" />
-      <rect x="7" y="3" width="1" height="1" />
-      <rect x="0" y="4" width="8" height="1" />
-      {/* Stem */}
-      <rect x="2" y="5" width="4" height="1" />
-      <rect x="2" y="6" width="4" height="1" />
-      <rect x="1" y="7" width="6" height="1" />
+    <svg className="w-4 h-4" viewBox="0 0 24 24" fill={active ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth={1.5} strokeLinejoin="round">
+      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
     </svg>
   );
 }
@@ -76,28 +57,25 @@ function ChevronIcon({ open }: { open: boolean }) {
   );
 }
 
-// Returns the next theme in the cycle
-const nextTheme: Record<Theme, Theme> = { light: 'dark', dark: 'retro', retro: 'light' };
-
-// Icon shows the NEXT theme you'll switch to
-function ThemeIcon({ current }: { current: Theme }) {
-  if (current === 'light') return <MoonIcon />;
-  if (current === 'dark') return <PixelIcon />;
-  return <SunIcon />;
-}
-
 export default function Navbar() {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const [moreOpen, setMoreOpen] = useState(false);
-  const [theme, setTheme] = useState<Theme>('light');
+  const [isDark, setIsDark] = useState(false);
+  const [isRetro, setIsRetro] = useState(false);
   const moreRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const cl = document.documentElement.classList;
-    if (cl.contains('dark')) setTheme('dark');
-    else if (cl.contains('retro')) setTheme('retro');
-    else setTheme('light');
+    // Migrate old lc3-theme key
+    const legacy = localStorage.getItem('lc3-theme');
+    if (legacy === 'dark' && !localStorage.getItem('lc3-dark')) {
+      localStorage.setItem('lc3-dark', 'true');
+    }
+    const dark = localStorage.getItem('lc3-dark') === 'true';
+    const retro = localStorage.getItem('lc3-retro') === 'true';
+    setIsDark(dark);
+    setIsRetro(retro || cl.contains('retro'));
   }, []);
 
   useEffect(() => {
@@ -110,29 +88,43 @@ export default function Navbar() {
     return () => document.removeEventListener('mousedown', handler);
   }, []);
 
-  const cycleTheme = () => {
-    const t = nextTheme[theme];
-    setTheme(t);
-    document.documentElement.classList.remove('dark', 'retro');
-    if (t === 'dark') document.documentElement.classList.add('dark');
-    if (t === 'retro') document.documentElement.classList.add('retro');
-    localStorage.setItem('lc3-theme', t);
+  const toggleDark = () => {
+    const newDark = !isDark;
+    setIsDark(newDark);
+    // Dark/light toggle only affects the non-retro class
+    if (!isRetro) {
+      document.documentElement.classList.toggle('dark', newDark);
+    }
+    localStorage.setItem('lc3-dark', String(newDark));
+  };
+
+  const toggleRetro = () => {
+    const newRetro = !isRetro;
+    setIsRetro(newRetro);
+    if (newRetro) {
+      document.documentElement.classList.remove('dark');
+      document.documentElement.classList.add('retro');
+    } else {
+      document.documentElement.classList.remove('retro');
+      // Restore dark if it was set
+      document.documentElement.classList.toggle('dark', isDark);
+    }
+    localStorage.setItem('lc3-retro', String(newRetro));
   };
 
   const moreActive = moreLinks.some((l) => pathname === l.href);
-  const isRetro = theme === 'retro';
 
   // ── Conditional class helpers ──────────────────────────────────────────────
 
   const headerClass = isRetro
-    ? 'sticky top-0 z-50 border-b-4 border-[#05d9e8] bg-[#1a0533]'
+    ? 'sticky top-0 z-50 border-b-2 border-[#ff1e78] bg-[#0b0b1e]/96 shadow-[0_2px_24px_rgba(255,30,120,0.35)]'
     : 'sticky top-0 z-50 border-b border-slate-200 bg-white/95 backdrop-blur-xl dark:border-[#1e2d45] dark:bg-[#080d18]/85';
 
   const linkCls = (active: boolean) =>
     isRetro
       ? active
-        ? 'px-2 py-1 text-[7px] transition-colors border-2 border-[#ffd700] text-[#ffd700] bg-[#3d1a7a]'
-        : 'px-2 py-1 text-[7px] transition-colors text-[#05d9e8] hover:text-[#ffd700] hover:bg-[#2a0f4d] border-2 border-transparent hover:border-[#ffd700]'
+        ? 'px-3 py-2 text-sm font-medium transition-all border border-[#ff1e78] text-[#ff1e78] bg-[#ff1e78]/10 shadow-[0_0_10px_rgba(255,30,120,0.3)]'
+        : 'px-3 py-2 text-sm font-medium transition-all text-[#c8b8e8] hover:text-[#ff1e78] hover:bg-[#ff1e78]/5 hover:shadow-[0_0_8px_rgba(255,30,120,0.2)]'
       : active
         ? 'px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 bg-violet-50 text-violet-700 border border-violet-200 dark:bg-violet-500/10 dark:text-violet-400 dark:border-violet-500/20'
         : 'px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 text-slate-600 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-white dark:hover:bg-white/5';
@@ -140,46 +132,46 @@ export default function Navbar() {
   const moreButtonCls = (active: boolean) =>
     isRetro
       ? active
-        ? 'flex items-center gap-1 px-2 py-1 text-[7px] transition-colors border-2 border-[#ffd700] text-[#ffd700] bg-[#3d1a7a]'
-        : 'flex items-center gap-1 px-2 py-1 text-[7px] transition-colors text-[#05d9e8] hover:text-[#ffd700] hover:bg-[#2a0f4d] border-2 border-transparent hover:border-[#ffd700]'
+        ? 'flex items-center gap-1 px-3 py-2 text-sm font-medium transition-all border border-[#ff1e78] text-[#ff1e78] bg-[#ff1e78]/10'
+        : 'flex items-center gap-1 px-3 py-2 text-sm font-medium transition-all text-[#c8b8e8] hover:text-[#ff1e78] hover:bg-[#ff1e78]/5'
       : active
         ? 'flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 bg-violet-50 text-violet-700 border border-violet-200 dark:bg-violet-500/10 dark:text-violet-400 dark:border-violet-500/20'
         : 'flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 text-slate-600 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-white dark:hover:bg-white/5';
 
   const dropdownClass = isRetro
-    ? 'absolute right-0 top-full mt-1.5 w-44 bg-[#1a0533] border-2 border-[#05d9e8] shadow-[4px_4px_0_#ff2a6d] overflow-hidden py-1 z-50'
+    ? 'absolute right-0 top-full mt-1.5 w-44 bg-[#0f0f28] border border-[#ff1e78]/50 shadow-[0_4px_20px_rgba(255,30,120,0.25)] overflow-hidden py-1 z-50'
     : 'absolute right-0 top-full mt-1.5 w-44 bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-xl shadow-lg shadow-slate-900/10 dark:shadow-black/30 overflow-hidden py-1 z-50';
 
   const dropLinkCls = (active: boolean) =>
     isRetro
       ? active
-        ? 'block px-4 py-2 text-[7px] transition-colors text-[#ffd700] bg-[#3d1a7a]'
-        : 'block px-4 py-2 text-[7px] transition-colors text-[#05d9e8] hover:text-[#ffd700] hover:bg-[#2a0f4d]'
+        ? 'block px-4 py-2 text-sm transition-all text-[#ff1e78] bg-[#ff1e78]/10'
+        : 'block px-4 py-2 text-sm transition-all text-[#c8b8e8] hover:text-[#ff1e78] hover:bg-[#ff1e78]/5'
       : active
         ? 'block px-4 py-2 text-sm transition-colors text-violet-600 dark:text-violet-400 bg-violet-50 dark:bg-violet-500/10'
         : 'block px-4 py-2 text-sm transition-colors text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5';
 
-  const themeButtonCls = isRetro
-    ? 'ml-1 p-1.5 transition-all text-[#05d9e8] hover:text-[#ffd700] hover:bg-[#2a0f4d] border-2 border-transparent hover:border-[#05d9e8]'
-    : 'ml-1 p-2 rounded-lg transition-all text-slate-500 hover:text-slate-700 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-white dark:hover:bg-white/5';
+  const darkBtnCls = isRetro
+    ? 'p-2 transition-all text-[#c8b8e8]/50 cursor-not-allowed opacity-40'
+    : 'p-2 rounded-lg transition-all text-slate-500 hover:text-slate-700 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-white dark:hover:bg-white/5';
 
-  const mobileThemeButtonCls = isRetro
-    ? 'p-1.5 transition-all text-[#05d9e8] hover:text-[#ffd700] border-2 border-transparent hover:border-[#05d9e8]'
-    : 'p-2 rounded-lg transition-all text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-white/5';
+  const retroBtnCls = isRetro
+    ? 'ml-1 p-2 transition-all text-[#ff1e78] drop-shadow-[0_0_6px_rgba(255,30,120,0.8)]'
+    : 'ml-1 p-2 rounded-lg transition-all text-slate-400 hover:text-[#ff1e78] hover:bg-slate-100 dark:hover:bg-white/5';
 
   const hamLineCls = isRetro
-    ? 'block h-0.5 w-5 bg-[#05d9e8] transition-all duration-200'
+    ? 'block h-0.5 w-5 bg-[#ff1e78] transition-all duration-200'
     : 'block h-0.5 w-5 bg-slate-500 dark:bg-slate-400 transition-all duration-200';
 
   const mobileMenuClass = isRetro
-    ? 'sm:hidden border-t-2 border-[#05d9e8] bg-[#1a0533] px-4 py-3 flex flex-col gap-1'
+    ? 'sm:hidden border-t-2 border-[#ff1e78]/50 bg-[#0b0b1e]/98 px-4 py-3 flex flex-col gap-1 shadow-[0_4px_20px_rgba(255,30,120,0.2)]'
     : 'sm:hidden border-t border-slate-200 bg-white/95 backdrop-blur-md px-4 py-3 flex flex-col gap-1 dark:border-[#1e2d45] dark:bg-[#080d18]/95';
 
   const mobileLinkCls = (active: boolean) =>
     isRetro
       ? active
-        ? 'px-4 py-2.5 text-[7px] transition-all border-2 border-[#ffd700] text-[#ffd700] bg-[#3d1a7a]'
-        : 'px-4 py-2.5 text-[7px] transition-all text-[#05d9e8] hover:text-[#ffd700] hover:bg-[#2a0f4d] border-2 border-transparent'
+        ? 'px-4 py-2.5 text-sm font-medium transition-all border border-[#ff1e78] text-[#ff1e78] bg-[#ff1e78]/10'
+        : 'px-4 py-2.5 text-sm font-medium transition-all text-[#c8b8e8] hover:text-[#ff1e78] hover:bg-[#ff1e78]/5'
       : active
         ? 'px-4 py-2.5 rounded-lg text-sm font-medium transition-all bg-violet-50 text-violet-700 border border-violet-200 dark:bg-violet-500/10 dark:text-violet-400 dark:border-violet-500/20'
         : 'px-4 py-2.5 rounded-lg text-sm font-medium transition-all text-slate-600 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-white dark:hover:bg-white/5';
@@ -190,13 +182,14 @@ export default function Navbar() {
         <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-violet-400/20 to-transparent dark:via-violet-500/30" />
       )}
       {isRetro && (
-        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#ff2a6d]/60 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#ff1e78]/70 to-transparent" />
       )}
+
       <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 group" onClick={() => setMenuOpen(false)}>
           {isRetro ? (
-            <div className="w-8 h-8 flex items-center justify-center text-[#ffd700] font-bold text-xs border-2 border-[#ffd700] bg-[#3d1a7a] shadow-[2px_2px_0_#ff2a6d]">
+            <div className="w-8 h-8 flex items-center justify-center text-[#ff1e78] font-bold text-xs border border-[#ff1e78] bg-[#ff1e78]/10 shadow-[0_0_10px_rgba(255,30,120,0.4)] group-hover:shadow-[0_0_16px_rgba(255,30,120,0.7)] transition-shadow">
               LC3
             </div>
           ) : (
@@ -207,8 +200,13 @@ export default function Navbar() {
           <div>
             {isRetro ? (
               <>
-                <span className="font-bold text-xs leading-none block text-[#05d9e8]">LC3</span>
-                <span className="text-[6px] leading-none text-[#ff2a6d]">LOWCODE CLOUD CLUB</span>
+                <span
+                  className="font-bold text-sm leading-none block text-[#ff1e78]"
+                  style={{ fontFamily: 'var(--font-vice), Impact, sans-serif', fontStyle: 'italic', textTransform: 'uppercase', letterSpacing: '0.06em', textShadow: '1px 1px 0 #00dcff' }}
+                >
+                  LC3
+                </span>
+                <span className="text-[10px] leading-none text-[#00dcff]/70 tracking-wider">LOWCODE CLOUD CLUB</span>
               </>
             ) : (
               <>
@@ -232,10 +230,7 @@ export default function Navbar() {
 
           {/* More dropdown */}
           <div className="relative" ref={moreRef}>
-            <button
-              onClick={() => setMoreOpen((o) => !o)}
-              className={moreButtonCls(moreActive)}
-            >
+            <button onClick={() => setMoreOpen((o) => !o)} className={moreButtonCls(moreActive)}>
               More
               <ChevronIcon open={moreOpen} />
             </button>
@@ -244,12 +239,7 @@ export default function Navbar() {
                 {moreLinks.map(({ href, label }) => {
                   const isActive = pathname === href;
                   return (
-                    <Link
-                      key={href}
-                      href={href}
-                      onClick={() => setMoreOpen(false)}
-                      className={dropLinkCls(isActive)}
-                    >
+                    <Link key={href} href={href} onClick={() => setMoreOpen(false)} className={dropLinkCls(isActive)}>
                       {label}
                     </Link>
                   );
@@ -258,25 +248,42 @@ export default function Navbar() {
             )}
           </div>
 
-          {/* Theme cycle button */}
+          {/* Light/Dark toggle — disabled visually when retro is active */}
           <button
-            onClick={cycleTheme}
-            className={themeButtonCls}
-            aria-label="Cycle theme"
-            title={`Switch to ${nextTheme[theme]} mode`}
+            onClick={isRetro ? undefined : toggleDark}
+            className={darkBtnCls}
+            aria-label="Toggle light/dark mode"
+            title={isRetro ? 'Exit retro mode to use light/dark toggle' : isDark ? 'Switch to light mode' : 'Switch to dark mode'}
           >
-            <ThemeIcon current={theme} />
+            {isDark ? <SunIcon /> : <MoonIcon />}
+          </button>
+
+          {/* Retro toggle — separate button with Vice City star */}
+          <button
+            onClick={toggleRetro}
+            className={retroBtnCls}
+            aria-label={isRetro ? 'Exit Vice City mode' : 'Enter Vice City mode'}
+            title={isRetro ? 'Exit Vice City mode' : 'Enter Vice City mode'}
+          >
+            <StarIcon active={isRetro} />
           </button>
         </nav>
 
         {/* Mobile controls */}
-        <div className="sm:hidden flex items-center gap-2">
+        <div className="sm:hidden flex items-center gap-1">
           <button
-            onClick={cycleTheme}
-            className={mobileThemeButtonCls}
-            aria-label="Cycle theme"
+            onClick={isRetro ? undefined : toggleDark}
+            className={`p-2 transition-all ${isRetro ? 'text-[#c8b8e8]/30 opacity-30' : 'rounded-lg text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-white/5'}`}
+            aria-label="Toggle light/dark mode"
           >
-            <ThemeIcon current={theme} />
+            {isDark ? <SunIcon /> : <MoonIcon />}
+          </button>
+          <button
+            onClick={toggleRetro}
+            className={`p-2 transition-all ${isRetro ? 'text-[#ff1e78] drop-shadow-[0_0_6px_rgba(255,30,120,0.8)]' : 'rounded-lg text-slate-400 hover:text-[#ff1e78] hover:bg-slate-100 dark:hover:bg-white/5'}`}
+            aria-label="Toggle Vice City mode"
+          >
+            <StarIcon active={isRetro} />
           </button>
           <button
             className="flex flex-col justify-center items-center w-8 h-8 gap-1.5"
@@ -296,12 +303,7 @@ export default function Navbar() {
           {allLinks.map(({ href, label }) => {
             const isActive = pathname === href;
             return (
-              <Link
-                key={href}
-                href={href}
-                onClick={() => setMenuOpen(false)}
-                className={mobileLinkCls(isActive)}
-              >
+              <Link key={href} href={href} onClick={() => setMenuOpen(false)} className={mobileLinkCls(isActive)}>
                 {label}
               </Link>
             );

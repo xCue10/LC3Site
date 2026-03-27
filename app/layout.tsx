@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Press_Start_2P } from "next/font/google";
+import { Geist, Geist_Mono, Press_Start_2P, Bebas_Neue } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
@@ -19,6 +19,12 @@ const geistMono = Geist_Mono({
 
 const pressStart2P = Press_Start_2P({
   variable: "--font-retro",
+  weight: "400",
+  subsets: ["latin"],
+});
+
+const bebasNeue = Bebas_Neue({
+  variable: "--font-vice",
   weight: "400",
   subsets: ["latin"],
 });
@@ -51,10 +57,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth" suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable} ${pressStart2P.variable} antialiased min-h-screen flex flex-col`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} ${pressStart2P.variable} ${bebasNeue.variable} antialiased min-h-screen flex flex-col`}>
         <script
           dangerouslySetInnerHTML={{
-            __html: `try{const t=localStorage.getItem('lc3-theme');if(t==='dark')document.documentElement.classList.add('dark');else if(t==='retro')document.documentElement.classList.add('retro');}catch{}`,
+            __html: `try{const r=localStorage.getItem('lc3-retro')==='true';const d=localStorage.getItem('lc3-dark')==='true'||localStorage.getItem('lc3-theme')==='dark';if(r)document.documentElement.classList.add('retro');else if(d)document.documentElement.classList.add('dark');}catch{}`,
           }}
         />
         <CursorTrail />
