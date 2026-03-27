@@ -322,12 +322,27 @@ export default function TimeMachine() {
           </div>
         )}
 
-        {/* ── Phase: ARRIVE ── */}
+        {/* ── Phase: ARRIVE — Win98 boot screen ── */}
         {phase === 'arrive' && (
-          <div className="tm-arrive-wrap">
-            <p className="tm-arrive-label">✦ WINDOWS 98 LOADED ✦</p>
-            <div className="tm-arrived-year">1998</div>
-            <p className="tm-welcome-text">YOU&apos;VE GOT MAIL</p>
+          <div className="tm-win98-boot">
+            <div className="tm-win98-logo">
+              <div className="tm-win98-squares">
+                <span style={{ background: '#ff3333' }} />
+                <span style={{ background: '#33cc33' }} />
+                <span style={{ background: '#3399ff' }} />
+                <span style={{ background: '#ffcc00' }} />
+              </div>
+              <div className="tm-win98-wordmark">
+                <span>Windows</span>
+                <em>98</em>
+              </div>
+            </div>
+            <p className="tm-win98-starting">Starting Windows 98...</p>
+            <div className="tm-win98-progressrow">
+              {[...Array(10)].map((_, i) => (
+                <span key={i} className="tm-win98-block" />
+              ))}
+            </div>
           </div>
         )}
 

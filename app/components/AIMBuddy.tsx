@@ -24,6 +24,73 @@ function RunningMan({ size = 38 }: { size?: number }) {
   );
 }
 
+function playDoorCreak() {
+  try {
+    const ctx = new AudioContext();
+    const t = ctx.currentTime;
+    const lfo = ctx.createOscillator();
+    const lfoGain = ctx.createGain();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    lfo.frequency.value = 7;
+    lfoGain.gain.value = 35;
+    lfo.connect(lfoGain);
+    lfoGain.connect(osc.frequency);
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(190, t);
+    osc.frequency.linearRampToValueAtTime(90, t + 0.6);
+    osc.frequency.linearRampToValueAtTime(155, t + 1.0);
+    gain.gain.setValueAtTime(0.001, t);
+    gain.gain.linearRampToValueAtTime(0.13, t + 0.06);
+    gain.gain.setValueAtTime(0.11, t + 0.85);
+    gain.gain.linearRampToValueAtTime(0.001, t + 1.1);
+    osc.connect(gain); gain.connect(ctx.destination);
+    lfo.start(t); osc.start(t);
+    lfo.stop(t + 1.2); osc.stop(t + 1.2);
+    setTimeout(() => ctx.close(), 1600);
+  } catch {}
+}
+
+function playIMChime() {
+  try {
+    const ctx = new AudioContext();
+    const t = ctx.currentTime;
+    [[880, 0], [1100, 0.16]].forEach(([freq, delay]) => {
+      const o = ctx.createOscillator();
+      const g = ctx.createGain();
+      o.type = 'sine';
+      o.frequency.value = freq;
+      g.gain.setValueAtTime(0.001, t + delay);
+      g.gain.linearRampToValueAtTime(0.10, t + delay + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.001, t + delay + 0.28);
+      o.connect(g); g.connect(ctx.destination);
+      o.start(t + delay); o.stop(t + delay + 0.32);
+    });
+    setTimeout(() => ctx.close(), 700);
+  } catch {}
+}
+
+function speakYouveGotMail() {
+  try {
+    if (!('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel();
+    const utt = new SpeechSynthesisUtterance("You've got mail!");
+    utt.rate = 0.88;
+    utt.pitch = 1.1;
+    utt.volume = 1.0;
+    const setVoice = () => {
+      const voices = window.speechSynthesis.getVoices();
+      const pick = voices.find(v => v.lang.startsWith('en') && v.name.toLowerCase().includes('female'))
+        || voices.find(v => v.lang.startsWith('en-US'))
+        || voices[0];
+      if (pick) utt.voice = pick;
+      window.speechSynthesis.speak(utt);
+    };
+    if (window.speechSynthesis.getVoices().length) setVoice();
+    else window.speechSynthesis.addEventListener('voiceschanged', setVoice, { once: true });
+  } catch {}
+}
+
 export default function AIMBuddy() {
   const [isRetro, setIsRetro]     = useState(false);
   const [members, setMembers]     = useState<Member[]>([]);
@@ -53,7 +120,10 @@ export default function AIMBuddy() {
 
   if (!isRetro) return null;
 
+  const openIM = () => { playIMChime(); setShowIM(true); };
+
   const handleSignOn = () => {
+    playDoorCreak();
     setSigningOn(true);
     setTimeout(() => { setSigningOn(false); setSigned(true); }, 1400);
   };
@@ -66,6 +136,7 @@ export default function AIMBuddy() {
 
   const handleSend = (e: React.FormEvent) => {
     e.preventDefault();
+    speakYouveGotMail();
     setSent(true);
     setTimeout(() => {
       setShowIM(false);
@@ -257,7 +328,7 @@ export default function AIMBuddy() {
                 <div className="aim-buddy aim-buddy-empty">Loading members...</div>
               ) : (
                 members.map(m => (
-                  <div key={m.id} className="aim-buddy" onClick={() => setShowIM(true)} title="Click to IM">
+                  <div key={m.id} className="aim-buddy" onClick={() => openIM()} title="Click to IM">
                     <span className="aim-buddy-icon">■</span>
                     <span className="aim-buddy-name">{m.name}</span>
                     {m.role && <span className="aim-buddy-role">{m.role}</span>}
@@ -267,7 +338,7 @@ export default function AIMBuddy() {
               <div className="aim-category" style={{marginTop: 2}}>
                 <span className="aim-cat-arrow">▼</span> Co-Workers (1/5)
               </div>
-              <div className="aim-buddy" onClick={() => setShowIM(true)}>
+              <div className="aim-buddy" onClick={() => openIM()}>
                 <span className="aim-buddy-icon">■</span>
                 <span className="aim-buddy-name aim-buddy-online">LC3Admin</span>
               </div>
@@ -278,7 +349,7 @@ export default function AIMBuddy() {
 
             {/* Footer buttons */}
             <div className="aim-footer">
-              <button className="aim-footer-btn" onClick={() => setShowIM(true)} title="Send Instant Message">IM</button>
+              <button className="aim-footer-btn" onClick={() => openIM()} title="Send Instant Message">IM</button>
               <button className="aim-footer-btn" title="Chat">Chat</button>
               <Link href="/contact" className="aim-footer-btn aim-footer-link" title="Get Info">Info</Link>
               <button className="aim-footer-btn" title="Set Away Message">Away</button>

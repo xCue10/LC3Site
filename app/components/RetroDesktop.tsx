@@ -156,9 +156,32 @@ function PageIcon({ type, color }: { type: string; color: string }) {
   }
 }
 
+const ADS = [
+  {
+    id: 0,
+    title: 'Macromedia Flash Player Required',
+    body: '🎉 You are visitor #1,000,000!\nClick to claim your FREE prize!',
+    top: 110,
+  },
+  {
+    id: 1,
+    title: 'Security Alert',
+    body: '⚠️ WARNING: 47 viruses detected!\nClick HERE to remove them NOW for FREE!',
+    top: 260,
+  },
+  {
+    id: 2,
+    title: 'FREE AOL Offer — Limited Time!',
+    body: '📀 Get 1000 FREE hours with AOL\nInstant Messenger! Don\'t miss out!',
+    top: 410,
+  },
+];
+
 export default function RetroDesktop() {
   const [isRetro, setIsRetro] = useState(false);
   const [time, setTime] = useState('');
+  const [showStartMenu, setShowStartMenu] = useState(false);
+  const [visibleAds, setVisibleAds] = useState<number[]>([]);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -168,6 +191,14 @@ export default function RetroDesktop() {
     obs.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
     return () => obs.disconnect();
   }, []);
+
+  useEffect(() => {
+    if (!isRetro) { setVisibleAds([]); setShowStartMenu(false); return; }
+    const t1 = setTimeout(() => setVisibleAds(v => [...v, 0]), 3000);
+    const t2 = setTimeout(() => setVisibleAds(v => [...v, 1]), 7000);
+    const t3 = setTimeout(() => setVisibleAds(v => [...v, 2]), 12000);
+    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
+  }, [isRetro]);
 
   useEffect(() => {
     if (!isRetro) return;
@@ -244,9 +275,71 @@ export default function RetroDesktop() {
         ))}
       </div>
 
+      {/* Popup ads */}
+      {visibleAds.map(id => {
+        const ad = ADS[id];
+        return (
+          <div key={ad.id} className="rd-popup-ad" style={{ top: ad.top, left: 18 }}>
+            <div className="rd-popup-ad-titlebar">
+              <span className="rd-popup-ad-title">{ad.title}</span>
+              <button
+                className="aim-wbtn aim-wbtn-close"
+                onClick={() => setVisibleAds(v => v.filter(i => i !== id))}
+              >×</button>
+            </div>
+            <div className="rd-popup-ad-body">
+              <p>{ad.body}</p>
+              <button className="rd-popup-ad-btn">CLICK HERE!</button>
+            </div>
+          </div>
+        );
+      })}
+
+      {/* Start menu */}
+      {showStartMenu && (
+        <>
+          <div
+            style={{ position: 'fixed', inset: 0, zIndex: 9997 }}
+            onClick={() => setShowStartMenu(false)}
+          />
+          <div className="rd-start-menu">
+            <div className="rd-sm-sidebar">
+              <span className="rd-sm-sidebar-text">Windows 98</span>
+            </div>
+            <div className="rd-sm-items">
+              {ICONS.map(({ label, href }) => (
+                <Link
+                  key={href}
+                  href={href}
+                  className="rd-sm-item"
+                  onClick={() => setShowStartMenu(false)}
+                >
+                  {label}
+                </Link>
+              ))}
+              <div className="rd-sm-divider" />
+              <button
+                className="rd-sm-item rd-sm-shutdown"
+                onClick={() => {
+                  setShowStartMenu(false);
+                  window.dispatchEvent(new Event('retro-deactivate'));
+                }}
+              >
+                🔌 Shut Down...
+              </button>
+            </div>
+          </div>
+        </>
+      )}
+
       {/* Win98 Taskbar */}
       <div className="rd-taskbar" role="toolbar" aria-label="Taskbar">
-        <button className="rd-start-btn" type="button">
+        <button
+          className="rd-start-btn"
+          type="button"
+          onClick={() => setShowStartMenu(m => !m)}
+          style={showStartMenu ? { boxShadow: 'inset -1px -1px 0 #fff, inset 1px 1px 0 #555' } : undefined}
+        >
           <WinLogo />
           <span className="rd-start-label">Start</span>
         </button>
