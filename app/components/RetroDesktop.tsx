@@ -17,6 +17,7 @@ const ICONS = [
   { label: 'Shield',    href: '/shield',    color: '#dc2626', type: 'shield'    },
   { label: 'Contact',   href: '/contact',   color: '#0d9488', type: 'contact'   },
   { label: 'Partner',   href: '/hire',      color: '#ea580c', type: 'hire'      },
+  { label: 'LimeWire',  href: '#limewire',  color: '#22c55e', type: 'limewire'  },
 ];
 
 function WinLogo() {
@@ -146,6 +147,18 @@ function PageIcon({ type, color }: { type: string; color: string }) {
           <rect x="21" y="19" width="4" height="5" rx="0.5" fill="#fff" opacity="0.6" />
         </svg>
       );
+    case 'limewire':
+      return (
+        <svg {...s}>
+          {/* Green background */}
+          <rect x="1" y="1" width="30" height="30" rx="5" fill={color} />
+          {/* Lightning bolt */}
+          <polygon points="19,3 10,17 17,17 13,29 22,15 15,15" fill="#ffffff" />
+          {/* Lime fruit hint — small circle */}
+          <circle cx="24" cy="8" r="4" fill="#86efac" stroke="#fff" strokeWidth="1" />
+          <circle cx="24" cy="8" r="2" fill="#16a34a" />
+        </svg>
+      );
     default:
       return (
         <svg {...s}>
@@ -183,6 +196,9 @@ export default function RetroDesktop() {
   const [showStartMenu, setShowStartMenu] = useState(false);
   const [visibleAds, setVisibleAds] = useState<number[]>([]);
   const [showRightClickDialog, setShowRightClickDialog] = useState(false);
+  const [showLimeWire, setShowLimeWire] = useState(false);
+  const [lwStage, setLwStage] = useState<'idle' | 'downloading' | 'done' | 'infected'>('idle');
+  const [lwProgress, setLwProgress] = useState(0);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -226,6 +242,30 @@ export default function RetroDesktop() {
     const id = setInterval(tick, 5000);
     return () => clearInterval(id);
   }, [isRetro]);
+
+  const startLwDownload = () => {
+    setLwStage('downloading');
+    setLwProgress(0);
+    let p = 0;
+    const iv = setInterval(() => {
+      p += Math.random() * 8 + 3;
+      if (p >= 100) {
+        p = 100;
+        clearInterval(iv);
+        setLwProgress(100);
+        setLwStage('done');
+        setTimeout(() => setLwStage('infected'), 1200);
+      } else {
+        setLwProgress(Math.floor(p));
+      }
+    }, 120);
+  };
+
+  const closeLimeWire = () => {
+    setShowLimeWire(false);
+    setLwStage('idle');
+    setLwProgress(0);
+  };
 
   if (!isRetro) return null;
 
@@ -280,12 +320,22 @@ export default function RetroDesktop() {
 
       {/* Desktop icons — left side, 2-column grid */}
       <div className="rd-icons-panel">
-        {ICONS.map(({ label, href, color, type }) => (
-          <Link key={href} href={href} className="rd-icon">
-            <PageIcon type={type} color={color} />
-            <span className="rd-icon-label">{label}</span>
-          </Link>
-        ))}
+        {ICONS.map(({ label, href, color, type }) => {
+          if (type === 'limewire') {
+            return (
+              <div key={href} className="rd-icon" onClick={() => { setShowLimeWire(true); setLwStage('idle'); setLwProgress(0); }} style={{ cursor: 'pointer' }}>
+                <PageIcon type={type} color={color} />
+                <span className="rd-icon-label">{label}</span>
+              </div>
+            );
+          }
+          return (
+            <Link key={href} href={href} className="rd-icon">
+              <PageIcon type={type} color={color} />
+              <span className="rd-icon-label">{label}</span>
+            </Link>
+          );
+        })}
       </div>
 
       {/* Popup ads */}
@@ -307,6 +357,93 @@ export default function RetroDesktop() {
           </div>
         );
       })}
+
+      {/* LimeWire easter egg window */}
+      {showLimeWire && (
+        <div className="lw-wrap">
+          <div className="lw-titlebar">
+            <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+              <span className="lw-logo-dot" />
+              <span className="lw-title-text">LimeWire 4.18.8</span>
+            </div>
+            <div className="aim-winbtns">
+              <button className="aim-wbtn aim-wbtn-min">_</button>
+              <button className="aim-wbtn aim-wbtn-close" onClick={closeLimeWire}>×</button>
+            </div>
+          </div>
+
+          {/* Search bar */}
+          <div className="lw-searchbar">
+            <input className="lw-search-input" defaultValue="Eminem Lose Yourself" readOnly />
+            <button className="lw-search-btn">Search</button>
+          </div>
+
+          {/* Results */}
+          <div className="lw-results-header">
+            <span>Filename</span><span>Size</span><span>Sources</span>
+          </div>
+          <div className="lw-results">
+            <div className="lw-result lw-result-selected">
+              <span>🎵 Eminem - Lose Yourself.mp3</span>
+              <span>4.3 MB</span>
+              <span className="lw-sources">47</span>
+            </div>
+            <div className="lw-result">
+              <span>🎵 Eminem - Lose Yourself.mp3</span>
+              <span>6.7 MB</span>
+              <span className="lw-sources">12</span>
+            </div>
+            <div className="lw-result">
+              <span>🎵 Eminem - Lose_Yourself_FULL.mp3</span>
+              <span>1.1 MB</span>
+              <span className="lw-sources">3</span>
+            </div>
+          </div>
+
+          {/* Progress / status */}
+          <div className="lw-status-row">
+            {lwStage === 'idle' && (
+              <button className="lw-dl-btn" onClick={startLwDownload}>▼ Download</button>
+            )}
+            {lwStage === 'downloading' && (
+              <div className="lw-progress-wrap">
+                <span className="lw-progress-label">Downloading... {lwProgress}%</span>
+                <div className="lw-progress-track">
+                  <div className="lw-progress-fill" style={{ width: `${lwProgress}%` }} />
+                </div>
+              </div>
+            )}
+            {lwStage === 'done' && (
+              <span className="lw-done-text">✓ Download complete!</span>
+            )}
+          </div>
+
+          {/* Infected alert */}
+          {lwStage === 'infected' && (
+            <div className="lw-infected-overlay">
+              <div className="rd-alert-dialog" style={{ width: 300 }}>
+                <div className="rd-alert-titlebar">
+                  <span className="rd-alert-title">Setup Wizard</span>
+                  <button className="aim-wbtn aim-wbtn-close" onClick={closeLimeWire}>×</button>
+                </div>
+                <div className="rd-alert-body" style={{ gap: 4 }}>
+                  <span style={{ fontSize: 26 }}>🎉</span>
+                  <p style={{ fontWeight: 'bold' }}>Installation complete!</p>
+                  <p style={{ textAlign: 'left', lineHeight: 1.6 }}>
+                    The following programs were installed:<br />
+                    • MyWebSearch Toolbar v3.2<br />
+                    • CoolWebSearch™ Homepage Hijacker<br />
+                    • BonziBuddy FREE Edition<br />
+                    • AskJeeves Toolbar (1 of 47)
+                  </p>
+                  <p style={{ color: '#666', fontSize: '10px !important' }}>Your homepage has been set to http://www.coolwebsearch.com</p>
+                  <button className="rd-alert-ok" onClick={closeLimeWire}>OK</button>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Right-click protection dialog */}
       {showRightClickDialog && (
