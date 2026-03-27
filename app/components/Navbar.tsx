@@ -101,15 +101,14 @@ export default function Navbar() {
   const toggleRetro = () => {
     const newRetro = !isRetro;
     setIsRetro(newRetro);
-    if (newRetro) {
-      document.documentElement.classList.remove('dark');
-      document.documentElement.classList.add('retro');
-    } else {
-      document.documentElement.classList.remove('retro');
-      // Restore dark if it was set
-      document.documentElement.classList.toggle('dark', isDark);
-    }
+    // Save preference immediately so page refresh respects it
     localStorage.setItem('lc3-retro', String(newRetro));
+    // TimeMachine handles the animation + actual DOM class change
+    if (newRetro) {
+      window.dispatchEvent(new CustomEvent('retro-activate'));
+    } else {
+      window.dispatchEvent(new CustomEvent('retro-deactivate'));
+    }
   };
 
   const moreActive = moreLinks.some((l) => pathname === l.href);

@@ -6,6 +6,7 @@ import Footer from "./components/Footer";
 import CursorTrail from "./components/CursorTrail";
 import AnnouncementBanner from "./components/AnnouncementBanner";
 import RetroMusic from "./components/RetroMusic";
+import TimeMachine from "./components/TimeMachine";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -69,6 +70,7 @@ export default function RootLayout({
         <main className="flex-1">{children}</main>
         <Footer />
         <RetroMusic />
+        <TimeMachine />
       </body>
     </html>
   );

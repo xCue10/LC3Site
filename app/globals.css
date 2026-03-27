@@ -381,3 +381,329 @@ body {
       0 0 70px rgba(255, 30, 120, 0.4);
   }
 }
+
+/* ==============================================
+   TIME MACHINE OVERLAY
+   ============================================== */
+
+.tm-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.tm-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* CRT scanlines */
+.tm-scanlines {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.28) 2px,
+    rgba(0, 0, 0, 0.28) 4px
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* VHS chromatic aberration border tint */
+.tm-vhs-border {
+  position: absolute;
+  inset: 0;
+  border: 3px solid transparent;
+  background:
+    linear-gradient(#000, #000) padding-box,
+    linear-gradient(180deg, rgba(255,30,120,0.5) 0%, rgba(0,220,255,0.5) 100%) border-box;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Content layer */
+.tm-content {
+  position: relative;
+  z-index: 3;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+  width: 100%;
+}
+
+/* ── Engage phase ───────────────────────────── */
+.tm-engage-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  animation: tm-fadein 0.4s ease-out;
+}
+
+.tm-alert-tag {
+  font-family: var(--font-retro), monospace;
+  font-size: clamp(0.5rem, 1.5vw, 0.65rem);
+  color: #00dcff;
+  letter-spacing: 0.35em;
+  animation: retro-blink 0.6s step-end infinite;
+}
+
+.tm-headline {
+  font-family: var(--font-vice), Impact, 'Arial Black', sans-serif;
+  font-style: italic;
+  font-size: clamp(2.2rem, 9vw, 5.5rem);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #ff1e78;
+  line-height: 1;
+  /* Full neon sign effect */
+  text-shadow:
+    0 0 7px  #fff,
+    0 0 12px #fff,
+    0 0 22px #fff,
+    0 0 42px #ff1e78,
+    0 0 82px #ff1e78,
+    0 0 96px #ff1e78,
+    4px 4px 0 #00dcff;
+  animation: tm-neon-flicker 2.5s linear infinite;
+}
+
+/* Glitch layers on title */
+.tm-glitch { position: relative; }
+.tm-glitch::before,
+.tm-glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  font-family: inherit;
+  font-size: inherit;
+  font-style: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  line-height: inherit;
+}
+.tm-glitch::before {
+  color: #00dcff;
+  text-shadow: none;
+  animation: tm-glitch-a 0.35s infinite;
+  clip-path: polygon(0 15%, 100% 15%, 100% 32%, 0 32%);
+}
+.tm-glitch::after {
+  color: #ff1e78;
+  text-shadow: none;
+  animation: tm-glitch-b 0.45s infinite;
+  clip-path: polygon(0 66%, 100% 66%, 100% 82%, 0 82%);
+}
+
+.tm-subtext {
+  font-family: var(--font-retro), monospace;
+  font-size: clamp(0.45rem, 1.2vw, 0.6rem);
+  color: #00dcff;
+  letter-spacing: 0.2em;
+  animation: retro-blink 0.9s step-end infinite;
+}
+
+.tm-progress-bar {
+  width: min(320px, 80vw);
+  height: 6px;
+  background: rgba(255, 30, 120, 0.12);
+  border: 1px solid rgba(255, 30, 120, 0.45);
+  overflow: hidden;
+  margin-top: 0.25rem;
+}
+.tm-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #ff1e78, #cc00ff, #00dcff);
+  box-shadow: 0 0 10px #ff1e78;
+  animation: tm-bar 1.2s ease-out forwards;
+}
+
+.tm-coord-row {
+  font-family: var(--font-retro), monospace;
+  font-size: clamp(0.45rem, 1.2vw, 0.6rem);
+  color: rgba(0, 220, 255, 0.7);
+  letter-spacing: 0.15em;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.tm-coord-sep { color: #ff1e78; }
+
+.tm-footnote {
+  font-family: var(--font-retro), monospace;
+  font-size: clamp(0.4rem, 1vw, 0.55rem);
+  color: rgba(255, 225, 0, 0.6);
+  letter-spacing: 0.25em;
+  margin-top: 0.25rem;
+}
+
+/* ── Warp phase ─────────────────────────────── */
+.tm-warp-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  animation: tm-fadein 0.3s ease-out;
+}
+
+.tm-warp-label {
+  font-family: var(--font-retro), monospace;
+  font-size: clamp(0.45rem, 1.2vw, 0.6rem);
+  color: rgba(0, 220, 255, 0.75);
+  letter-spacing: 0.3em;
+  animation: retro-blink 1.1s step-end infinite;
+}
+
+.tm-year-caption {
+  font-family: var(--font-retro), monospace;
+  font-size: clamp(0.4rem, 1vw, 0.55rem);
+  color: rgba(255, 30, 120, 0.7);
+  letter-spacing: 0.3em;
+  margin-top: 0.5rem;
+}
+
+.tm-year-display {
+  font-family: var(--font-vice), Impact, sans-serif;
+  font-style: italic;
+  font-size: clamp(5rem, 22vw, 12rem);
+  letter-spacing: -0.02em;
+  line-height: 0.9;
+  color: #ffe100;
+  text-shadow:
+    0 0 10px #fff,
+    0 0 20px #ffe100,
+    0 0 40px #ffe100,
+    0 0 80px rgba(255, 225, 0, 0.5);
+  animation: tm-year-pop 0.18s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.tm-velocity {
+  font-family: var(--font-retro), monospace;
+  font-size: clamp(0.4rem, 1vw, 0.55rem);
+  color: rgba(0, 220, 255, 0.6);
+  letter-spacing: 0.12em;
+  margin-top: 0.5rem;
+}
+.tm-velocity-val {
+  color: #00dcff;
+  animation: retro-blink 0.25s step-end infinite;
+}
+
+/* ── Arrive phase ───────────────────────────── */
+.tm-arrive-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  animation: tm-fadein 0.25s ease-out;
+}
+
+.tm-arrive-label {
+  font-family: var(--font-retro), monospace;
+  font-size: clamp(0.5rem, 1.5vw, 0.7rem);
+  color: #00dcff;
+  letter-spacing: 0.35em;
+  animation: retro-blink 0.5s step-end infinite;
+}
+
+.tm-arrived-year {
+  font-family: var(--font-vice), Impact, 'Arial Black', sans-serif;
+  font-style: italic;
+  font-size: clamp(6rem, 28vw, 16rem);
+  letter-spacing: 0.04em;
+  line-height: 0.85;
+  color: #ff1e78;
+  text-shadow:
+    0 0 7px  #fff,
+    0 0 12px #fff,
+    0 0 22px #fff,
+    0 0 42px #ff1e78,
+    0 0 82px #ff1e78,
+    0 0 100px #ff1e78,
+    0 0 140px rgba(255, 30, 120, 0.6),
+    6px 6px 0 #00dcff;
+  animation: tm-neon-on 0.6s ease-out, tm-neon-flicker 3s linear 0.7s infinite;
+}
+
+.tm-welcome-text {
+  font-family: var(--font-retro), monospace;
+  font-size: clamp(0.5rem, 1.5vw, 0.7rem);
+  color: #ffe100;
+  letter-spacing: 0.35em;
+  text-shadow: 0 0 10px rgba(255, 225, 0, 0.7);
+  margin-top: 0.25rem;
+}
+
+/* ── VHS HUD corners ────────────────────────── */
+.tm-hud {
+  position: fixed;
+  font-family: var(--font-retro), monospace;
+  font-size: clamp(0.45rem, 1.2vw, 0.6rem);
+  letter-spacing: 0.12em;
+  z-index: 4;
+  animation: retro-blink 2s step-end infinite;
+}
+.tm-hud-tl { top: 1.25rem; left: 1.25rem; color: #ff1e78; }
+.tm-hud-tr { top: 1.25rem; right: 1.25rem; color: #ff1e78; }
+.tm-hud-bl { bottom: 1.25rem; left: 1.25rem; color: #00dcff; }
+.tm-hud-br { bottom: 1.25rem; right: 1.25rem; color: #00dcff; }
+
+/* ── Keyframes ──────────────────────────────── */
+@keyframes tm-fadein {
+  from { opacity: 0; transform: scale(0.96) translateY(8px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* Neon sign turn-on */
+@keyframes tm-neon-on {
+  0%   { opacity: 0; text-shadow: none; }
+  40%  { opacity: 0.7; }
+  55%  { opacity: 0.3; }
+  70%  { opacity: 0.9; }
+  80%  { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+/* Realistic neon flicker */
+@keyframes tm-neon-flicker {
+  0%, 18%, 22%, 25%, 53%, 57%, 100% { opacity: 1; }
+  20%, 24%  { opacity: 0.6; }
+  54%, 56%  { opacity: 0.4; }
+}
+
+@keyframes tm-glitch-a {
+  0%, 100% { transform: translate(0);    clip-path: polygon(0 15%, 100% 15%, 100% 32%, 0 32%); }
+  20%       { transform: translate(-5px, 2px); }
+  40%       { transform: translate(5px, -2px); clip-path: polygon(0 48%, 100% 48%, 100% 60%, 0 60%); }
+  60%       { transform: translate(-3px, 1px); }
+  80%       { transform: translate(4px, 0);    clip-path: polygon(0 8%, 100% 8%, 100% 22%, 0 22%); }
+}
+
+@keyframes tm-glitch-b {
+  0%, 100% { transform: translate(0);    clip-path: polygon(0 66%, 100% 66%, 100% 82%, 0 82%); }
+  25%       { transform: translate(6px, 0); }
+  50%       { transform: translate(-5px, 2px); clip-path: polygon(0 76%, 100% 76%, 100% 92%, 0 92%); }
+  75%       { transform: translate(3px, -2px); }
+}
+
+@keyframes tm-bar {
+  from { width: 0; }
+  to   { width: 100%; }
+}
+
+@keyframes tm-year-pop {
+  from { transform: scale(1.2) translateY(-12px); opacity: 0; }
+  to   { transform: scale(1) translateY(0);       opacity: 1; }
+}
