@@ -31,7 +31,7 @@ function WinLogo() {
 }
 
 function PageIcon({ type, color }: { type: string; color: string }) {
-  const s = { viewBox: '0 0 32 32', width: 52, height: 52, xmlns: 'http://www.w3.org/2000/svg', 'aria-hidden': true as true };
+  const s = { viewBox: '0 0 32 32', width: 40, height: 40, xmlns: 'http://www.w3.org/2000/svg', 'aria-hidden': true as true };
   switch (type) {
     case 'home':
       return (
