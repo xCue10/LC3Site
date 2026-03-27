@@ -1,0 +1,104 @@
+<svg viewBox="0 0 1920 1200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <!-- Sky gradient: deep blue top → bright mid-blue horizon -->
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"   stop-color="#1255a8"/>
+      <stop offset="30%"  stop-color="#2a7fd4"/>
+      <stop offset="70%"  stop-color="#5aaee8"/>
+      <stop offset="100%" stop-color="#80c8f0"/>
+    </linearGradient>
+
+    <!-- Hill gradient: bright grass top → darker earth bottom -->
+    <linearGradient id="hill-main" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"   stop-color="#5fbe4a"/>
+      <stop offset="40%"  stop-color="#48aa30"/>
+      <stop offset="100%" stop-color="#2c7a18"/>
+    </linearGradient>
+
+    <!-- Subtle hill shadow on far right slope -->
+    <linearGradient id="hill-shadow" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%"   stop-color="#3ea820" stop-opacity="0"/>
+      <stop offset="60%"  stop-color="#2d8818" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#1a6010" stop-opacity="0.45"/>
+    </linearGradient>
+
+    <!-- Cloud softening filter -->
+    <filter id="cloud-soft" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="12"/>
+    </filter>
+    <filter id="cloud-soft-sm" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="7"/>
+    </filter>
+  </defs>
+
+  <!-- ── Sky ── -->
+  <rect width="1920" height="1200" fill="url(#sky)"/>
+
+  <!-- ── Clouds ── -->
+
+  <!-- Large cloud left -->
+  <g filter="url(#cloud-soft)" opacity="0.94">
+    <ellipse cx="290"  cy="195" rx="195" ry="82" fill="white"/>
+    <ellipse cx="390"  cy="170" rx="155" ry="72" fill="white"/>
+    <ellipse cx="200"  cy="215" rx="130" ry="60" fill="white"/>
+    <ellipse cx="320"  cy="155" rx="110" ry="52" fill="white"/>
+    <ellipse cx="440"  cy="188" rx="100" ry="50" fill="white"/>
+  </g>
+
+  <!-- Medium cloud centre-left -->
+  <g filter="url(#cloud-soft-sm)" opacity="0.82">
+    <ellipse cx="760"  cy="130" rx="120" ry="48" fill="white"/>
+    <ellipse cx="840"  cy="112" rx="95"  ry="44" fill="white"/>
+    <ellipse cx="680"  cy="148" rx="90"  ry="40" fill="white"/>
+  </g>
+
+  <!-- Large cloud right -->
+  <g filter="url(#cloud-soft)" opacity="0.90">
+    <ellipse cx="1450" cy="175" rx="215" ry="88" fill="white"/>
+    <ellipse cx="1560" cy="148" rx="170" ry="78" fill="white"/>
+    <ellipse cx="1340" cy="198" rx="145" ry="65" fill="white"/>
+    <ellipse cx="1490" cy="130" rx="120" ry="55" fill="white"/>
+    <ellipse cx="1610" cy="168" rx="105" ry="48" fill="white"/>
+  </g>
+
+  <!-- Small wisp top-right -->
+  <g filter="url(#cloud-soft-sm)" opacity="0.68">
+    <ellipse cx="1760" cy="108" rx="140" ry="50" fill="white"/>
+    <ellipse cx="1840" cy="90"  rx="105" ry="42" fill="white"/>
+    <ellipse cx="1690" cy="122" rx="90"  ry="38" fill="white"/>
+  </g>
+
+  <!-- Tiny distant cloud centre -->
+  <g filter="url(#cloud-soft-sm)" opacity="0.55">
+    <ellipse cx="1060" cy="95"  rx="80"  ry="30" fill="white"/>
+    <ellipse cx="1120" cy="82"  rx="65"  ry="26" fill="white"/>
+  </g>
+
+  <!-- ── Hill ──
+       Classic Bliss shape: rises from bottom-left, peaks slightly
+       left-of-centre at ~y=490, sweeps gracefully down to bottom-right.
+  -->
+  <path
+    d="M0,1200
+       L0,860
+       C 120,760  280,650  460,590
+       C 600,545  680,490  780,484
+       C 870,479  950,490  1040,515
+       C 1200,560 1420,680 1680,820
+       C 1780,878 1860,920 1920,950
+       L1920,1200
+       Z"
+    fill="url(#hill-main)"
+  />
+
+  <!-- Subtle darker overlay on the right descending slope for depth -->
+  <path
+    d="M820,490
+       C 950,492  1100,530 1300,610
+       C 1500,690 1720,820 1920,950
+       L1920,1200
+       L780,1200
+       Z"
+    fill="url(#hill-shadow)"
+  />
+</svg>

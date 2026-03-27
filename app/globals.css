@@ -96,11 +96,14 @@ body {
   --color-red-600: #e11d48;
 }
 
-/* ── Win98 Desktop background ───────────────── */
+/* ── XP Bliss Desktop background ───────────────── */
 .retro body {
-  background: linear-gradient(180deg, #5c9acf 0%, #79b8e8 35%, #5aac3a 65%, #2d8a1a 100%);
+  background-image: url('/bliss.svg');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
   color: #000000;
-  background-image: none;
 }
 
 /* Remove cyber dot-matrix overlay */
