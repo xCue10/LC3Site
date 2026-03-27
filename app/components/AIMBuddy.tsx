@@ -43,6 +43,8 @@ export default function AIMBuddy() {
     }, 2200);
   };
 
+  const msgTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
   return (
     <>
       {/* ── IM Chat Window ─────────────────────────────── */}
@@ -50,23 +52,36 @@ export default function AIMBuddy() {
         <div className="aim-im-wrap">
           <div className="aim-titlebar">
             <span className="aim-title-icon">💬</span>
-            <span className="aim-title-text">LC3 Club — Instant Message</span>
+            <span className="aim-title-text">LC3Club — Instant Message</span>
             <div className="aim-winbtns">
               <button className="aim-wbtn aim-wbtn-close" onClick={() => { setShowIM(false); setSent(false); }}>×</button>
             </div>
+          </div>
+
+          {/* Font toolbar */}
+          <div className="aim-im-toolbar">
+            <button className="aim-tb-btn" title="Font"><span className="aim-tb-font-a">A</span></button>
+            <button className="aim-tb-btn aim-tb-bold" title="Bold"><b>B</b></button>
+            <button className="aim-tb-btn aim-tb-italic" title="Italic"><i>I</i></button>
+            <button className="aim-tb-btn aim-tb-underline" title="Underline"><u>U</u></button>
+            <span className="aim-tb-sep" />
+            <button className="aim-tb-btn" title="Text color"><span style={{color:'#cc0000', fontWeight:'bold'}}>A</span></button>
+            <button className="aim-tb-btn" title="Insert smiley">:-)</button>
+            <button className="aim-tb-btn" title="Hyperlink" style={{fontSize:'10px'}}>URL</button>
           </div>
 
           {/* Chat log */}
           <div className="aim-im-chat">
             <div className="aim-im-bubble">
               <span className="aim-im-sender">LC3Bot</span>
-              <span className="aim-im-time"> [{new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}]:</span>
-              <p>Hey! 👋 Interested in joining <strong>LC3 — Lowcode Cloud Club</strong>? Drop your info below and we&apos;ll reach out. You can also check us out at the Join page!</p>
+              <span className="aim-im-time"> ({msgTime}): </span>
+              <span className="aim-im-text">Hey! Interested in joining <b>LC3 &mdash; Lowcode Cloud Club</b>? Drop your info below and we&apos;ll reach out. You can also check the Join page!</span>
             </div>
             {sent && (
-              <div className="aim-im-bubble aim-im-reply">
-                <span className="aim-im-sender">You</span>
-                <p>Message sent! ✅ We&apos;ll be in touch soon.</p>
+              <div className="aim-im-bubble" style={{marginTop: 4}}>
+                <span className="aim-im-sender aim-im-sender-you">You</span>
+                <span className="aim-im-time"> ({msgTime}): </span>
+                <span className="aim-im-text">Message sent! We&apos;ll be in touch soon :-)</span>
               </div>
             )}
           </div>
@@ -90,10 +105,12 @@ export default function AIMBuddy() {
                 required
               />
               <div className="aim-im-actions">
-                <Link href="/join" className="aim-footer-btn" style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}>
-                  Full Form ↗
+                <button type="button" className="aim-action-btn" title="Warn">Warn</button>
+                <button type="button" className="aim-action-btn" title="Block">Block</button>
+                <Link href="/join" className="aim-action-btn" style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}>
+                  Join ↗
                 </Link>
-                <button type="submit" className="aim-send-btn">Send IM</button>
+                <button type="submit" className="aim-send-btn">Send</button>
               </div>
             </form>
           ) : (
@@ -106,7 +123,7 @@ export default function AIMBuddy() {
       <div className="aim-wrap">
         {/* Title bar */}
         <div className="aim-titlebar">
-          <span className="aim-title-icon">🟡</span>
+          <span className="aim-title-icon">🏃</span>
           <span className="aim-title-text">Buddy List</span>
           <div className="aim-winbtns">
             <button className="aim-wbtn" onClick={() => setMinimized(m => !m)} title={minimized ? 'Restore' : 'Minimize'}>
@@ -123,8 +140,8 @@ export default function AIMBuddy() {
               <div className="aim-screenname-row">
                 <span className="aim-running-man">🏃</span>
                 <div>
-                  <div className="aim-screenname">LC3 Club</div>
-                  <div className="aim-status-text">🟢 Available</div>
+                  <div className="aim-screenname">LC3Club</div>
+                  <div className="aim-status-text">● Online</div>
                 </div>
               </div>
             </div>
@@ -132,7 +149,7 @@ export default function AIMBuddy() {
             {/* Buddy list */}
             <div className="aim-list">
               <div className="aim-category">
-                Buddies ({members.length} online)
+                <span className="aim-cat-arrow">▼</span> Buddies ({members.length} online)
               </div>
               {members.length === 0 ? (
                 <div className="aim-buddy aim-buddy-empty">Loading members...</div>
@@ -142,9 +159,9 @@ export default function AIMBuddy() {
                     key={m.id}
                     className="aim-buddy"
                     onClick={() => setShowIM(true)}
-                    title="Double-click to IM"
+                    title="Click to IM"
                   >
-                    <span className="aim-buddy-dot">●</span>
+                    <span className="aim-buddy-icon">■</span>
                     <span className="aim-buddy-name">{m.name}</span>
                     {m.role && <span className="aim-buddy-role">{m.role}</span>}
                   </div>
@@ -157,7 +174,12 @@ export default function AIMBuddy() {
               <button className="aim-footer-btn" onClick={() => setShowIM(true)} title="Send Instant Message">IM</button>
               <button className="aim-footer-btn" title="Chat">Chat</button>
               <Link href="/join" className="aim-footer-btn aim-footer-link" title="Get Info">Info</Link>
-              <button className="aim-footer-btn" title="Away Message">Away</button>
+              <button className="aim-footer-btn" title="Set Away Message">Away</button>
+            </div>
+
+            {/* Sign Off */}
+            <div className="aim-signoff-row">
+              <button className="aim-signoff-btn">Sign Off</button>
             </div>
           </>
         )}
