@@ -40,11 +40,14 @@ function MoonIcon() {
   );
 }
 
-// Blockbuster star — filled when retro is active
-function StarIcon({ active }: { active: boolean }) {
+// Floppy disk — retro toggle icon
+function FloppyIcon({ active }: { active: boolean }) {
   return (
-    <svg className="w-4 h-4" viewBox="0 0 24 24" fill={active ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth={1.5} strokeLinejoin="round">
-      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+    <svg className="w-4 h-4" viewBox="0 0 24 24" fill={active ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth={1.5} strokeLinejoin="round" strokeLinecap="round">
+      <rect x="3" y="3" width="18" height="18" rx="2" />
+      <rect x="7" y="3" width="10" height="6" rx="1" />
+      <rect x="15" y="3.5" width="1.5" height="4" rx="0.5" fill="currentColor" stroke="none" />
+      <rect x="7" y="13" width="10" height="7" rx="1" />
     </svg>
   );
 }
@@ -264,7 +267,7 @@ export default function Navbar() {
             aria-label={isRetro ? 'Exit Y2K mode' : 'Enter Y2K mode'}
             title={isRetro ? 'Exit Y2K mode' : 'Enter Y2K mode'}
           >
-            <StarIcon active={isRetro} />
+            <FloppyIcon active={isRetro} />
             {!isRetro && (
               <span className="text-xs font-medium text-slate-400 hover:text-[#00ccff] whitespace-nowrap">
                 Throwback?
