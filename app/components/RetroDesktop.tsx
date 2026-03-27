@@ -219,6 +219,7 @@ export default function RetroDesktop() {
   const [lwStage, setLwStage] = useState<'idle' | 'downloading' | 'done' | 'infected'>('idle');
   const [lwProgress, setLwProgress] = useState(0);
   const [showNotepad, setShowNotepad] = useState(false);
+  const [showHijack, setShowHijack] = useState(false);
   const [showBsod, setShowBsod] = useState(false);
   const [bsodRecovered, setBsodRecovered] = useState(false);
   const [showClockDialog, setShowClockDialog] = useState(false);
@@ -337,6 +338,13 @@ export default function RetroDesktop() {
     setShowLimeWire(false);
     setLwStage('idle');
     setLwProgress(0);
+  };
+
+  const infectAndHijack = () => {
+    setShowLimeWire(false);
+    setLwStage('idle');
+    setLwProgress(0);
+    setShowHijack(true);
   };
 
   if (!isRetro) return null;
@@ -464,19 +472,29 @@ export default function RetroDesktop() {
           </div>
           <div className="lw-results">
             <div className="lw-result lw-result-selected">
-              <span>🎵 Eminem - Lose Yourself.mp3</span>
+              <span>🎵 Eminem - Lose Youself (REAL NOT FAKE).mp3</span>
               <span>4.3 MB</span>
               <span className="lw-sources">47</span>
             </div>
             <div className="lw-result">
-              <span>🎵 Eminem - Lose Yourself.mp3</span>
+              <span>🎵 Eminem_Lose_Yourself_FULL_VERSION.mp3<span className="lw-exe-ext">.exe</span></span>
               <span>6.7 MB</span>
-              <span className="lw-sources">12</span>
+              <span className="lw-sources">31</span>
             </div>
             <div className="lw-result">
-              <span>🎵 Eminem - Lose_Yourself_FULL.mp3</span>
-              <span>1.1 MB</span>
-              <span className="lw-sources">3</span>
+              <span>🎵 eminem lose yourself (CLEAN RADIO NO VIRUS).mp3</span>
+              <span>47.2 MB</span>
+              <span className="lw-sources">8</span>
+            </div>
+            <div className="lw-result">
+              <span>🎵 EMINEM LOSE YOURSELF FREE FULL ALBUM.mp3</span>
+              <span>0.0 KB</span>
+              <span className="lw-sources">2</span>
+            </div>
+            <div className="lw-result">
+              <span>🎵 Eminem - Lose Yourself [HQ 128kbps].exe</span>
+              <span>2.1 MB</span>
+              <span className="lw-sources">19</span>
             </div>
           </div>
 
@@ -517,11 +535,65 @@ export default function RetroDesktop() {
                     • AskJeeves Toolbar (1 of 47)
                   </p>
                   <p style={{ color: '#666', fontSize: '10px !important' }}>Your homepage has been set to http://www.coolwebsearch.com</p>
-                  <button className="rd-alert-ok" onClick={closeLimeWire}>OK</button>
+                  <button className="rd-alert-ok" onClick={infectAndHijack}>OK</button>
                 </div>
               </div>
             </div>
           )}
+        </div>
+      )}
+
+      {/* Browser hijack popup */}
+      {showHijack && (
+        <div className="hijack-wrap">
+          <div className="rd-alert-titlebar hijack-titlebar">
+            <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+              <span className="rd-alert-ie-logo">e</span>
+              <span className="rd-alert-title">CoolWebSearch - Microsoft Internet Explorer</span>
+            </div>
+            <div className="aim-winbtns">
+              <button className="aim-wbtn aim-wbtn-min">_</button>
+              <button className="aim-wbtn">□</button>
+              <button className="aim-wbtn aim-wbtn-close" onClick={() => setShowHijack(false)}>×</button>
+            </div>
+          </div>
+          <div className="rd-br-menubar">
+            {['File','Edit','View','Favorites','Tools','Help'].map(item => (
+              <span key={item} className="rd-br-menu-item">{item}</span>
+            ))}
+          </div>
+          <div className="rd-br-toolbar" style={{ gap: 3 }}>
+            <button className="rd-br-tbtn">◄ Back</button>
+            <button className="rd-br-tbtn">Forward ►</button>
+            <button className="rd-br-tbtn">↻</button>
+            <div className="rd-br-sep" />
+            <span className="rd-br-addr-label">Address</span>
+            <div className="rd-br-addr-bar hijack-addr">http://www.coolwebsearch.com</div>
+            <button className="rd-br-go">Go</button>
+          </div>
+          <div className="hijack-body">
+            <div className="hijack-banner">🔍 CoolWebSearch™ — The Web&apos;s #1 Search Portal!</div>
+            <div className="hijack-search-row">
+              <input className="hijack-search-input" defaultValue="" placeholder="Search the Web..." readOnly />
+              <button className="hijack-search-btn">SEARCH!</button>
+            </div>
+            <div className="hijack-links">
+              <span>Free Ringtones!</span>
+              <span>Win an iPod!</span>
+              <span>Hot Singles Near You!</span>
+              <span>Download Smileys FREE!</span>
+              <span>Cheap Mortgages!</span>
+            </div>
+            <div className="hijack-ads">
+              <div className="hijack-ad">💊 LOSE WEIGHT FAST<br/><small>Doctors HATE this trick</small></div>
+              <div className="hijack-ad">🏆 YOU ARE TODAY&apos;S<br/>WINNER — CLAIM NOW</div>
+              <div className="hijack-ad">💻 YOUR PC IS SLOW<br/><small>Click to fix FREE</small></div>
+            </div>
+            <p className="hijack-footer">
+              CoolWebSearch is now your homepage. To change this, go to Tools &gt; Internet Options.<br/>
+              <small style={{ color: '#aaa' }}>CoolWebSearch 2003. All rights reserved. By using this site you agree to install 47 additional toolbars.</small>
+            </p>
+          </div>
         </div>
       )}
 

@@ -2191,6 +2191,121 @@ body {
 }
 .rd-alert-ok:active { background: linear-gradient(180deg, #dcdbd4 0%, #fefefe 100%); border-color: #7a7a7a; }
 
+/* ── LimeWire .exe extension highlight ─────── */
+.lw-exe-ext {
+  color: #dc2626;
+  font-weight: bold;
+}
+
+/* ── Browser hijack popup ────────────────────── */
+.hijack-wrap {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-46%, -48%);
+  width: 520px;
+  background: #ece9d8;
+  border: 1px solid #0a246a;
+  border-radius: 6px 6px 0 0;
+  box-shadow: 0 0 0 1px #4a8ede, 4px 4px 10px rgba(0,0,0,0.45);
+  z-index: 9999;
+  animation: lw-fadein 0.18s ease-out;
+  display: flex;
+  flex-direction: column;
+}
+.hijack-titlebar {
+  border-radius: 5px 5px 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 3px 0 6px;
+}
+.hijack-addr {
+  background: #fff !important;
+  color: #008000 !important;
+  font-weight: bold;
+}
+.hijack-body {
+  padding: 10px 12px;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-family: 'Tahoma', sans-serif;
+  font-size: 12px;
+  max-height: 320px;
+  overflow-y: auto;
+}
+.hijack-banner {
+  background: linear-gradient(90deg, #003399, #0055cc);
+  color: #fff;
+  text-align: center;
+  padding: 6px;
+  font-size: 14px;
+  font-weight: bold;
+  border-radius: 2px;
+}
+.hijack-search-row {
+  display: flex;
+  gap: 4px;
+}
+.hijack-search-input {
+  flex: 1;
+  border: 1px solid #aaa;
+  padding: 3px 6px;
+  font-size: 12px;
+  font-family: 'Tahoma', sans-serif;
+}
+.hijack-search-btn {
+  background: linear-gradient(180deg, #ffd700, #ff8c00);
+  border: 1px solid #cc6600;
+  border-radius: 2px;
+  font-weight: bold;
+  font-size: 11px;
+  padding: 3px 10px;
+  cursor: pointer;
+  font-family: 'Tahoma', sans-serif;
+}
+.hijack-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  padding: 5px 0;
+}
+.hijack-links span {
+  color: #0000cc;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 11px;
+}
+.hijack-links span:hover { color: #cc0000; }
+.hijack-ads {
+  display: flex;
+  gap: 6px;
+}
+.hijack-ad {
+  flex: 1;
+  background: #fffbe6;
+  border: 2px solid #ffcc00;
+  padding: 6px 8px;
+  font-size: 11px;
+  font-weight: bold;
+  text-align: center;
+  line-height: 1.4;
+  cursor: pointer;
+  color: #cc0000;
+}
+.hijack-ad:hover { background: #fff3b0; }
+.hijack-footer {
+  font-size: 10px;
+  color: #555;
+  border-top: 1px solid #eee;
+  padding-top: 6px;
+  line-height: 1.5;
+}
+
 /* ── Notepad easter egg ──────────────────────── */
 .np-wrap {
   position: fixed;
