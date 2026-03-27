@@ -745,7 +745,6 @@ Built with Microsoft FrontPage 2000.
             {[
               { name: 'bonzibuddy_setup.exe',                loc: 'C:\\Program Files\\',    date: '3/14/2003',  size: '2.3 MB',  type: 'Application'    },
               { name: 'my_diary_PRIVATE.doc',                loc: 'C:\\My Documents\\',     date: '11/22/2002', size: '47 KB',   type: 'Word Document'  },
-              { name: 'NOT PORN.zip',                        loc: 'C:\\Windows\\Temp\\',    date: '8/7/2003',   size: '683 MB',  type: 'ZIP File'       },
               { name: 'coolwebsearch_toolbar_v2.exe',        loc: 'C:\\Downloads\\',        date: '5/18/2003',  size: '1.1 MB',  type: 'Application'    },
               { name: 'definitely_not_a_virus.mp3.exe',      loc: 'C:\\Shared\\Music\\',    date: '9/2/2002',   size: '512 KB',  type: 'Application'    },
               { name: 'homework_final_FINAL_v2_REAL.doc',    loc: 'C:\\My Documents\\',     date: '1/30/2003',  size: '23 KB',   type: 'Word Document'  },
@@ -762,7 +761,7 @@ Built with Microsoft FrontPage 2000.
             ))}
           </div>
           <div className="rb-statusbar">
-            8 object(s) &nbsp;|&nbsp; Total size: 687 MB
+            7 object(s) &nbsp;|&nbsp; Total size: 4.1 MB
           </div>
         </div>
       )}
