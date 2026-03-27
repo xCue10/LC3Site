@@ -278,13 +278,6 @@ export default function Navbar() {
             {isDark ? <SunIcon /> : <MoonIcon />}
           </button>
           <button
-            onClick={toggleRetro}
-            className={`p-2 transition-all ${isRetro ? 'text-[#FFD200] drop-shadow-[0_0_6px_rgba(255,210,0,0.8)]' : 'rounded-lg text-slate-400 hover:text-[#FFD200] hover:bg-slate-100 dark:hover:bg-white/5'}`}
-            aria-label="Toggle Y2K mode"
-          >
-            <StarIcon active={isRetro} />
-          </button>
-          <button
             className="flex flex-col justify-center items-center w-8 h-8 gap-1.5"
             onClick={() => setMenuOpen((o) => !o)}
             aria-label="Toggle menu"

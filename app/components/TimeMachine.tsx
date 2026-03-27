@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 
 type Phase = 'idle' | 'engage' | 'warp' | 'arrive' | 'flash';
 
-const YEAR_SEQUENCE = [2025, 2022, 2018, 2015, 2012, 2008, 2005, 2003, 2001, 1999];
+const YEAR_SEQUENCE = [2025, 2022, 2018, 2015, 2012, 2008, 2005, 2003, 2001, 1998];
 
 export default function TimeMachine() {
   const [phase, setPhase] = useState<Phase>('idle');
@@ -292,27 +292,27 @@ export default function TimeMachine() {
         {/* ── Phase: ENGAGE ── */}
         {phase === 'engage' && (
           <div className="tm-engage-wrap">
-            <div className="tm-alert-tag">[ MILLENNIUM DRIVE v2.0 ]</div>
-            <h1 className="tm-headline tm-glitch" data-text="CONNECTING TO THE PAST">
-              CONNECTING TO THE PAST
+            <div className="tm-alert-tag">[ WINDOWS 98 SE — BUILD 1998 ]</div>
+            <h1 className="tm-headline tm-glitch" data-text="LOADING WINDOWS 98">
+              LOADING WINDOWS 98
             </h1>
-            <p className="tm-subtext">INITIALIZING DIAL-UP SEQUENCE...</p>
+            <p className="tm-subtext">INITIALIZING DIAL-UP MODEM...</p>
             <div className="tm-progress-bar">
               <div className="tm-progress-fill" />
             </div>
             <div className="tm-coord-row">
-              <span>37°23′N</span>
+              <span>WIN 98 SE</span>
               <span className="tm-coord-sep">◆</span>
-              <span>122°02′W</span>
+              <span>56K MODEM</span>
             </div>
-            <p className="tm-footnote">SILICON VALLEY — Y2K — 1999</p>
+            <p className="tm-footnote">AOL INSTANT MESSENGER — 1998</p>
           </div>
         )}
 
         {/* ── Phase: WARP ── */}
         {phase === 'warp' && (
           <div className="tm-warp-wrap">
-            <p className="tm-warp-label">◄◄ CONNECTING VIA 56K ◄◄</p>
+            <p className="tm-warp-label">◄◄ DIALING VIA 56K MODEM ◄◄</p>
             <p className="tm-year-caption">CURRENT YEAR</p>
             <div className="tm-year-display" key={year}>{year}</div>
             <p className="tm-velocity">
@@ -325,9 +325,9 @@ export default function TimeMachine() {
         {/* ── Phase: ARRIVE ── */}
         {phase === 'arrive' && (
           <div className="tm-arrive-wrap">
-            <p className="tm-arrive-label">✦ CONNECTION ESTABLISHED ✦</p>
-            <div className="tm-arrived-year">1999</div>
-            <p className="tm-welcome-text">YOU&apos;VE GOT NOSTALGIA</p>
+            <p className="tm-arrive-label">✦ WINDOWS 98 LOADED ✦</p>
+            <div className="tm-arrived-year">1998</div>
+            <p className="tm-welcome-text">YOU&apos;VE GOT MAIL</p>
           </div>
         )}
 
@@ -335,7 +335,7 @@ export default function TimeMachine() {
 
       {/* VHS HUD corners */}
       <span className="tm-hud tm-hud-tl">●REC</span>
-      <span className="tm-hud tm-hud-tr">56K●</span>
+      <span className="tm-hud tm-hud-tr">WIN98●</span>
       <span className="tm-hud tm-hud-bl">00:00:00</span>
       <span className="tm-hud tm-hud-br">AOL●</span>
     </div>

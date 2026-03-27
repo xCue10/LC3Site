@@ -174,7 +174,7 @@ export default function RetroMusic() {
   if (!isRetro) return null;
 
   return (
-    <div className="fixed bottom-4 right-4 z-[9997] flex flex-col items-end gap-2 pointer-events-auto">
+    <div className="retro-player-wrap fixed bottom-4 right-4 z-[9997] flex flex-col items-end gap-2 pointer-events-auto">
       <button
         onClick={() => playing ? stopMusic() : startMusic()}
         className="retro-music-btn"

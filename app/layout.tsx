@@ -7,6 +7,7 @@ import CursorTrail from "./components/CursorTrail";
 import AnnouncementBanner from "./components/AnnouncementBanner";
 import RetroMusic from "./components/RetroMusic";
 import TimeMachine from "./components/TimeMachine";
+import RetroDesktop from "./components/RetroDesktop";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -65,10 +66,15 @@ export default function RootLayout({
           }}
         />
         <CursorTrail />
-        <AnnouncementBanner />
-        <Navbar />
-        <main className="flex-1">{children}</main>
-        <Footer />
+        <div id="monitor-frame" className="flex-1 flex flex-col">
+          <div id="site-wrapper" className="flex-1 flex flex-col">
+            <AnnouncementBanner />
+            <Navbar />
+            <main className="flex-1">{children}</main>
+            <Footer />
+          </div>
+        </div>
+        <RetroDesktop />
         <RetroMusic />
         <TimeMachine />
       </body>

@@ -34,84 +34,137 @@ body {
 .dark ::-webkit-scrollbar-thumb:hover { background: #2e4268; }
 
 /* =============================================
-   RETRO / Y2K MILLENNIAL INTERNET THEME
+   RETRO / WIN98 DESKTOP + DISNEY CHANNEL THEME
    ============================================= */
 
-/* ── Remap the entire Tailwind color palette ──
-   Tailwind v4 exposes all colors as CSS custom
-   properties. Overriding them here propagates
-   Y2K colors to every utility class.
-   ──────────────────────────────────────────── */
+/* ── Disney Channel color palette inside monitor ──
+   Bright, cartoony 90s colors mapped to Tailwind vars
+   ──────────────────────────────────────────────── */
 .retro {
-  /* White → deep cyber night */
-  --color-white: #010c1c;
+  --color-white: #ffffff;
 
-  /* Slate scale → dark blue-grey */
-  --color-slate-50:  #061830;
-  --color-slate-100: #082040;
-  --color-slate-200: rgba(0, 85, 204, 0.28);
-  --color-slate-300: rgba(0, 85, 204, 0.48);
-  --color-slate-400: rgba(136, 180, 224, 0.55);
-  --color-slate-500: rgba(136, 180, 224, 0.72);
-  --color-slate-600: #88b4e0;
-  --color-slate-700: #a8ccf0;
-  --color-slate-800: #c8e0ff;
-  --color-slate-900: #e0f0ff;
+  /* Slate → purple-navy scale (readable on white) */
+  --color-slate-50:  #faf5ff;
+  --color-slate-100: #f3e8ff;
+  --color-slate-200: #e9d5ff;
+  --color-slate-300: #d8b4fe;
+  --color-slate-400: #a78bfa;
+  --color-slate-500: #8b5cf6;
+  --color-slate-600: #7c3aed;
+  --color-slate-700: #6d28d9;
+  --color-slate-800: #3b0764;
+  --color-slate-900: #1e1b4b;
 
-  /* Violet → Internet Explorer Blue */
-  --color-violet-50:  rgba(0, 85, 204, 0.08);
-  --color-violet-100: rgba(0, 85, 204, 0.15);
-  --color-violet-200: rgba(0, 85, 204, 0.28);
-  --color-violet-300: rgba(0, 85, 204, 0.48);
-  --color-violet-400: #2288ee;
-  --color-violet-500: #0066cc;
-  --color-violet-600: #0055bb;
-  --color-violet-700: #003d99;
+  /* Violet → Disney bright purple */
+  --color-violet-50:  #faf5ff;
+  --color-violet-100: #f3e8ff;
+  --color-violet-200: #e9d5ff;
+  --color-violet-300: #d8b4fe;
+  --color-violet-400: #c084fc;
+  --color-violet-500: #a855f7;
+  --color-violet-600: #9333ea;
+  --color-violet-700: #7c3aed;
 
-  /* Blue → MSN/AOL Cyan */
-  --color-blue-50:  rgba(0, 204, 255, 0.08);
-  --color-blue-100: rgba(0, 204, 255, 0.15);
-  --color-blue-200: rgba(0, 204, 255, 0.28);
-  --color-blue-300: rgba(0, 204, 255, 0.46);
-  --color-blue-400: #33d8ff;
-  --color-blue-500: #00ccff;
-  --color-blue-600: #00b4ee;
-  --color-blue-700: #0098d8;
+  /* Blue → Disney bright blue */
+  --color-blue-50:  #eff6ff;
+  --color-blue-100: #dbeafe;
+  --color-blue-200: #bfdbfe;
+  --color-blue-300: #93c5fd;
+  --color-blue-400: #60a5fa;
+  --color-blue-500: #3b82f6;
+  --color-blue-600: #2563eb;
+  --color-blue-700: #1d4ed8;
 
-  /* Emerald → Matrix green */
-  --color-emerald-50:  rgba(0, 204, 68, 0.08);
-  --color-emerald-200: rgba(0, 204, 68, 0.28);
-  --color-emerald-400: #00dd44;
-  --color-emerald-500: #00cc44;
-  --color-emerald-600: #00aa33;
+  /* Emerald → bright green */
+  --color-emerald-50:  #f0fdf4;
+  --color-emerald-200: #bbf7d0;
+  --color-emerald-400: #4ade80;
+  --color-emerald-500: #22c55e;
+  --color-emerald-600: #16a34a;
 
-  /* Amber → Y2K orange */
-  --color-amber-50:  rgba(255, 140, 0, 0.08);
-  --color-amber-200: rgba(255, 140, 0, 0.28);
-  --color-amber-400: #ffaa00;
-  --color-amber-500: #ff9900;
-  --color-amber-600: #ee8800;
+  /* Amber → Disney Channel orange */
+  --color-amber-50:  #fff7ed;
+  --color-amber-200: #fed7aa;
+  --color-amber-400: #fb923c;
+  --color-amber-500: #f97316;
+  --color-amber-600: #ea580c;
 
-  /* Red → Y2K magenta */
-  --color-red-50:  rgba(220, 0, 180, 0.08);
-  --color-red-200: rgba(220, 0, 180, 0.28);
-  --color-red-500: #cc0099;
-  --color-red-600: #aa0088;
+  /* Red → bright pink/red */
+  --color-red-50:  #fff1f2;
+  --color-red-200: #fecdd3;
+  --color-red-500: #f43f5e;
+  --color-red-600: #e11d48;
 }
 
-/* ── Dot-matrix terminal overlay ────────────── */
-.retro body::before {
+/* ── Win98 Desktop background ───────────────── */
+.retro body {
+  background-color: #008080;
+  color: #000000;
+  background-image: none;
+}
+
+/* Remove cyber dot-matrix overlay */
+.retro body::before { display: none; }
+
+/* Remove full-page scanlines */
+.retro::after { display: none; }
+
+/* ── Monitor frame (CRT bezel) ──────────────── */
+.retro #monitor-frame {
+  position: fixed !important;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(960px, calc(100vw - 160px));
+  height: calc(100vh - 84px);  /* 10px top + 38px taskbar + 24px stand + 12px base */
+  background: #c8c4bc;
+  border-radius: 10px 10px 6px 6px;
+  padding: 26px 18px 50px 18px;
+  z-index: 41;
+  display: flex !important;
+  flex-direction: column !important;
+  /* Win98 3D raised border */
+  box-shadow:
+    inset 2px 2px 0 #ffffff,
+    inset -2px -2px 0 #6a6660,
+    inset 5px 5px 0 #dedad4,
+    inset -5px -5px 0 #8a8680,
+    0 6px 40px rgba(0,0,0,0.55),
+    0 2px 12px rgba(0,0,0,0.25);
+}
+
+/* Power LED in bottom bezel */
+.retro #monitor-frame::after {
   content: '';
-  position: fixed;
-  inset: 0;
-  background-image: radial-gradient(circle, rgba(0, 204, 255, 0.032) 1px, transparent 1px);
-  background-size: 22px 22px;
-  pointer-events: none;
-  z-index: 0;
+  position: absolute;
+  bottom: 17px;
+  left: calc(50% - 40px);
+  width: 10px;
+  height: 10px;
+  background: #00dd44;
+  border-radius: 50%;
+  box-shadow: 0 0 8px rgba(0, 221, 68, 0.9), 0 0 16px rgba(0, 204, 68, 0.5);
+  animation: rd-led-pulse 2.5s ease-in-out infinite;
 }
 
-/* ── Scanline overlay ───────────────────────── */
-.retro::after {
+/* ── Monitor screen / site wrapper ─────────── */
+.retro #site-wrapper {
+  display: flex !important;
+  flex-direction: column !important;
+  width: 100% !important;
+  flex: 1 1 0% !important;
+  min-height: 0 !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  background: #ffffff !important;
+  /* CRT screen inner bevel */
+  box-shadow:
+    inset 3px 3px 0 #404040,
+    inset -3px -3px 0 #e0dcd6;
+}
+
+/* Subtle CRT scanlines inside the monitor screen */
+.retro #site-wrapper::after {
   content: '';
   position: fixed;
   inset: 0;
@@ -119,47 +172,60 @@ body {
     0deg,
     transparent,
     transparent 3px,
-    rgba(0, 0, 0, 0.07) 3px,
-    rgba(0, 0, 0, 0.07) 4px
+    rgba(0, 0, 0, 0.025) 3px,
+    rgba(0, 0, 0, 0.025) 4px
   );
   pointer-events: none;
   z-index: 9998;
 }
 
-/* ── Body — Cyber night ──────────────────────── */
-.retro body {
-  background-color: #000c18;
-  color: #b8d4f0;
-  background-image:
-    radial-gradient(ellipse 90% 45% at 50% 0%, rgba(0, 85, 204, 0.32) 0%, transparent 65%),
-    radial-gradient(ellipse 55% 28% at 12% 85%, rgba(0, 204, 255, 0.08) 0%, transparent 60%),
-    radial-gradient(ellipse 55% 28% at 88% 85%, rgba(0, 204, 68, 0.06) 0%, transparent 60%);
+/* ── Win98 Navbar override ──────────────────── */
+.retro #site-wrapper > header,
+.retro #site-wrapper header {
+  background: #000080 !important;
+  border-color: #0000a8 !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 80, 0.6) !important;
 }
 
-/* ── Override project's hardcoded dark values ─ */
-.retro [class*="bg-\\[\\#0d1424\\]"],
-.retro [class*="bg-\\[\\#080d18\\]"],
-.retro [class*="bg-\\[\\#111a2e\\]"],
-.retro [class*="bg-\\[\\#0a1020\\]"],
-.retro [class*="bg-\\[\\#0d0e1a\\]"] {
-  background-color: rgba(6, 18, 42, 0.92) !important;
+/* Navbar text override */
+.retro #site-wrapper header a,
+.retro #site-wrapper header nav a,
+.retro #site-wrapper header > div a {
+  color: #ffffff !important;
+  text-shadow: none !important;
+}
+.retro #site-wrapper header a:hover {
+  background: rgba(255, 255, 255, 0.15) !important;
+  color: #ffffff !important;
+  text-shadow: none !important;
+  box-shadow: none !important;
+}
+.retro #site-wrapper header button {
+  color: #ffffff !important;
+}
+.retro #site-wrapper header button:hover {
+  background: rgba(255, 255, 255, 0.15) !important;
 }
 
-.retro [class*="border-\\[\\#1e2d45\\]"] {
-  border-color: rgba(0, 85, 204, 0.45) !important;
+/* Override Navbar hardcoded dark bg */
+.retro [class*="bg-\\[\\#000c18\\]"] {
+  background-color: #000080 !important;
+}
+.retro [class*="border-\\[\\#00ccff\\]"] {
+  border-color: #4444cc !important;
+}
+.retro [class*="shadow-\\[0_2px_24px_rgba\\(0"] {
+  box-shadow: 0 2px 4px rgba(0, 0, 80, 0.6) !important;
 }
 
-/* ── Headings — Y2K cyber chrome ────────────── */
+/* ── Headings — Disney Channel / 90s bold ───── */
 .retro h1 {
   font-family: var(--font-vice), Impact, 'Arial Black', sans-serif !important;
   font-style: normal !important;
   text-transform: uppercase !important;
-  letter-spacing: 0.06em !important;
-  color: #33aaff !important;
-  text-shadow:
-    2px 2px 0 #003399,
-    4px 4px 12px rgba(0, 102, 255, 0.35),
-    0 0 28px rgba(51, 170, 255, 0.30) !important;
+  letter-spacing: 0.05em !important;
+  color: #ea580c !important;
+  text-shadow: 2px 2px 0 rgba(234, 88, 12, 0.18) !important;
   line-height: 1.05 !important;
 }
 
@@ -167,11 +233,9 @@ body {
   font-family: var(--font-vice), Impact, 'Arial Black', sans-serif !important;
   font-style: normal !important;
   text-transform: uppercase !important;
-  letter-spacing: 0.05em !important;
-  color: #33aaff !important;
-  text-shadow:
-    1px 1px 0 #003399,
-    0 0 18px rgba(51, 170, 255, 0.30) !important;
+  letter-spacing: 0.04em !important;
+  color: #7c3aed !important;
+  text-shadow: 1px 1px 0 rgba(124, 58, 237, 0.15) !important;
   line-height: 1.15 !important;
 }
 
@@ -179,81 +243,78 @@ body {
   font-family: var(--font-vice), Impact, 'Arial Black', sans-serif !important;
   font-style: normal !important;
   text-transform: uppercase !important;
-  letter-spacing: 0.04em !important;
-  color: #00ccff !important;
-  text-shadow:
-    1px 1px 0 rgba(0, 51, 153, 0.70),
-    0 0 12px rgba(0, 204, 255, 0.30) !important;
+  letter-spacing: 0.03em !important;
+  color: #2563eb !important;
   line-height: 1.25 !important;
+  text-shadow: none !important;
 }
 
 .retro h4,
 .retro h5,
 .retro h6 {
-  color: #88ccff !important;
-  text-shadow: 0 0 10px rgba(0, 102, 204, 0.50) !important;
-  letter-spacing: 0.02em !important;
+  color: #7c3aed !important;
+  text-shadow: none !important;
+  letter-spacing: 0.01em !important;
 }
 
-/* ── Body text — readable ───────────────────── */
+/* ── Body text — dark on white ──────────────── */
 .retro p {
-  color: #b0c8e8 !important;
+  color: #374151 !important;
   line-height: 1.75 !important;
   font-size: 1rem !important;
   font-family: inherit !important;
 }
 
 .retro li {
-  color: #b0c8e8 !important;
+  color: #374151 !important;
   line-height: 1.75 !important;
 }
 
-/* Text color overrides for common slate classes */
+/* Text color overrides */
 .retro [class~="text-slate-900"],
 .retro [class~="text-slate-800"],
 .retro [class~="text-slate-700"] {
-  color: #d8eaff !important;
+  color: #1e1b4b !important;
 }
 .retro [class~="text-slate-600"],
 .retro [class~="text-slate-500"] {
-  color: #88b4e0 !important;
+  color: #4c1d95 !important;
 }
 .retro [class~="text-slate-400"],
 .retro [class~="text-slate-300"] {
-  color: rgba(136, 180, 224, 0.65) !important;
+  color: #7c3aed !important;
 }
 
-/* ── Gradient text clips — remap to cyan/blue ── */
+/* ── Gradient text — Disney orange to purple ── */
 .retro [class*="from-blue"][class*="to-violet"],
 .retro [class*="from-violet"][class*="to-blue"] {
-  background-image: linear-gradient(to right, #00ccff, #0055cc) !important;
+  background-image: linear-gradient(to right, #ea580c, #7c3aed) !important;
 }
 
 /* ── Primary CTA buttons ─────────────────────── */
 .retro [class*="from-blue-6"],
 .retro [class*="from-blue-5"] {
-  background-image: linear-gradient(180deg, #2288ee 0%, #0055bb 100%) !important;
-  box-shadow: 0 2px 0 #003399, 0 4px 12px rgba(0, 85, 204, 0.40),
-    inset 0 1px 0 rgba(255,255,255,0.18) !important;
-  border: 1px solid #0044aa !important;
+  background-image: linear-gradient(180deg, #f97316 0%, #ea580c 100%) !important;
+  box-shadow: 0 2px 0 #c2410c,
+    inset 0 1px 0 rgba(255, 255, 255, 0.25) !important;
+  border: 1px solid #c2410c !important;
   color: #ffffff !important;
 }
 .retro [class*="from-blue-6"]:hover,
 .retro [class*="from-blue-5"]:hover {
-  background-image: linear-gradient(180deg, #3399ff 0%, #0066cc 100%) !important;
+  background-image: linear-gradient(180deg, #fb923c 0%, #f97316 100%) !important;
 }
 
 /* ── Card / panel surfaces ──────────────────── */
 .retro [class~="bg-white"] {
-  background-color: #061428 !important;
-  border-color: rgba(0, 85, 204, 0.55) !important;
-  box-shadow: 0 0 0 1px rgba(0, 85, 204, 0.25),
-    inset 0 1px 0 rgba(51, 170, 255, 0.05) !important;
+  background-color: #ffffff !important;
+  border-color: #d8b4fe !important;
+  box-shadow: none !important;
 }
 .retro [class~="bg-slate-50"],
 .retro [class~="bg-slate-100"] {
-  background-color: #071c3a !important;
-  border-color: rgba(0, 85, 204, 0.38) !important;
+  background-color: #faf5ff !important;
+  border-color: #e9d5ff !important;
 }
 
 /* Feature/mission gradient boxes */
@@ -261,60 +322,100 @@ body {
 .retro [class*="from-violet-50"],
 .retro [class*="via-violet-50"] {
   background: linear-gradient(135deg,
-    rgba(0, 85, 204, 0.10) 0%,
-    rgba(0, 204, 255, 0.04) 50%,
+    rgba(124, 58, 237, 0.06) 0%,
+    rgba(234, 88, 12, 0.04) 50%,
     transparent 100%) !important;
-  border-color: rgba(0, 85, 204, 0.22) !important;
+  border-color: #e9d5ff !important;
 }
 
 /* Icon boxes */
 .retro [class~="bg-slate-100"],
 .retro [class*="bg-blue-50"],
 .retro [class*="bg-violet-50"] {
-  background-color: rgba(0, 85, 204, 0.10) !important;
-  border-color: rgba(0, 85, 204, 0.28) !important;
+  background-color: #f3e8ff !important;
+  border-color: #d8b4fe !important;
 }
 
-/* ── Links — classic hyperlink blue ─────────── */
+/* Override hardcoded dark bg values */
+.retro [class*="bg-\\[\\#0d1424\\]"],
+.retro [class*="bg-\\[\\#080d18\\]"],
+.retro [class*="bg-\\[\\#111a2e\\]"],
+.retro [class*="bg-\\[\\#0a1020\\]"],
+.retro [class*="bg-\\[\\#0d0e1a\\]"] {
+  background-color: #ffffff !important;
+}
+
+.retro [class*="border-\\[\\#1e2d45\\]"] {
+  border-color: #d8b4fe !important;
+}
+
+/* ── Links (general, overridden by header rules above) ── */
 .retro a {
-  color: #4499ff !important;
+  color: #2563eb !important;
   text-decoration: underline !important;
   transition: color 0.2s !important;
+  text-shadow: none !important;
 }
 .retro a:hover {
-  color: #00ccff !important;
-  text-shadow: 0 0 8px rgba(0, 204, 255, 0.45) !important;
+  color: #7c3aed !important;
+  text-shadow: none !important;
+}
+/* Header links override — white text on Win98 dark blue bar */
+.retro #site-wrapper header a,
+.retro #site-wrapper header nav a,
+.retro #site-wrapper header button {
+  color: #ffffff !important;
+  text-decoration: none !important;
+  text-shadow: none !important;
 }
 
 /* ── Selection ──────────────────────────────── */
 .retro ::selection {
-  background: rgba(0, 85, 204, 0.60);
-  color: #ffffff;
+  background: rgba(124, 58, 237, 0.30);
+  color: #1e1b4b;
 }
 
-/* ── Scrollbar ──────────────────────────────── */
-.retro ::-webkit-scrollbar-track { background: #000c18; }
-.retro ::-webkit-scrollbar-thumb { background: #0055bb; border-radius: 2px; }
-.retro ::-webkit-scrollbar-thumb:hover { background: #00ccff; }
+/* ── Win98-style scrollbar inside monitor ───── */
+.retro #site-wrapper::-webkit-scrollbar { width: 16px; }
+.retro #site-wrapper::-webkit-scrollbar-track {
+  background: #f3f4f6;
+  border-left: 1px solid #d1d5db;
+}
+.retro #site-wrapper::-webkit-scrollbar-thumb {
+  background: #c0c0c0;
+  border: 2px solid;
+  border-top-color: #ffffff;
+  border-left-color: #ffffff;
+  border-right-color: #404040;
+  border-bottom-color: #404040;
+  border-radius: 0;
+}
+.retro #site-wrapper::-webkit-scrollbar-thumb:hover {
+  background: #a0a0a0;
+}
 
 /* ── Inputs ─────────────────────────────────── */
 .retro input,
 .retro textarea,
 .retro select {
-  background: rgba(0, 85, 204, 0.06) !important;
-  border: 1px solid rgba(0, 85, 204, 0.45) !important;
-  color: #c8dcf8 !important;
-  border-radius: 2px !important;
+  background: #ffffff !important;
+  border: 2px inset #808080 !important;
+  color: #000000 !important;
+  border-radius: 0 !important;
 }
 .retro input:focus,
 .retro textarea:focus {
-  outline: none !important;
-  border-color: #0066cc !important;
-  box-shadow: 0 0 0 2px rgba(0, 85, 204, 0.25), 0 0 12px rgba(0, 204, 255, 0.12) !important;
+  outline: 2px solid #000080 !important;
+  box-shadow: none !important;
 }
 .retro input::placeholder,
 .retro textarea::placeholder {
-  color: rgba(136, 180, 224, 0.35) !important;
+  color: #9ca3af !important;
+}
+
+/* ── Music Player — Winamp skin (above taskbar) */
+.retro .retro-player-wrap {
+  bottom: 52px !important;
 }
 
 /* ── Music Player — Winamp skin ─────────────── */
@@ -692,4 +793,202 @@ body {
 @keyframes tm-year-pop {
   from { transform: scale(1.2) translateY(-12px); opacity: 0; }
   to   { transform: scale(1) translateY(0);       opacity: 1; }
+}
+
+/* ==============================================
+   WIN98 RETRO DESKTOP COMPONENTS
+   ============================================== */
+
+/* ── Desktop icons panel ────────────────────── */
+.rd-icons-panel {
+  position: fixed;
+  top: 76px;
+  left: 14px;
+  z-index: 43;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.rd-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 5px;
+  width: 68px;
+  cursor: pointer;
+  text-decoration: none !important;
+  border: 1px dotted transparent;
+  border-radius: 2px;
+  transition: background 0.08s, border-color 0.08s;
+}
+
+.rd-icon:hover {
+  background: rgba(0, 0, 128, 0.28);
+  border-color: rgba(255, 255, 255, 0.55);
+}
+
+.rd-icon-label {
+  font-family: 'Tahoma', 'Arial', var(--font-geist-sans), sans-serif;
+  font-size: 11px;
+  color: #ffffff !important;
+  text-align: center;
+  line-height: 1.3;
+  word-break: break-word;
+  text-decoration: none !important;
+  text-shadow:
+    1px 1px 0 #000000,
+    -1px -1px 0 #000000,
+    1px -1px 0 #000000,
+    -1px  1px 0 #000000;
+}
+
+/* ── Monitor stand ──────────────────────────── */
+.rd-stand {
+  position: fixed;
+  bottom: 62px;   /* 38px taskbar + 12px base + 12px gap */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 78px;
+  height: 24px;
+  background: linear-gradient(180deg, #b0aca8 0%, #c8c4bc 100%);
+  z-index: 40;
+  clip-path: polygon(14% 0%, 86% 0%, 100% 100%, 0% 100%);
+}
+
+/* ── Monitor base ───────────────────────────── */
+.rd-base {
+  position: fixed;
+  bottom: 50px;   /* 38px taskbar + 12px */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 160px;
+  height: 12px;
+  background: #c8c4bc;
+  border-radius: 0 0 8px 8px;
+  z-index: 40;
+  box-shadow:
+    inset 2px 0 0 #ffffff,
+    inset -2px 0 0 #6a6660,
+    0 3px 8px rgba(0, 0, 0, 0.35);
+}
+
+/* ── Win98 Taskbar ──────────────────────────── */
+.rd-taskbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 38px;
+  background: #c0c0c0;
+  display: flex;
+  align-items: center;
+  padding: 2px 3px;
+  gap: 3px;
+  z-index: 50;
+  box-shadow:
+    inset 0 2px 0 #ffffff,
+    inset 0 1px 0 #e4e4e4;
+}
+
+/* ── Start button ───────────────────────────── */
+.rd-start-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 10px 2px 7px;
+  height: 30px;
+  background: #c0c0c0;
+  border: 2px solid;
+  border-top-color: #ffffff;
+  border-left-color: #ffffff;
+  border-right-color: #404040;
+  border-bottom-color: #404040;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.rd-start-btn:active {
+  border-top-color: #404040;
+  border-left-color: #404040;
+  border-right-color: #ffffff;
+  border-bottom-color: #ffffff;
+  padding-top: 3px;
+  padding-left: 8px;
+}
+
+.rd-start-label {
+  font-family: 'Tahoma', 'Arial', var(--font-geist-sans), sans-serif;
+  font-size: 13px;
+  font-weight: bold;
+  color: #000000;
+}
+
+/* ── Taskbar separator ──────────────────────── */
+.rd-taskbar-sep {
+  width: 2px;
+  height: 24px;
+  background: #808080;
+  box-shadow: 1px 0 0 #ffffff;
+  margin: 0 2px;
+  flex-shrink: 0;
+}
+
+/* ── Active window button ───────────────────── */
+.rd-taskbar-window {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  height: 30px;
+  padding: 0 8px;
+  background: #c0c0c0;
+  border: 2px solid;
+  border-top-color: #404040;
+  border-left-color: #404040;
+  border-right-color: #ffffff;
+  border-bottom-color: #ffffff;
+  font-family: 'Tahoma', 'Arial', var(--font-geist-sans), sans-serif;
+  font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 260px;
+  cursor: default;
+}
+
+/* ── System tray ────────────────────────────── */
+.rd-taskbar-tray {
+  margin-left: auto;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  border: 2px solid;
+  border-top-color: #808080;
+  border-left-color: #808080;
+  border-right-color: #ffffff;
+  border-bottom-color: #ffffff;
+  flex-shrink: 0;
+}
+
+/* ── Clock ──────────────────────────────────── */
+.rd-clock {
+  font-family: 'Tahoma', 'Arial', var(--font-geist-sans), sans-serif;
+  font-size: 12px;
+  color: #000000;
+  white-space: nowrap;
+}
+
+/* ── LED pulse animation ─────────────────────── */
+@keyframes rd-led-pulse {
+  0%, 100% {
+    opacity: 1;
+    box-shadow: 0 0 8px rgba(0, 221, 68, 0.9), 0 0 16px rgba(0, 204, 68, 0.5);
+  }
+  50% {
+    opacity: 0.65;
+    box-shadow: 0 0 4px rgba(0, 221, 68, 0.6), 0 0 8px rgba(0, 204, 68, 0.3);
+  }
 }
