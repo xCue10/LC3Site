@@ -2102,3 +2102,170 @@ body {
     box-shadow: 0 0 4px rgba(0, 221, 68, 0.6), 0 0 8px rgba(0, 204, 68, 0.3);
   }
 }
+
+/* ── Popup ad blink button ───────────────────── */
+@keyframes rd-btn-blink {
+  0%, 49% { background: #c0c0c0; color: #000; }
+  50%, 100% { background: #ff0000; color: #fff; }
+}
+.rd-popup-ad-btn-blink {
+  animation: rd-btn-blink 0.7s step-end infinite;
+}
+
+/* ── Right-click protection dialog ──────────── */
+.rd-alert-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: transparent;
+}
+.rd-alert-dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 320px;
+  background: #c0c0c0;
+  border-top: 2px solid #ffffff;
+  border-left: 2px solid #ffffff;
+  border-right: 2px solid #404040;
+  border-bottom: 2px solid #404040;
+  box-shadow: 2px 2px 0 #000;
+  font-family: 'Tahoma', 'Arial', sans-serif;
+  z-index: 10001;
+}
+.rd-alert-titlebar {
+  height: 22px;
+  background: linear-gradient(90deg, #000080 0%, #1060c0 60%, #000080 100%);
+  display: flex;
+  align-items: center;
+  padding: 0 3px 0 6px;
+  gap: 5px;
+}
+.rd-alert-ie-logo {
+  color: #4fc3f7;
+  font-family: 'Times New Roman', serif;
+  font-style: italic;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 1;
+}
+.rd-alert-title {
+  color: #fff;
+  font-size: 11px;
+  font-weight: bold;
+  flex: 1;
+}
+.rd-alert-body {
+  padding: 16px 14px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
+}
+.rd-alert-icon { font-size: 28px; margin-bottom: 4px; }
+.rd-alert-body p {
+  font-size: 12px !important;
+  color: #000 !important;
+  margin: 0;
+  font-family: 'Tahoma', sans-serif;
+}
+.rd-alert-ok {
+  margin-top: 10px;
+  background: #c0c0c0;
+  border: none;
+  box-shadow: inset 1px 1px 0 #fff, inset -1px -1px 0 #555;
+  font-size: 11px;
+  font-family: 'Tahoma', sans-serif;
+  padding: 4px 24px;
+  cursor: pointer;
+  color: #000;
+  min-width: 72px;
+}
+.rd-alert-ok:active { box-shadow: inset -1px -1px 0 #fff, inset 1px 1px 0 #555; }
+
+/* ── Clippy ──────────────────────────────────── */
+.clippy-wrap {
+  position: fixed;
+  bottom: 52px;
+  right: 14px;
+  z-index: 9995;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  animation: tm-fadein 0.3s ease-out;
+}
+.clippy-bubble {
+  background: #ffffcc;
+  border: 1.5px solid #555;
+  border-radius: 2px;
+  padding: 8px 22px 8px 10px;
+  max-width: 195px;
+  min-width: 150px;
+  font-family: 'Tahoma', sans-serif;
+  font-size: 11px;
+  color: #000;
+  line-height: 1.45;
+  box-shadow: 2px 2px 0 #888;
+  position: relative;
+}
+.clippy-bubble p { margin: 0 0 3px 0; }
+.clippy-bubble-close {
+  position: absolute;
+  top: 2px;
+  right: 4px;
+  background: none;
+  border: none;
+  font-size: 13px;
+  cursor: pointer;
+  color: #555;
+  padding: 0 2px;
+  line-height: 1;
+}
+.clippy-bubble-close:hover { color: #000; }
+.clippy-bubble-btns {
+  display: flex;
+  gap: 4px;
+  justify-content: flex-end;
+  margin-top: 6px;
+}
+.clippy-btn {
+  background: #c0c0c0;
+  border: none;
+  box-shadow: inset 1px 1px 0 #fff, inset -1px -1px 0 #555;
+  font-size: 11px;
+  font-family: 'Tahoma', sans-serif;
+  padding: 2px 10px;
+  cursor: pointer;
+  color: #000;
+  min-width: 44px;
+}
+.clippy-btn:active { box-shadow: inset -1px -1px 0 #fff, inset 1px 1px 0 #555; }
+.clippy-body {
+  position: relative;
+  cursor: pointer;
+  display: inline-flex;
+  transition: transform 0.15s ease;
+}
+.clippy-body:hover { transform: scale(1.06); }
+.clippy-dismiss {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  width: 15px;
+  height: 15px;
+  background: #c0c0c0;
+  border: none;
+  box-shadow: inset 1px 1px 0 #fff, inset -1px -1px 0 #555;
+  font-size: 10px;
+  cursor: pointer;
+  color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  line-height: 1;
+}
+.clippy-dismiss:active { box-shadow: inset -1px -1px 0 #fff, inset 1px 1px 0 #555; }

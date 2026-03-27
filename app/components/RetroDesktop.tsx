@@ -161,19 +161,19 @@ const ADS = [
     id: 0,
     title: 'Macromedia Flash Player Required',
     body: '🎉 You are visitor #1,000,000!\nClick to claim your FREE prize!',
-    top: 110,
+    pos: { top: 120, right: 20 },
   },
   {
     id: 1,
     title: 'Security Alert',
     body: '⚠️ WARNING: 47 viruses detected!\nClick HERE to remove them NOW for FREE!',
-    top: 260,
+    pos: { top: 280, left: 60 },
   },
   {
     id: 2,
     title: 'FREE AOL Offer — Limited Time!',
     body: '📀 Get 1000 FREE hours with AOL\nInstant Messenger! Don\'t miss out!',
-    top: 410,
+    pos: { top: 420, right: 120 },
   },
 ];
 
@@ -182,6 +182,7 @@ export default function RetroDesktop() {
   const [time, setTime] = useState('');
   const [showStartMenu, setShowStartMenu] = useState(false);
   const [visibleAds, setVisibleAds] = useState<number[]>([]);
+  const [showRightClickDialog, setShowRightClickDialog] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -191,6 +192,18 @@ export default function RetroDesktop() {
     obs.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
     return () => obs.disconnect();
   }, []);
+
+  useEffect(() => {
+    if (!isRetro) {
+      setVisibleAds([]);
+      setShowStartMenu(false);
+      setShowRightClickDialog(false);
+      return;
+    }
+    const onContextMenu = (e: MouseEvent) => { e.preventDefault(); setShowRightClickDialog(true); };
+    document.addEventListener('contextmenu', onContextMenu);
+    return () => document.removeEventListener('contextmenu', onContextMenu);
+  }, [isRetro]);
 
   useEffect(() => {
     if (!isRetro) { setVisibleAds([]); setShowStartMenu(false); return; }
@@ -279,7 +292,7 @@ export default function RetroDesktop() {
       {visibleAds.map(id => {
         const ad = ADS[id];
         return (
-          <div key={ad.id} className="rd-popup-ad" style={{ top: ad.top, left: 18 }}>
+          <div key={ad.id} className="rd-popup-ad" style={ad.pos}>
             <div className="rd-popup-ad-titlebar">
               <span className="rd-popup-ad-title">{ad.title}</span>
               <button
@@ -289,11 +302,30 @@ export default function RetroDesktop() {
             </div>
             <div className="rd-popup-ad-body">
               <p>{ad.body}</p>
-              <button className="rd-popup-ad-btn">CLICK HERE!</button>
+              <button className="rd-popup-ad-btn rd-popup-ad-btn-blink">CLICK HERE!</button>
             </div>
           </div>
         );
       })}
+
+      {/* Right-click protection dialog */}
+      {showRightClickDialog && (
+        <div className="rd-alert-overlay" onClick={() => setShowRightClickDialog(false)}>
+          <div className="rd-alert-dialog" onClick={e => e.stopPropagation()}>
+            <div className="rd-alert-titlebar">
+              <span className="rd-alert-ie-logo">e</span>
+              <span className="rd-alert-title">Internet Explorer</span>
+              <button className="aim-wbtn aim-wbtn-close" onClick={() => setShowRightClickDialog(false)}>×</button>
+            </div>
+            <div className="rd-alert-body">
+              <span className="rd-alert-icon">⚠️</span>
+              <p>© 1998 LC3 Club. All rights reserved.</p>
+              <p>Right-clicking has been disabled on this page.</p>
+              <button className="rd-alert-ok" onClick={() => setShowRightClickDialog(false)}>OK</button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Start menu */}
       {showStartMenu && (
