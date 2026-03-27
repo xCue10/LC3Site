@@ -423,13 +423,13 @@ body {
   bottom: 48px;
   right: 8px;
   z-index: 9997;
-  width: 278px;
+  width: 360px;
   background: #232323;
   border-top: 1px solid #555;
   border-left: 1px solid #555;
   border-right: 1px solid #111;
   border-bottom: 1px solid #111;
-  box-shadow: 2px 2px 12px rgba(0,0,0,0.85);
+  box-shadow: 2px 2px 16px rgba(0,0,0,0.9);
   font-family: 'Tahoma', 'Arial', sans-serif;
   user-select: none;
   pointer-events: auto;
@@ -439,33 +439,33 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 22px;
-  padding: 0 4px 0 7px;
+  height: 28px;
+  padding: 0 5px 0 9px;
   background: linear-gradient(90deg, #1a3a80 0%, #3a70d0 60%, #1a3a80 100%);
   cursor: default;
 }
 
 .wp-title-text {
   color: #ffffff;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: bold;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
   text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
 }
 
 .wp-winbtns {
   display: flex;
-  gap: 2px;
+  gap: 3px;
 }
 
 .wp-wbtn {
-  width: 16px;
-  height: 14px;
+  width: 18px;
+  height: 16px;
   background: linear-gradient(180deg, #ddd 0%, #aaa 100%);
   border: none;
   box-shadow: inset 1px 1px 0 #fff, inset -1px -1px 0 #555;
   color: #000;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: bold;
   cursor: pointer;
   padding: 0;
@@ -482,8 +482,8 @@ body {
 /* ── LED Display ──────────────────────────── */
 .wp-display {
   background: #0a0a0a;
-  margin: 4px 4px 0;
-  padding: 5px 7px 4px;
+  margin: 5px 5px 0;
+  padding: 7px 9px 6px;
   border: 1px solid #111;
   box-shadow: inset 1px 1px 3px rgba(0,0,0,0.9);
   overflow: hidden;
@@ -492,8 +492,8 @@ body {
 .wp-marquee-wrap {
   overflow: hidden;
   white-space: nowrap;
-  height: 15px;
-  margin-bottom: 4px;
+  height: 18px;
+  margin-bottom: 5px;
 }
 
 .wp-marquee {
@@ -501,7 +501,7 @@ body {
   white-space: nowrap;
   color: #00e600;
   font-family: 'Courier New', monospace;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: bold;
   letter-spacing: 0.5px;
 }
@@ -511,48 +511,48 @@ body {
 }
 
 @keyframes wp-scroll {
-  0%   { transform: translateX(278px); }
+  0%   { transform: translateX(360px); }
   100% { transform: translateX(-100%); }
 }
 
 .wp-info-row {
   display: flex;
   align-items: baseline;
-  gap: 6px;
+  gap: 8px;
 }
 
 .wp-elapsed {
   color: #00e600;
   font-family: 'Courier New', monospace;
-  font-size: 20px;
+  font-size: 26px;
   font-weight: bold;
-  letter-spacing: 3px;
-  text-shadow: 0 0 6px rgba(0,230,0,0.5);
+  letter-spacing: 4px;
+  text-shadow: 0 0 8px rgba(0,230,0,0.5);
   line-height: 1;
 }
 
 .wp-status-dot {
   color: #009900;
   font-family: 'Courier New', monospace;
-  font-size: 9px;
+  font-size: 11px;
   flex: 1;
 }
 
 .wp-kbps {
   color: #006600;
   font-family: 'Courier New', monospace;
-  font-size: 9px;
+  font-size: 10px;
 }
 
 /* ── EQ Bars ──────────────────────────────── */
 .wp-eq-wrap {
   display: flex;
   align-items: flex-end;
-  gap: 2px;
-  height: 40px;
+  gap: 3px;
+  height: 52px;
   background: #0a0a0a;
-  margin: 3px 4px;
-  padding: 4px 5px 3px;
+  margin: 4px 5px;
+  padding: 5px 6px 4px;
   border: 1px solid #111;
   box-shadow: inset 1px 1px 3px rgba(0,0,0,0.9);
 }
@@ -582,18 +582,18 @@ body {
 .wp-vol-row {
   display: flex;
   align-items: center;
-  gap: 5px;
-  padding: 3px 7px 4px;
+  gap: 7px;
+  padding: 5px 9px 6px;
   background: #1e1e1e;
   border-top: 1px solid #111;
 }
 
 .wp-vol-label {
   color: #777;
-  font-size: 9px;
+  font-size: 11px;
   font-weight: bold;
   letter-spacing: 1px;
-  width: 22px;
+  width: 26px;
   font-family: 'Courier New', monospace;
 }
 
@@ -619,29 +619,29 @@ body {
 
 .wp-vol-val {
   color: #555;
-  font-size: 9px;
+  font-size: 11px;
   font-family: 'Courier New', monospace;
-  width: 28px;
+  width: 32px;
   text-align: right;
 }
 
 /* ── Transport buttons ────────────────────── */
 .wp-transport {
   display: flex;
-  gap: 3px;
-  padding: 4px 6px 5px;
+  gap: 4px;
+  padding: 5px 8px 7px;
   background: #1a1a1a;
   border-top: 1px solid #111;
 }
 
 .wp-btn {
   flex: 1;
-  height: 24px;
+  height: 30px;
   background: linear-gradient(180deg, #4a4a4a 0%, #333 100%);
   border: none;
   box-shadow: inset 1px 1px 0 #5e5e5e, inset -1px -1px 0 #1a1a1a;
   color: #ccc;
-  font-size: 11px;
+  font-size: 14px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -671,16 +671,16 @@ body {
 .wp-playlist {
   background: #111;
   border-top: 1px solid #000;
-  padding: 3px 0;
-  max-height: 72px;
+  padding: 4px 0;
+  max-height: 88px;
   overflow-y: auto;
 }
 .wp-pl-item {
   display: flex;
   align-items: center;
-  gap: 4px;
-  padding: 2px 7px;
-  font-size: 10px;
+  gap: 5px;
+  padding: 3px 9px;
+  font-size: 12px;
   color: #4a8a4a;
   font-family: 'Courier New', monospace;
   cursor: default;

@@ -213,7 +213,7 @@ export default function RetroMusic() {
 
       {/* ── Title bar ─────────────────────────────────── */}
       <div className="wp-titlebar">
-        <span className="wp-title-text">≋ WINAMP</span>
+        <span className="wp-title-text">♫ LC3 MUSIC</span>
         <div className="wp-winbtns">
           <button className="wp-wbtn" onClick={() => setMinimized(m => !m)} title={minimized ? 'Restore' : 'Minimize'}>
             {minimized ? '▲' : '_'}
@@ -230,7 +230,7 @@ export default function RetroMusic() {
               <span className={`wp-marquee${playing && !paused ? ' wp-marquee-anim' : ''}`}>
                 {playing
                   ? `♫  ${track.title} — ${track.artist}  ♫  ${track.title} — ${track.artist}  `
-                  : `— WINAMP 2.9 —   LC3 RETRO RADIO   — WINAMP 2.9 —   LC3 RETRO RADIO   `}
+                  : `— LC3 MUSIC —   SELECT A TRACK   — LC3 MUSIC —   SELECT A TRACK   `}
               </span>
             </div>
             <div className="wp-info-row">
