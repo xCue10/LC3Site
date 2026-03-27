@@ -2,74 +2,84 @@
 
 import { useState, useEffect, useRef } from 'react';
 
+// Note frequencies (Hz)
 const F: Record<string, number> = {
-  E4: 329.63, F4: 349.23, G4: 392.00, Ab4: 415.30, A4: 440.00,
-  Bb4: 466.16, B4: 493.88,
-  C5: 523.25, D5: 587.33, Eb5: 622.25, E5: 659.25,
-  F5: 698.46, Gb5: 739.99, G5: 783.99, Ab5: 830.61, A5: 880.00,
-  C6: 1046.50, R: 0,
+  A2: 110.00, C3: 130.81, D3: 146.83, E3: 164.81, F3: 174.61,
+  G3: 196.00, A3: 220.00, Bb3: 233.08, B3: 246.94,
+  C4: 261.63, D4: 293.66, Eb4: 311.13, E4: 329.63, F4: 349.23,
+  G4: 392.00, Ab4: 415.30, A4: 440.00, Bb4: 466.16, B4: 493.88,
+  C5: 523.25, D5: 587.33, Eb5: 622.25, E5: 659.25, F5: 698.46,
+  G5: 783.99, A5: 880.00,
+  R: 0,
 };
 
-// Duration constants (ms) at ~200 BPM
-const T16 = 75;   // 16th note
-const T8  = 150;  // 8th note
-const T4  = 300;  // quarter note
-const T4D = 450;  // dotted quarter
-const T2  = 600;  // half note
-const TRI = 100;  // 8th-note triplet (3 in space of 2)
+// ~76 BPM — beat duration in seconds
+const B = 0.79;
+const q  = B;        // quarter note
+const h  = B * 2;    // half note
+const dh = B * 3;    // dotted half
+const w  = B * 4;    // whole note
+const e  = B / 2;    // eighth note
 
-// Super Mario Bros. Overworld Theme (Koji Kondo) — chiptune synthesis
-// [note, duration_ms]
-const SONG: [string, number][] = [
-  // Intro
-  ['E5',T8], ['R',T16], ['E5',T8], ['R',T4],
-  ['E5',T8], ['R',T4], ['C5',T8], ['E5',T4],
-  ['G5',T2], ['R',T2], ['G4',T2], ['R',T2],
-  // A section
-  ['C5',T4D], ['R',T8], ['G4',T4], ['R',T4],
-  ['E4',T4D], ['R',T8],
-  ['A4',T4], ['R',T8], ['B4',T4], ['R',T8],
-  ['Bb4',T8], ['R',T8], ['A4',T4],
-  ['G4',TRI], ['E5',TRI], ['G5',TRI],
-  ['A5',T4D], ['R',T8], ['F5',T4], ['G5',T8],
-  ['R',T8], ['E5',T4D], ['R',T8],
-  ['C5',T8], ['D5',T8], ['B4',T4D], ['R',T4],
-  // A repeat
-  ['C5',T4D], ['R',T8], ['G4',T4], ['R',T4],
-  ['E4',T4D], ['R',T8],
-  ['A4',T4], ['R',T8], ['B4',T4], ['R',T8],
-  ['Bb4',T8], ['R',T8], ['A4',T4],
-  ['G4',TRI], ['E5',TRI], ['G5',TRI],
-  ['A5',T4D], ['R',T8], ['F5',T4], ['G5',T8],
-  ['R',T8], ['E5',T4D], ['R',T8],
-  ['C5',T8], ['D5',T8], ['B4',T4D], ['R',T4],
-  // Bridge B
-  ['R',T4], ['G5',T4], ['R',T4], ['Gb5',T4],
-  ['R',T4], ['F5',T4], ['R',T4],
-  ['Eb5',T4], ['R',T8], ['E5',T4],
-  ['R',T8], ['Ab4',T4], ['A4',T4], ['C5',T4],
-  ['R',T8], ['A4',T4], ['C5',T4], ['D5',T4],
-  ['R',T4], ['G5',T4], ['R',T4], ['Gb5',T4],
-  ['R',T4], ['F5',T4], ['R',T4],
-  ['Eb5',T4], ['R',T8], ['E5',T4],
-  ['R',T8], ['C6',T4], ['R',T8], ['C6',T4], ['R',T8], ['C6',T2],
-  // Bridge C
-  ['R',T4], ['G5',T4], ['R',T4], ['Gb5',T4],
-  ['R',T4], ['F5',T4], ['R',T4],
-  ['Eb5',T4], ['R',T8], ['E5',T4],
-  ['R',T8], ['Ab4',T4], ['A4',T4], ['C5',T4],
-  ['R',T8], ['A4',T4], ['C5',T4], ['D5',T4],
-  ['R',T4], ['Eb5',T4], ['R',T4], ['D5',T4],
-  ['R',T4D], ['C5',T2+T4], ['R',T2],
+// Aquatic Ambience (David Wise / DKC) — melody approximation
+// [note, duration_seconds]
+const MELODY: [string, number][] = [
+  // Intro — sparse, let reverb breathe
+  ['R', h], ['R', h],
+  ['R', h], ['R', h],
+
+  // Phrase A
+  ['A4', h],  ['G4', q],  ['F4', q],
+  ['E4', dh], ['D4', q],
+  ['C4', q],  ['D4', q],  ['E4', q], ['F4', q],
+  ['E4', h],  ['D4', h],
+  ['A3', w],
+
+  // Phrase A'
+  ['A4', h],  ['Bb4', q], ['A4', q],
+  ['G4', dh], ['F4', q],
+  ['E4', q],  ['F4', q],  ['G4', q], ['A4', q],
+  ['G4', h],  ['F4', h],
+  ['E4', w],
+
+  // Phrase B — rises
+  ['C5', h],  ['D5', q],  ['C5', q],
+  ['B4', dh], ['A4', q],
+  ['G4', q],  ['A4', q],  ['B4', q], ['C5', q],
+  ['B4', h],  ['A4', h],
+  ['A4', w],
+
+  // Phrase C — high floats
+  ['E5', h],  ['D5', q],  ['C5', q],
+  ['B4', h],  ['A4', h],
+  ['G4', q],  ['A4', q],  ['B4', q], ['A4', q],
+  ['G4', h],  ['F4', h],
+  ['E4', w],
+
+  // Return A
+  ['A4', h],  ['G4', q],  ['F4', q],
+  ['E4', dh], ['D4', q],
+  ['C4', q],  ['D4', q],  ['E4', q], ['F4', q],
+  ['E4', h],  ['D4', h],
+  ['A3', w],
+
+  // Fade phrase
+  ['C4', h],  ['D4', h],
+  ['E4', h],  ['F4', h],
+  ['E4', dh], ['D4', q],
+  ['A3', w],
+  ['R', w],
 ];
 
 export default function RetroMusic() {
   const [isRetro, setIsRetro] = useState(false);
   const [playing, setPlaying] = useState(false);
-  const ctxRef = useRef<AudioContext | null>(null);
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const playingRef = useRef(false);
-  const idxRef = useRef(0);
+
+  const ctxRef       = useRef<AudioContext | null>(null);
+  const timerRef     = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const playingRef   = useRef(false);
+  const idxRef       = useRef(0);
+  const schedTimeRef = useRef(0); // AudioContext time of next note start
 
   useEffect(() => {
     const check = () => setIsRetro(document.documentElement.classList.contains('retro'));
@@ -87,20 +97,37 @@ export default function RetroMusic() {
     setPlaying(false);
   };
 
-  const playNote = (freq: number, ms: number, ctx: AudioContext) => {
+  const playNoteAt = (
+    freq: number,
+    startTime: number,
+    duration: number,
+    ctx: AudioContext,
+    reverbInput: AudioNode,
+  ) => {
     if (!freq) return;
-    const osc = ctx.createOscillator();
+
+    const osc  = ctx.createOscillator();
     const gain = ctx.createGain();
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-    osc.type = 'square';
+    const dry  = ctx.createGain();
+
+    osc.type = 'sine';
     osc.frequency.value = freq;
-    // Short attack, exponential decay for that punchy chiptune feel
-    gain.gain.setValueAtTime(0.0001, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.12, ctx.currentTime + 0.01);
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + ms * 0.85 / 1000);
-    osc.start(ctx.currentTime);
-    osc.stop(ctx.currentTime + ms * 0.9 / 1000);
+    osc.connect(gain);
+    gain.connect(dry);
+    gain.connect(reverbInput); // wet signal into reverb
+    dry.connect(ctx.destination);
+
+    dry.gain.value = 0.55;
+
+    const attack  = 0.08;
+    const release = Math.min(0.45, duration * 0.35);
+    gain.gain.setValueAtTime(0, startTime);
+    gain.gain.linearRampToValueAtTime(0.13, startTime + attack);
+    gain.gain.setValueAtTime(0.13, Math.max(startTime + attack, startTime + duration - release));
+    gain.gain.linearRampToValueAtTime(0, startTime + duration);
+
+    osc.start(startTime);
+    osc.stop(startTime + duration + 0.1);
   };
 
   const startMusic = () => {
@@ -111,13 +138,33 @@ export default function RetroMusic() {
     idxRef.current = 0;
     setPlaying(true);
 
+    // Simple reverb via feedback delay
+    const delay    = ctx.createDelay(2.0);
+    const feedback = ctx.createGain();
+    const wetGain  = ctx.createGain();
+    delay.delayTime.value = 0.32;
+    feedback.gain.value   = 0.38;
+    wetGain.gain.value    = 0.42;
+    delay.connect(feedback);
+    feedback.connect(delay);
+    delay.connect(wetGain);
+    wetGain.connect(ctx.destination);
+
+    schedTimeRef.current = ctx.currentTime + 0.05;
+
     const scheduleNext = () => {
       if (!playingRef.current) return;
-      const [note, ms] = SONG[idxRef.current];
-      playNote(F[note] ?? 0, ms, ctx);
-      idxRef.current = (idxRef.current + 1) % SONG.length;
-      timerRef.current = setTimeout(scheduleNext, ms);
+
+      const [note, dur] = MELODY[idxRef.current];
+      playNoteAt(F[note] ?? 0, schedTimeRef.current, dur, ctx, delay);
+      schedTimeRef.current += dur;
+      idxRef.current = (idxRef.current + 1) % MELODY.length;
+
+      // Fire callback ~100ms before the next note is due
+      const msUntilNext = (schedTimeRef.current - ctx.currentTime - 0.1) * 1000;
+      timerRef.current = setTimeout(scheduleNext, Math.max(0, msUntilNext));
     };
+
     scheduleNext();
   };
 
@@ -131,12 +178,12 @@ export default function RetroMusic() {
       <button
         onClick={() => playing ? stopMusic() : startMusic()}
         className="retro-music-btn"
-        title={playing ? 'Stop 8-bit music' : 'Play Mario theme ♪'}
+        title={playing ? 'Stop music' : 'Play Aquatic Ambience ♪'}
       >
         {playing ? '■ STOP' : '▶ MUSIC'}
       </button>
       {playing && (
-        <div className="retro-music-label">♫ MARIO OVERWORLD ♫</div>
+        <div className="retro-music-label">♫ AQUATIC AMBIENCE ♫</div>
       )}
     </div>
   );

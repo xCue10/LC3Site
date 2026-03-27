@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 
 type Phase = 'idle' | 'engage' | 'warp' | 'arrive' | 'flash';
 
-const YEAR_SEQUENCE = [2025, 2020, 2015, 2010, 2005, 2001, 1999, 1997, 1995, 1994];
+const YEAR_SEQUENCE = [2025, 2022, 2018, 2015, 2012, 2008, 2005, 2003, 2001, 1999];
 
 export default function TimeMachine() {
   const [phase, setPhase] = useState<Phase>('idle');
@@ -41,7 +41,7 @@ export default function TimeMachine() {
 
     warpStartRef.current = Date.now();
     const LINES = 180;
-    const COLORS = ['#ff1e78', '#00dcff', '#ffffff', '#ffe100', '#cc00ff', '#ffffff'];
+    const COLORS = ['#00cc44', '#00ccff', '#ffffff', '#0066cc', '#33aaff', '#ffffff'];
 
     const tick = () => {
       const p = phaseRef.current;
@@ -53,8 +53,7 @@ export default function TimeMachine() {
       const cx = w / 2;
       const cy = h / 2;
 
-      // Fading trail
-      ctx.fillStyle = 'rgba(0,0,0,0.22)';
+      ctx.fillStyle = 'rgba(0,0,0,0.20)';
       ctx.fillRect(0, 0, w, h);
 
       for (let i = 0; i < LINES; i++) {
@@ -91,72 +90,112 @@ export default function TimeMachine() {
     rafRef.current = requestAnimationFrame(tick);
   }, []);
 
-  // ── Audio ───────────────────────────────────────────────────────────
+  // ── Audio — dial-up modem ────────────────────────────────────────────
   const playActivateAudio = () => {
     try {
       const audioCtx = new AudioContext();
+      const t = audioCtx.currentTime;
 
-      // Rising sawtooth warp sweep
-      const osc1 = audioCtx.createOscillator();
-      const gain1 = audioCtx.createGain();
-      osc1.connect(gain1);
-      gain1.connect(audioCtx.destination);
-      osc1.type = 'sawtooth';
-      osc1.frequency.setValueAtTime(55, audioCtx.currentTime);
-      osc1.frequency.exponentialRampToValueAtTime(2400, audioCtx.currentTime + 3.2);
-      gain1.gain.setValueAtTime(0.001, audioCtx.currentTime);
-      gain1.gain.exponentialRampToValueAtTime(0.1, audioCtx.currentTime + 0.35);
-      gain1.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 3.5);
-      osc1.start(audioCtx.currentTime);
-      osc1.stop(audioCtx.currentTime + 3.5);
-
-      // Sub-bass rumble
-      const osc2 = audioCtx.createOscillator();
-      const gain2 = audioCtx.createGain();
-      osc2.connect(gain2);
-      gain2.connect(audioCtx.destination);
-      osc2.type = 'sine';
-      osc2.frequency.setValueAtTime(45, audioCtx.currentTime);
-      osc2.frequency.linearRampToValueAtTime(18, audioCtx.currentTime + 3.5);
-      gain2.gain.setValueAtTime(0.001, audioCtx.currentTime);
-      gain2.gain.exponentialRampToValueAtTime(0.2, audioCtx.currentTime + 0.5);
-      gain2.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 3.5);
-      osc2.start(audioCtx.currentTime);
-      osc2.stop(audioCtx.currentTime + 3.5);
-
-      // Arrival power chord (80s synth stab)
-      [261.63, 329.63, 392.00, 523.25].forEach((freq, i) => {
+      const tone = (freq: number, start: number, end: number, vol = 0.07, type: OscillatorType = 'sine') => {
         const o = audioCtx.createOscillator();
         const g = audioCtx.createGain();
-        o.connect(g);
-        g.connect(audioCtx.destination);
-        o.type = 'square';
+        o.type = type;
         o.frequency.value = freq;
-        g.gain.setValueAtTime(0.001, audioCtx.currentTime + 3.9 + i * 0.04);
-        g.gain.exponentialRampToValueAtTime(0.055, audioCtx.currentTime + 4.0);
-        g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 5.2);
-        o.start(audioCtx.currentTime + 3.9 + i * 0.04);
-        o.stop(audioCtx.currentTime + 5.5);
+        o.connect(g); g.connect(audioCtx.destination);
+        g.gain.setValueAtTime(0.001, start);
+        g.gain.linearRampToValueAtTime(vol, start + 0.02);
+        g.gain.setValueAtTime(vol, Math.max(start + 0.02, end - 0.02));
+        g.gain.linearRampToValueAtTime(0.001, end);
+        o.start(start); o.stop(end + 0.05);
+      };
+
+      // 1. Dial tone (0.0 – 0.4s)
+      tone(440, t, t + 0.35, 0.055);
+      tone(350, t, t + 0.35, 0.055);
+
+      // 2. DTMF dialing sequence (0.4 – 1.6s)
+      const dtmf: [number, number][] = [
+        [697, 1209], [770, 1477], [852, 1336],
+        [941, 1209], [770, 1336], [697, 1477],
+      ];
+      dtmf.forEach(([f1, f2], i) => {
+        const s = t + 0.4 + i * 0.2;
+        tone(f1, s, s + 0.13, 0.055);
+        tone(f2, s, s + 0.13, 0.055);
       });
 
-      setTimeout(() => audioCtx.close(), 6000);
+      // 3. Carrier detect tone (1.7 – 2.4s)
+      tone(2100, t + 1.7, t + 2.4, 0.075);
+
+      // 4. Handshake warble (2.4 – 5.0s) — the iconic screech
+      const hs = audioCtx.createOscillator();
+      const hsg = audioCtx.createGain();
+      const mod = audioCtx.createOscillator();
+      const modg = audioCtx.createGain();
+      mod.frequency.value = 30;
+      modg.gain.value = 900;
+      mod.connect(modg); modg.connect(hs.frequency);
+      hs.type = 'sawtooth';
+      hs.frequency.setValueAtTime(1800, t + 2.4);
+      hs.frequency.linearRampToValueAtTime(2600, t + 3.5);
+      hs.frequency.linearRampToValueAtTime(1400, t + 4.2);
+      hs.frequency.linearRampToValueAtTime(2200, t + 5.0);
+      hs.connect(hsg); hsg.connect(audioCtx.destination);
+      hsg.gain.setValueAtTime(0.001, t + 2.4);
+      hsg.gain.linearRampToValueAtTime(0.07, t + 2.6);
+      hsg.gain.linearRampToValueAtTime(0.001, t + 5.0);
+      mod.start(t + 2.4); mod.stop(t + 5.1);
+      hs.start(t + 2.4); hs.stop(t + 5.1);
+
+      // 5. Connection confirmation tones (5.0 – 5.8s)
+      tone(3400, t + 5.0, t + 5.4, 0.065);
+      tone(2100, t + 5.1, t + 5.8, 0.065);
+
+      // 6. Arrival chime — Windows-style ascending chord (5.9s+)
+      [523.25, 659.25, 783.99, 1046.50].forEach((freq, i) => {
+        const o = audioCtx.createOscillator();
+        const g = audioCtx.createGain();
+        o.type = 'sine';
+        o.frequency.value = freq;
+        o.connect(g); g.connect(audioCtx.destination);
+        const s = t + 5.9 + i * 0.07;
+        g.gain.setValueAtTime(0.001, s);
+        g.gain.linearRampToValueAtTime(0.07, s + 0.04);
+        g.gain.exponentialRampToValueAtTime(0.001, s + 0.8);
+        o.start(s); o.stop(s + 0.9);
+      });
+
+      setTimeout(() => audioCtx.close(), 8000);
     } catch { /* AudioContext blocked */ }
   };
 
   const playDeactivateAudio = () => {
     try {
       const audioCtx = new AudioContext();
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
-      osc.type = 'sawtooth';
-      osc.frequency.setValueAtTime(900, audioCtx.currentTime);
-      osc.frequency.exponentialRampToValueAtTime(60, audioCtx.currentTime + 0.7);
-      gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.7);
-      osc.start(audioCtx.currentTime);
-      osc.stop(audioCtx.currentTime + 0.7);
+      const t = audioCtx.currentTime;
+      // Brief modem disconnect static
+      const o = audioCtx.createOscillator();
+      const g = audioCtx.createGain();
+      o.type = 'sawtooth';
+      o.frequency.setValueAtTime(1400, t);
+      o.frequency.exponentialRampToValueAtTime(80, t + 0.6);
+      o.connect(g); g.connect(audioCtx.destination);
+      g.gain.setValueAtTime(0.07, t);
+      g.gain.exponentialRampToValueAtTime(0.001, t + 0.6);
+      o.start(t); o.stop(t + 0.65);
+      // Descending goodbye notes
+      [659.25, 523.25, 392.0].forEach((freq, i) => {
+        const o2 = audioCtx.createOscillator();
+        const g2 = audioCtx.createGain();
+        o2.type = 'sine';
+        o2.frequency.value = freq;
+        o2.connect(g2); g2.connect(audioCtx.destination);
+        const s = t + 0.1 + i * 0.14;
+        g2.gain.setValueAtTime(0.001, s);
+        g2.gain.linearRampToValueAtTime(0.06, s + 0.03);
+        g2.gain.exponentialRampToValueAtTime(0.001, s + 0.35);
+        o2.start(s); o2.stop(s + 0.4);
+      });
       setTimeout(() => audioCtx.close(), 2000);
     } catch { /* AudioContext blocked */ }
   };
@@ -169,22 +208,24 @@ export default function TimeMachine() {
     setP('engage');
     playActivateAudio();
 
+    // Warp starts after modem dialing begins
     schedule(() => { setP('warp'); startWarp(); }, 1400);
 
+    // Year counter — 10 steps over ~3.8s
     YEAR_SEQUENCE.forEach((y, i) => {
-      schedule(() => setYear(y), 1600 + i * 210);
+      schedule(() => setYear(y), 1600 + i * 380);
     });
 
-    schedule(() => setP('arrive'), 3900);
+    // Arrive after modem handshake completes (~5.8s audio)
+    schedule(() => setP('arrive'), 5400);
 
     schedule(() => {
-      // Apply retro class right as the flash starts
       document.documentElement.classList.add('retro');
       setP('flash');
-    }, 4700);
+    }, 6400);
 
-    schedule(() => setOverlayOpacity(0), 4900);
-    schedule(() => setP('idle'), 5800);
+    schedule(() => setOverlayOpacity(0), 6600);
+    schedule(() => setP('idle'), 7800);
   }, [startWarp]);
 
   const runDeactivate = useCallback(() => {
@@ -195,7 +236,6 @@ export default function TimeMachine() {
 
     schedule(() => {
       document.documentElement.classList.remove('retro');
-      // Restore dark mode if it was active before retro
       if (localStorage.getItem('lc3-dark') === 'true') {
         document.documentElement.classList.add('dark');
       }
@@ -252,32 +292,32 @@ export default function TimeMachine() {
         {/* ── Phase: ENGAGE ── */}
         {phase === 'engage' && (
           <div className="tm-engage-wrap">
-            <div className="tm-alert-tag">[ SYSTEM ALERT ]</div>
-            <h1 className="tm-headline tm-glitch" data-text="TIME DRIVE ENGAGED">
-              TIME DRIVE ENGAGED
+            <div className="tm-alert-tag">[ MILLENNIUM DRIVE v2.0 ]</div>
+            <h1 className="tm-headline tm-glitch" data-text="CONNECTING TO THE PAST">
+              CONNECTING TO THE PAST
             </h1>
-            <p className="tm-subtext">LOADING TEMPORAL COORDINATES...</p>
+            <p className="tm-subtext">INITIALIZING DIAL-UP SEQUENCE...</p>
             <div className="tm-progress-bar">
               <div className="tm-progress-fill" />
             </div>
             <div className="tm-coord-row">
-              <span>32°47′N</span>
+              <span>37°23′N</span>
               <span className="tm-coord-sep">◆</span>
-              <span>96°48′W</span>
+              <span>122°02′W</span>
             </div>
-            <p className="tm-footnote">DALLAS — BLOCKBUSTER — 1994</p>
+            <p className="tm-footnote">SILICON VALLEY — Y2K — 1999</p>
           </div>
         )}
 
         {/* ── Phase: WARP ── */}
         {phase === 'warp' && (
           <div className="tm-warp-wrap">
-            <p className="tm-warp-label">◄◄ TRAVELING BACK IN TIME ◄◄</p>
+            <p className="tm-warp-label">◄◄ CONNECTING VIA 56K ◄◄</p>
             <p className="tm-year-caption">CURRENT YEAR</p>
             <div className="tm-year-display" key={year}>{year}</div>
             <p className="tm-velocity">
-              TEMPORAL VELOCITY&nbsp;
-              <span className="tm-velocity-val">88,000 TU/s</span>
+              BAUD RATE&nbsp;
+              <span className="tm-velocity-val">56,600 BPS</span>
             </p>
           </div>
         )}
@@ -285,9 +325,9 @@ export default function TimeMachine() {
         {/* ── Phase: ARRIVE ── */}
         {phase === 'arrive' && (
           <div className="tm-arrive-wrap">
-            <p className="tm-arrive-label">✦ DESTINATION REACHED ✦</p>
-            <div className="tm-arrived-year">1994</div>
-            <p className="tm-welcome-text">⏪ BE KIND, REWIND ⏪</p>
+            <p className="tm-arrive-label">✦ CONNECTION ESTABLISHED ✦</p>
+            <div className="tm-arrived-year">1999</div>
+            <p className="tm-welcome-text">YOU&apos;VE GOT NOSTALGIA</p>
           </div>
         )}
 
@@ -295,9 +335,9 @@ export default function TimeMachine() {
 
       {/* VHS HUD corners */}
       <span className="tm-hud tm-hud-tl">●REC</span>
-      <span className="tm-hud tm-hud-tr">VHS●</span>
+      <span className="tm-hud tm-hud-tr">56K●</span>
       <span className="tm-hud tm-hud-bl">00:00:00</span>
-      <span className="tm-hud tm-hud-br">HI-FI●</span>
+      <span className="tm-hud tm-hud-br">AOL●</span>
     </div>
   );
 }

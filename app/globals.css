@@ -34,69 +34,80 @@ body {
 .dark ::-webkit-scrollbar-thumb:hover { background: #2e4268; }
 
 /* =============================================
-   RETRO / BLOCKBUSTER VIDEO THEME
+   RETRO / Y2K MILLENNIAL INTERNET THEME
    ============================================= */
 
 /* ── Remap the entire Tailwind color palette ──
    Tailwind v4 exposes all colors as CSS custom
    properties. Overriding them here propagates
-   Blockbuster colors to every utility class.
+   Y2K colors to every utility class.
    ──────────────────────────────────────────── */
 .retro {
-  /* White → deep Blockbuster navy */
-  --color-white: #0a1528;
+  /* White → deep cyber night */
+  --color-white: #010c1c;
 
-  /* Slate scale → dark navy variations */
-  --color-slate-50:  #0d1a35;
-  --color-slate-100: #0f1f3d;
-  --color-slate-200: rgba(0, 48, 135, 0.30);
-  --color-slate-300: rgba(0, 48, 135, 0.50);
-  --color-slate-400: rgba(200, 215, 240, 0.55);
-  --color-slate-500: rgba(200, 215, 240, 0.72);
-  --color-slate-600: #b8c8e8;
-  --color-slate-700: #d0dcf0;
-  --color-slate-800: #e0eaff;
-  --color-slate-900: #eef4ff;
+  /* Slate scale → dark blue-grey */
+  --color-slate-50:  #061830;
+  --color-slate-100: #082040;
+  --color-slate-200: rgba(0, 85, 204, 0.28);
+  --color-slate-300: rgba(0, 85, 204, 0.48);
+  --color-slate-400: rgba(136, 180, 224, 0.55);
+  --color-slate-500: rgba(136, 180, 224, 0.72);
+  --color-slate-600: #88b4e0;
+  --color-slate-700: #a8ccf0;
+  --color-slate-800: #c8e0ff;
+  --color-slate-900: #e0f0ff;
 
-  /* Violet → Blockbuster Blue */
-  --color-violet-50:  rgba(0, 48, 135, 0.08);
-  --color-violet-100: rgba(0, 48, 135, 0.14);
-  --color-violet-200: rgba(0, 48, 135, 0.28);
-  --color-violet-300: rgba(0, 48, 135, 0.46);
-  --color-violet-400: #1a5adf;
-  --color-violet-500: #0044cc;
-  --color-violet-600: #003087;
-  --color-violet-700: #002470;
+  /* Violet → Internet Explorer Blue */
+  --color-violet-50:  rgba(0, 85, 204, 0.08);
+  --color-violet-100: rgba(0, 85, 204, 0.15);
+  --color-violet-200: rgba(0, 85, 204, 0.28);
+  --color-violet-300: rgba(0, 85, 204, 0.48);
+  --color-violet-400: #2288ee;
+  --color-violet-500: #0066cc;
+  --color-violet-600: #0055bb;
+  --color-violet-700: #003d99;
 
-  /* Blue → Blockbuster Yellow */
-  --color-blue-50:  rgba(255, 210, 0, 0.08);
-  --color-blue-100: rgba(255, 210, 0, 0.14);
-  --color-blue-200: rgba(255, 210, 0, 0.28);
-  --color-blue-300: rgba(255, 210, 0, 0.46);
-  --color-blue-400: #ffe033;
-  --color-blue-500: #FFD200;
-  --color-blue-600: #e6bd00;
-  --color-blue-700: #ccaa00;
+  /* Blue → MSN/AOL Cyan */
+  --color-blue-50:  rgba(0, 204, 255, 0.08);
+  --color-blue-100: rgba(0, 204, 255, 0.15);
+  --color-blue-200: rgba(0, 204, 255, 0.28);
+  --color-blue-300: rgba(0, 204, 255, 0.46);
+  --color-blue-400: #33d8ff;
+  --color-blue-500: #00ccff;
+  --color-blue-600: #00b4ee;
+  --color-blue-700: #0098d8;
 
-  /* Emerald → yellow accent */
-  --color-emerald-50:  rgba(255, 210, 0, 0.08);
-  --color-emerald-200: rgba(255, 210, 0, 0.28);
-  --color-emerald-400: #FFD200;
-  --color-emerald-500: #e6bd00;
-  --color-emerald-600: #ccaa00;
+  /* Emerald → Matrix green */
+  --color-emerald-50:  rgba(0, 204, 68, 0.08);
+  --color-emerald-200: rgba(0, 204, 68, 0.28);
+  --color-emerald-400: #00dd44;
+  --color-emerald-500: #00cc44;
+  --color-emerald-600: #00aa33;
 
-  /* Amber → Blockbuster Yellow */
-  --color-amber-50:  rgba(255, 210, 0, 0.08);
-  --color-amber-200: rgba(255, 210, 0, 0.28);
-  --color-amber-400: #FFD200;
-  --color-amber-500: #FFD200;
-  --color-amber-600: #e6bd00;
+  /* Amber → Y2K orange */
+  --color-amber-50:  rgba(255, 140, 0, 0.08);
+  --color-amber-200: rgba(255, 140, 0, 0.28);
+  --color-amber-400: #ffaa00;
+  --color-amber-500: #ff9900;
+  --color-amber-600: #ee8800;
 
-  /* Red → Blockbuster Blue */
-  --color-red-50:  rgba(0, 48, 135, 0.08);
-  --color-red-200: rgba(0, 48, 135, 0.28);
-  --color-red-500: #003087;
-  --color-red-600: #002470;
+  /* Red → Y2K magenta */
+  --color-red-50:  rgba(220, 0, 180, 0.08);
+  --color-red-200: rgba(220, 0, 180, 0.28);
+  --color-red-500: #cc0099;
+  --color-red-600: #aa0088;
+}
+
+/* ── Dot-matrix terminal overlay ────────────── */
+.retro body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(0, 204, 255, 0.032) 1px, transparent 1px);
+  background-size: 22px 22px;
+  pointer-events: none;
+  z-index: 0;
 }
 
 /* ── Scanline overlay ───────────────────────── */
@@ -108,21 +119,21 @@ body {
     0deg,
     transparent,
     transparent 3px,
-    rgba(0, 0, 0, 0.06) 3px,
-    rgba(0, 0, 0, 0.06) 4px
+    rgba(0, 0, 0, 0.07) 3px,
+    rgba(0, 0, 0, 0.07) 4px
   );
   pointer-events: none;
   z-index: 9998;
 }
 
-/* ── Body — Blockbuster night ────────────────── */
+/* ── Body — Cyber night ──────────────────────── */
 .retro body {
-  background-color: #07111f;
-  color: #e8f0ff;
+  background-color: #000c18;
+  color: #b8d4f0;
   background-image:
-    radial-gradient(ellipse 100% 40% at 50% 0%, rgba(0, 48, 135, 0.38) 0%, transparent 65%),
-    radial-gradient(ellipse 80% 25% at 50% 100%, rgba(0, 48, 135, 0.22) 0%, transparent 70%),
-    linear-gradient(180deg, transparent 55%, rgba(255, 210, 0, 0.025) 80%, transparent 100%);
+    radial-gradient(ellipse 90% 45% at 50% 0%, rgba(0, 85, 204, 0.32) 0%, transparent 65%),
+    radial-gradient(ellipse 55% 28% at 12% 85%, rgba(0, 204, 255, 0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 55% 28% at 88% 85%, rgba(0, 204, 68, 0.06) 0%, transparent 60%);
 }
 
 /* ── Override project's hardcoded dark values ─ */
@@ -131,69 +142,69 @@ body {
 .retro [class*="bg-\\[\\#111a2e\\]"],
 .retro [class*="bg-\\[\\#0a1020\\]"],
 .retro [class*="bg-\\[\\#0d0e1a\\]"] {
-  background-color: rgba(13, 26, 53, 0.92) !important;
+  background-color: rgba(6, 18, 42, 0.92) !important;
 }
 
 .retro [class*="border-\\[\\#1e2d45\\]"] {
-  border-color: rgba(0, 48, 135, 0.45) !important;
+  border-color: rgba(0, 85, 204, 0.45) !important;
 }
 
-/* ── Headings — Blockbuster style ───────────── */
+/* ── Headings — Y2K cyber chrome ────────────── */
 .retro h1 {
   font-family: var(--font-vice), Impact, 'Arial Black', sans-serif !important;
-  font-style: italic !important;
+  font-style: normal !important;
   text-transform: uppercase !important;
-  letter-spacing: 0.05em !important;
-  color: #FFD200 !important;
+  letter-spacing: 0.06em !important;
+  color: #33aaff !important;
   text-shadow:
-    4px 4px 0 #003087,
-    8px 8px 0 rgba(0, 48, 135, 0.30),
-    0 0 30px rgba(255, 210, 0, 0.40) !important;
+    2px 2px 0 #003399,
+    4px 4px 12px rgba(0, 102, 255, 0.35),
+    0 0 28px rgba(51, 170, 255, 0.30) !important;
   line-height: 1.05 !important;
 }
 
 .retro h2 {
   font-family: var(--font-vice), Impact, 'Arial Black', sans-serif !important;
-  font-style: italic !important;
+  font-style: normal !important;
   text-transform: uppercase !important;
-  letter-spacing: 0.04em !important;
-  color: #FFD200 !important;
+  letter-spacing: 0.05em !important;
+  color: #33aaff !important;
   text-shadow:
-    3px 3px 0 #003087,
-    0 0 20px rgba(255, 210, 0, 0.35) !important;
+    1px 1px 0 #003399,
+    0 0 18px rgba(51, 170, 255, 0.30) !important;
   line-height: 1.15 !important;
 }
 
 .retro h3 {
   font-family: var(--font-vice), Impact, 'Arial Black', sans-serif !important;
-  font-style: italic !important;
+  font-style: normal !important;
   text-transform: uppercase !important;
-  letter-spacing: 0.03em !important;
-  color: #FFD200 !important;
+  letter-spacing: 0.04em !important;
+  color: #00ccff !important;
   text-shadow:
-    2px 2px 0 rgba(0, 48, 135, 0.80),
-    0 0 14px rgba(255, 210, 0, 0.30) !important;
+    1px 1px 0 rgba(0, 51, 153, 0.70),
+    0 0 12px rgba(0, 204, 255, 0.30) !important;
   line-height: 1.25 !important;
 }
 
 .retro h4,
 .retro h5,
 .retro h6 {
-  color: #b8d0ff !important;
-  text-shadow: 0 0 12px rgba(0, 48, 135, 0.50) !important;
+  color: #88ccff !important;
+  text-shadow: 0 0 10px rgba(0, 102, 204, 0.50) !important;
   letter-spacing: 0.02em !important;
 }
 
 /* ── Body text — readable ───────────────────── */
 .retro p {
-  color: #ccd8f0 !important;
+  color: #b0c8e8 !important;
   line-height: 1.75 !important;
   font-size: 1rem !important;
   font-family: inherit !important;
 }
 
 .retro li {
-  color: #ccd8f0 !important;
+  color: #b0c8e8 !important;
   line-height: 1.75 !important;
 }
 
@@ -201,47 +212,48 @@ body {
 .retro [class~="text-slate-900"],
 .retro [class~="text-slate-800"],
 .retro [class~="text-slate-700"] {
-  color: #e8f0ff !important;
+  color: #d8eaff !important;
 }
 .retro [class~="text-slate-600"],
 .retro [class~="text-slate-500"] {
-  color: #b8c8e8 !important;
+  color: #88b4e0 !important;
 }
 .retro [class~="text-slate-400"],
 .retro [class~="text-slate-300"] {
-  color: rgba(184, 200, 232, 0.65) !important;
+  color: rgba(136, 180, 224, 0.65) !important;
 }
 
-/* ── Gradient text clips — remap to yellow/blue ─ */
+/* ── Gradient text clips — remap to cyan/blue ── */
 .retro [class*="from-blue"][class*="to-violet"],
 .retro [class*="from-violet"][class*="to-blue"] {
-  background-image: linear-gradient(to right, #FFD200, #003087) !important;
+  background-image: linear-gradient(to right, #00ccff, #0055cc) !important;
 }
 
 /* ── Primary CTA buttons ─────────────────────── */
 .retro [class*="from-blue-6"],
 .retro [class*="from-blue-5"] {
-  background-image: none !important;
-  background-color: #FFD200 !important;
-  color: #003087 !important;
-  box-shadow: 0 4px 16px rgba(255, 210, 0, 0.40), 0 2px 8px rgba(0, 48, 135, 0.30) !important;
-  border: 2px solid #003087 !important;
+  background-image: linear-gradient(180deg, #2288ee 0%, #0055bb 100%) !important;
+  box-shadow: 0 2px 0 #003399, 0 4px 12px rgba(0, 85, 204, 0.40),
+    inset 0 1px 0 rgba(255,255,255,0.18) !important;
+  border: 1px solid #0044aa !important;
+  color: #ffffff !important;
 }
 .retro [class*="from-blue-6"]:hover,
 .retro [class*="from-blue-5"]:hover {
-  box-shadow: 0 6px 24px rgba(255, 210, 0, 0.55), 0 2px 10px rgba(0, 48, 135, 0.40) !important;
+  background-image: linear-gradient(180deg, #3399ff 0%, #0066cc 100%) !important;
 }
 
 /* ── Card / panel surfaces ──────────────────── */
 .retro [class~="bg-white"] {
-  background-color: #0d1a35 !important;
-  border-color: rgba(0, 48, 135, 0.50) !important;
-  box-shadow: 0 0 0 1px rgba(0, 48, 135, 0.25), inset 0 0 20px rgba(255, 210, 0, 0.03) !important;
+  background-color: #061428 !important;
+  border-color: rgba(0, 85, 204, 0.55) !important;
+  box-shadow: 0 0 0 1px rgba(0, 85, 204, 0.25),
+    inset 0 1px 0 rgba(51, 170, 255, 0.05) !important;
 }
 .retro [class~="bg-slate-50"],
 .retro [class~="bg-slate-100"] {
-  background-color: #0f1f3d !important;
-  border-color: rgba(0, 48, 135, 0.35) !important;
+  background-color: #071c3a !important;
+  border-color: rgba(0, 85, 204, 0.38) !important;
 }
 
 /* Feature/mission gradient boxes */
@@ -249,91 +261,100 @@ body {
 .retro [class*="from-violet-50"],
 .retro [class*="via-violet-50"] {
   background: linear-gradient(135deg,
-    rgba(0, 48, 135, 0.10) 0%,
-    rgba(255, 210, 0, 0.04) 50%,
+    rgba(0, 85, 204, 0.10) 0%,
+    rgba(0, 204, 255, 0.04) 50%,
     transparent 100%) !important;
-  border-color: rgba(0, 48, 135, 0.25) !important;
+  border-color: rgba(0, 85, 204, 0.22) !important;
 }
 
 /* Icon boxes */
 .retro [class~="bg-slate-100"],
 .retro [class*="bg-blue-50"],
 .retro [class*="bg-violet-50"] {
-  background-color: rgba(0, 48, 135, 0.12) !important;
-  border-color: rgba(0, 48, 135, 0.30) !important;
+  background-color: rgba(0, 85, 204, 0.10) !important;
+  border-color: rgba(0, 85, 204, 0.28) !important;
 }
 
-/* ── Links ──────────────────────────────────── */
+/* ── Links — classic hyperlink blue ─────────── */
 .retro a {
-  color: #FFD200 !important;
-  text-decoration: none !important;
-  transition: color 0.2s, text-shadow 0.2s !important;
+  color: #4499ff !important;
+  text-decoration: underline !important;
+  transition: color 0.2s !important;
 }
 .retro a:hover {
-  color: #b8d0ff !important;
-  text-shadow: 0 0 10px rgba(0, 48, 135, 0.50) !important;
+  color: #00ccff !important;
+  text-shadow: 0 0 8px rgba(0, 204, 255, 0.45) !important;
 }
 
 /* ── Selection ──────────────────────────────── */
 .retro ::selection {
-  background: rgba(0, 48, 135, 0.55);
-  color: #FFD200;
+  background: rgba(0, 85, 204, 0.60);
+  color: #ffffff;
 }
 
 /* ── Scrollbar ──────────────────────────────── */
-.retro ::-webkit-scrollbar-track { background: #07111f; }
-.retro ::-webkit-scrollbar-thumb { background: #003087; border-radius: 2px; }
-.retro ::-webkit-scrollbar-thumb:hover { background: #FFD200; }
+.retro ::-webkit-scrollbar-track { background: #000c18; }
+.retro ::-webkit-scrollbar-thumb { background: #0055bb; border-radius: 2px; }
+.retro ::-webkit-scrollbar-thumb:hover { background: #00ccff; }
 
 /* ── Inputs ─────────────────────────────────── */
 .retro input,
 .retro textarea,
 .retro select {
-  background: rgba(0, 48, 135, 0.08) !important;
-  border: 1px solid rgba(0, 48, 135, 0.45) !important;
-  color: #e8f0ff !important;
+  background: rgba(0, 85, 204, 0.06) !important;
+  border: 1px solid rgba(0, 85, 204, 0.45) !important;
+  color: #c8dcf8 !important;
   border-radius: 2px !important;
 }
 .retro input:focus,
 .retro textarea:focus {
   outline: none !important;
-  border-color: #003087 !important;
-  box-shadow: 0 0 0 2px rgba(0, 48, 135, 0.25), 0 0 14px rgba(255, 210, 0, 0.10) !important;
+  border-color: #0066cc !important;
+  box-shadow: 0 0 0 2px rgba(0, 85, 204, 0.25), 0 0 12px rgba(0, 204, 255, 0.12) !important;
 }
 .retro input::placeholder,
 .retro textarea::placeholder {
-  color: rgba(232, 240, 255, 0.30) !important;
+  color: rgba(136, 180, 224, 0.35) !important;
 }
 
-/* ── Music Player ───────────────────────────── */
+/* ── Music Player — Winamp skin ─────────────── */
 .retro-music-btn {
   font-family: var(--font-retro), 'Courier New', monospace;
-  font-size: 10px;
-  background: rgba(7, 17, 31, 0.96);
-  border: 2px solid #FFD200;
-  color: #FFD200;
-  padding: 10px 16px;
-  box-shadow: 0 0 14px rgba(255, 210, 0, 0.40), inset 0 0 8px rgba(255, 210, 0, 0.05);
+  font-size: 9px;
+  background: linear-gradient(180deg, #4a4a4a 0%, #2a2a2a 100%);
+  border: 1px solid #555;
+  border-bottom-color: #111;
+  border-right-color: #111;
+  color: #00e000;
+  padding: 9px 14px;
+  box-shadow: inset 1px 1px 0 rgba(255,255,255,0.15),
+    inset -1px -1px 0 rgba(0,0,0,0.40),
+    0 0 8px rgba(0, 224, 0, 0.20);
   cursor: pointer;
-  transition: color 0.2s, border-color 0.2s, background 0.2s, box-shadow 0.2s;
+  transition: color 0.15s, background 0.15s, box-shadow 0.15s;
   white-space: nowrap;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.10em;
   border-radius: 2px;
+  text-shadow: 0 0 6px rgba(0, 224, 0, 0.80);
 }
 .retro-music-btn:hover {
-  color: #003087;
-  border-color: #FFD200;
-  background: #FFD200;
-  box-shadow: 0 0 20px rgba(255, 210, 0, 0.60);
+  background: linear-gradient(180deg, #5a5a5a 0%, #3a3a3a 100%);
+  color: #44ff44;
+  box-shadow: inset 1px 1px 0 rgba(255,255,255,0.2),
+    inset -1px -1px 0 rgba(0,0,0,0.50),
+    0 0 14px rgba(0, 224, 0, 0.40);
 }
 
 .retro-music-label {
   font-family: var(--font-retro), 'Courier New', monospace;
   font-size: 8px;
-  color: #FFD200;
-  text-shadow: 0 0 10px rgba(255, 210, 0, 0.80);
+  color: #00e000;
+  text-shadow: 0 0 8px rgba(0, 224, 0, 0.90);
   animation: retro-blink 1.2s step-end infinite;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.10em;
+  background: #0f0f0f;
+  border: 1px solid #333;
+  padding: 3px 8px;
 }
 
 /* ── Animations ─────────────────────────────── */
@@ -344,11 +365,11 @@ body {
 
 @keyframes retro-neon-pulse {
   0%, 100% {
-    text-shadow: 4px 4px 0 #003087, 0 0 16px rgba(255, 210, 0, 0.40);
+    text-shadow: 2px 2px 0 #003399, 0 0 16px rgba(51, 170, 255, 0.40);
   }
   50% {
-    text-shadow: 4px 4px 0 #003087, 0 0 36px rgba(255, 210, 0, 0.80),
-      0 0 60px rgba(255, 210, 0, 0.30);
+    text-shadow: 2px 2px 0 #003399, 0 0 30px rgba(51, 170, 255, 0.80),
+      0 0 50px rgba(0, 204, 255, 0.25);
   }
 }
 
@@ -396,7 +417,7 @@ body {
   border: 3px solid transparent;
   background:
     linear-gradient(#000, #000) padding-box,
-    linear-gradient(180deg, rgba(0,48,135,0.6) 0%, rgba(255,210,0,0.6) 100%) border-box;
+    linear-gradient(180deg, rgba(0,85,204,0.6) 0%, rgba(0,204,68,0.5) 100%) border-box;
   pointer-events: none;
   z-index: 2;
 }
@@ -425,28 +446,25 @@ body {
 .tm-alert-tag {
   font-family: var(--font-retro), monospace;
   font-size: clamp(0.5rem, 1.5vw, 0.65rem);
-  color: #FFD200;
+  color: #00ccff;
   letter-spacing: 0.35em;
   animation: retro-blink 0.6s step-end infinite;
 }
 
 .tm-headline {
   font-family: var(--font-vice), Impact, 'Arial Black', sans-serif;
-  font-style: italic;
+  font-style: normal;
   font-size: clamp(2.2rem, 9vw, 5.5rem);
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: #FFD200;
+  color: #33aaff;
   line-height: 1;
-  /* Full neon sign effect */
   text-shadow:
     0 0 7px  #fff,
-    0 0 12px #fff,
-    0 0 22px #ffe88a,
-    0 0 42px #FFD200,
-    0 0 82px #FFD200,
-    0 0 96px #FFD200,
-    4px 4px 0 #003087;
+    0 0 14px #88ccff,
+    0 0 28px #33aaff,
+    0 0 55px rgba(51, 170, 255, 0.60),
+    3px 3px 0 #003399;
   animation: tm-neon-flicker 2.5s linear infinite;
 }
 
@@ -465,13 +483,13 @@ body {
   line-height: inherit;
 }
 .tm-glitch::before {
-  color: #003087;
+  color: #003399;
   text-shadow: none;
   animation: tm-glitch-a 0.35s infinite;
   clip-path: polygon(0 15%, 100% 15%, 100% 32%, 0 32%);
 }
 .tm-glitch::after {
-  color: #FFD200;
+  color: #00ccff;
   text-shadow: none;
   animation: tm-glitch-b 0.45s infinite;
   clip-path: polygon(0 66%, 100% 66%, 100% 82%, 0 82%);
@@ -480,7 +498,7 @@ body {
 .tm-subtext {
   font-family: var(--font-retro), monospace;
   font-size: clamp(0.45rem, 1.2vw, 0.6rem);
-  color: #FFD200;
+  color: #00ccff;
   letter-spacing: 0.2em;
   animation: retro-blink 0.9s step-end infinite;
 }
@@ -488,33 +506,33 @@ body {
 .tm-progress-bar {
   width: min(320px, 80vw);
   height: 6px;
-  background: rgba(0, 48, 135, 0.15);
-  border: 1px solid rgba(0, 48, 135, 0.55);
+  background: rgba(0, 85, 204, 0.15);
+  border: 1px solid rgba(0, 85, 204, 0.55);
   overflow: hidden;
   margin-top: 0.25rem;
 }
 .tm-progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, #003087, #0055cc, #FFD200);
-  box-shadow: 0 0 10px rgba(255, 210, 0, 0.60);
+  background: linear-gradient(90deg, #003399, #0066cc, #00ccff);
+  box-shadow: 0 0 10px rgba(0, 204, 255, 0.60);
   animation: tm-bar 1.2s ease-out forwards;
 }
 
 .tm-coord-row {
   font-family: var(--font-retro), monospace;
   font-size: clamp(0.45rem, 1.2vw, 0.6rem);
-  color: rgba(255, 210, 0, 0.75);
+  color: rgba(0, 204, 255, 0.80);
   letter-spacing: 0.15em;
   display: flex;
   align-items: center;
   gap: 1rem;
 }
-.tm-coord-sep { color: #003087; }
+.tm-coord-sep { color: #0066cc; }
 
 .tm-footnote {
   font-family: var(--font-retro), monospace;
   font-size: clamp(0.4rem, 1vw, 0.55rem);
-  color: rgba(255, 210, 0, 0.65);
+  color: rgba(0, 204, 255, 0.60);
   letter-spacing: 0.25em;
   margin-top: 0.25rem;
 }
@@ -531,7 +549,7 @@ body {
 .tm-warp-label {
   font-family: var(--font-retro), monospace;
   font-size: clamp(0.45rem, 1.2vw, 0.6rem);
-  color: rgba(255, 210, 0, 0.85);
+  color: rgba(0, 204, 255, 0.90);
   letter-spacing: 0.3em;
   animation: retro-blink 1.1s step-end infinite;
 }
@@ -539,35 +557,35 @@ body {
 .tm-year-caption {
   font-family: var(--font-retro), monospace;
   font-size: clamp(0.4rem, 1vw, 0.55rem);
-  color: rgba(184, 208, 255, 0.75);
+  color: rgba(0, 204, 68, 0.85);
   letter-spacing: 0.3em;
   margin-top: 0.5rem;
 }
 
 .tm-year-display {
   font-family: var(--font-vice), Impact, sans-serif;
-  font-style: italic;
+  font-style: normal;
   font-size: clamp(5rem, 22vw, 12rem);
   letter-spacing: -0.02em;
   line-height: 0.9;
-  color: #ffe100;
+  color: #00ccff;
   text-shadow:
     0 0 10px #fff,
-    0 0 20px #ffe100,
-    0 0 40px #ffe100,
-    0 0 80px rgba(255, 225, 0, 0.5);
+    0 0 20px #00ccff,
+    0 0 40px #00ccff,
+    0 0 80px rgba(0, 204, 255, 0.50);
   animation: tm-year-pop 0.18s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .tm-velocity {
   font-family: var(--font-retro), monospace;
   font-size: clamp(0.4rem, 1vw, 0.55rem);
-  color: rgba(255, 210, 0, 0.65);
+  color: rgba(0, 204, 255, 0.65);
   letter-spacing: 0.12em;
   margin-top: 0.5rem;
 }
 .tm-velocity-val {
-  color: #FFD200;
+  color: #00ccff;
   animation: retro-blink 0.25s step-end infinite;
 }
 
@@ -583,36 +601,34 @@ body {
 .tm-arrive-label {
   font-family: var(--font-retro), monospace;
   font-size: clamp(0.5rem, 1.5vw, 0.7rem);
-  color: #FFD200;
+  color: #00ccff;
   letter-spacing: 0.35em;
   animation: retro-blink 0.5s step-end infinite;
 }
 
 .tm-arrived-year {
   font-family: var(--font-vice), Impact, 'Arial Black', sans-serif;
-  font-style: italic;
+  font-style: normal;
   font-size: clamp(6rem, 28vw, 16rem);
   letter-spacing: 0.04em;
   line-height: 0.85;
-  color: #FFD200;
+  color: #33aaff;
   text-shadow:
     0 0 7px  #fff,
-    0 0 12px #ffe88a,
-    0 0 22px #ffe88a,
-    0 0 42px #FFD200,
-    0 0 82px #FFD200,
-    0 0 100px #FFD200,
-    0 0 140px rgba(255, 210, 0, 0.55),
-    6px 6px 0 #003087;
+    0 0 14px #88ccff,
+    0 0 28px #33aaff,
+    0 0 55px rgba(51, 170, 255, 0.65),
+    0 0 100px rgba(51, 170, 255, 0.35),
+    4px 4px 0 #003399;
   animation: tm-neon-on 0.6s ease-out, tm-neon-flicker 3s linear 0.7s infinite;
 }
 
 .tm-welcome-text {
   font-family: var(--font-retro), monospace;
   font-size: clamp(0.5rem, 1.5vw, 0.7rem);
-  color: #FFD200;
+  color: #00cc44;
   letter-spacing: 0.35em;
-  text-shadow: 0 0 10px rgba(255, 210, 0, 0.75);
+  text-shadow: 0 0 10px rgba(0, 204, 68, 0.75);
   margin-top: 0.25rem;
 }
 
@@ -625,10 +641,10 @@ body {
   z-index: 4;
   animation: retro-blink 2s step-end infinite;
 }
-.tm-hud-tl { top: 1.25rem; left: 1.25rem; color: #FFD200; }
-.tm-hud-tr { top: 1.25rem; right: 1.25rem; color: #FFD200; }
-.tm-hud-bl { bottom: 1.25rem; left: 1.25rem; color: rgba(184, 208, 255, 0.80); }
-.tm-hud-br { bottom: 1.25rem; right: 1.25rem; color: rgba(184, 208, 255, 0.80); }
+.tm-hud-tl { top: 1.25rem; left: 1.25rem; color: #00ccff; }
+.tm-hud-tr { top: 1.25rem; right: 1.25rem; color: #00ccff; }
+.tm-hud-bl { bottom: 1.25rem; left: 1.25rem; color: rgba(0, 204, 68, 0.80); }
+.tm-hud-br { bottom: 1.25rem; right: 1.25rem; color: rgba(0, 204, 68, 0.80); }
 
 /* ── Keyframes ──────────────────────────────── */
 @keyframes tm-fadein {

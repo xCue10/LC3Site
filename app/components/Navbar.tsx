@@ -116,14 +116,14 @@ export default function Navbar() {
   // ── Conditional class helpers ──────────────────────────────────────────────
 
   const headerClass = isRetro
-    ? 'sticky top-0 z-50 border-b-2 border-[#ff1e78] bg-[#0b0b1e]/96 shadow-[0_2px_24px_rgba(255,30,120,0.35)]'
+    ? 'sticky top-0 z-50 border-b-2 border-[#00ccff] bg-[#000c18]/96 shadow-[0_2px_24px_rgba(0,204,255,0.35)]'
     : 'sticky top-0 z-50 border-b border-slate-200 bg-white/95 backdrop-blur-xl dark:border-[#1e2d45] dark:bg-[#080d18]/85';
 
   const linkCls = (active: boolean) =>
     isRetro
       ? active
-        ? 'px-3 py-2 text-sm font-medium transition-all border border-[#ff1e78] text-[#ff1e78] bg-[#ff1e78]/10 shadow-[0_0_10px_rgba(255,30,120,0.3)]'
-        : 'px-3 py-2 text-sm font-medium transition-all text-[#c8b8e8] hover:text-[#ff1e78] hover:bg-[#ff1e78]/5 hover:shadow-[0_0_8px_rgba(255,30,120,0.2)]'
+        ? 'px-3 py-2 text-sm font-medium transition-all border border-[#00ccff] text-[#00ccff] bg-[#00ccff]/10 shadow-[0_0_10px_rgba(0,204,255,0.3)]'
+        : 'px-3 py-2 text-sm font-medium transition-all text-[#88b4e0] hover:text-[#00ccff] hover:bg-[#00ccff]/5 hover:shadow-[0_0_8px_rgba(0,204,255,0.2)]'
       : active
         ? 'px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 bg-violet-50 text-violet-700 border border-violet-200 dark:bg-violet-500/10 dark:text-violet-400 dark:border-violet-500/20'
         : 'px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 text-slate-600 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-white dark:hover:bg-white/5';
@@ -131,46 +131,46 @@ export default function Navbar() {
   const moreButtonCls = (active: boolean) =>
     isRetro
       ? active
-        ? 'flex items-center gap-1 px-3 py-2 text-sm font-medium transition-all border border-[#ff1e78] text-[#ff1e78] bg-[#ff1e78]/10'
-        : 'flex items-center gap-1 px-3 py-2 text-sm font-medium transition-all text-[#c8b8e8] hover:text-[#ff1e78] hover:bg-[#ff1e78]/5'
+        ? 'flex items-center gap-1 px-3 py-2 text-sm font-medium transition-all border border-[#00ccff] text-[#00ccff] bg-[#00ccff]/10'
+        : 'flex items-center gap-1 px-3 py-2 text-sm font-medium transition-all text-[#88b4e0] hover:text-[#00ccff] hover:bg-[#00ccff]/5'
       : active
         ? 'flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 bg-violet-50 text-violet-700 border border-violet-200 dark:bg-violet-500/10 dark:text-violet-400 dark:border-violet-500/20'
         : 'flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 text-slate-600 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-white dark:hover:bg-white/5';
 
   const dropdownClass = isRetro
-    ? 'absolute right-0 top-full mt-1.5 w-44 bg-[#0f0f28] border border-[#ff1e78]/50 shadow-[0_4px_20px_rgba(255,30,120,0.25)] overflow-hidden py-1 z-50'
+    ? 'absolute right-0 top-full mt-1.5 w-44 bg-[#061428] border border-[#00ccff]/50 shadow-[0_4px_20px_rgba(0,204,255,0.25)] overflow-hidden py-1 z-50'
     : 'absolute right-0 top-full mt-1.5 w-44 bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-xl shadow-lg shadow-slate-900/10 dark:shadow-black/30 overflow-hidden py-1 z-50';
 
   const dropLinkCls = (active: boolean) =>
     isRetro
       ? active
-        ? 'block px-4 py-2 text-sm transition-all text-[#ff1e78] bg-[#ff1e78]/10'
-        : 'block px-4 py-2 text-sm transition-all text-[#c8b8e8] hover:text-[#ff1e78] hover:bg-[#ff1e78]/5'
+        ? 'block px-4 py-2 text-sm transition-all text-[#00ccff] bg-[#00ccff]/10'
+        : 'block px-4 py-2 text-sm transition-all text-[#88b4e0] hover:text-[#00ccff] hover:bg-[#00ccff]/5'
       : active
         ? 'block px-4 py-2 text-sm transition-colors text-violet-600 dark:text-violet-400 bg-violet-50 dark:bg-violet-500/10'
         : 'block px-4 py-2 text-sm transition-colors text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5';
 
   const darkBtnCls = isRetro
-    ? 'p-2 transition-all text-[#c8b8e8]/50 cursor-not-allowed opacity-40'
+    ? 'p-2 transition-all text-[#88b4e0]/50 cursor-not-allowed opacity-40'
     : 'p-2 rounded-lg transition-all text-slate-500 hover:text-slate-700 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-white dark:hover:bg-white/5';
 
   const retroBtnCls = isRetro
-    ? 'ml-1 p-2 transition-all text-[#FFD200] drop-shadow-[0_0_6px_rgba(255,210,0,0.8)]'
-    : 'ml-1 p-2 rounded-lg transition-all text-slate-400 hover:text-[#FFD200] hover:bg-slate-100 dark:hover:bg-white/5';
+    ? 'ml-1 p-2 transition-all text-[#00ccff] drop-shadow-[0_0_6px_rgba(0,204,255,0.8)]'
+    : 'ml-1 p-2 rounded-lg transition-all text-slate-400 hover:text-[#00ccff] hover:bg-slate-100 dark:hover:bg-white/5';
 
   const hamLineCls = isRetro
-    ? 'block h-0.5 w-5 bg-[#ff1e78] transition-all duration-200'
+    ? 'block h-0.5 w-5 bg-[#00ccff] transition-all duration-200'
     : 'block h-0.5 w-5 bg-slate-500 dark:bg-slate-400 transition-all duration-200';
 
   const mobileMenuClass = isRetro
-    ? 'sm:hidden border-t-2 border-[#ff1e78]/50 bg-[#0b0b1e]/98 px-4 py-3 flex flex-col gap-1 shadow-[0_4px_20px_rgba(255,30,120,0.2)]'
+    ? 'sm:hidden border-t-2 border-[#00ccff]/50 bg-[#000c18]/98 px-4 py-3 flex flex-col gap-1 shadow-[0_4px_20px_rgba(0,204,255,0.2)]'
     : 'sm:hidden border-t border-slate-200 bg-white/95 backdrop-blur-md px-4 py-3 flex flex-col gap-1 dark:border-[#1e2d45] dark:bg-[#080d18]/95';
 
   const mobileLinkCls = (active: boolean) =>
     isRetro
       ? active
-        ? 'px-4 py-2.5 text-sm font-medium transition-all border border-[#ff1e78] text-[#ff1e78] bg-[#ff1e78]/10'
-        : 'px-4 py-2.5 text-sm font-medium transition-all text-[#c8b8e8] hover:text-[#ff1e78] hover:bg-[#ff1e78]/5'
+        ? 'px-4 py-2.5 text-sm font-medium transition-all border border-[#00ccff] text-[#00ccff] bg-[#00ccff]/10'
+        : 'px-4 py-2.5 text-sm font-medium transition-all text-[#88b4e0] hover:text-[#00ccff] hover:bg-[#00ccff]/5'
       : active
         ? 'px-4 py-2.5 rounded-lg text-sm font-medium transition-all bg-violet-50 text-violet-700 border border-violet-200 dark:bg-violet-500/10 dark:text-violet-400 dark:border-violet-500/20'
         : 'px-4 py-2.5 rounded-lg text-sm font-medium transition-all text-slate-600 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-white dark:hover:bg-white/5';
@@ -181,14 +181,14 @@ export default function Navbar() {
         <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-violet-400/20 to-transparent dark:via-violet-500/30" />
       )}
       {isRetro && (
-        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#ff1e78]/70 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#00ccff]/70 to-transparent" />
       )}
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 group" onClick={() => setMenuOpen(false)}>
           {isRetro ? (
-            <div className="w-8 h-8 flex items-center justify-center text-[#ff1e78] font-bold text-xs border border-[#ff1e78] bg-[#ff1e78]/10 shadow-[0_0_10px_rgba(255,30,120,0.4)] group-hover:shadow-[0_0_16px_rgba(255,30,120,0.7)] transition-shadow">
+            <div className="w-8 h-8 flex items-center justify-center text-[#00ccff] font-bold text-xs border border-[#00ccff] bg-[#00ccff]/10 shadow-[0_0_10px_rgba(0,204,255,0.4)] group-hover:shadow-[0_0_16px_rgba(0,204,255,0.7)] transition-shadow">
               LC3
             </div>
           ) : (
@@ -200,7 +200,7 @@ export default function Navbar() {
             {isRetro ? (
               <>
                 <span
-                  className="font-bold text-sm leading-none block text-[#ff1e78]"
+                  className="font-bold text-sm leading-none block text-[#00ccff]"
                   style={{ fontFamily: 'var(--font-vice), Impact, sans-serif', fontStyle: 'italic', textTransform: 'uppercase', letterSpacing: '0.06em', textShadow: '1px 1px 0 #00dcff' }}
                 >
                   LC3
@@ -261,8 +261,8 @@ export default function Navbar() {
           <button
             onClick={toggleRetro}
             className={retroBtnCls}
-            aria-label={isRetro ? 'Exit Blockbuster mode' : 'Enter Blockbuster mode'}
-            title={isRetro ? 'Exit Blockbuster mode' : 'Enter Blockbuster mode'}
+            aria-label={isRetro ? 'Exit Y2K mode' : 'Enter Y2K mode'}
+            title={isRetro ? 'Exit Y2K mode' : 'Enter Y2K mode'}
           >
             <StarIcon active={isRetro} />
           </button>
@@ -272,7 +272,7 @@ export default function Navbar() {
         <div className="sm:hidden flex items-center gap-1">
           <button
             onClick={isRetro ? undefined : toggleDark}
-            className={`p-2 transition-all ${isRetro ? 'text-[#c8b8e8]/30 opacity-30' : 'rounded-lg text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-white/5'}`}
+            className={`p-2 transition-all ${isRetro ? 'text-[#88b4e0]/30 opacity-30' : 'rounded-lg text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-white/5'}`}
             aria-label="Toggle light/dark mode"
           >
             {isDark ? <SunIcon /> : <MoonIcon />}
@@ -280,7 +280,7 @@ export default function Navbar() {
           <button
             onClick={toggleRetro}
             className={`p-2 transition-all ${isRetro ? 'text-[#FFD200] drop-shadow-[0_0_6px_rgba(255,210,0,0.8)]' : 'rounded-lg text-slate-400 hover:text-[#FFD200] hover:bg-slate-100 dark:hover:bg-white/5'}`}
-            aria-label="Toggle Blockbuster mode"
+            aria-label="Toggle Y2K mode"
           >
             <StarIcon active={isRetro} />
           </button>
