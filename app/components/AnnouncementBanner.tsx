@@ -28,7 +28,7 @@ export default function AnnouncementBanner() {
         }}
       >
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-2.5 flex items-center justify-center gap-2 min-h-[40px]">
-          <p className="font-medium text-center leading-snug pr-6 sm:pr-0">{MESSAGE}</p>
+          <p className="font-medium text-center leading-snug pr-6 sm:pr-0" style={{ color: '#ffffff' }}>{MESSAGE}</p>
           <button
             onClick={() => { setVisible(false); localStorage.setItem(BANNER_KEY, '1'); }}
             className="absolute right-3 sm:right-6 flex items-center justify-center w-7 h-7 rounded-lg bg-white/10 hover:bg-white/25 transition-colors flex-shrink-0"

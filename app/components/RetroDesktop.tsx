@@ -4,6 +4,139 @@ import { useState, useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 
+// ── Per-page brand themes ─────────────────────────────────────────────────
+// ── Per-page brand themes ─────────────────────────────────────────────────
+interface RetroTheme {
+  brand: string;
+  title: string;
+  url: string;
+  titleGradient: string;
+  faviconColor: string;
+  faviconChar: string;
+  statusText: string;
+}
+
+const RETRO_THEMES: Record<string, RetroTheme> = {
+  '/': {
+    brand: 'AOL.com',
+    title: 'AOL.com — America Online — Microsoft Internet Explorer',
+    url: 'http://www.aol.com',
+    titleGradient: 'linear-gradient(90deg, #002299 0%, #0033cc 40%, #0044ee 60%, #002299 100%)',
+    faviconColor: '#ffcc00',
+    faviconChar: '◉',
+    statusText: "✔ You've Got LC3!",
+  },
+  '/about': {
+    brand: 'GeoCities',
+    title: 'GeoCities — LC3Club Homepage — Microsoft Internet Explorer',
+    url: 'http://www.geocities.com/SiliconValley/Campus/lc3club',
+    titleGradient: 'linear-gradient(90deg, #880000 0%, #bb1100 40%, #cc2200 60%, #880000 100%)',
+    faviconColor: '#ffdd00',
+    faviconChar: '★',
+    statusText: '✔ Build Your Own Web Page — Free!',
+  },
+  '/events': {
+    brand: 'Blockbuster Online',
+    title: 'Blockbuster Online — New Releases — Microsoft Internet Explorer',
+    url: 'http://www.blockbuster.com/online/newreleases',
+    titleGradient: 'linear-gradient(90deg, #001a55 0%, #002f87 40%, #003fa3 60%, #001a55 100%)',
+    faviconColor: '#FFD700',
+    faviconChar: '▶',
+    statusText: '✔ Be Kind, Rewind — No Late Fees!',
+  },
+  '/projects': {
+    brand: 'RadioShack.com',
+    title: 'RadioShack.com — Electronics & Technology — Microsoft Internet Explorer',
+    url: 'http://www.radioshack.com/products/electronics',
+    titleGradient: 'linear-gradient(90deg, #880000 0%, #cc0000 40%, #dd1111 60%, #880000 100%)',
+    faviconColor: '#ffffff',
+    faviconChar: '⚡',
+    statusText: "✔ You've Got Questions, We've Got Answers",
+  },
+  '/members': {
+    brand: 'Neopets',
+    title: 'Neopets — LC3 Guild Page — Microsoft Internet Explorer',
+    url: 'http://www.neopets.com/guilds/lc3club',
+    titleGradient: 'linear-gradient(90deg, #003377 0%, #0055aa 40%, #0066cc 60%, #003377 100%)',
+    faviconColor: '#ffcc00',
+    faviconChar: '✦',
+    statusText: '✔ Play. Explore. Create. Connect.',
+  },
+  '/careers': {
+    brand: 'Monster.com',
+    title: 'Monster.com — Find a Job — Microsoft Internet Explorer',
+    url: 'http://www.monster.com/jobs/search/?q=software+engineer',
+    titleGradient: 'linear-gradient(90deg, #3d0080 0%, #5e00bb 40%, #6f00d4 60%, #3d0080 100%)',
+    faviconColor: '#00dd55',
+    faviconChar: '👾',
+    statusText: '✔ Work. Better. — 1,000,000+ Jobs Posted',
+  },
+  '/blog': {
+    brand: 'Xanga',
+    title: 'Xanga — LC3Club Weblog — Microsoft Internet Explorer',
+    url: 'http://www.xanga.com/lc3club',
+    titleGradient: 'linear-gradient(90deg, #770077 0%, #aa00aa 40%, #cc00cc 60%, #770077 100%)',
+    faviconColor: '#ff88ff',
+    faviconChar: '♥',
+    statusText: '✔ The Online Blog Community',
+  },
+  '/resources': {
+    brand: 'Ask Jeeves',
+    title: 'Ask Jeeves — Resources & Answers — Microsoft Internet Explorer',
+    url: 'http://www.ask.com/web?q=tech+resources+tutorials',
+    titleGradient: 'linear-gradient(90deg, #7a3d00 0%, #aa5500 40%, #cc6600 60%, #7a3d00 100%)',
+    faviconColor: '#ffcc44',
+    faviconChar: '?',
+    statusText: '✔ Ask and It Is Answered',
+  },
+  '/contact': {
+    brand: 'Hotmail',
+    title: 'Hotmail — Free Email from Microsoft — Microsoft Internet Explorer',
+    url: 'http://www.hotmail.com/compose?to=lc3club%40hotmail.com',
+    titleGradient: 'linear-gradient(90deg, #001f6e 0%, #003399 40%, #0044bb 60%, #001f6e 100%)',
+    faviconColor: '#ff6600',
+    faviconChar: '✉',
+    statusText: '✔ Free Email — Trusted by Millions',
+  },
+  '/gallery': {
+    brand: 'Webshots',
+    title: 'Webshots — LC3 Photo Gallery — Microsoft Internet Explorer',
+    url: 'http://www.webshots.com/photos/lc3club',
+    titleGradient: 'linear-gradient(90deg, #003d1e 0%, #006633 40%, #008844 60%, #003d1e 100%)',
+    faviconColor: '#66ffaa',
+    faviconChar: '📷',
+    statusText: '✔ Share Your Moments with the World',
+  },
+  '/shield': {
+    brand: 'Norton AntiVirus',
+    title: 'Norton AntiVirus — Security Center — Microsoft Internet Explorer',
+    url: 'http://www.symantec.com/norton/antivirus',
+    titleGradient: 'linear-gradient(90deg, #7a0000 0%, #aa0000 40%, #cc1111 60%, #7a0000 100%)',
+    faviconColor: '#ffdd00',
+    faviconChar: '🛡',
+    statusText: '✔ Scanning for Threats... Your PC is Protected',
+  },
+  '/hire': {
+    brand: 'eLance.com',
+    title: 'eLance.com — Hire Expert Freelancers — Microsoft Internet Explorer',
+    url: 'http://www.elance.com/hire/software-developers',
+    titleGradient: 'linear-gradient(90deg, #7a4400 0%, #aa6600 40%, #cc8800 60%, #7a4400 100%)',
+    faviconColor: '#ffaa33',
+    faviconChar: '💼',
+    statusText: '✔ Expert Freelancers Available Now',
+  },
+};
+
+const DEFAULT_THEME: RetroTheme = {
+  brand: 'LC3 Club',
+  title: 'LC3 — Lowcode Cloud Club — Microsoft Internet Explorer',
+  url: 'http://www.lc3club.com',
+  titleGradient: 'linear-gradient(90deg, #0a246a 0%, #2a5bd4 35%, #4a8ede 65%, #2a5bd4 100%)',
+  faviconColor: '#ffffff',
+  faviconChar: 'e',
+  statusText: '✔ Done',
+};
+
 const ICONS = [
   { label: 'Home',      href: '/',          color: '#c0c0c0', type: 'home'      },
   { label: 'About',     href: '/about',     color: '#7c3aed', type: 'about'     },
@@ -398,6 +531,14 @@ export default function RetroDesktop() {
     return () => clearTimeout(t);
   }, [isRetro]);
 
+  // ── IE throbber on route change ──────────────────────────────────────
+  useEffect(() => {
+    if (!isRetro) return;
+    setThrobberActive(true);
+    const t = setTimeout(() => setThrobberActive(false), 1200);
+    return () => clearTimeout(t);
+  }, [pathname, isRetro]);
+
   // ── System-tray notification balloons ───────────────────────────────
   useEffect(() => {
     if (!isRetro) { setNotifBalloon(null); return; }
@@ -446,17 +587,17 @@ export default function RetroDesktop() {
 
   if (!isRetro) return null;
 
-  const displayUrl = `http://www.lc3club.com${pathname === '/' ? '' : pathname}`;
+  const theme = RETRO_THEMES[pathname] ?? DEFAULT_THEME;
 
   return (
     <>
       {/* ── IE6 Browser Chrome ─────────────────────── */}
       <div className="rd-browser">
         {/* Title bar */}
-        <div className="rd-br-titlebar">
+        <div className="rd-br-titlebar" style={{ background: theme.titleGradient }}>
           <div className="rd-br-title-left">
-            <span className="rd-br-ie-logo">e</span>
-            <span className="rd-br-title-text">LC3 — Lowcode Cloud Club — Microsoft Internet Explorer</span>
+            <span className="rd-br-ie-logo" style={{ color: theme.faviconColor }}>{theme.faviconChar}</span>
+            <span className="rd-br-title-text">{theme.title}</span>
           </div>
           {/* IE throbber */}
           <div className={`rd-throbber${throbberActive ? ' rd-throbber-spin' : ''}`} aria-hidden="true">
@@ -492,14 +633,14 @@ export default function RetroDesktop() {
           <button className="rd-br-tbtn" title="Home">⌂</button>
           <div className="rd-br-sep" />
           <span className="rd-br-addr-label">Address</span>
-          <div className="rd-br-addr-bar">{displayUrl}</div>
+          <div className="rd-br-addr-bar">{theme.url}</div>
           <button className="rd-br-go">Go</button>
         </div>
       </div>
 
       {/* Status bar (bottom of browser) */}
       <div className="rd-br-statusbar">
-        <span className="rd-br-status-text">✔ Done</span>
+        <span className="rd-br-status-text">{throbberActive ? '⌛ Loading...' : theme.statusText}</span>
         <div className="rd-br-zone">
           <span>🌐</span>
           <span>Internet</span>
