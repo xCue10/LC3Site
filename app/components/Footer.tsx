@@ -1,7 +1,13 @@
 import Link from 'next/link';
-import { readJSON, SiteSettings } from '@/lib/data';
+import { readJSON, SiteSettings, FooterContent } from '@/lib/data';
 
-const defaults: SiteSettings = { recruitingBanner: '', meetingDay: '', meetingTime: '', meetingLocation: '', socialLinks: [], socialLinksLive: false };
+const settingsDefaults: SiteSettings = { recruitingBanner: '', meetingDay: '', meetingTime: '', meetingLocation: '', socialLinks: [], socialLinksLive: false };
+const footerDefaults: FooterContent = {
+  tagline: 'Building the future through code, collaboration, and curiosity.',
+  ctaHeading: 'Ready to join LC3?',
+  ctaSubtitle: 'Open to all CSN students — no experience needed.',
+  ctaButtonLabel: 'Apply to Join',
+};
 
 function FooterSocialIcon({ label }: { label: string }) {
   const l = label.toLowerCase();
@@ -23,7 +29,8 @@ function FooterSocialIcon({ label }: { label: string }) {
 }
 
 export default function Footer() {
-  const settings = readJSON<SiteSettings>('settings.json', defaults);
+  const settings = readJSON<SiteSettings>('settings.json', settingsDefaults);
+  const footer = readJSON<FooterContent>('footer.json', footerDefaults);
   const activeLinks = settings.socialLinksLive ? (settings.socialLinks ?? []).filter((l) => l.url) : [];
 
   return (
@@ -37,14 +44,14 @@ export default function Footer() {
         {/* Join CTA strip */}
         <div className="py-10 border-b border-slate-200 dark:border-[#1a2740] flex flex-col sm:flex-row items-center justify-between gap-4">
           <div>
-            <p className="text-slate-900 dark:text-white font-semibold">Ready to join LC3?</p>
-            <p className="text-slate-500 text-sm">Open to all CSN students — no experience needed.</p>
+            <p className="text-slate-900 dark:text-white font-semibold">{footer.ctaHeading}</p>
+            <p className="text-slate-500 text-sm">{footer.ctaSubtitle}</p>
           </div>
           <Link
             href="/contact"
             className="flex-shrink-0 inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-violet-600 text-white text-sm font-semibold px-6 py-2.5 rounded-xl hover:opacity-90 hover:-translate-y-0.5 transition-all shadow-lg shadow-violet-500/20"
           >
-            Apply to Join
+            {footer.ctaButtonLabel}
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>
           </Link>
         </div>
@@ -59,7 +66,7 @@ export default function Footer() {
               <span className="font-semibold text-slate-900 dark:text-white">LC3 - Lowcode Cloud Club</span>
             </div>
             <p className="text-slate-500 text-sm leading-relaxed mb-4">
-              Building the future through code, collaboration, and curiosity.
+              {footer.tagline}
             </p>
             {activeLinks.length > 0 && (
               <div className="flex items-center gap-2">

@@ -24,6 +24,13 @@ interface SiteSettings {
   socialLinksLive?: boolean;
 }
 
+interface FooterContent {
+  tagline: string;
+  ctaHeading: string;
+  ctaSubtitle: string;
+  ctaButtonLabel: string;
+}
+
 interface CustomField {
   label: string;
   value: string;
@@ -939,7 +946,7 @@ interface GalleryImage {
   };
 }
 
-type TabId = 'members' | 'events' | 'contacts' | 'partners' | 'projects' | 'stats' | 'settings' | 'about' | 'home' | 'posts' | 'sponsors' | 'resources' | 'past-work' | 'rsvps' | 'gallery' | 'shield' | 'careers';
+type TabId = 'members' | 'events' | 'contacts' | 'partners' | 'projects' | 'stats' | 'settings' | 'footer' | 'about' | 'home' | 'posts' | 'sponsors' | 'resources' | 'past-work' | 'rsvps' | 'gallery' | 'shield' | 'careers';
 
 interface ShieldPageConfig {
   live: boolean;
@@ -959,6 +966,7 @@ function Dashboard() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [stats, setStats] = useState<Stats>({ activeMembers: '', eventsHosted: '', projectsBuilt: '', yearsActive: '' });
   const [siteSettings, setSiteSettings] = useState<SiteSettings>({ recruitingBanner: '', meetingDay: '', meetingTime: '', meetingLocation: '' });
+  const [footerContent, setFooterContent] = useState<FooterContent>({ tagline: 'Building the future through code, collaboration, and curiosity.', ctaHeading: 'Ready to join LC3?', ctaSubtitle: 'Open to all CSN students — no experience needed.', ctaButtonLabel: 'Apply to Join' });
   const [posts, setPosts] = useState<Post[]>([]);
   const [sponsorsConfig, setSponsorsConfig] = useState<SponsorsConfig>({ live: false, sectionTitle: 'Supported By', sponsors: [] });
   const [resources, setResources] = useState<Array<{ id: string; title: string; description: string; url: string; category: string }>>([]);
@@ -1080,7 +1088,7 @@ function Dashboard() {
     const safe = <T,>(url: string, fallback: T) =>
       fetch(url).then((r) => r.ok ? r.json() as Promise<T> : fallback).catch(() => fallback);
 
-    const [m, e, c, pt, p, s, st, ab, po, sp, rv, rs, cs, hm, gl, sh, ca] = await Promise.all([
+    const [m, e, c, pt, p, s, st, ab, po, sp, rv, rs, cs, hm, gl, sh, ca, ft] = await Promise.all([
       safe('/api/members', []),
       safe('/api/events', []),
       safe('/api/contact', []),
@@ -1098,6 +1106,7 @@ function Dashboard() {
       safe('/api/gallery', []),
       safe('/api/shield-page', { live: false, heading: 'LC3 Shield', tagline: 'Coming Soon', description: '', features: [] }),
       safe('/api/careers-page', { live: false, heading: 'LC3 Careers', tagline: 'Coming Soon', description: '', features: [] }),
+      safe('/api/footer', { tagline: 'Building the future through code, collaboration, and curiosity.', ctaHeading: 'Ready to join LC3?', ctaSubtitle: 'Open to all CSN students — no experience needed.', ctaButtonLabel: 'Apply to Join' }),
     ]);
     setMembers(m as Member[]);
     setEvents(e as Event[]);
@@ -1123,6 +1132,7 @@ function Dashboard() {
     setShieldTagsRaw(((hm as HomeContent).shieldFeatureTags ?? []).join(', '));
     setAboutTechRaw(((ab as AboutContent).techStack ?? []).join(', '));
     setGalleryImages(Array.isArray(gl) ? gl as GalleryImage[] : []);
+    setFooterContent(ft as FooterContent);
     setLoading(false);
   }, []);
 
@@ -1299,6 +1309,10 @@ function Dashboard() {
     await fetch('/api/settings', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(settings) });
   };
 
+  const persistFooter = async (data: FooterContent) => {
+    await fetch('/api/footer', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+  };
+
   const saveCaseStudy = async (data: Omit<CaseStudy, 'id'>) => {
     let updated: CaseStudy[];
     if (caseStudyModal.caseStudy) {
@@ -1360,6 +1374,7 @@ function Dashboard() {
       items: [
         { id: 'stats' as TabId, label: 'Stats', count: null, unread: 0 },
         { id: 'settings' as TabId, label: 'Settings', count: null, unread: 0 },
+        { id: 'footer' as TabId, label: 'Footer', count: null, unread: 0 },
       ],
     },
   ];
@@ -2955,6 +2970,65 @@ function Dashboard() {
                   className="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-violet-600 text-white text-sm font-semibold rounded-xl hover:opacity-90 transition-opacity"
                 >
                   Save Settings
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Footer Tab */}
+          {tab === 'footer' && (
+            <div>
+              <div className="mb-4">
+                <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Footer Content</h2>
+                <p className="text-slate-500 text-sm mt-1">Edit the text displayed in the site footer.</p>
+              </div>
+              <div className="bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-[#1e2d45] rounded-2xl p-6 space-y-5">
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">CTA Heading</label>
+                  <input
+                    type="text"
+                    value={footerContent.ctaHeading}
+                    onChange={(e) => setFooterContent((f) => ({ ...f, ctaHeading: e.target.value }))}
+                    placeholder="Ready to join LC3?"
+                    className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">CTA Subtitle</label>
+                  <input
+                    type="text"
+                    value={footerContent.ctaSubtitle}
+                    onChange={(e) => setFooterContent((f) => ({ ...f, ctaSubtitle: e.target.value }))}
+                    placeholder="Open to all CSN students — no experience needed."
+                    className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">CTA Button Label</label>
+                  <input
+                    type="text"
+                    value={footerContent.ctaButtonLabel}
+                    onChange={(e) => setFooterContent((f) => ({ ...f, ctaButtonLabel: e.target.value }))}
+                    placeholder="Apply to Join"
+                    className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Brand Tagline</label>
+                  <input
+                    type="text"
+                    value={footerContent.tagline}
+                    onChange={(e) => setFooterContent((f) => ({ ...f, tagline: e.target.value }))}
+                    placeholder="Building the future through code, collaboration, and curiosity."
+                    className="w-full bg-white dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50 transition-all"
+                  />
+                  <p className="text-xs text-slate-400 mt-1.5">Appears below the LC3 logo in the footer&apos;s first column.</p>
+                </div>
+                <button
+                  onClick={async () => { await persistFooter(footerContent); fetchData(); setToastMessage('Saved ✓'); }}
+                  className="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-violet-600 text-white text-sm font-semibold rounded-xl hover:opacity-90 transition-opacity"
+                >
+                  Save Footer
                 </button>
               </div>
             </div>

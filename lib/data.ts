@@ -32,6 +32,13 @@ export function writeJSON<T>(filename: string, data: T): void {
   }
 }
 
+export interface FooterContent {
+  tagline: string;
+  ctaHeading: string;
+  ctaSubtitle: string;
+  ctaButtonLabel: string;
+}
+
 export interface CustomField {
   label: string;
   value: string;
