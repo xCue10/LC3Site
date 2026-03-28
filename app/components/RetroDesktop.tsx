@@ -327,10 +327,6 @@ export default function RetroDesktop() {
 
   useEffect(() => {
     if (!isRetro) { setVisibleAds([]); setShowStartMenu(false); return; }
-    const t1 = setTimeout(() => { setVisibleAds(v => [...v, 0]); playRetroSound('error'); }, 3000);
-    const t2 = setTimeout(() => { setVisibleAds(v => [...v, 1]); playRetroSound('error'); }, 7000);
-    const t3 = setTimeout(() => { setVisibleAds(v => [...v, 2]); playRetroSound('error'); }, 12000);
-    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
   }, [isRetro]);
 
   useEffect(() => {
