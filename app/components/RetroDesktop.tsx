@@ -801,6 +801,30 @@ export default function RetroDesktop() {
     return () => clearTimeout(t);
   }, [pathname, isRetro]);
 
+  // ── Brand attribute on <html> for per-page CSS theming ───────────────
+  useEffect(() => {
+    const BRAND_MAP: Record<string, string> = {
+      '/':          'aol',
+      '/about':     'geocities',
+      '/events':    'blockbuster',
+      '/projects':  'radioshack',
+      '/members':   'neopets',
+      '/careers':   'monster',
+      '/blog':      'xanga',
+      '/resources': 'askjeeves',
+      '/contact':   'hotmail',
+      '/gallery':   'webshots',
+      '/shield':    'norton',
+      '/hire':      'elance',
+    };
+    if (isRetro) {
+      document.documentElement.dataset.retroBrand = BRAND_MAP[pathname] ?? '';
+    } else {
+      delete document.documentElement.dataset.retroBrand;
+    }
+    return () => { delete document.documentElement.dataset.retroBrand; };
+  }, [pathname, isRetro]);
+
   // ── System-tray notification balloons ───────────────────────────────
   useEffect(() => {
     if (!isRetro) { setNotifBalloon(null); return; }

@@ -3318,3 +3318,909 @@ body {
   color: #444;
 }
 .rd-bsod-cursor { animation: bsod-blink 1s step-end infinite; }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   RETRO BRAND PAGE THEMES
+   Each brand overrides main background, cards, typography, buttons.
+   Selector: html[data-retro-brand="X"].retro — higher specificity than
+   the base .retro rules so these always win.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* ──────────────────────────────────────────────
+   AOL.COM — Home page
+   White portal, blue headings, Arial
+   ────────────────────────────────────────────── */
+html[data-retro-brand="aol"].retro main {
+  background: #e8f0ff !important;
+}
+html[data-retro-brand="aol"].retro h1,
+html[data-retro-brand="aol"].retro h2 {
+  color: #003399 !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  text-shadow: none !important;
+  letter-spacing: 0 !important;
+}
+html[data-retro-brand="aol"].retro h3,
+html[data-retro-brand="aol"].retro h4,
+html[data-retro-brand="aol"].retro h5,
+html[data-retro-brand="aol"].retro h6 {
+  color: #0044cc !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  text-shadow: none !important;
+}
+html[data-retro-brand="aol"].retro p,
+html[data-retro-brand="aol"].retro li {
+  color: #111122 !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+}
+html[data-retro-brand="aol"].retro main [class~="bg-white"],
+html[data-retro-brand="aol"].retro main [class*="bg-slate-50"],
+html[data-retro-brand="aol"].retro main [class*="bg-slate-100"] {
+  background-color: #ffffff !important;
+  border-color: #aabbdd !important;
+  border-radius: 3px !important;
+}
+html[data-retro-brand="aol"].retro main [class*="bg-violet-50"],
+html[data-retro-brand="aol"].retro main [class*="bg-blue-50"],
+html[data-retro-brand="aol"].retro main [class*="from-blue-50"],
+html[data-retro-brand="aol"].retro main [class*="from-violet-50"] {
+  background: #ddeeff !important;
+  border-color: #aabbcc !important;
+}
+html[data-retro-brand="aol"].retro main [class*="text-slate-900"],
+html[data-retro-brand="aol"].retro main [class*="text-slate-800"],
+html[data-retro-brand="aol"].retro main [class*="text-slate-700"] {
+  color: #000000 !important;
+}
+html[data-retro-brand="aol"].retro main [class*="text-slate-500"],
+html[data-retro-brand="aol"].retro main [class*="text-slate-600"] {
+  color: #444466 !important;
+}
+html[data-retro-brand="aol"].retro main [class*="text-blue-6"],
+html[data-retro-brand="aol"].retro main [class*="text-violet-6"] {
+  color: #003399 !important;
+}
+html[data-retro-brand="aol"].retro main [class*="border-slate"],
+html[data-retro-brand="aol"].retro main [class*="border-blue"],
+html[data-retro-brand="aol"].retro main [class*="border-violet"] {
+  border-color: #aabbdd !important;
+}
+html[data-retro-brand="aol"].retro main a[class*="from-blue"],
+html[data-retro-brand="aol"].retro main a[class*="from-violet"],
+html[data-retro-brand="aol"].retro main button[class*="from-blue"] {
+  background: linear-gradient(180deg, #3366ff 0%, #003399 100%) !important;
+  background-image: linear-gradient(180deg, #3366ff 0%, #003399 100%) !important;
+  color: #ffffff !important;
+  border-radius: 3px !important;
+  box-shadow: 1px 1px 3px rgba(0,0,51,0.4) !important;
+  font-family: Arial, sans-serif !important;
+  border: 1px solid #002277 !important;
+}
+html[data-retro-brand="aol"].retro main [class*="rounded-2xl"],
+html[data-retro-brand="aol"].retro main [class*="rounded-3xl"],
+html[data-retro-brand="aol"].retro main [class*="rounded-xl"] {
+  border-radius: 3px !important;
+}
+
+/* ──────────────────────────────────────────────
+   GEOCITIES — About page
+   Dark background, cyan/yellow neon, Times New Roman
+   ────────────────────────────────────────────── */
+html[data-retro-brand="geocities"].retro main {
+  background: #000033 !important;
+  background-image:
+    repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,100,0.1) 3px, rgba(0,0,100,0.1) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 3px, rgba(0,0,100,0.05) 3px, rgba(0,0,100,0.05) 4px) !important;
+}
+html[data-retro-brand="geocities"].retro h1,
+html[data-retro-brand="geocities"].retro h2 {
+  color: #00ffff !important;
+  font-family: Impact, 'Arial Black', sans-serif !important;
+  text-shadow: 0 0 12px #00ffff, 2px 2px 0 #000033 !important;
+  letter-spacing: 3px !important;
+  text-transform: uppercase !important;
+}
+html[data-retro-brand="geocities"].retro h3,
+html[data-retro-brand="geocities"].retro h4,
+html[data-retro-brand="geocities"].retro h5 {
+  color: #ffff00 !important;
+  font-family: Impact, 'Arial Black', sans-serif !important;
+  text-shadow: 0 0 8px #ffff00 !important;
+}
+html[data-retro-brand="geocities"].retro p,
+html[data-retro-brand="geocities"].retro li {
+  color: #ddddff !important;
+  font-family: 'Times New Roman', Times, serif !important;
+}
+html[data-retro-brand="geocities"].retro main [class~="bg-white"],
+html[data-retro-brand="geocities"].retro main [class*="bg-slate-50"],
+html[data-retro-brand="geocities"].retro main [class*="bg-slate-100"] {
+  background-color: #000066 !important;
+  border: 2px solid #00ccff !important;
+  border-radius: 0 !important;
+  box-shadow: 0 0 6px rgba(0,204,255,0.3) !important;
+}
+html[data-retro-brand="geocities"].retro main [class*="bg-violet-50"],
+html[data-retro-brand="geocities"].retro main [class*="bg-blue-50"],
+html[data-retro-brand="geocities"].retro main [class*="from-blue-50"],
+html[data-retro-brand="geocities"].retro main [class*="from-violet-50"] {
+  background: #000099 !important;
+  border-color: #00ccff !important;
+}
+html[data-retro-brand="geocities"].retro main [class*="text-slate-900"],
+html[data-retro-brand="geocities"].retro main [class*="text-slate-800"],
+html[data-retro-brand="geocities"].retro main [class*="text-slate-700"] {
+  color: #ffffff !important;
+}
+html[data-retro-brand="geocities"].retro main [class*="text-slate-500"],
+html[data-retro-brand="geocities"].retro main [class*="text-slate-600"] {
+  color: #aaddff !important;
+}
+html[data-retro-brand="geocities"].retro main [class*="text-blue-6"],
+html[data-retro-brand="geocities"].retro main [class*="text-violet-6"] {
+  color: #00ffff !important;
+}
+html[data-retro-brand="geocities"].retro main [class*="border-slate"],
+html[data-retro-brand="geocities"].retro main [class*="border-blue"],
+html[data-retro-brand="geocities"].retro main [class*="border-violet"] {
+  border-color: #00ccff !important;
+}
+html[data-retro-brand="geocities"].retro main a[class*="from-"],
+html[data-retro-brand="geocities"].retro main button[class*="from-"] {
+  background: #cc0000 !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  border: 2px outset #ff4444 !important;
+  border-radius: 0 !important;
+  font-family: Impact, 'Arial Black', sans-serif !important;
+  letter-spacing: 1px !important;
+}
+html[data-retro-brand="geocities"].retro main [class*="rounded-2xl"],
+html[data-retro-brand="geocities"].retro main [class*="rounded-3xl"],
+html[data-retro-brand="geocities"].retro main [class*="rounded-xl"] {
+  border-radius: 0 !important;
+}
+
+/* ──────────────────────────────────────────────
+   BLOCKBUSTER ONLINE — Events page
+   Dark navy, gold accents, Impact font, square edges
+   ────────────────────────────────────────────── */
+html[data-retro-brand="blockbuster"].retro main {
+  background: #001a44 !important;
+  background-image: repeating-linear-gradient(
+    0deg, transparent, transparent 39px,
+    rgba(255,215,0,0.04) 39px, rgba(255,215,0,0.04) 40px
+  ) !important;
+}
+html[data-retro-brand="blockbuster"].retro h1,
+html[data-retro-brand="blockbuster"].retro h2 {
+  color: #FFD700 !important;
+  font-family: Impact, 'Arial Black', sans-serif !important;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.6) !important;
+  letter-spacing: 1px !important;
+}
+html[data-retro-brand="blockbuster"].retro h3,
+html[data-retro-brand="blockbuster"].retro h4,
+html[data-retro-brand="blockbuster"].retro h5 {
+  color: #ffffff !important;
+  font-family: Impact, 'Arial Black', sans-serif !important;
+  text-shadow: none !important;
+}
+html[data-retro-brand="blockbuster"].retro p,
+html[data-retro-brand="blockbuster"].retro li {
+  color: #b0c4de !important;
+  font-family: Tahoma, Arial, sans-serif !important;
+}
+html[data-retro-brand="blockbuster"].retro main [class~="bg-white"],
+html[data-retro-brand="blockbuster"].retro main [class*="bg-slate-50"],
+html[data-retro-brand="blockbuster"].retro main [class*="bg-slate-100"] {
+  background-color: #00256b !important;
+  border-color: #FFD700 !important;
+  border-radius: 0 !important;
+}
+html[data-retro-brand="blockbuster"].retro main [class*="bg-blue-50"],
+html[data-retro-brand="blockbuster"].retro main [class*="from-blue-50"],
+html[data-retro-brand="blockbuster"].retro main [class*="from-violet-50"] {
+  background: #003087 !important;
+  border-color: #FFD700 !important;
+}
+html[data-retro-brand="blockbuster"].retro main [class*="text-slate-900"],
+html[data-retro-brand="blockbuster"].retro main [class*="text-slate-800"],
+html[data-retro-brand="blockbuster"].retro main [class*="text-slate-700"] {
+  color: #ffffff !important;
+}
+html[data-retro-brand="blockbuster"].retro main [class*="text-slate-500"],
+html[data-retro-brand="blockbuster"].retro main [class*="text-slate-400"],
+html[data-retro-brand="blockbuster"].retro main [class*="text-slate-600"] {
+  color: #8aa8cc !important;
+}
+html[data-retro-brand="blockbuster"].retro main [class*="text-blue-6"],
+html[data-retro-brand="blockbuster"].retro main [class*="text-blue-4"],
+html[data-retro-brand="blockbuster"].retro main [class*="text-violet-6"] {
+  color: #FFD700 !important;
+}
+html[data-retro-brand="blockbuster"].retro main [class*="border-slate"],
+html[data-retro-brand="blockbuster"].retro main [class*="border-blue"],
+html[data-retro-brand="blockbuster"].retro main [class*="border-violet"] {
+  border-color: #FFD700 !important;
+}
+html[data-retro-brand="blockbuster"].retro main a[class*="from-blue"],
+html[data-retro-brand="blockbuster"].retro main a[class*="from-violet"],
+html[data-retro-brand="blockbuster"].retro main button[class*="from-blue"] {
+  background: #FFD700 !important;
+  background-image: none !important;
+  color: #003087 !important;
+  border-radius: 0 !important;
+  font-family: Impact, 'Arial Black', sans-serif !important;
+  font-weight: bold !important;
+  letter-spacing: 1px !important;
+  border: none !important;
+  box-shadow: 3px 3px 0 #aa8800 !important;
+  text-shadow: none !important;
+}
+html[data-retro-brand="blockbuster"].retro main [class*="rounded-2xl"],
+html[data-retro-brand="blockbuster"].retro main [class*="rounded-3xl"],
+html[data-retro-brand="blockbuster"].retro main [class*="rounded-xl"],
+html[data-retro-brand="blockbuster"].retro main [class*="rounded-lg"],
+html[data-retro-brand="blockbuster"].retro main [class*="rounded-full"] {
+  border-radius: 0 !important;
+}
+
+/* ──────────────────────────────────────────────
+   RADIOSHACK — Projects page
+   Red/white, Arial Black, technical feel
+   ────────────────────────────────────────────── */
+html[data-retro-brand="radioshack"].retro main {
+  background: #f2f2f2 !important;
+}
+html[data-retro-brand="radioshack"].retro h1,
+html[data-retro-brand="radioshack"].retro h2 {
+  color: #cc0000 !important;
+  font-family: 'Arial Black', Impact, sans-serif !important;
+  text-shadow: none !important;
+  letter-spacing: -0.5px !important;
+}
+html[data-retro-brand="radioshack"].retro h3,
+html[data-retro-brand="radioshack"].retro h4 {
+  color: #990000 !important;
+  font-family: 'Arial Black', Impact, sans-serif !important;
+  text-shadow: none !important;
+}
+html[data-retro-brand="radioshack"].retro p,
+html[data-retro-brand="radioshack"].retro li {
+  color: #222222 !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+}
+html[data-retro-brand="radioshack"].retro main [class~="bg-white"],
+html[data-retro-brand="radioshack"].retro main [class*="bg-slate-50"],
+html[data-retro-brand="radioshack"].retro main [class*="bg-slate-100"] {
+  background-color: #ffffff !important;
+  border-color: #cc0000 !important;
+  border-radius: 0 !important;
+}
+html[data-retro-brand="radioshack"].retro main [class*="bg-blue-50"],
+html[data-retro-brand="radioshack"].retro main [class*="bg-violet-50"],
+html[data-retro-brand="radioshack"].retro main [class*="from-blue-50"],
+html[data-retro-brand="radioshack"].retro main [class*="from-violet-50"] {
+  background: #fff0f0 !important;
+  border-color: #cc0000 !important;
+}
+html[data-retro-brand="radioshack"].retro main [class*="text-slate-900"],
+html[data-retro-brand="radioshack"].retro main [class*="text-slate-800"] {
+  color: #111111 !important;
+}
+html[data-retro-brand="radioshack"].retro main [class*="text-blue-6"],
+html[data-retro-brand="radioshack"].retro main [class*="text-violet-6"],
+html[data-retro-brand="radioshack"].retro main [class*="text-blue-5"],
+html[data-retro-brand="radioshack"].retro main [class*="text-emerald"] {
+  color: #cc0000 !important;
+}
+html[data-retro-brand="radioshack"].retro main [class*="border-slate"],
+html[data-retro-brand="radioshack"].retro main [class*="border-blue"],
+html[data-retro-brand="radioshack"].retro main [class*="border-violet"],
+html[data-retro-brand="radioshack"].retro main [class*="border-emerald"] {
+  border-color: #cc0000 !important;
+}
+html[data-retro-brand="radioshack"].retro main a[class*="from-"],
+html[data-retro-brand="radioshack"].retro main button[class*="from-"] {
+  background: #cc0000 !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  border-radius: 0 !important;
+  border: 1px solid #990000 !important;
+  font-family: 'Arial Black', sans-serif !important;
+  font-weight: bold !important;
+  box-shadow: 2px 2px 0 #770000 !important;
+  text-shadow: none !important;
+}
+html[data-retro-brand="radioshack"].retro main [class*="rounded-2xl"],
+html[data-retro-brand="radioshack"].retro main [class*="rounded-3xl"],
+html[data-retro-brand="radioshack"].retro main [class*="rounded-xl"] {
+  border-radius: 0 !important;
+}
+
+/* ──────────────────────────────────────────────
+   NEOPETS — Members page
+   Blue gradient, Comic Sans, yellow/gold, bubbly
+   ────────────────────────────────────────────── */
+html[data-retro-brand="neopets"].retro main {
+  background: linear-gradient(180deg, #0055bb 0%, #0077dd 60%, #0088ff 100%) !important;
+}
+html[data-retro-brand="neopets"].retro h1,
+html[data-retro-brand="neopets"].retro h2 {
+  color: #ffdd00 !important;
+  font-family: 'Comic Sans MS', 'Comic Sans', cursive !important;
+  text-shadow: 2px 2px 0 #003366, -1px -1px 0 #003366 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+html[data-retro-brand="neopets"].retro h3,
+html[data-retro-brand="neopets"].retro h4 {
+  color: #ffffff !important;
+  font-family: 'Comic Sans MS', 'Comic Sans', cursive !important;
+  text-shadow: 1px 1px 0 #003366 !important;
+}
+html[data-retro-brand="neopets"].retro p,
+html[data-retro-brand="neopets"].retro li {
+  color: #ffffff !important;
+  font-family: 'Comic Sans MS', 'Comic Sans', cursive !important;
+}
+html[data-retro-brand="neopets"].retro main [class~="bg-white"],
+html[data-retro-brand="neopets"].retro main [class*="bg-slate-50"],
+html[data-retro-brand="neopets"].retro main [class*="bg-slate-100"] {
+  background-color: #cce4ff !important;
+  border: 2px solid #ffdd00 !important;
+  border-radius: 12px !important;
+}
+html[data-retro-brand="neopets"].retro main [class*="bg-emerald-50"],
+html[data-retro-brand="neopets"].retro main [class*="bg-blue-50"],
+html[data-retro-brand="neopets"].retro main [class*="from-emerald-50"],
+html[data-retro-brand="neopets"].retro main [class*="from-blue-50"] {
+  background: #99ccff !important;
+  border-color: #ffdd00 !important;
+}
+html[data-retro-brand="neopets"].retro main [class*="text-slate-900"],
+html[data-retro-brand="neopets"].retro main [class*="text-slate-800"],
+html[data-retro-brand="neopets"].retro main [class*="text-slate-700"] {
+  color: #003366 !important;
+}
+html[data-retro-brand="neopets"].retro main [class*="text-slate-500"],
+html[data-retro-brand="neopets"].retro main [class*="text-slate-600"] {
+  color: #004499 !important;
+}
+html[data-retro-brand="neopets"].retro main [class*="text-emerald"],
+html[data-retro-brand="neopets"].retro main [class*="text-blue-6"],
+html[data-retro-brand="neopets"].retro main [class*="text-blue-4"],
+html[data-retro-brand="neopets"].retro main [class*="text-violet-6"] {
+  color: #ffdd00 !important;
+}
+html[data-retro-brand="neopets"].retro main [class*="border-slate"],
+html[data-retro-brand="neopets"].retro main [class*="border-emerald"],
+html[data-retro-brand="neopets"].retro main [class*="border-blue"],
+html[data-retro-brand="neopets"].retro main [class*="border-violet"] {
+  border-color: #ffdd00 !important;
+}
+html[data-retro-brand="neopets"].retro main a[class*="from-"],
+html[data-retro-brand="neopets"].retro main button[class*="from-"] {
+  background: #ffdd00 !important;
+  background-image: none !important;
+  color: #003366 !important;
+  border-radius: 20px !important;
+  border: 2px solid #cc9900 !important;
+  font-family: 'Comic Sans MS', cursive !important;
+  font-weight: bold !important;
+  box-shadow: 2px 2px 0 #aa7700 !important;
+  text-shadow: none !important;
+}
+
+/* ──────────────────────────────────────────────
+   MONSTER.COM — Careers page
+   Purple header area, green CTAs, clean job-board feel
+   ────────────────────────────────────────────── */
+html[data-retro-brand="monster"].retro main {
+  background: #f0eeff !important;
+}
+html[data-retro-brand="monster"].retro h1,
+html[data-retro-brand="monster"].retro h2 {
+  color: #5500bb !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  text-shadow: none !important;
+  letter-spacing: -0.02em !important;
+  text-transform: none !important;
+}
+html[data-retro-brand="monster"].retro h3,
+html[data-retro-brand="monster"].retro h4 {
+  color: #440099 !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  text-shadow: none !important;
+}
+html[data-retro-brand="monster"].retro p,
+html[data-retro-brand="monster"].retro li {
+  color: #222222 !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+}
+html[data-retro-brand="monster"].retro main [class~="bg-white"],
+html[data-retro-brand="monster"].retro main [class*="bg-slate-50"],
+html[data-retro-brand="monster"].retro main [class*="bg-slate-100"] {
+  background-color: #ffffff !important;
+  border-color: #9966dd !important;
+  border-radius: 3px !important;
+}
+html[data-retro-brand="monster"].retro main [class*="bg-blue-50"],
+html[data-retro-brand="monster"].retro main [class*="bg-violet-50"],
+html[data-retro-brand="monster"].retro main [class*="from-blue-50"],
+html[data-retro-brand="monster"].retro main [class*="from-violet-50"] {
+  background: #ede0ff !important;
+  border-color: #9966dd !important;
+}
+html[data-retro-brand="monster"].retro main [class*="text-slate-900"],
+html[data-retro-brand="monster"].retro main [class*="text-slate-800"] {
+  color: #111111 !important;
+}
+html[data-retro-brand="monster"].retro main [class*="text-slate-600"],
+html[data-retro-brand="monster"].retro main [class*="text-slate-500"] {
+  color: #555555 !important;
+}
+html[data-retro-brand="monster"].retro main [class*="text-blue-6"],
+html[data-retro-brand="monster"].retro main [class*="text-blue-5"],
+html[data-retro-brand="monster"].retro main [class*="text-violet-6"],
+html[data-retro-brand="monster"].retro main [class*="text-blue-4"] {
+  color: #5500bb !important;
+}
+html[data-retro-brand="monster"].retro main [class*="border-slate"],
+html[data-retro-brand="monster"].retro main [class*="border-blue"],
+html[data-retro-brand="monster"].retro main [class*="border-violet"] {
+  border-color: #9966dd !important;
+}
+html[data-retro-brand="monster"].retro main a[class*="from-"],
+html[data-retro-brand="monster"].retro main button[class*="from-"] {
+  background: #009933 !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  border-radius: 4px !important;
+  border: 1px solid #006622 !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-weight: bold !important;
+  box-shadow: 0 2px 4px rgba(0,80,20,0.35) !important;
+  text-shadow: 0 1px 0 rgba(0,0,0,0.2) !important;
+}
+html[data-retro-brand="monster"].retro main [class*="rounded-2xl"],
+html[data-retro-brand="monster"].retro main [class*="rounded-3xl"],
+html[data-retro-brand="monster"].retro main [class*="rounded-xl"] {
+  border-radius: 4px !important;
+}
+
+/* ──────────────────────────────────────────────
+   XANGA — Blog page
+   Lavender/pink, Georgia italic, diary aesthetic
+   ────────────────────────────────────────────── */
+html[data-retro-brand="xanga"].retro main {
+  background: #ffe6ff !important;
+  background-image: repeating-linear-gradient(
+    45deg, transparent 0, transparent 6px,
+    rgba(180,0,180,0.025) 6px, rgba(180,0,180,0.025) 12px
+  ) !important;
+}
+html[data-retro-brand="xanga"].retro h1,
+html[data-retro-brand="xanga"].retro h2 {
+  color: #880088 !important;
+  font-family: Georgia, 'Times New Roman', serif !important;
+  font-style: italic !important;
+  text-shadow: 1px 1px 2px rgba(136,0,136,0.25) !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+html[data-retro-brand="xanga"].retro h3,
+html[data-retro-brand="xanga"].retro h4 {
+  color: #aa00aa !important;
+  font-family: Georgia, 'Times New Roman', serif !important;
+  font-style: italic !important;
+  text-shadow: none !important;
+}
+html[data-retro-brand="xanga"].retro p,
+html[data-retro-brand="xanga"].retro li {
+  color: #330033 !important;
+  font-family: Georgia, 'Times New Roman', serif !important;
+}
+html[data-retro-brand="xanga"].retro main [class~="bg-white"],
+html[data-retro-brand="xanga"].retro main [class*="bg-slate-50"],
+html[data-retro-brand="xanga"].retro main [class*="bg-slate-100"] {
+  background-color: #fff0ff !important;
+  border-color: #cc66cc !important;
+  border-radius: 6px !important;
+}
+html[data-retro-brand="xanga"].retro main [class*="bg-violet-50"],
+html[data-retro-brand="xanga"].retro main [class*="bg-purple-50"],
+html[data-retro-brand="xanga"].retro main [class*="from-violet-50"],
+html[data-retro-brand="xanga"].retro main [class*="from-purple-50"] {
+  background: #ffccff !important;
+  border-color: #cc66cc !important;
+}
+html[data-retro-brand="xanga"].retro main [class*="text-slate-900"],
+html[data-retro-brand="xanga"].retro main [class*="text-slate-800"],
+html[data-retro-brand="xanga"].retro main [class*="text-slate-700"] {
+  color: #330033 !important;
+}
+html[data-retro-brand="xanga"].retro main [class*="text-slate-500"],
+html[data-retro-brand="xanga"].retro main [class*="text-slate-600"] {
+  color: #660066 !important;
+}
+html[data-retro-brand="xanga"].retro main [class*="text-violet-6"],
+html[data-retro-brand="xanga"].retro main [class*="text-violet-4"],
+html[data-retro-brand="xanga"].retro main [class*="text-purple-6"] {
+  color: #aa00aa !important;
+}
+html[data-retro-brand="xanga"].retro main [class*="border-slate"],
+html[data-retro-brand="xanga"].retro main [class*="border-violet"],
+html[data-retro-brand="xanga"].retro main [class*="border-purple"] {
+  border-color: #cc66cc !important;
+}
+html[data-retro-brand="xanga"].retro main a[class*="from-"],
+html[data-retro-brand="xanga"].retro main button[class*="from-"] {
+  background: linear-gradient(180deg, #dd44dd 0%, #990099 100%) !important;
+  background-image: linear-gradient(180deg, #dd44dd 0%, #990099 100%) !important;
+  color: #ffffff !important;
+  border-radius: 16px !important;
+  border: 1px solid #880088 !important;
+  font-family: Georgia, serif !important;
+  box-shadow: 0 2px 5px rgba(136,0,136,0.4) !important;
+  text-shadow: 0 1px 0 rgba(0,0,0,0.3) !important;
+}
+
+/* ──────────────────────────────────────────────
+   ASK JEEVES — Resources page
+   Cream/tan, Georgia, butler-warm tones
+   ────────────────────────────────────────────── */
+html[data-retro-brand="askjeeves"].retro main {
+  background: #f5f0e0 !important;
+}
+html[data-retro-brand="askjeeves"].retro h1,
+html[data-retro-brand="askjeeves"].retro h2 {
+  color: #884400 !important;
+  font-family: Georgia, 'Times New Roman', serif !important;
+  text-shadow: none !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+html[data-retro-brand="askjeeves"].retro h3,
+html[data-retro-brand="askjeeves"].retro h4 {
+  color: #aa5500 !important;
+  font-family: Georgia, serif !important;
+  text-shadow: none !important;
+}
+html[data-retro-brand="askjeeves"].retro p,
+html[data-retro-brand="askjeeves"].retro li {
+  color: #333311 !important;
+  font-family: Georgia, 'Times New Roman', serif !important;
+}
+html[data-retro-brand="askjeeves"].retro main [class~="bg-white"],
+html[data-retro-brand="askjeeves"].retro main [class*="bg-slate-50"],
+html[data-retro-brand="askjeeves"].retro main [class*="bg-slate-100"] {
+  background-color: #fffef0 !important;
+  border-color: #cc8800 !important;
+  border-radius: 4px !important;
+}
+html[data-retro-brand="askjeeves"].retro main [class*="bg-blue-50"],
+html[data-retro-brand="askjeeves"].retro main [class*="bg-violet-50"],
+html[data-retro-brand="askjeeves"].retro main [class*="from-blue-50"],
+html[data-retro-brand="askjeeves"].retro main [class*="from-violet-50"] {
+  background: #fff8e0 !important;
+  border-color: #cc8800 !important;
+}
+html[data-retro-brand="askjeeves"].retro main [class*="text-slate-900"],
+html[data-retro-brand="askjeeves"].retro main [class*="text-slate-800"] {
+  color: #221100 !important;
+}
+html[data-retro-brand="askjeeves"].retro main [class*="text-blue-6"],
+html[data-retro-brand="askjeeves"].retro main [class*="text-violet-6"],
+html[data-retro-brand="askjeeves"].retro main [class*="text-amber"] {
+  color: #884400 !important;
+}
+html[data-retro-brand="askjeeves"].retro main [class*="border-slate"],
+html[data-retro-brand="askjeeves"].retro main [class*="border-blue"],
+html[data-retro-brand="askjeeves"].retro main [class*="border-violet"],
+html[data-retro-brand="askjeeves"].retro main [class*="border-amber"] {
+  border-color: #cc8800 !important;
+}
+html[data-retro-brand="askjeeves"].retro main a[class*="from-"],
+html[data-retro-brand="askjeeves"].retro main button[class*="from-"] {
+  background: linear-gradient(180deg, #ffaa00 0%, #cc7700 100%) !important;
+  background-image: linear-gradient(180deg, #ffaa00 0%, #cc7700 100%) !important;
+  color: #ffffff !important;
+  border: 1px solid #aa5500 !important;
+  border-radius: 3px !important;
+  font-family: Georgia, serif !important;
+  font-weight: bold !important;
+  text-shadow: 0 1px 0 rgba(0,0,0,0.2) !important;
+}
+
+/* ──────────────────────────────────────────────
+   HOTMAIL — Contact page
+   White/blue, Arial, orange CTA (MSN Hotmail)
+   ────────────────────────────────────────────── */
+html[data-retro-brand="hotmail"].retro main {
+  background: #eef2ff !important;
+}
+html[data-retro-brand="hotmail"].retro h1,
+html[data-retro-brand="hotmail"].retro h2 {
+  color: #003399 !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  text-shadow: none !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+html[data-retro-brand="hotmail"].retro h3,
+html[data-retro-brand="hotmail"].retro h4 {
+  color: #0044bb !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  text-shadow: none !important;
+}
+html[data-retro-brand="hotmail"].retro p,
+html[data-retro-brand="hotmail"].retro li {
+  color: #222222 !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+}
+html[data-retro-brand="hotmail"].retro main [class~="bg-white"],
+html[data-retro-brand="hotmail"].retro main [class*="bg-slate-50"],
+html[data-retro-brand="hotmail"].retro main [class*="bg-slate-100"] {
+  background-color: #ffffff !important;
+  border-color: #99aacc !important;
+  border-radius: 0 !important;
+}
+html[data-retro-brand="hotmail"].retro main [class*="bg-blue-50"],
+html[data-retro-brand="hotmail"].retro main [class*="bg-violet-50"],
+html[data-retro-brand="hotmail"].retro main [class*="from-blue-50"],
+html[data-retro-brand="hotmail"].retro main [class*="from-violet-50"] {
+  background: #ddeeff !important;
+  border-color: #99aacc !important;
+}
+html[data-retro-brand="hotmail"].retro main [class*="text-slate-900"],
+html[data-retro-brand="hotmail"].retro main [class*="text-slate-800"] {
+  color: #000000 !important;
+}
+html[data-retro-brand="hotmail"].retro main [class*="text-blue-6"],
+html[data-retro-brand="hotmail"].retro main [class*="text-violet-6"],
+html[data-retro-brand="hotmail"].retro main [class*="text-blue-5"] {
+  color: #003399 !important;
+}
+html[data-retro-brand="hotmail"].retro main [class*="border-slate"],
+html[data-retro-brand="hotmail"].retro main [class*="border-blue"],
+html[data-retro-brand="hotmail"].retro main [class*="border-violet"] {
+  border-color: #99aacc !important;
+}
+html[data-retro-brand="hotmail"].retro main a[class*="from-"],
+html[data-retro-brand="hotmail"].retro main button[class*="from-"] {
+  background: #ff6600 !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  border: 1px solid #cc4400 !important;
+  border-radius: 2px !important;
+  font-family: Arial, sans-serif !important;
+  font-weight: bold !important;
+  box-shadow: 1px 1px 3px rgba(0,0,0,0.3) !important;
+  text-shadow: none !important;
+}
+html[data-retro-brand="hotmail"].retro main [class*="rounded-2xl"],
+html[data-retro-brand="hotmail"].retro main [class*="rounded-3xl"],
+html[data-retro-brand="hotmail"].retro main [class*="rounded-xl"] {
+  border-radius: 2px !important;
+}
+/* Contact form inputs in Hotmail style */
+html[data-retro-brand="hotmail"].retro main input,
+html[data-retro-brand="hotmail"].retro main textarea {
+  border: 1px solid #99aacc !important;
+  border-radius: 0 !important;
+  background: #ffffff !important;
+  color: #000000 !important;
+}
+
+/* ──────────────────────────────────────────────
+   WEBSHOTS — Gallery page
+   White/green, photo-gallery aesthetic
+   ────────────────────────────────────────────── */
+html[data-retro-brand="webshots"].retro main {
+  background: #f0fff8 !important;
+}
+html[data-retro-brand="webshots"].retro h1,
+html[data-retro-brand="webshots"].retro h2 {
+  color: #006633 !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  text-shadow: none !important;
+  text-transform: none !important;
+}
+html[data-retro-brand="webshots"].retro h3,
+html[data-retro-brand="webshots"].retro h4 {
+  color: #008844 !important;
+  text-shadow: none !important;
+}
+html[data-retro-brand="webshots"].retro p,
+html[data-retro-brand="webshots"].retro li {
+  color: #224422 !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+}
+html[data-retro-brand="webshots"].retro main [class~="bg-white"],
+html[data-retro-brand="webshots"].retro main [class*="bg-slate-50"],
+html[data-retro-brand="webshots"].retro main [class*="bg-slate-100"] {
+  background-color: #ffffff !important;
+  border-color: #00aa55 !important;
+  border-radius: 3px !important;
+}
+html[data-retro-brand="webshots"].retro main [class*="bg-violet-50"],
+html[data-retro-brand="webshots"].retro main [class*="bg-blue-50"],
+html[data-retro-brand="webshots"].retro main [class*="from-blue-50"],
+html[data-retro-brand="webshots"].retro main [class*="from-violet-50"] {
+  background: #ccffee !important;
+  border-color: #00aa55 !important;
+}
+html[data-retro-brand="webshots"].retro main [class*="text-blue-6"],
+html[data-retro-brand="webshots"].retro main [class*="text-violet-6"],
+html[data-retro-brand="webshots"].retro main [class*="text-blue-5"] {
+  color: #006633 !important;
+}
+html[data-retro-brand="webshots"].retro main [class*="border-slate"],
+html[data-retro-brand="webshots"].retro main [class*="border-blue"],
+html[data-retro-brand="webshots"].retro main [class*="border-violet"] {
+  border-color: #00aa55 !important;
+}
+html[data-retro-brand="webshots"].retro main a[class*="from-"],
+html[data-retro-brand="webshots"].retro main button[class*="from-"] {
+  background: #006633 !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  border: 1px solid #004422 !important;
+  border-radius: 3px !important;
+  font-weight: bold !important;
+  text-shadow: none !important;
+}
+
+/* ──────────────────────────────────────────────
+   NORTON ANTIVIRUS — Shield page
+   Very dark red/black, gold warnings, security feel
+   ────────────────────────────────────────────── */
+html[data-retro-brand="norton"].retro main {
+  background: #0a0000 !important;
+  background-image: repeating-linear-gradient(
+    0deg, transparent, transparent 29px,
+    rgba(200,0,0,0.06) 29px, rgba(200,0,0,0.06) 30px
+  ) !important;
+}
+html[data-retro-brand="norton"].retro h1,
+html[data-retro-brand="norton"].retro h2 {
+  color: #ffdd00 !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  text-shadow: 0 0 12px rgba(255,221,0,0.5) !important;
+  letter-spacing: 1px !important;
+  text-transform: uppercase !important;
+}
+html[data-retro-brand="norton"].retro h3,
+html[data-retro-brand="norton"].retro h4 {
+  color: #ff6600 !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  text-shadow: none !important;
+}
+html[data-retro-brand="norton"].retro p,
+html[data-retro-brand="norton"].retro li {
+  color: #ccbbbb !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+}
+html[data-retro-brand="norton"].retro main [class~="bg-white"],
+html[data-retro-brand="norton"].retro main [class*="bg-slate-50"],
+html[data-retro-brand="norton"].retro main [class*="bg-slate-100"] {
+  background-color: #1a0000 !important;
+  border-color: #cc2200 !important;
+  border-radius: 0 !important;
+}
+html[data-retro-brand="norton"].retro main [class*="bg-blue-50"],
+html[data-retro-brand="norton"].retro main [class*="bg-violet-50"],
+html[data-retro-brand="norton"].retro main [class*="bg-red-50"],
+html[data-retro-brand="norton"].retro main [class*="from-blue-50"],
+html[data-retro-brand="norton"].retro main [class*="from-red-50"],
+html[data-retro-brand="norton"].retro main [class*="from-violet-50"] {
+  background: #1a0000 !important;
+  border-color: #cc2200 !important;
+}
+html[data-retro-brand="norton"].retro main [class*="text-slate-900"],
+html[data-retro-brand="norton"].retro main [class*="text-slate-800"],
+html[data-retro-brand="norton"].retro main [class*="text-slate-700"] {
+  color: #ffffff !important;
+}
+html[data-retro-brand="norton"].retro main [class*="text-slate-500"],
+html[data-retro-brand="norton"].retro main [class*="text-slate-600"] {
+  color: #cc9999 !important;
+}
+html[data-retro-brand="norton"].retro main [class*="text-blue-6"],
+html[data-retro-brand="norton"].retro main [class*="text-violet-6"],
+html[data-retro-brand="norton"].retro main [class*="text-red-6"],
+html[data-retro-brand="norton"].retro main [class*="text-red-5"] {
+  color: #ffdd00 !important;
+}
+html[data-retro-brand="norton"].retro main [class*="border-slate"],
+html[data-retro-brand="norton"].retro main [class*="border-blue"],
+html[data-retro-brand="norton"].retro main [class*="border-red"],
+html[data-retro-brand="norton"].retro main [class*="border-violet"] {
+  border-color: #cc2200 !important;
+}
+html[data-retro-brand="norton"].retro main a[class*="from-"],
+html[data-retro-brand="norton"].retro main button[class*="from-"] {
+  background: #cc0000 !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  border: 1px solid #990000 !important;
+  border-radius: 2px !important;
+  font-family: Arial, sans-serif !important;
+  font-weight: bold !important;
+  text-shadow: none !important;
+}
+html[data-retro-brand="norton"].retro main [class*="rounded-2xl"],
+html[data-retro-brand="norton"].retro main [class*="rounded-3xl"],
+html[data-retro-brand="norton"].retro main [class*="rounded-xl"] {
+  border-radius: 0 !important;
+}
+
+/* ──────────────────────────────────────────────
+   ELANCE.COM — Hire page
+   Warm white/orange, professional freelancer feel
+   ────────────────────────────────────────────── */
+html[data-retro-brand="elance"].retro main {
+  background: #fffaf4 !important;
+}
+html[data-retro-brand="elance"].retro h1,
+html[data-retro-brand="elance"].retro h2 {
+  color: #884400 !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  text-shadow: none !important;
+  text-transform: none !important;
+}
+html[data-retro-brand="elance"].retro h3,
+html[data-retro-brand="elance"].retro h4 {
+  color: #aa5500 !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  text-shadow: none !important;
+}
+html[data-retro-brand="elance"].retro p,
+html[data-retro-brand="elance"].retro li {
+  color: #332211 !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+}
+html[data-retro-brand="elance"].retro main [class~="bg-white"],
+html[data-retro-brand="elance"].retro main [class*="bg-slate-50"],
+html[data-retro-brand="elance"].retro main [class*="bg-slate-100"] {
+  background-color: #ffffff !important;
+  border-color: #ffaa33 !important;
+  border-radius: 3px !important;
+}
+html[data-retro-brand="elance"].retro main [class*="bg-blue-50"],
+html[data-retro-brand="elance"].retro main [class*="bg-violet-50"],
+html[data-retro-brand="elance"].retro main [class*="from-blue-50"],
+html[data-retro-brand="elance"].retro main [class*="from-violet-50"] {
+  background: #fff5e0 !important;
+  border-color: #ffaa33 !important;
+}
+html[data-retro-brand="elance"].retro main [class*="text-slate-900"],
+html[data-retro-brand="elance"].retro main [class*="text-slate-800"] {
+  color: #221100 !important;
+}
+html[data-retro-brand="elance"].retro main [class*="text-blue-6"],
+html[data-retro-brand="elance"].retro main [class*="text-violet-6"],
+html[data-retro-brand="elance"].retro main [class*="text-blue-5"],
+html[data-retro-brand="elance"].retro main [class*="text-amber"] {
+  color: #884400 !important;
+}
+html[data-retro-brand="elance"].retro main [class*="border-slate"],
+html[data-retro-brand="elance"].retro main [class*="border-blue"],
+html[data-retro-brand="elance"].retro main [class*="border-violet"],
+html[data-retro-brand="elance"].retro main [class*="border-amber"] {
+  border-color: #ffaa33 !important;
+}
+html[data-retro-brand="elance"].retro main a[class*="from-"],
+html[data-retro-brand="elance"].retro main button[class*="from-"] {
+  background: linear-gradient(180deg, #ffaa33 0%, #cc7700 100%) !important;
+  background-image: linear-gradient(180deg, #ffaa33 0%, #cc7700 100%) !important;
+  color: #ffffff !important;
+  border: 1px solid #aa5500 !important;
+  border-radius: 3px !important;
+  font-family: Arial, sans-serif !important;
+  font-weight: bold !important;
+  box-shadow: 1px 2px 4px rgba(100,40,0,0.3) !important;
+  text-shadow: 0 1px 0 rgba(0,0,0,0.2) !important;
+}
