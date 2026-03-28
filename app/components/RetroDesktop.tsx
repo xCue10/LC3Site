@@ -414,6 +414,268 @@ function playRetroSound(type: 'startup' | 'error' | 'notify' | 'empty-bin') {
   } catch { /* AudioContext blocked or unavailable */ }
 }
 
+// ── Brand website header (renders inside IE6 chrome, below toolbar) ──────────
+function BrandHeader({ brand }: { brand: string }) {
+  const f = 'Tahoma, Arial, sans-serif';
+  const navLink = (label: string, key: string) => (
+    <span key={key} style={{ padding: '0 9px', fontSize: '11px', fontFamily: f, cursor: 'default', whiteSpace: 'nowrap' as const }}>{label}</span>
+  );
+
+  switch (brand) {
+
+    case 'AOL.com':
+      return (
+        <div style={{ background: '#fff', borderBottom: '1px solid #bbb', pointerEvents: 'none' }}>
+          <div style={{ background: 'linear-gradient(90deg,#003399,#0055dd)', padding: '0 8px', height: '22px', display: 'flex', alignItems: 'center', gap: '3px' }}>
+            {['Mail','News','Sports','Finance','Entertainment','Shopping','Travel','Local'].map(l => navLink(l, l))}
+            <span style={{ marginLeft: 'auto', fontSize: '10px', fontFamily: f, color: '#ffee88' }}>Welcome, LC3Club!</span>
+          </div>
+          <div style={{ padding: '4px 8px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span style={{ fontSize: '22px', fontWeight: 'bold', fontStyle: 'italic', fontFamily: 'Arial Black, sans-serif', color: '#003399', letterSpacing: '-1px' }}>
+              <span style={{ color: '#cc0000' }}>A</span>
+              <span style={{ color: '#ff9900' }}>O</span>
+              <span style={{ color: '#009900' }}>L</span>
+              <span style={{ fontSize: '11px', fontStyle: 'normal', color: '#555', marginLeft: '3px' }}>keyword:</span>
+            </span>
+            <div style={{ display: 'flex', border: '1px solid #999', flex: 1, maxWidth: '180px', height: '20px' }}>
+              <input readOnly style={{ flex: 1, fontSize: '11px', fontFamily: f, border: 'none', padding: '0 4px', outline: 'none', background: '#fff', color: '#000' }} defaultValue="lc3club" />
+              <button style={{ background: '#0044cc', color: '#fff', border: 'none', padding: '0 6px', fontSize: '10px', fontFamily: f, cursor: 'default' }}>GO</button>
+            </div>
+            <span style={{ fontSize: '10px', fontFamily: f, color: '#555', marginLeft: 'auto' }}>You have <strong style={{ color: '#cc0000' }}>3</strong> new messages</span>
+          </div>
+        </div>
+      );
+
+    case 'GeoCities':
+      return (
+        <div style={{ background: 'linear-gradient(90deg,#aa0000,#cc2200)', pointerEvents: 'none' }}>
+          <div style={{ padding: '5px 8px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div>
+              <div style={{ fontSize: '17px', fontWeight: 'bold', fontFamily: 'Impact, Arial Black, sans-serif', color: '#ffff00', letterSpacing: '2px', textShadow: '1px 1px 0 #000' }}>
+                GEO<span style={{ color: '#fff' }}>CITIES</span>
+              </div>
+              <div style={{ fontSize: '8px', fontFamily: f, color: '#ffdddd', marginTop: '-2px', letterSpacing: '1px' }}>FREE HOMEPAGES FOR EVERYONE</div>
+            </div>
+            <div style={{ width: '1px', height: '28px', background: 'rgba(255,255,255,0.3)' }} />
+            {['Neighborhoods','Build Your Page','Browse Pages','GeoSearch','Help'].map(l =>
+              <span key={l} style={{ padding: '0 8px', fontSize: '11px', fontFamily: f, color: '#ffeecc', cursor: 'default', whiteSpace: 'nowrap' as const }}>{l}</span>
+            )}
+            <span style={{ marginLeft: 'auto', background: '#ffff00', color: '#aa0000', fontSize: '10px', fontWeight: 'bold', fontFamily: f, padding: '2px 6px' }}>BUILD FREE!</span>
+          </div>
+        </div>
+      );
+
+    case 'Blockbuster Online':
+      return (
+        <div style={{ background: '#003087', pointerEvents: 'none', borderBottom: '3px solid #FFD700' }}>
+          <div style={{ padding: '5px 8px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div>
+              <div style={{ fontSize: '16px', fontWeight: 'bold', fontFamily: 'Impact, Arial Black, sans-serif', color: '#FFD700', letterSpacing: '2px' }}>BLOCKBUSTER</div>
+              <div style={{ fontSize: '8px', fontFamily: f, color: '#88aaff', marginTop: '-2px', letterSpacing: '3px' }}>ONLINE</div>
+            </div>
+            <div style={{ width: '1px', height: '28px', background: 'rgba(255,215,0,0.4)' }} />
+            {['New Releases','Top 100','Coming Soon','Store Locator','My Account','Drop Box'].map(l =>
+              <span key={l} style={{ padding: '0 9px', fontSize: '11px', fontFamily: f, color: '#fff', cursor: 'default', whiteSpace: 'nowrap' as const }}>{l}</span>
+            )}
+            <div style={{ marginLeft: 'auto', background: '#FFD700', color: '#003087', fontSize: '10px', fontWeight: 'bold', fontFamily: f, padding: '3px 8px', whiteSpace: 'nowrap' as const }}>★ No Late Fees!</div>
+          </div>
+        </div>
+      );
+
+    case 'RadioShack.com':
+      return (
+        <div style={{ background: '#cc0000', pointerEvents: 'none' }}>
+          <div style={{ padding: '5px 8px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div>
+              <div style={{ fontSize: '15px', fontWeight: 'bold', fontFamily: 'Arial Black, sans-serif', color: '#fff', letterSpacing: '0px' }}>
+                Radio<span style={{ color: '#ffdd00' }}>Shack</span>
+                <span style={{ fontSize: '9px', color: '#ffcccc', fontWeight: 'normal', marginLeft: '4px' }}>.com</span>
+              </div>
+              <div style={{ fontSize: '8px', fontFamily: f, color: '#ffeecc', marginTop: '-2px' }}>You&apos;ve Got Questions, We&apos;ve Got Answers</div>
+            </div>
+            <div style={{ width: '1px', height: '28px', background: 'rgba(255,255,255,0.3)' }} />
+            {['Electronics','Computers','Cell Phones','Audio','Batteries','Sale!'].map(l =>
+              <span key={l} style={{ padding: '0 8px', fontSize: '11px', fontFamily: f, color: '#fff', cursor: 'default', whiteSpace: 'nowrap' as const }}>{l}</span>
+            )}
+            <span style={{ marginLeft: 'auto', fontSize: '10px', fontFamily: f, color: '#ffeecc', whiteSpace: 'nowrap' as const }}>📍 Find a Store</span>
+          </div>
+        </div>
+      );
+
+    case 'Neopets':
+      return (
+        <div style={{ background: 'linear-gradient(90deg,#004499,#0066cc)', pointerEvents: 'none', borderBottom: '2px solid #ffcc00' }}>
+          <div style={{ padding: '5px 8px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div>
+              <div style={{ fontSize: '18px', fontWeight: 'bold', fontFamily: 'Comic Sans MS, cursive', color: '#ffcc00', textShadow: '1px 1px 0 #000, -1px -1px 0 #000' }}>
+                Neo<span style={{ color: '#ff6600' }}>pets</span>
+              </div>
+              <div style={{ fontSize: '8px', fontFamily: f, color: '#aaddff', marginTop: '-2px' }}>Explore. Play. Create.</div>
+            </div>
+            <div style={{ width: '1px', height: '28px', background: 'rgba(255,204,0,0.4)' }} />
+            {['Games','Explore Neopia','Create','Guilds','Shops','Battledome','Chat'].map(l =>
+              <span key={l} style={{ padding: '0 7px', fontSize: '11px', fontFamily: f, color: '#fff', cursor: 'default', whiteSpace: 'nowrap' as const }}>{l}</span>
+            )}
+            <span style={{ marginLeft: 'auto', background: '#ffcc00', color: '#003377', fontSize: '9px', fontWeight: 'bold', fontFamily: f, padding: '2px 6px', whiteSpace: 'nowrap' as const }}>LC3 Guild ★</span>
+          </div>
+        </div>
+      );
+
+    case 'Monster.com':
+      return (
+        <div style={{ background: '#2d006e', pointerEvents: 'none', borderBottom: '2px solid #00cc44' }}>
+          <div style={{ padding: '5px 8px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div>
+              <div style={{ fontSize: '20px', fontWeight: 'bold', fontFamily: 'Arial Black, sans-serif', color: '#fff', letterSpacing: '-1px' }}>
+                <span style={{ color: '#00cc44' }}>m</span>onster
+                <span style={{ fontSize: '9px', color: '#aaaaff', fontWeight: 'normal', letterSpacing: '0' }}>.com</span>
+              </div>
+              <div style={{ fontSize: '8px', fontFamily: f, color: '#cc99ff', marginTop: '-2px' }}>Work. Better.</div>
+            </div>
+            <div style={{ display: 'flex', border: '1px solid #6600aa', background: '#fff', flex: 0 }}>
+              <input readOnly style={{ width: '120px', fontSize: '11px', fontFamily: f, border: 'none', padding: '0 4px', height: '20px', outline: 'none', color: '#999' }} defaultValue="Job Title" />
+              <div style={{ width: '1px', background: '#ccc', height: '20px' }} />
+              <input readOnly style={{ width: '80px', fontSize: '11px', fontFamily: f, border: 'none', padding: '0 4px', height: '20px', outline: 'none', color: '#999' }} defaultValue="City, State" />
+              <button style={{ background: '#00cc44', color: '#fff', border: 'none', padding: '0 8px', fontSize: '11px', fontWeight: 'bold', fontFamily: f, cursor: 'default', height: '20px' }}>FIND JOBS</button>
+            </div>
+            {['Post a Job','Career Center','Salary Center','My Monster'].map(l =>
+              <span key={l} style={{ padding: '0 7px', fontSize: '11px', fontFamily: f, color: '#cc99ff', cursor: 'default', whiteSpace: 'nowrap' as const }}>{l}</span>
+            )}
+          </div>
+        </div>
+      );
+
+    case 'Xanga':
+      return (
+        <div style={{ background: 'linear-gradient(90deg,#660066,#990099)', pointerEvents: 'none', borderBottom: '2px solid #ff66ff' }}>
+          <div style={{ padding: '5px 8px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div>
+              <div style={{ fontSize: '20px', fontWeight: 'bold', fontFamily: 'Georgia, serif', color: '#ff99ff', fontStyle: 'italic' }}>xanga</div>
+              <div style={{ fontSize: '8px', fontFamily: f, color: '#ddaadd', marginTop: '-3px' }}>a blogging community</div>
+            </div>
+            <div style={{ width: '1px', height: '28px', background: 'rgba(255,102,255,0.4)' }} />
+            {['Home','My Blog','eProps','Friends','Browse Blogs','Premium','Help'].map(l =>
+              <span key={l} style={{ padding: '0 8px', fontSize: '11px', fontFamily: f, color: '#ffccff', cursor: 'default', whiteSpace: 'nowrap' as const }}>{l}</span>
+            )}
+            <span style={{ marginLeft: 'auto', fontSize: '10px', fontFamily: f, color: '#ffaaff' }}>♥ eProps: 42</span>
+          </div>
+        </div>
+      );
+
+    case 'Ask Jeeves':
+      return (
+        <div style={{ background: '#f5f0e0', pointerEvents: 'none', borderBottom: '2px solid #cc7700' }}>
+          <div style={{ padding: '5px 8px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <span style={{ fontSize: '24px' }}>🎩</span>
+              <div>
+                <div style={{ fontSize: '15px', fontWeight: 'bold', fontFamily: 'Georgia, serif', color: '#884400' }}>Ask <span style={{ color: '#cc5500' }}>Jeeves</span></div>
+                <div style={{ fontSize: '8px', fontFamily: f, color: '#885500', marginTop: '-2px' }}>The Web&apos;s Butler</div>
+              </div>
+            </div>
+            <div style={{ display: 'flex', border: '2px solid #cc7700', background: '#fff', flex: 1, maxWidth: '280px', height: '22px' }}>
+              <input readOnly style={{ flex: 1, fontSize: '12px', fontFamily: 'Georgia, serif', border: 'none', padding: '0 6px', outline: 'none', color: '#888', fontStyle: 'italic' }} defaultValue="Ask me anything..." />
+              <button style={{ background: 'linear-gradient(180deg,#ffaa00,#cc7700)', color: '#fff', border: 'none', borderLeft: '1px solid #cc7700', padding: '0 8px', fontSize: '11px', fontWeight: 'bold', fontFamily: f, cursor: 'default' }}>Ask!</button>
+            </div>
+            {['Web','News','Images','Shopping','Ask Kids'].map(l =>
+              <span key={l} style={{ padding: '0 7px', fontSize: '11px', fontFamily: f, color: '#884400', cursor: 'default' }}>{l}</span>
+            )}
+          </div>
+        </div>
+      );
+
+    case 'Hotmail':
+      return (
+        <div style={{ background: '#fff', pointerEvents: 'none', borderBottom: '2px solid #003399' }}>
+          <div style={{ background: 'linear-gradient(90deg,#001f77,#003399)', padding: '0 8px', height: '20px', display: 'flex', alignItems: 'center', gap: '3px' }}>
+            <span style={{ fontSize: '10px', fontFamily: f, color: '#ffcc00', fontWeight: 'bold', marginRight: '8px' }}>MSN</span>
+            {['Hotmail','Messenger','My MSN','Search','Shopping','Money','Games','Music'].map(l =>
+              <span key={l} style={{ padding: '0 7px', fontSize: '10px', fontFamily: f, color: '#aaccff', cursor: 'default' }}>{l}</span>
+            )}
+          </div>
+          <div style={{ padding: '4px 8px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <span style={{ fontSize: '18px', fontWeight: 'bold', fontFamily: 'Arial, sans-serif', color: '#003399' }}>
+                <span style={{ color: '#ff6600' }}>H</span>otmail
+              </span>
+              <span style={{ fontSize: '8px', color: '#555', fontFamily: f }}>Free Email</span>
+            </div>
+            <div style={{ width: '1px', height: '24px', background: '#ccc' }} />
+            {['Compose','Inbox (3)','Sent','Drafts','Deleted','Junk Mail'].map(l =>
+              <span key={l} style={{ padding: '0 8px', fontSize: '11px', fontFamily: f, color: '#003399', cursor: 'default', whiteSpace: 'nowrap' as const }}>{l}</span>
+            )}
+            <span style={{ marginLeft: 'auto', fontSize: '9px', fontFamily: f, color: '#888' }}>Storage: 2 MB</span>
+          </div>
+        </div>
+      );
+
+    case 'Webshots':
+      return (
+        <div style={{ background: 'linear-gradient(90deg,#004422,#006633)', pointerEvents: 'none', borderBottom: '2px solid #00cc66' }}>
+          <div style={{ padding: '5px 8px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div>
+              <div style={{ fontSize: '17px', fontWeight: 'bold', fontFamily: 'Arial Black, sans-serif', color: '#fff' }}>
+                web<span style={{ color: '#66ffaa' }}>shots</span>
+              </div>
+              <div style={{ fontSize: '8px', fontFamily: f, color: '#99ddbb', marginTop: '-2px' }}>Share Your World in Photos</div>
+            </div>
+            <div style={{ width: '1px', height: '28px', background: 'rgba(102,255,170,0.4)' }} />
+            {['My Photos','Community','Browse','Upload','Screensavers','Wallpaper','Pro'].map(l =>
+              <span key={l} style={{ padding: '0 8px', fontSize: '11px', fontFamily: f, color: '#ccffee', cursor: 'default', whiteSpace: 'nowrap' as const }}>{l}</span>
+            )}
+          </div>
+        </div>
+      );
+
+    case 'Norton AntiVirus':
+      return (
+        <div style={{ background: 'linear-gradient(90deg,#1a0000,#330000)', pointerEvents: 'none', borderBottom: '2px solid #ffdd00' }}>
+          <div style={{ padding: '5px 8px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <span style={{ fontSize: '22px' }}>🛡</span>
+              <div>
+                <div style={{ fontSize: '13px', fontWeight: 'bold', fontFamily: 'Arial Black, sans-serif', color: '#ffdd00', letterSpacing: '1px' }}>NORTON ANTIVIRUS</div>
+                <div style={{ fontSize: '8px', fontFamily: f, color: '#ffaaaa', marginTop: '-2px' }}>by Symantec</div>
+              </div>
+            </div>
+            <div style={{ width: '1px', height: '28px', background: 'rgba(255,221,0,0.4)' }} />
+            <div style={{ fontSize: '11px', fontFamily: f, display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <span style={{ color: '#00ff66', fontWeight: 'bold' }}>●</span>
+              <span style={{ color: '#aaffaa' }}>Protected</span>
+            </div>
+            {['Scan Now','LiveUpdate','Reports','Quarantine','Settings','Help'].map(l =>
+              <span key={l} style={{ padding: '0 8px', fontSize: '11px', fontFamily: f, color: '#ffcccc', cursor: 'default', whiteSpace: 'nowrap' as const }}>{l}</span>
+            )}
+            <span style={{ marginLeft: 'auto', fontSize: '9px', fontFamily: f, color: '#ffeeaa', whiteSpace: 'nowrap' as const }}>Last scan: Today 9:03 AM</span>
+          </div>
+        </div>
+      );
+
+    case 'eLance.com':
+      return (
+        <div style={{ background: 'linear-gradient(90deg,#5a2e00,#884400)', pointerEvents: 'none', borderBottom: '2px solid #ffaa33' }}>
+          <div style={{ padding: '5px 8px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div>
+              <div style={{ fontSize: '17px', fontWeight: 'bold', fontFamily: 'Arial Black, sans-serif', color: '#ffaa33' }}>
+                e<span style={{ color: '#fff' }}>Lance</span>
+                <span style={{ fontSize: '9px', color: '#ffddaa', fontWeight: 'normal' }}>.com</span>
+              </div>
+              <div style={{ fontSize: '8px', fontFamily: f, color: '#ffddaa', marginTop: '-2px' }}>Hire Expert Freelancers Online</div>
+            </div>
+            <div style={{ width: '1px', height: '28px', background: 'rgba(255,170,51,0.4)' }} />
+            {['Post a Job','Browse Freelancers','My Projects','Search Skills','How It Works'].map(l =>
+              <span key={l} style={{ padding: '0 8px', fontSize: '11px', fontFamily: f, color: '#ffeecc', cursor: 'default', whiteSpace: 'nowrap' as const }}>{l}</span>
+            )}
+            <span style={{ marginLeft: 'auto', background: '#ffaa33', color: '#5a2e00', fontSize: '10px', fontWeight: 'bold', fontFamily: f, padding: '2px 8px', whiteSpace: 'nowrap' as const }}>Register FREE</span>
+          </div>
+        </div>
+      );
+
+    default:
+      return null;
+  }
+}
+
 export default function RetroDesktop() {
   const [isRetro, setIsRetro] = useState(false);
   const [time, setTime] = useState('');
@@ -636,6 +898,9 @@ export default function RetroDesktop() {
           <div className="rd-br-addr-bar">{theme.url}</div>
           <button className="rd-br-go">Go</button>
         </div>
+
+        {/* Brand website header */}
+        <BrandHeader brand={theme.brand} />
       </div>
 
       {/* Status bar (bottom of browser) */}
