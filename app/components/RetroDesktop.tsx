@@ -239,6 +239,48 @@ const ADS = [
   },
 ];
 
+// ── Web Audio synthesized retro sounds ──────────────────────────────────
+function playRetroSound(type: 'startup' | 'error' | 'notify' | 'empty-bin') {
+  if (typeof window === 'undefined') return;
+  try {
+    const ctx = new AudioContext();
+    const t = ctx.currentTime;
+    const beep = (freq: number, start: number, dur: number, vol = 0.2, wave: OscillatorType = 'sine') => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.type = wave;
+      osc.frequency.value = freq;
+      gain.gain.setValueAtTime(vol, t + start);
+      gain.gain.exponentialRampToValueAtTime(0.0001, t + start + dur);
+      osc.start(t + start);
+      osc.stop(t + start + dur + 0.05);
+    };
+    if (type === 'startup') {
+      beep(293.7, 0,    0.9, 0.12);
+      beep(369.9, 0.10, 0.8, 0.10);
+      beep(440,   0.20, 0.9, 0.10);
+      beep(587.3, 0.35, 1.2, 0.14);
+    } else if (type === 'error') {
+      beep(880, 0, 0.4, 0.22);
+    } else if (type === 'notify') {
+      beep(1100, 0,    0.22, 0.12);
+      beep(1320, 0.18, 0.22, 0.10);
+    } else if (type === 'empty-bin') {
+      const bufSize = Math.floor(ctx.sampleRate * 0.28);
+      const buf = ctx.createBuffer(1, bufSize, ctx.sampleRate);
+      const d = buf.getChannelData(0);
+      for (let i = 0; i < bufSize; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / bufSize) * 0.4;
+      const src = ctx.createBufferSource();
+      src.buffer = buf;
+      src.connect(ctx.destination);
+      src.start(t);
+    }
+    setTimeout(() => ctx.close().catch(() => {}), 6000);
+  } catch { /* AudioContext blocked or unavailable */ }
+}
+
 export default function RetroDesktop() {
   const [isRetro, setIsRetro] = useState(false);
   const [time, setTime] = useState('');
@@ -258,6 +300,8 @@ export default function RetroDesktop() {
   const [bsodRecovered, setBsodRecovered] = useState(false);
   const [showClockDialog, setShowClockDialog] = useState(false);
   const [clockTime, setClockTime] = useState('');
+  const [throbberActive, setThrobberActive] = useState(false);
+  const [notifBalloon, setNotifBalloon] = useState<null | 'updates' | 'security'>(null);
   const konamiRef = useRef<string[]>([]);
   const pathname = usePathname();
 
@@ -276,16 +320,16 @@ export default function RetroDesktop() {
       setShowRightClickDialog(false);
       return;
     }
-    const onContextMenu = (e: MouseEvent) => { e.preventDefault(); setShowRightClickDialog(true); };
+    const onContextMenu = (e: MouseEvent) => { e.preventDefault(); setShowRightClickDialog(true); playRetroSound('error'); };
     document.addEventListener('contextmenu', onContextMenu);
     return () => document.removeEventListener('contextmenu', onContextMenu);
   }, [isRetro]);
 
   useEffect(() => {
     if (!isRetro) { setVisibleAds([]); setShowStartMenu(false); return; }
-    const t1 = setTimeout(() => setVisibleAds(v => [...v, 0]), 3000);
-    const t2 = setTimeout(() => setVisibleAds(v => [...v, 1]), 7000);
-    const t3 = setTimeout(() => setVisibleAds(v => [...v, 2]), 12000);
+    const t1 = setTimeout(() => { setVisibleAds(v => [...v, 0]); playRetroSound('error'); }, 3000);
+    const t2 = setTimeout(() => { setVisibleAds(v => [...v, 1]); playRetroSound('error'); }, 7000);
+    const t3 = setTimeout(() => { setVisibleAds(v => [...v, 2]); playRetroSound('error'); }, 12000);
     return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
   }, [isRetro]);
 
@@ -349,6 +393,29 @@ export default function RetroDesktop() {
     return () => clearInterval(id);
   }, [showClockDialog]);
 
+  // ── IE throbber + XP startup sound ──────────────────────────────────
+  useEffect(() => {
+    if (!isRetro) { setThrobberActive(false); return; }
+    setThrobberActive(true);
+    playRetroSound('startup');
+    const t = setTimeout(() => setThrobberActive(false), 2800);
+    return () => clearTimeout(t);
+  }, [isRetro]);
+
+  // ── System-tray notification balloons ───────────────────────────────
+  useEffect(() => {
+    if (!isRetro) { setNotifBalloon(null); return; }
+    const t1 = setTimeout(() => { setNotifBalloon('updates');  playRetroSound('notify'); }, 20000);
+    const t2 = setTimeout(() => { setNotifBalloon('security'); playRetroSound('notify'); }, 48000);
+    return () => { clearTimeout(t1); clearTimeout(t2); };
+  }, [isRetro]);
+
+  useEffect(() => {
+    if (!notifBalloon) return;
+    const t = setTimeout(() => setNotifBalloon(null), 9000);
+    return () => clearTimeout(t);
+  }, [notifBalloon]);
+
 
   const startLwDownload = () => {
     setLwStage('downloading');
@@ -394,6 +461,17 @@ export default function RetroDesktop() {
           <div className="rd-br-title-left">
             <span className="rd-br-ie-logo">e</span>
             <span className="rd-br-title-text">LC3 — Lowcode Cloud Club — Microsoft Internet Explorer</span>
+          </div>
+          {/* IE throbber */}
+          <div className={`rd-throbber${throbberActive ? ' rd-throbber-spin' : ''}`} aria-hidden="true">
+            <svg viewBox="0 0 18 18" width="18" height="18">
+              <circle cx="9" cy="9" r="8.5" fill="#003da5"/>
+              <ellipse cx="9" cy="9" rx="4.5" ry="8.5" fill="none" stroke="#5b8ef5" strokeWidth="0.9"/>
+              <line x1="0.5" y1="9" x2="17.5" y2="9" stroke="#5b8ef5" strokeWidth="0.8"/>
+              <line x1="2"   y1="5.5" x2="16" y2="5.5" stroke="#5b8ef5" strokeWidth="0.6" opacity="0.7"/>
+              <line x1="2"   y1="12.5" x2="16" y2="12.5" stroke="#5b8ef5" strokeWidth="0.6" opacity="0.7"/>
+              <circle cx="9" cy="9" r="8.5" fill="none" stroke="#7aacff" strokeWidth="0.5" opacity="0.4"/>
+            </svg>
           </div>
           <div className="rd-br-winbtns">
             <span className="rd-br-wbtn">_</span>
@@ -747,7 +825,7 @@ Built with Microsoft FrontPage 2000.
             ))}
           </div>
           <div className="rb-toolbar">
-            <button className="rd-br-tbtn rb-empty-btn" onClick={() => setShowRecycleBin(false)}>
+            <button className="rd-br-tbtn rb-empty-btn" onClick={() => { setShowRecycleBin(false); playRetroSound('empty-bin'); }}>
               🗑 Empty Recycle Bin
             </button>
             <div className="rd-br-sep" />
@@ -984,11 +1062,84 @@ Built with Microsoft FrontPage 2000.
           <span className="rd-start-label">Start</span>
         </button>
         <div className="rd-taskbar-sep" aria-hidden="true" />
-        <div className="rd-taskbar-window">
-          <WinLogo />
-          <span>LC3 &ndash; Lowcode Cloud Club</span>
+        {/* Quick Launch */}
+        <div className="rd-quick-launch">
+          <button className="rd-ql-btn" title="Internet Explorer 6.0">
+            <span className="rd-ql-ie">e</span>
+          </button>
+          <button className="rd-ql-btn" title="Show Desktop">
+            <svg viewBox="0 0 14 14" width="14" height="14" aria-hidden="true">
+              <rect x="1" y="4" width="12" height="8" rx="1" fill="#7faaee" stroke="#c8d8f8" strokeWidth="1"/>
+              <rect x="3" y="1" width="5" height="5" rx="0.5" fill="#2a5bd4" stroke="#c8d8f8" strokeWidth="0.8"/>
+              <rect x="1" y="12" width="12" height="1.5" rx="0.5" fill="#2a5bd4"/>
+            </svg>
+          </button>
+          <button className="rd-ql-btn" title="Outlook Express">
+            <svg viewBox="0 0 14 14" width="14" height="14" aria-hidden="true">
+              <rect x="1" y="3" width="12" height="9" rx="1" fill="none" stroke="#c8d8f8" strokeWidth="1"/>
+              <polyline points="1,4 7,9 13,4" fill="none" stroke="#c8d8f8" strokeWidth="1"/>
+            </svg>
+          </button>
         </div>
+        <div className="rd-taskbar-sep" aria-hidden="true" />
+        {/* Open window buttons */}
+        <div className="rd-taskbar-windows">
+          <button className="rd-taskbar-window">
+            <WinLogo />
+            <span>LC3 &ndash; Lowcode Cloud Club</span>
+          </button>
+          {showLimeWire && (
+            <button className="rd-taskbar-window rd-tw-active">
+              <svg viewBox="0 0 14 14" width="13" height="13" aria-hidden="true"><rect x="1" y="1" width="12" height="12" rx="2" fill="#22c55e"/><polygon points="10,2 5,8 8,8 4,12 9,6 6,6" fill="#fff"/></svg>
+              <span>LimeWire 4.18.8</span>
+            </button>
+          )}
+          {showNotepad && (
+            <button className="rd-taskbar-window rd-tw-active">
+              <svg viewBox="0 0 14 14" width="13" height="13" aria-hidden="true"><rect x="2" y="1" width="10" height="12" rx="1" fill="#fffff0" stroke="#9ca3af" strokeWidth="1"/><rect x="2" y="1" width="10" height="3" fill="#4a90d9"/></svg>
+              <span>readme.txt — Notepad</span>
+            </button>
+          )}
+          {showRecycleBin && (
+            <button className="rd-taskbar-window rd-tw-active">
+              <svg viewBox="0 0 14 14" width="13" height="13" aria-hidden="true"><path d="M3,6 L4,13 L10,13 L11,6 Z" fill="#c8d0d8" stroke="#8090a0" strokeWidth="0.8"/><rect x="2" y="4" width="10" height="2.5" rx="0.5" fill="#b0bcc8" stroke="#8090a0" strokeWidth="0.8"/></svg>
+              <span>Recycle Bin</span>
+            </button>
+          )}
+          {showSparkNotes && (
+            <button className="rd-taskbar-window rd-tw-active">
+              <svg viewBox="0 0 14 14" width="13" height="13" aria-hidden="true"><rect x="2" y="1" width="9" height="12" rx="0.5" fill="#f5c518" stroke="#c8a000" strokeWidth="0.8"/><polygon points="9,2 6,7 8,7 5,12 10,6 7,6" fill="#1a1a1a"/></svg>
+              <span>SparkNotes</span>
+            </button>
+          )}
+        </div>
+        {/* System tray */}
         <div className="rd-taskbar-tray">
+          <button className="rd-tray-icon" title="MSN Messenger — Signed in as LC3Club">
+            <svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true">
+              <circle cx="8" cy="5" r="3" fill="#00b050"/>
+              <path d="M3 15 Q3 10 8 10 Q13 10 13 15" fill="#00b050"/>
+              <line x1="3" y1="13" x2="5.5" y2="10.5" stroke="#00b050" strokeWidth="1.5" strokeLinecap="round"/>
+              <line x1="13" y1="13" x2="10.5" y2="10.5" stroke="#00b050" strokeWidth="1.5" strokeLinecap="round"/>
+            </svg>
+          </button>
+          <button className="rd-tray-icon" title="Volume">
+            <svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true">
+              <polygon points="2,6 5,6 9,3 9,13 5,10 2,10" fill="#ffffff"/>
+              <path d="M11 5.5 Q13.5 8 11 10.5" fill="none" stroke="#ffffff" strokeWidth="1.3" strokeLinecap="round"/>
+              <path d="M12.5 3.5 Q16 8 12.5 12.5" fill="none" stroke="#ffffff" strokeWidth="1.3" strokeLinecap="round" opacity="0.6"/>
+            </svg>
+          </button>
+          <button className="rd-tray-icon" title="Local Area Connection — Connected">
+            <svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true">
+              <rect x="1" y="1" width="5" height="4" rx="0.8" fill="#7faaee" stroke="#c8d8f8" strokeWidth="0.7"/>
+              <rect x="10" y="1" width="5" height="4" rx="0.8" fill="#7faaee" stroke="#c8d8f8" strokeWidth="0.7"/>
+              <rect x="5.5" y="11" width="5" height="4" rx="0.8" fill="#7faaee" stroke="#c8d8f8" strokeWidth="0.7"/>
+              <line x1="3.5" y1="5" x2="8"   y2="11" stroke="#c8d8f8" strokeWidth="0.8"/>
+              <line x1="12.5" y1="5" x2="8"  y2="11" stroke="#c8d8f8" strokeWidth="0.8"/>
+            </svg>
+          </button>
+          <div className="rd-tray-sep" aria-hidden="true" />
           <button className="rd-clock rd-clock-btn" aria-live="polite" onClick={() => setShowClockDialog(c => !c)} title="Click to open Date/Time Properties">{time}</button>
         </div>
       </div>
@@ -1048,6 +1199,26 @@ Built with Microsoft FrontPage 2000.
             <br />
             <p className="rd-bsod-prompt">Press any key to continue <span className="rd-bsod-cursor">_</span></p>
           </div>
+        </div>
+      )}
+
+      {/* System-tray notification balloon */}
+      {notifBalloon && (
+        <div className="rd-notif-balloon">
+          <div className="rd-notif-icon" aria-hidden="true">
+            {notifBalloon === 'updates' ? '🛡️' : '⚠️'}
+          </div>
+          <div className="rd-notif-text">
+            <div className="rd-notif-title">
+              {notifBalloon === 'updates' ? 'Updates are ready to install' : 'Your computer may be at risk'}
+            </div>
+            <div className="rd-notif-body">
+              {notifBalloon === 'updates'
+                ? 'Click here to install these updates. They include critical security patches for Windows XP.'
+                : 'Virus protection is out of date. Click here to fix this problem with Windows Security Center.'}
+            </div>
+          </div>
+          <button className="rd-notif-close" onClick={() => setNotifBalloon(null)} aria-label="Close notification">×</button>
         </div>
       )}
 

@@ -2750,6 +2750,180 @@ body {
 }
 .rd-clock-btn:hover { background: rgba(255,255,255,0.15); border-radius: 2px; }
 
+/* ── IE throbber ─────────────────────────────── */
+.rd-throbber {
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin: 0 4px 0 auto;
+}
+.rd-throbber-spin svg {
+  animation: rd-throb 0.9s linear infinite;
+  transform-origin: center;
+}
+@keyframes rd-throb {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* ── Quick Launch strip ──────────────────────── */
+.rd-quick-launch {
+  display: flex;
+  align-items: center;
+  gap: 1px;
+  padding: 0 4px;
+  height: 100%;
+  flex-shrink: 0;
+}
+.rd-ql-btn {
+  width: 22px;
+  height: 22px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 0;
+  flex-shrink: 0;
+}
+.rd-ql-btn:hover { background: rgba(255,255,255,0.22); }
+.rd-ql-ie {
+  font-size: 15px;
+  font-weight: bold;
+  color: #7faaff;
+  font-family: 'Times New Roman', serif;
+  font-style: italic;
+  line-height: 1;
+}
+
+/* ── Window-buttons strip ────────────────────── */
+.rd-taskbar-windows {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  padding: 0 3px;
+}
+/* Active (currently open) window button */
+.rd-tw-active {
+  background: linear-gradient(180deg, #1a4a9a 0%, #2560cc 100%) !important;
+  box-shadow: inset 1px 1px 0 rgba(255,255,255,0.25), inset -1px -1px 0 rgba(0,0,0,0.25) !important;
+}
+.rd-tw-active:hover {
+  background: linear-gradient(180deg, #2055aa 0%, #2d6ae0 100%) !important;
+}
+
+/* ── System-tray icons ───────────────────────── */
+.rd-tray-icon {
+  width: 20px;
+  height: 30px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1px;
+  flex-shrink: 0;
+}
+.rd-tray-icon:hover { background: rgba(255,255,255,0.15); }
+.rd-tray-sep {
+  width: 1px;
+  height: 20px;
+  background: rgba(255,255,255,0.3);
+  margin: 0 2px;
+  flex-shrink: 0;
+}
+
+/* ── Notification balloon ────────────────────── */
+.rd-notif-balloon {
+  position: fixed;
+  bottom: 50px;
+  right: 6px;
+  z-index: 9998;
+  background: #ffffff;
+  border: 1px solid #0066cc;
+  border-radius: 6px 6px 6px 6px;
+  padding: 8px 28px 8px 10px;
+  max-width: 280px;
+  min-width: 200px;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  box-shadow: 2px 2px 8px rgba(0,0,0,0.35);
+  font-family: 'Tahoma', 'Arial', sans-serif;
+  pointer-events: auto;
+  animation: notif-slide-in 0.2s ease-out;
+}
+@keyframes notif-slide-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+/* Downward tail pointing toward tray */
+.rd-notif-balloon::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  right: 22px;
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 0 solid transparent;
+  border-top: 8px solid #0066cc;
+}
+.rd-notif-balloon::before {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  right: 23px;
+  width: 0;
+  height: 0;
+  border-left: 7px solid transparent;
+  border-right: 0 solid transparent;
+  border-top: 7px solid #ffffff;
+  z-index: 1;
+}
+.rd-notif-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+.rd-notif-text { flex: 1; min-width: 0; }
+.rd-notif-title {
+  font-size: 11px;
+  font-weight: bold;
+  color: #003399;
+  margin-bottom: 3px;
+  font-family: 'Tahoma', sans-serif;
+}
+.rd-notif-body {
+  font-size: 10px;
+  color: #333333;
+  line-height: 1.45;
+  font-family: 'Tahoma', sans-serif;
+}
+.rd-notif-close {
+  position: absolute;
+  top: 4px;
+  right: 5px;
+  width: 16px;
+  height: 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+  color: #666666;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  padding: 0;
+}
+.rd-notif-close:hover { color: #000000; }
+
 /* ── Clock / Date-Time dialog ────────────────── */
 .rd-clock-dialog {
   position: fixed;
