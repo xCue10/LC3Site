@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { readJSON, Event, Project, Member, Stats, SiteSettings, Post, SponsorsConfig, CaseStudiesConfig, HomeContent, ProjectStatus } from '@/lib/data';
 import ScrollReveal from './components/ScrollReveal';
 import HeroTyping from './components/HeroTyping';
@@ -652,8 +653,7 @@ export default function HomePage() {
                 s.logoUrl ? (
                   <a key={s.id} href={s.website || undefined} target="_blank" rel="noopener noreferrer"
                     className="opacity-60 hover:opacity-100 transition-opacity grayscale hover:grayscale-0">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={s.logoUrl} alt={s.name} className="h-10 object-contain" />
+                    <Image src={s.logoUrl} alt={s.name} width={160} height={40} className="h-10 w-auto object-contain" />
                   </a>
                 ) : (
                   <a key={s.id} href={s.website || undefined} target="_blank" rel="noopener noreferrer"
