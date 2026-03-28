@@ -1,16 +1,20 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Press_Start_2P, Bebas_Neue } from "next/font/google";
 import "./globals.css";
+import dynamic from "next/dynamic";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import CursorTrail from "./components/CursorTrail";
 import AnnouncementBanner from "./components/AnnouncementBanner";
-import RetroMusic from "./components/RetroMusic";
 import ScrollToTop from "./components/ScrollToTop";
-import TimeMachine from "./components/TimeMachine";
-import RetroDesktop from "./components/RetroDesktop";
-import AIMBuddy from "./components/AIMBuddy";
-import Clippy from "./components/Clippy";
+
+// Retro components — deferred so their JS doesn't block the initial page load
+// for the ~99% of visits where retro mode is never activated
+const RetroDesktop = dynamic(() => import("./components/RetroDesktop"), { ssr: false });
+const AIMBuddy     = dynamic(() => import("./components/AIMBuddy"),     { ssr: false });
+const Clippy       = dynamic(() => import("./components/Clippy"),       { ssr: false });
+const RetroMusic   = dynamic(() => import("./components/RetroMusic"),   { ssr: false });
+const TimeMachine  = dynamic(() => import("./components/TimeMachine"),  { ssr: false });
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

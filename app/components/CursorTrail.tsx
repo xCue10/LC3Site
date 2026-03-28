@@ -35,15 +35,6 @@ export default function CursorTrail() {
     resize();
     window.addEventListener('resize', resize);
 
-    const onMove = (e: MouseEvent) => {
-      const now = Date.now();
-      if (now - lastAdd < THROTTLE_MS) return;
-      lastAdd = now;
-      particles.push({ x: e.clientX, y: e.clientY, created: now, size: Math.random() * 2.5 + 1.5 });
-      if (particles.length > MAX) particles.shift();
-    };
-    window.addEventListener('mousemove', onMove);
-
     const draw = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       const now = Date.now();
@@ -63,14 +54,33 @@ export default function CursorTrail() {
         ctx.fillStyle = g;
         ctx.fill();
       }
-      raf = requestAnimationFrame(draw);
+      // Only keep looping while there are live particles
+      if (particles.length > 0) {
+        raf = requestAnimationFrame(draw);
+      } else {
+        raf = 0;
+      }
     };
-    draw();
+
+    const startDraw = () => {
+      if (raf === 0) raf = requestAnimationFrame(draw);
+    };
+
+    const onMoveWithStart = (e: MouseEvent) => {
+      const now = Date.now();
+      if (now - lastAdd < THROTTLE_MS) return;
+      lastAdd = now;
+      particles.push({ x: e.clientX, y: e.clientY, created: now, size: Math.random() * 2.5 + 1.5 });
+      if (particles.length > MAX) particles.shift();
+      startDraw();
+    };
+
+    window.addEventListener('mousemove', onMoveWithStart);
 
     return () => {
       window.removeEventListener('resize', resize);
-      window.removeEventListener('mousemove', onMove);
-      cancelAnimationFrame(raf);
+      window.removeEventListener('mousemove', onMoveWithStart);
+      if (raf) cancelAnimationFrame(raf);
     };
   }, []);
 
