@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { readJSON, AboutContent } from '@/lib/data';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 30;
 
 export const metadata: Metadata = {
   title: 'About',

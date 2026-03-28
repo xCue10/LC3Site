@@ -1,7 +1,7 @@
 import { readJSON, Project, ProjectStatus } from '@/lib/data';
 import type { Metadata } from 'next';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 30;
 
 export const metadata: Metadata = {
   title: 'Projects',

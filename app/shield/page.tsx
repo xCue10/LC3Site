@@ -3,7 +3,7 @@ import { readJSON } from '@/lib/data';
 import ShieldDashboardPreview from '@/app/components/ShieldDashboardPreview';
 import type { Metadata } from 'next';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 30;
 
 export const metadata: Metadata = {
   title: 'LC3 Shield — Security Scanner',

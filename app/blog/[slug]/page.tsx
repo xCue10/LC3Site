@@ -1,11 +1,12 @@
 import { readJSON, Post } from '@/lib/data';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import type { Metadata } from 'next';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 30;
 
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
@@ -40,8 +41,9 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
 
       <article>
         {post.coverImage && (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={post.coverImage} alt={post.title} className="w-full object-contain rounded-2xl mb-8 bg-slate-100 dark:bg-[#111a2e]" />
+          <div className="relative w-full aspect-video rounded-2xl mb-8 overflow-hidden bg-slate-100 dark:bg-[#111a2e]">
+            <Image src={post.coverImage} alt={post.title} fill sizes="(max-width: 672px) 100vw, 672px" className="object-cover" />
+          </div>
         )}
         <div className="mb-8">
           <div className="flex items-center gap-2 mb-4">

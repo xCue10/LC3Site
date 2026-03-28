@@ -1,7 +1,9 @@
 'use client';
 
-import { useState, useRef } from 'react';
-import HCaptcha from '@hcaptcha/react-hcaptcha';
+import { useState } from 'react';
+import dynamic from 'next/dynamic';
+
+const HCaptcha = dynamic(() => import('@hcaptcha/react-hcaptcha'), { ssr: false });
 
 const HCAPTCHA_SITE_KEY = process.env.NEXT_PUBLIC_HCAPTCHA_SITE_KEY ?? '';
 
@@ -53,7 +55,7 @@ export default function HireForm() {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [error, setError] = useState('');
   const [captchaToken, setCaptchaToken] = useState('');
-  const captchaRef = useRef<HCaptcha>(null);
+  const [captchaKey, setCaptchaKey] = useState(0);
 
   const fieldErrors = {
     companyName: !form.companyName.trim() ? 'Company name is required' : '',
@@ -91,7 +93,7 @@ export default function HireForm() {
     } catch (err) {
       setStatus('error');
       setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.');
-      captchaRef.current?.resetCaptcha();
+      setCaptchaKey((k) => k + 1);
       setCaptchaToken('');
     }
   };
@@ -417,7 +419,7 @@ export default function HireForm() {
             {HCAPTCHA_SITE_KEY && (
               <div>
                 <HCaptcha
-                  ref={captchaRef}
+                  key={captchaKey}
                   sitekey={HCAPTCHA_SITE_KEY}
                   onVerify={setCaptchaToken}
                   onExpire={() => setCaptchaToken('')}

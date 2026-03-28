@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback, useMemo } from 'react';
+import Image from 'next/image';
 
 export interface GalleryImage {
   public_id: string;
@@ -133,13 +134,13 @@ export default function GalleryClient({ images }: { images: GalleryImage[] }) {
                     className="group relative rounded-2xl overflow-hidden bg-slate-100 dark:bg-[#111a2e] border border-slate-200 dark:border-[#1e2d45] shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500"
                   >
                     {/* Image */}
-                    <div className="aspect-[4/3] overflow-hidden">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
+                    <div className="aspect-[4/3] overflow-hidden relative">
+                      <Image
                         src={thumbUrl(img.secure_url)}
                         alt={getEvent(img) || 'Gallery photo'}
-                        loading="lazy"
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        fill
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
                       />
                     </div>
 

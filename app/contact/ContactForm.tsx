@@ -1,8 +1,10 @@
 'use client';
 
-import { useState, useRef } from 'react';
-import HCaptcha from '@hcaptcha/react-hcaptcha';
+import { useState } from 'react';
+import dynamic from 'next/dynamic';
 import type { SiteSettings } from '@/lib/data';
+
+const HCaptcha = dynamic(() => import('@hcaptcha/react-hcaptcha'), { ssr: false });
 
 const majors = [
   'Computer Science',
@@ -98,7 +100,7 @@ export default function ContactForm({ settings }: { settings: SiteSettings }) {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [error, setError] = useState('');
   const [captchaToken, setCaptchaToken] = useState('');
-  const captchaRef = useRef<HCaptcha>(null);
+  const [captchaKey, setCaptchaKey] = useState(0);
 
   const fieldErrors = {
     name: !form.name.trim() ? 'Name is required' : '',
@@ -134,11 +136,11 @@ export default function ContactForm({ settings }: { settings: SiteSettings }) {
       setStatus('success');
       setForm({ name: '', email: '', major: '', reason: '' });
       setCaptchaToken('');
-      captchaRef.current?.resetCaptcha();
+      setCaptchaKey((k) => k + 1);
     } catch (err) {
       setStatus('error');
       setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.');
-      captchaRef.current?.resetCaptcha();
+      setCaptchaKey((k) => k + 1);
       setCaptchaToken('');
     }
   };
@@ -347,7 +349,7 @@ export default function ContactForm({ settings }: { settings: SiteSettings }) {
             {HCAPTCHA_SITE_KEY && (
               <div>
                 <HCaptcha
-                  ref={captchaRef}
+                  key={captchaKey}
                   sitekey={HCAPTCHA_SITE_KEY}
                   onVerify={setCaptchaToken}
                   onExpire={() => setCaptchaToken('')}

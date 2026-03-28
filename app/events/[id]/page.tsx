@@ -4,7 +4,7 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import EventRSVPForm from '../EventRSVPForm';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 30;
 
 function formatDate(dateStr: string) {
   const d = new Date(dateStr + 'T00:00:00');

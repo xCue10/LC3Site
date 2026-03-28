@@ -4,7 +4,7 @@ import Link from 'next/link';
 import EventRSVPForm from './EventRSVPForm';
 import EventCountdown from '@/app/components/EventCountdown';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 30;
 
 export const metadata: Metadata = {
   title: 'Events',

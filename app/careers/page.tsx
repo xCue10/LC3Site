@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import CareersLiveLanding from './CareersLiveLanding';
 import CareersDashboardPreview from '@/app/components/CareersDashboardPreview';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 30;
 
 export const metadata: Metadata = {
   title: 'LC3 Careers — AI-Powered Job Board',

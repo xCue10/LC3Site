@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 import { readJSON, Post } from '@/lib/data';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 30;
 
 export const metadata: Metadata = {
   title: 'Blog',
@@ -139,8 +140,9 @@ export default function BlogPage() {
               </svg>
               {/* Thumbnail */}
               {post.coverImage ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src={post.coverImage} alt={post.title} className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl object-cover flex-shrink-0 bg-slate-100 dark:bg-[#111a2e]" />
+                <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl flex-shrink-0 relative overflow-hidden bg-slate-100 dark:bg-[#111a2e]">
+                  <Image src={post.coverImage} alt={post.title} fill sizes="96px" className="object-cover" />
+                </div>
               ) : (
                 <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl flex-shrink-0 bg-gradient-to-br from-violet-100 to-blue-100 dark:from-violet-500/10 dark:to-blue-500/10 flex items-center justify-center">
                   <svg className="w-7 h-7 text-violet-400 dark:text-violet-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">

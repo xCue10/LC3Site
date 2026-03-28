@@ -6,7 +6,7 @@ import AnimatedStat from './components/AnimatedStat';
 import StaggerReveal from './components/StaggerReveal';
 import type { Metadata } from 'next';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 30;
 
 export const metadata: Metadata = {
   title: 'LC3 - Lowcode Cloud Club',

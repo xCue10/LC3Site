@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import GalleryClient, { type GalleryImage } from './GalleryClient';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 30;
 
 export const metadata: Metadata = {
   title: 'Gallery',
