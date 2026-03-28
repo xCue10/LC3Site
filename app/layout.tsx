@@ -42,16 +42,28 @@ export const metadata: Metadata = {
   },
   description: 'LC3 is a student tech club at the College of Southern Nevada focused on low-code platforms, cloud computing, and real-world software projects. Join us to build, learn, and connect.',
   keywords: ['LC3', 'Lowcode Cloud Club', 'tech club', 'Power Platform', 'Azure', 'student club', 'software development', 'College of Southern Nevada', 'CSN'],
+  alternates: {
+    canonical: '/',
+  },
   openGraph: {
     type: 'website',
     siteName: 'LC3 - Lowcode Cloud Club',
     title: 'LC3 - Lowcode Cloud Club',
     description: 'Building the future through code, collaboration, and curiosity.',
+    images: [
+      {
+        url: '/opengraph-image',
+        width: 1200,
+        height: 630,
+        alt: 'LC3 - Lowcode Cloud Club',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'LC3 - Lowcode Cloud Club',
     description: 'Building the future through code, collaboration, and curiosity.',
+    images: ['/opengraph-image'],
   },
 };
 
