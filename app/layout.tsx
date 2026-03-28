@@ -77,7 +77,7 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} ${pressStart2P.variable} ${bebasNeue.variable} antialiased min-h-screen flex flex-col`}>
         <script
           dangerouslySetInnerHTML={{
-            __html: `try{const r=localStorage.getItem('lc3-retro')==='true';const d=localStorage.getItem('lc3-dark')==='true'||localStorage.getItem('lc3-theme')==='dark';if(r)document.documentElement.classList.add('retro');else if(d)document.documentElement.classList.add('dark');}catch{}`,
+            __html: `try{const r=localStorage.getItem('lc3-retro')==='true';const saved=localStorage.getItem('lc3-dark')??localStorage.getItem('lc3-theme');const d=saved!==null?saved==='true'||saved==='dark':window.matchMedia('(prefers-color-scheme: dark)').matches;if(r)document.documentElement.classList.add('retro');else if(d)document.documentElement.classList.add('dark');}catch{}`,
           }}
         />
         <CursorTrail />

@@ -77,20 +77,42 @@ const infoItems = (settings: SiteSettings) => [
   },
 ];
 
-const inputClass = 'w-full bg-white border border-slate-300 text-slate-900 placeholder:text-slate-400 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-violet-400 focus:ring-1 focus:ring-violet-400/30 transition-all dark:bg-[#111a2e] dark:border-[#1e2d45] dark:text-white dark:placeholder:text-slate-600 dark:focus:border-violet-500/50 dark:focus:ring-violet-500/30';
+const inputBase = 'w-full bg-white text-slate-900 placeholder:text-slate-400 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 transition-all dark:bg-[#111a2e] dark:text-white dark:placeholder:text-slate-600';
+const inputClass = `${inputBase} border border-slate-300 focus:border-violet-400 focus:ring-violet-400/30 dark:border-[#1e2d45] dark:focus:border-violet-500/50 dark:focus:ring-violet-500/30`;
+const inputError = `${inputBase} border border-red-400 focus:border-red-400 focus:ring-red-400/20 dark:border-red-500/60 dark:focus:border-red-500/60`;
 const labelClass = 'block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2';
+
+function FieldError({ msg }: { msg: string }) {
+  return <p className="mt-1.5 text-xs text-red-500 dark:text-red-400 flex items-center gap-1"><svg className="w-3 h-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd"/></svg>{msg}</p>;
+}
+
+function validateEmail(v: string) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+}
 
 const HCAPTCHA_SITE_KEY = process.env.NEXT_PUBLIC_HCAPTCHA_SITE_KEY ?? '';
 
 export default function ContactForm({ settings }: { settings: SiteSettings }) {
   const [form, setForm] = useState({ name: '', email: '', major: '', reason: '' });
+  const [touched, setTouched] = useState({ name: false, email: false, major: false, reason: false });
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [error, setError] = useState('');
   const [captchaToken, setCaptchaToken] = useState('');
   const captchaRef = useRef<HCaptcha>(null);
 
+  const fieldErrors = {
+    name: !form.name.trim() ? 'Name is required' : '',
+    email: !form.email.trim() ? 'Email is required' : !validateEmail(form.email) ? 'Enter a valid email address' : '',
+    major: !form.major ? 'Please select your major' : '',
+    reason: !form.reason.trim() ? 'Please tell us why you want to join' : form.reason.trim().length < 20 ? 'Must be at least 20 characters' : '',
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    setTouched((prev) => ({ ...prev, [e.target.name]: true }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -283,38 +305,42 @@ export default function ContactForm({ settings }: { settings: SiteSettings }) {
               <label htmlFor="name" className={labelClass}>
                 Full Name <span className="text-violet-600 dark:text-violet-400">*</span>
               </label>
-              <input id="name" name="name" type="text" required value={form.name} onChange={handleChange}
+              <input id="name" name="name" type="text" required value={form.name} onChange={handleChange} onBlur={handleBlur}
                 placeholder="Your full name"
-                className={inputClass} />
+                className={touched.name && fieldErrors.name ? inputError : inputClass} />
+              {touched.name && fieldErrors.name && <FieldError msg={fieldErrors.name} />}
             </div>
 
             <div>
               <label htmlFor="email" className={labelClass}>
                 Email Address <span className="text-violet-600 dark:text-violet-400">*</span>
               </label>
-              <input id="email" name="email" type="email" required value={form.email} onChange={handleChange}
+              <input id="email" name="email" type="email" required value={form.email} onChange={handleChange} onBlur={handleBlur}
                 placeholder="you@university.edu"
-                className={inputClass} />
+                className={touched.email && fieldErrors.email ? inputError : inputClass} />
+              {touched.email && fieldErrors.email && <FieldError msg={fieldErrors.email} />}
             </div>
 
             <div>
               <label htmlFor="major" className={labelClass}>
                 Major <span className="text-violet-600 dark:text-violet-400">*</span>
               </label>
-              <select id="major" name="major" required value={form.major} onChange={handleChange}
-                className={`${inputClass} appearance-none cursor-pointer`}>
+              <select id="major" name="major" required value={form.major} onChange={handleChange} onBlur={handleBlur}
+                className={`${touched.major && fieldErrors.major ? inputError : inputClass} appearance-none cursor-pointer`}>
                 <option value="">Select your major...</option>
                 {majors.map((m) => <option key={m} value={m} className="dark:bg-[#111a2e]">{m}</option>)}
               </select>
+              {touched.major && fieldErrors.major && <FieldError msg={fieldErrors.major} />}
             </div>
 
             <div>
               <label htmlFor="reason" className={labelClass}>
                 Why do you want to join? <span className="text-violet-600 dark:text-violet-400">*</span>
               </label>
-              <textarea id="reason" name="reason" required rows={4} maxLength={1000} value={form.reason} onChange={handleChange}
+              <textarea id="reason" name="reason" required rows={4} maxLength={1000} value={form.reason} onChange={handleChange} onBlur={handleBlur}
                 placeholder="Tell us about yourself, your interests, and what you hope to get out of LC3..."
-                className={`${inputClass} resize-none`} />
+                className={`${touched.reason && fieldErrors.reason ? inputError : inputClass} resize-none`} />
+              {touched.reason && fieldErrors.reason && <FieldError msg={fieldErrors.reason} />}
             </div>
 
             {/* hCaptcha widget */}

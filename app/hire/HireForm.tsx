@@ -15,9 +15,19 @@ const timelines = ['ASAP', '1–3 months', '3–6 months', '6+ months', 'Flexibl
 const durations = ['Summer (3 months)', 'Part-time (ongoing)', 'Full-time', 'Semester-long', 'Flexible'];
 const compensations = ['Paid', 'Unpaid', 'Stipend', 'Course Credit', 'TBD'];
 
-const inputClass = 'w-full bg-white border border-slate-300 text-slate-900 placeholder:text-slate-400 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-violet-400 focus:ring-1 focus:ring-violet-400/30 transition-all dark:bg-[#111a2e] dark:border-[#1e2d45] dark:text-white dark:placeholder:text-slate-600 dark:focus:border-violet-500/50 dark:focus:ring-violet-500/30';
+const inputBase = 'w-full bg-white text-slate-900 placeholder:text-slate-400 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 transition-all dark:bg-[#111a2e] dark:text-white dark:placeholder:text-slate-600';
+const inputClass = `${inputBase} border border-slate-300 focus:border-violet-400 focus:ring-violet-400/30 dark:border-[#1e2d45] dark:focus:border-violet-500/50 dark:focus:ring-violet-500/30`;
+const inputError = `${inputBase} border border-red-400 focus:border-red-400 focus:ring-red-400/20 dark:border-red-500/60 dark:focus:border-red-500/60`;
 const selectClass = `${inputClass} appearance-none cursor-pointer`;
 const labelClass = 'block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2';
+
+function FieldError({ msg }: { msg: string }) {
+  return <p className="mt-1.5 text-xs text-red-500 dark:text-red-400 flex items-center gap-1"><svg className="w-3 h-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd"/></svg>{msg}</p>;
+}
+
+function validateEmail(v: string) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+}
 
 export default function HireForm() {
   const [inquiryType, setInquiryType] = useState<'project' | 'internship' | 'speaker'>('project');
@@ -27,6 +37,7 @@ export default function HireForm() {
     positionTitle: '', duration: '', compensation: '', requiredSkills: '',
     topic: '', availability: '',
   });
+  const [touched, setTouched] = useState({ companyName: false, contactName: false, email: false, description: false });
 
   const switchInquiryType = (type: 'project' | 'internship' | 'speaker') => {
     setInquiryType(type);
@@ -44,8 +55,20 @@ export default function HireForm() {
   const [captchaToken, setCaptchaToken] = useState('');
   const captchaRef = useRef<HCaptcha>(null);
 
+  const fieldErrors = {
+    companyName: !form.companyName.trim() ? 'Company name is required' : '',
+    contactName: !form.contactName.trim() ? 'Your name is required' : '',
+    email: !form.email.trim() ? 'Email is required' : !validateEmail(form.email) ? 'Enter a valid email address' : '',
+    description: !form.description.trim() ? 'Description is required' : form.description.trim().length < 20 ? 'Must be at least 20 characters' : '',
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    const name = e.target.name as keyof typeof touched;
+    if (name in touched) setTouched((prev) => ({ ...prev, [name]: true }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -292,17 +315,20 @@ export default function HireForm() {
             <div className="grid sm:grid-cols-2 gap-4">
               <div>
                 <label htmlFor="companyName" className={labelClass}>Company Name <span className="text-violet-600 dark:text-violet-400">*</span></label>
-                <input id="companyName" name="companyName" type="text" required value={form.companyName} onChange={handleChange} placeholder="Acme Corp" className={inputClass} />
+                <input id="companyName" name="companyName" type="text" required value={form.companyName} onChange={handleChange} onBlur={handleBlur} placeholder="Acme Corp" className={touched.companyName && fieldErrors.companyName ? inputError : inputClass} />
+                {touched.companyName && fieldErrors.companyName && <FieldError msg={fieldErrors.companyName} />}
               </div>
               <div>
                 <label htmlFor="contactName" className={labelClass}>Your Name <span className="text-violet-600 dark:text-violet-400">*</span></label>
-                <input id="contactName" name="contactName" type="text" required value={form.contactName} onChange={handleChange} placeholder="Jane Smith" className={inputClass} />
+                <input id="contactName" name="contactName" type="text" required value={form.contactName} onChange={handleChange} onBlur={handleBlur} placeholder="Jane Smith" className={touched.contactName && fieldErrors.contactName ? inputError : inputClass} />
+                {touched.contactName && fieldErrors.contactName && <FieldError msg={fieldErrors.contactName} />}
               </div>
             </div>
 
             <div>
               <label htmlFor="email" className={labelClass}>Work Email <span className="text-violet-600 dark:text-violet-400">*</span></label>
-              <input id="email" name="email" type="email" required value={form.email} onChange={handleChange} placeholder="jane@company.com" className={inputClass} />
+              <input id="email" name="email" type="email" required value={form.email} onChange={handleChange} onBlur={handleBlur} placeholder="jane@company.com" className={touched.email && fieldErrors.email ? inputError : inputClass} />
+              {touched.email && fieldErrors.email && <FieldError msg={fieldErrors.email} />}
             </div>
 
             {/* Project-specific fields */}
@@ -376,14 +402,15 @@ export default function HireForm() {
               </label>
               <textarea
                 id="description" name="description" required rows={4}
-                value={form.description} onChange={handleChange}
+                value={form.description} onChange={handleChange} onBlur={handleBlur}
                 placeholder={inquiryType === 'project'
                   ? 'Describe what you need built, the problem it solves, and any technical requirements...'
                   : inquiryType === 'speaker'
                   ? 'Tell us a bit about yourself, your role, and what you\'d like to cover in your talk...'
                   : 'Describe the role, day-to-day responsibilities, and what the intern will learn or build...'}
-                className={`${inputClass} resize-none`}
+                className={`${touched.description && fieldErrors.description ? inputError : inputClass} resize-none`}
               />
+              {touched.description && fieldErrors.description && <FieldError msg={fieldErrors.description} />}
             </div>
 
             {/* hCaptcha widget */}
