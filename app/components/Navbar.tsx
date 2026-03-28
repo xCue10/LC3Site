@@ -66,6 +66,7 @@ export default function Navbar() {
   const [moreOpen, setMoreOpen] = useState(false);
   const [isDark, setIsDark] = useState(false);
   const [isRetro, setIsRetro] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const moreRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -89,6 +90,12 @@ export default function Navbar() {
     };
     document.addEventListener('mousedown', handler);
     return () => document.removeEventListener('mousedown', handler);
+  }, []);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 10);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   const toggleDark = () => {
@@ -120,7 +127,7 @@ export default function Navbar() {
 
   const headerClass = isRetro
     ? 'sticky top-0 z-50 border-b-2 border-[#00ccff] bg-[#000c18]/96 shadow-[0_2px_24px_rgba(0,204,255,0.35)]'
-    : 'sticky top-0 z-50 border-b border-slate-200 bg-white/95 backdrop-blur-xl dark:border-[#1e2d45] dark:bg-[#080d18]/85';
+    : `sticky top-0 z-50 border-b border-slate-200 bg-white/95 backdrop-blur-xl dark:border-[#1e2d45] dark:bg-[#080d18]/85 transition-shadow${scrolled ? ' shadow-sm shadow-slate-900/5 dark:shadow-black/25' : ''}`;
 
   const linkCls = (active: boolean) =>
     isRetro
@@ -299,7 +306,7 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       {menuOpen && (
-        <div className={mobileMenuClass}>
+        <div className={mobileMenuClass} style={{animation:'mobile-menu-in 0.18s ease-out'}}>
           {allLinks.map(({ href, label }) => {
             const isActive = pathname === href;
             return (

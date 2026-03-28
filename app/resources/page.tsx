@@ -47,27 +47,31 @@ export default function ResourcesPage() {
   }, {});
 
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 py-16">
-
-      {/* Header */}
-      <div className="grid md:grid-cols-2 gap-10 items-center mb-14">
-        {/* Left: text */}
-        <div>
-          <p className="text-violet-600 dark:text-violet-400 text-sm font-medium mb-2">Curated by the community</p>
-          <h1 className="text-4xl sm:text-5xl font-bold text-slate-900 dark:text-white mb-4">Resources</h1>
-          <p className="text-slate-500 mb-6">
-            Tools, tutorials, and references to help you learn and build — organized by topic.
-          </p>
-          {resources.length > 0 && (
-            <div className="inline-flex items-center gap-2 bg-slate-100 border border-slate-200 text-slate-500 text-sm px-4 py-1.5 rounded-full dark:bg-white/5 dark:border-white/10 dark:text-slate-400">
-              <span className="w-1.5 h-1.5 bg-violet-500 rounded-full dark:bg-violet-400" />
-              {resources.length} resource{resources.length !== 1 ? 's' : ''} across {categories.length} categories
+    <div>
+      {/* Hero */}
+      <section className="relative overflow-hidden border-b border-slate-200 dark:border-[#1e2d45]">
+        <div className="absolute inset-0 bg-gradient-to-br from-cyan-50/50 via-blue-50/30 to-transparent dark:from-cyan-950/15 dark:via-blue-950/10 dark:to-transparent pointer-events-none" />
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-400/35 to-transparent pointer-events-none" />
+        <div className="absolute -top-20 -left-20 w-64 h-64 bg-cyan-300/6 dark:bg-cyan-500/8 rounded-full blur-3xl pointer-events-none" style={{animation:'hero-float-b 11s ease-in-out infinite'}} />
+        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 py-14 sm:py-18">
+          <div className="grid md:grid-cols-2 gap-10 items-center">
+            {/* Left: text */}
+            <div>
+              <p className="text-violet-600 dark:text-violet-400 text-sm font-medium mb-2">Curated by the community</p>
+              <h1 className="text-4xl sm:text-5xl font-bold text-slate-900 dark:text-white mb-4">Resources</h1>
+              <p className="text-slate-500 mb-6">
+                Tools, tutorials, and references to help you learn and build — organized by topic.
+              </p>
+              {resources.length > 0 && (
+                <div className="inline-flex items-center gap-2 bg-slate-100 border border-slate-200 text-slate-500 text-sm px-4 py-1.5 rounded-full dark:bg-white/5 dark:border-white/10 dark:text-slate-400">
+                  <span className="w-1.5 h-1.5 bg-violet-500 rounded-full dark:bg-violet-400" />
+                  {resources.length} resource{resources.length !== 1 ? 's' : ''} across {categories.length} categories
+                </div>
+              )}
             </div>
-          )}
-        </div>
 
-        {/* Right: SVG */}
-        <div className="flex justify-center md:justify-end overflow-hidden">
+            {/* Right: SVG */}
+            <div className="flex justify-center md:justify-end overflow-hidden">
           <svg width="320" height="140" viewBox="0 0 320 140" fill="none" className="opacity-90 dark:opacity-80" xmlns="http://www.w3.org/2000/svg">
             <defs>
               <style>{`
@@ -158,8 +162,12 @@ export default function ResourcesPage() {
             <circle cx="26" cy="114" r="2" fill="#818cf8" opacity="0.6" style={{animation:'res2-spark 2.3s ease-in-out infinite 1.4s'}}/>
             <circle cx="294" cy="114" r="2.5" fill="#0891b2" opacity="0.65" style={{animation:'res2-spark 2.3s ease-in-out infinite 2.1s'}}/>
           </svg>
+            </div>
+          </div>
         </div>
-      </div>
+      </section>
+      {/* Content */}
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-16">
 
       {/* Category pills nav */}
       {categories.length > 1 && (
@@ -227,6 +235,7 @@ export default function ResourcesPage() {
           })}
         </div>
       )}
+      </div>
     </div>
   );
 }

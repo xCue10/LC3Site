@@ -6,6 +6,7 @@ import Footer from "./components/Footer";
 import CursorTrail from "./components/CursorTrail";
 import AnnouncementBanner from "./components/AnnouncementBanner";
 import RetroMusic from "./components/RetroMusic";
+import ScrollToTop from "./components/ScrollToTop";
 import TimeMachine from "./components/TimeMachine";
 import RetroDesktop from "./components/RetroDesktop";
 import AIMBuddy from "./components/AIMBuddy";
@@ -82,6 +83,7 @@ export default function RootLayout({
         <RetroDesktop />
         <AIMBuddy />
         <Clippy />
+        <ScrollToTop />
         <RetroMusic />
         <TimeMachine />
       </body>

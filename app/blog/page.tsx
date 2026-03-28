@@ -17,22 +17,28 @@ export default function BlogPage() {
   const posts = readJSON<Post[]>('posts.json').filter((p) => p.published);
 
   return (
-    <div className="max-w-3xl mx-auto px-4 sm:px-6 py-16">
-      <div className="grid md:grid-cols-2 gap-10 items-center mb-12">
-        {/* Left: text */}
-        <div>
-          <p className="text-violet-600 dark:text-violet-400 text-sm font-medium mb-2">What&apos;s new</p>
-          <h1 className="text-4xl font-bold text-slate-900 dark:text-white mb-3">Club Updates</h1>
-          <p className="text-slate-500 leading-relaxed">Announcements, recaps, and news from the LC3 community.</p>
-          {posts.length > 0 && (
-            <span className="inline-flex mt-4 bg-violet-50 border border-violet-200 text-violet-600 text-xs font-medium px-2.5 py-1 rounded-full dark:bg-violet-500/10 dark:border-violet-500/20 dark:text-violet-400">
-              {posts.length} post{posts.length !== 1 ? 's' : ''}
-            </span>
-          )}
-        </div>
+    <div>
+      {/* Hero */}
+      <section className="relative overflow-hidden border-b border-slate-200 dark:border-[#1e2d45]">
+        <div className="absolute inset-0 bg-gradient-to-br from-violet-50/60 via-purple-50/30 to-transparent dark:from-violet-950/20 dark:via-purple-950/10 dark:to-transparent pointer-events-none" />
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-violet-400/40 to-transparent pointer-events-none" />
+        <div className="absolute -top-20 -right-20 w-64 h-64 bg-violet-300/8 dark:bg-violet-500/8 rounded-full blur-3xl pointer-events-none" style={{animation:'hero-float-a 10s ease-in-out infinite'}} />
+        <div className="relative max-w-3xl mx-auto px-4 sm:px-6 py-14 sm:py-18">
+          <div className="grid md:grid-cols-2 gap-10 items-center">
+            {/* Left: text */}
+            <div>
+              <p className="text-violet-600 dark:text-violet-400 text-sm font-medium mb-2">What&apos;s new</p>
+              <h1 className="text-4xl font-bold text-slate-900 dark:text-white mb-3">Club Updates</h1>
+              <p className="text-slate-500 leading-relaxed">Announcements, recaps, and news from the LC3 community.</p>
+              {posts.length > 0 && (
+                <span className="inline-flex mt-4 bg-violet-50 border border-violet-200 text-violet-600 text-xs font-medium px-2.5 py-1 rounded-full dark:bg-violet-500/10 dark:border-violet-500/20 dark:text-violet-400">
+                  {posts.length} post{posts.length !== 1 ? 's' : ''}
+                </span>
+              )}
+            </div>
 
-        {/* Right: SVG */}
-        <div className="flex justify-center md:justify-end overflow-hidden">
+            {/* Right: SVG */}
+            <div className="flex justify-center md:justify-end overflow-hidden">
           <svg width="320" height="140" viewBox="0 0 320 140" fill="none" className="opacity-90 dark:opacity-80" xmlns="http://www.w3.org/2000/svg">
             <defs>
               <style>{`
@@ -103,9 +109,12 @@ export default function BlogPage() {
             <circle cx="26" cy="114" r="2" fill="#818cf8" opacity="0.6" style={{animation:'blog-spark 2.3s ease-in-out infinite 1.4s'}}/>
             <circle cx="293" cy="114" r="2.5" fill="#0891b2" opacity="0.65" style={{animation:'blog-spark 2.3s ease-in-out infinite 2.1s'}}/>
           </svg>
+            </div>
+          </div>
         </div>
-      </div>
-
+      </section>
+      {/* Posts */}
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 py-16">
       {posts.length === 0 ? (
         <div className="text-center py-20 text-slate-400">
           <svg className="w-10 h-10 mx-auto mb-4 opacity-40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -159,6 +168,7 @@ export default function BlogPage() {
           ))}
         </div>
       )}
+      </div>
     </div>
   );
 }

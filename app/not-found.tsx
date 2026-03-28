@@ -1,54 +1,48 @@
-'use client';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { Shield } from 'lucide-react';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: '404 — Page Not Found',
+};
 
 export default function NotFound() {
-  const pathname = usePathname();
-  const fullUrl = typeof window !== 'undefined'
-    ? `${window.location.origin}${pathname}`
-    : pathname;
-
   return (
-    <div className="min-h-[70vh] flex items-center justify-center px-4">
-      <div className="text-center max-w-md">
-        <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-violet-600 flex items-center justify-center text-white font-bold text-xl mx-auto mb-6 shadow-lg shadow-violet-500/20">
-          LC3
+    <div className="relative overflow-hidden min-h-[70vh] flex items-center justify-center">
+      {/* Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-violet-50/60 via-blue-50/30 to-transparent dark:from-violet-950/20 dark:via-blue-950/10 dark:to-transparent pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-violet-400/5 dark:bg-violet-500/10 rounded-full blur-3xl pointer-events-none" />
+
+      <div className="relative text-center px-4 py-20">
+        {/* Big 404 */}
+        <div className="text-[120px] sm:text-[160px] font-bold leading-none bg-gradient-to-br from-slate-200 to-slate-300 dark:from-slate-700 dark:to-slate-800 bg-clip-text text-transparent select-none mb-2">
+          404
         </div>
-        <h1 className="text-7xl font-bold text-slate-900 dark:text-white mb-2">404</h1>
-        <h2 className="text-xl font-semibold text-slate-700 dark:text-slate-300 mb-3">Page not found</h2>
-        <p className="text-slate-500 leading-relaxed mb-8">
-          The page you&apos;re looking for doesn&apos;t exist or may have been moved.
+
+        {/* LC3 badge */}
+        <div className="inline-flex items-center gap-2 bg-violet-50 dark:bg-violet-500/10 border border-violet-200 dark:border-violet-500/20 text-violet-700 dark:text-violet-400 text-xs font-medium px-3 py-1.5 rounded-full mb-6">
+          <span className="w-1.5 h-1.5 rounded-full bg-violet-500 animate-pulse" />
+          LC3 — Lowcode Cloud Club
+        </div>
+
+        <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-3">
+          Page not found
+        </h1>
+        <p className="text-slate-500 dark:text-slate-400 max-w-sm mx-auto mb-8 leading-relaxed">
+          Looks like this page doesn&apos;t exist. Maybe it moved, or you followed a broken link.
         </p>
-        <div className="flex flex-col sm:flex-row gap-3 justify-center mb-10">
+
+        <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Link
             href="/"
-            className="inline-flex items-center justify-center gap-2 px-6 py-2.5 bg-gradient-to-r from-blue-600 to-violet-600 text-white text-sm font-semibold rounded-xl hover:opacity-90 transition-opacity"
+            className="px-6 py-3 bg-gradient-to-r from-blue-600 to-violet-600 text-white font-semibold rounded-xl hover:opacity-90 hover:-translate-y-0.5 transition-all shadow-lg shadow-violet-500/20"
           >
-            Go Home
+            Back to Home
           </Link>
           <Link
-            href="/events"
-            className="inline-flex items-center justify-center gap-2 px-6 py-2.5 border border-slate-200 dark:border-[#1e2d45] text-slate-600 dark:text-slate-400 text-sm font-medium rounded-xl hover:border-violet-300 hover:text-slate-900 dark:hover:text-white dark:hover:border-violet-500/40 transition-all"
+            href="/contact"
+            className="px-6 py-3 bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-white font-semibold rounded-xl hover:bg-slate-50 dark:hover:bg-white/10 transition-all"
           >
-            View Events
-          </Link>
-        </div>
-
-        {/* Shield easter egg */}
-        <div className="border-t border-slate-100 dark:border-[#1e2d45] pt-8">
-          <p className="text-xs text-slate-400 mb-3">Curious if this broken URL is a security risk?</p>
-          <Link
-            href={`/shield/scan/url?url=${encodeURIComponent(fullUrl)}`}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all"
-            style={{
-              background: 'rgba(239,68,68,0.08)',
-              border: '1px solid rgba(239,68,68,0.2)',
-              color: '#f87171',
-            }}
-          >
-            <Shield className="w-3.5 h-3.5" />
-            Scan with LC3 Shield
+            Contact Us
           </Link>
         </div>
       </div>

@@ -34,9 +34,13 @@ export default async function GalleryPage() {
   const missing = !process.env.CLOUDINARY_CLOUD_NAME;
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16">
-      {/* Header */}
-      <div className="text-center mb-16">
+    <div>
+      {/* Hero */}
+      <section className="relative overflow-hidden border-b border-slate-200 dark:border-[#1e2d45]">
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-50/50 via-violet-50/30 to-transparent dark:from-purple-950/15 dark:via-violet-950/10 dark:to-transparent pointer-events-none" />
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-purple-400/35 to-transparent pointer-events-none" />
+        <div className="absolute -top-16 left-1/2 -translate-x-1/2 w-64 h-64 bg-purple-300/6 dark:bg-purple-500/8 rounded-full blur-3xl pointer-events-none" style={{animation:'hero-float-c 12s ease-in-out infinite'}} />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-14 sm:py-18 text-center">
         <svg width="72" height="72" viewBox="0 0 72 72" className="mx-auto mb-5 opacity-85 dark:opacity-75" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <style>{`
@@ -80,8 +84,10 @@ export default async function GalleryPage() {
         <p className="text-slate-500 max-w-xl mx-auto">
           Photos from LC3 events, workshops, hackathons, and everything in between.
         </p>
-      </div>
-
+        </div>
+      </section>
+      {/* Gallery content */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
       {missing ? (
         <div className="text-center py-20 border border-dashed border-slate-300 dark:border-[#1e2d45] rounded-2xl">
           <div className="w-16 h-16 bg-white border border-slate-200 rounded-2xl flex items-center justify-center mx-auto mb-4 dark:bg-[#0d1424] dark:border-[#1e2d45]">
@@ -111,6 +117,7 @@ export default async function GalleryPage() {
       ) : (
         <GalleryClient images={images} />
       )}
+      </div>
     </div>
   );
 }
