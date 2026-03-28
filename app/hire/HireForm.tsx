@@ -216,16 +216,6 @@ export default function HireForm() {
             <path d="M12 70 L2 70 L2 60" fill="none" stroke="#6366f1" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{animation:'hire-corner 3s ease-in-out infinite 1.5s'}}/>
             <path d="M60 70 L70 70 L70 60" fill="none" stroke="#0891b2" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{animation:'hire-corner 3s ease-in-out infinite 2.25s'}}/>
           </svg>
-          <p className="text-blue-600 dark:text-blue-400 text-sm font-medium mb-2">Work with student talent</p>
-          <h1 className="text-4xl sm:text-5xl font-bold text-slate-900 dark:text-white mb-6">Partner with LC3</h1>
-          <p className="text-slate-600 dark:text-slate-300 leading-relaxed mb-8">
-            {inquiryType === 'project'
-              ? 'LC3 connects companies with motivated students ready to build real-world solutions. Whether you need a prototype, a data pipeline, or a full product — our teams deliver.'
-              : inquiryType === 'speaker'
-              ? 'Share your expertise with the next generation of tech professionals. Guest speakers bring real-world context that no classroom can replicate — our members love hearing directly from people in the industry.'
-              : 'Offer an internship to LC3 members and get motivated, skilled students who are hungry to learn and contribute. Many of our members are already working in the industry part-time.'}
-          </p>
-
           <div className="space-y-4">
             {valueProps.map(({ colorClass, title, desc, icon }) => (
               <div key={title} className="flex items-start gap-4">

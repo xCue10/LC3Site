@@ -233,8 +233,6 @@ export default function ContactForm({ settings }: { settings: SiteSettings }) {
             <circle cx="26" cy="114" r="2" fill="#818cf8" opacity="0.6" style={{animation:'cont2-spark 2.3s ease-in-out infinite 1.4s'}}/>
             <circle cx="294" cy="114" r="2.5" fill="#0891b2" opacity="0.65" style={{animation:'cont2-spark 2.3s ease-in-out infinite 2.1s'}}/>
           </svg>
-          <p className="text-violet-600 dark:text-violet-400 text-sm font-medium mb-2">Get involved</p>
-          <h1 className="text-4xl sm:text-5xl font-bold text-slate-900 dark:text-white mb-6">Join LC3</h1>
           <p className="text-slate-600 dark:text-slate-400 leading-relaxed mb-8">
             We welcome students of all skill levels and majors. Whether you&apos;re a seasoned developer or just
             starting out, LC3 has something for you. Fill out the form and we&apos;ll be in touch!
