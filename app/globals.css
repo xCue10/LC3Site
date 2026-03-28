@@ -1176,12 +1176,46 @@ body {
   text-shadow: none !important;
 }
 
-/* Body text: classic web serif */
+/* Body text: classic web serif — no font-size override so large headings/stats stay large */
 .retro main p,
 .retro main li {
   font-family: 'Times New Roman', 'Georgia', serif !important;
-  font-size: 13px !important;
   line-height: 1.65 !important;
+  color: #000000 !important;
+}
+
+/* ── Readability fixes ──────────────────────────── */
+
+/* text-slate-300/400 (#71717a) is too faint on white — darken it */
+.retro [class~="text-slate-400"],
+.retro [class~="text-slate-300"],
+.retro [class~="text-slate-200"] {
+  color: #404040 !important;
+}
+
+/* text-white on elements whose backgrounds are now white = invisible */
+.retro main [class~="text-white"] {
+  color: #000000 !important;
+}
+
+/* bg-clip-text catch-all: ensure every gradient text span is visible */
+.retro [class*="bg-clip-text"] {
+  background-image: linear-gradient(to right, #ea580c, #7c3aed) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  color: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+/* Footer: dark text on gray #c0c0c0 background */
+.retro footer [class~="text-slate-400"],
+.retro footer [class~="text-slate-500"],
+.retro footer [class~="text-slate-600"],
+.retro footer [class~="text-slate-300"] {
+  color: #1a1a1a !important;
+}
+.retro footer [class~="text-white"] {
   color: #000000 !important;
 }
 
