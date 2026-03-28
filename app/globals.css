@@ -3324,7 +3324,18 @@ body {
    Each brand overrides main background, cards, typography, buttons.
    Selector: html[data-retro-brand="X"].retro — higher specificity than
    the base .retro rules so these always win.
+   All font/color rules scoped to main to avoid tainting popups (AIM, Clippy).
    ═══════════════════════════════════════════════════════════════════════ */
+
+/* ── Monitor padding: 1-row brand headers (~38px) + chrome (76px) = 118px ── */
+html[data-retro-brand].retro #monitor-frame {
+  padding-top: 118px !important;
+}
+/* 2-row brand headers (AOL, Hotmail ~50px) + chrome (76px) = 132px */
+html[data-retro-brand="aol"].retro #monitor-frame,
+html[data-retro-brand="hotmail"].retro #monitor-frame {
+  padding-top: 132px !important;
+}
 
 /* ──────────────────────────────────────────────
    AOL.COM — Home page
@@ -3333,25 +3344,34 @@ body {
 html[data-retro-brand="aol"].retro main {
   background: #e8f0ff !important;
 }
-html[data-retro-brand="aol"].retro h1,
-html[data-retro-brand="aol"].retro h2 {
+html[data-retro-brand="aol"].retro main h1,
+html[data-retro-brand="aol"].retro main h2 {
   color: #003399 !important;
   font-family: Arial, Helvetica, sans-serif !important;
   text-shadow: none !important;
   letter-spacing: 0 !important;
 }
-html[data-retro-brand="aol"].retro h3,
-html[data-retro-brand="aol"].retro h4,
-html[data-retro-brand="aol"].retro h5,
-html[data-retro-brand="aol"].retro h6 {
+html[data-retro-brand="aol"].retro main h3,
+html[data-retro-brand="aol"].retro main h4,
+html[data-retro-brand="aol"].retro main h5,
+html[data-retro-brand="aol"].retro main h6 {
   color: #0044cc !important;
   font-family: Arial, Helvetica, sans-serif !important;
   text-shadow: none !important;
 }
-html[data-retro-brand="aol"].retro p,
-html[data-retro-brand="aol"].retro li {
+html[data-retro-brand="aol"].retro main p,
+html[data-retro-brand="aol"].retro main li {
   color: #111122 !important;
   font-family: Arial, Helvetica, sans-serif !important;
+}
+html[data-retro-brand="aol"].retro main [class*="bg-clip-text"] {
+  background-image: linear-gradient(to right, #003399, #0066ff) !important;
+  -webkit-text-fill-color: transparent !important;
+}
+html[data-retro-brand="aol"].retro main a[class*="from-blue"],
+html[data-retro-brand="aol"].retro main a[class*="from-violet"],
+html[data-retro-brand="aol"].retro main button[class*="from-blue"] {
+  -webkit-text-fill-color: #ffffff !important;
 }
 html[data-retro-brand="aol"].retro main [class~="bg-white"],
 html[data-retro-brand="aol"].retro main [class*="bg-slate-50"],
@@ -3412,25 +3432,35 @@ html[data-retro-brand="geocities"].retro main {
     repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,100,0.1) 3px, rgba(0,0,100,0.1) 4px),
     repeating-linear-gradient(90deg, transparent, transparent 3px, rgba(0,0,100,0.05) 3px, rgba(0,0,100,0.05) 4px) !important;
 }
-html[data-retro-brand="geocities"].retro h1,
-html[data-retro-brand="geocities"].retro h2 {
+html[data-retro-brand="geocities"].retro main h1,
+html[data-retro-brand="geocities"].retro main h2 {
   color: #00ffff !important;
   font-family: Impact, 'Arial Black', sans-serif !important;
   text-shadow: 0 0 12px #00ffff, 2px 2px 0 #000033 !important;
   letter-spacing: 3px !important;
   text-transform: uppercase !important;
 }
-html[data-retro-brand="geocities"].retro h3,
-html[data-retro-brand="geocities"].retro h4,
-html[data-retro-brand="geocities"].retro h5 {
+html[data-retro-brand="geocities"].retro main h3,
+html[data-retro-brand="geocities"].retro main h4,
+html[data-retro-brand="geocities"].retro main h5 {
   color: #ffff00 !important;
   font-family: Impact, 'Arial Black', sans-serif !important;
   text-shadow: 0 0 8px #ffff00 !important;
 }
-html[data-retro-brand="geocities"].retro p,
-html[data-retro-brand="geocities"].retro li {
+html[data-retro-brand="geocities"].retro main p,
+html[data-retro-brand="geocities"].retro main li {
   color: #ddddff !important;
   font-family: 'Times New Roman', Times, serif !important;
+}
+/* Dark bg: override bg-clip-text with neon cyan */
+html[data-retro-brand="geocities"].retro main [class*="bg-clip-text"] {
+  background-image: none !important;
+  -webkit-text-fill-color: #00ffff !important;
+  color: #00ffff !important;
+}
+html[data-retro-brand="geocities"].retro main a[class*="from-"],
+html[data-retro-brand="geocities"].retro main button[class*="from-"] {
+  -webkit-text-fill-color: #ffffff !important;
 }
 html[data-retro-brand="geocities"].retro main [class~="bg-white"],
 html[data-retro-brand="geocities"].retro main [class*="bg-slate-50"],
@@ -3492,24 +3522,34 @@ html[data-retro-brand="blockbuster"].retro main {
     rgba(255,215,0,0.04) 39px, rgba(255,215,0,0.04) 40px
   ) !important;
 }
-html[data-retro-brand="blockbuster"].retro h1,
-html[data-retro-brand="blockbuster"].retro h2 {
+html[data-retro-brand="blockbuster"].retro main h1,
+html[data-retro-brand="blockbuster"].retro main h2 {
   color: #FFD700 !important;
   font-family: Impact, 'Arial Black', sans-serif !important;
   text-shadow: 2px 2px 4px rgba(0,0,0,0.6) !important;
   letter-spacing: 1px !important;
 }
-html[data-retro-brand="blockbuster"].retro h3,
-html[data-retro-brand="blockbuster"].retro h4,
-html[data-retro-brand="blockbuster"].retro h5 {
+html[data-retro-brand="blockbuster"].retro main h3,
+html[data-retro-brand="blockbuster"].retro main h4,
+html[data-retro-brand="blockbuster"].retro main h5 {
   color: #ffffff !important;
   font-family: Impact, 'Arial Black', sans-serif !important;
   text-shadow: none !important;
 }
-html[data-retro-brand="blockbuster"].retro p,
-html[data-retro-brand="blockbuster"].retro li {
+html[data-retro-brand="blockbuster"].retro main p,
+html[data-retro-brand="blockbuster"].retro main li {
   color: #b0c4de !important;
   font-family: Tahoma, Arial, sans-serif !important;
+}
+/* Dark bg: override bg-clip-text with gold */
+html[data-retro-brand="blockbuster"].retro main [class*="bg-clip-text"] {
+  background-image: none !important;
+  -webkit-text-fill-color: #FFD700 !important;
+  color: #FFD700 !important;
+}
+/* Pulse dots on dark navy */
+html[data-retro-brand="blockbuster"].retro main [class*="animate-pulse"][class*="rounded-full"] {
+  background-color: #FFD700 !important;
 }
 html[data-retro-brand="blockbuster"].retro main [class~="bg-white"],
 html[data-retro-brand="blockbuster"].retro main [class*="bg-slate-50"],
@@ -3550,6 +3590,7 @@ html[data-retro-brand="blockbuster"].retro main button[class*="from-blue"] {
   background: #FFD700 !important;
   background-image: none !important;
   color: #003087 !important;
+  -webkit-text-fill-color: #003087 !important;
   border-radius: 0 !important;
   font-family: Impact, 'Arial Black', sans-serif !important;
   font-weight: bold !important;
@@ -3573,23 +3614,31 @@ html[data-retro-brand="blockbuster"].retro main [class*="rounded-full"] {
 html[data-retro-brand="radioshack"].retro main {
   background: #f2f2f2 !important;
 }
-html[data-retro-brand="radioshack"].retro h1,
-html[data-retro-brand="radioshack"].retro h2 {
+html[data-retro-brand="radioshack"].retro main h1,
+html[data-retro-brand="radioshack"].retro main h2 {
   color: #cc0000 !important;
   font-family: 'Arial Black', Impact, sans-serif !important;
   text-shadow: none !important;
   letter-spacing: -0.5px !important;
 }
-html[data-retro-brand="radioshack"].retro h3,
-html[data-retro-brand="radioshack"].retro h4 {
+html[data-retro-brand="radioshack"].retro main h3,
+html[data-retro-brand="radioshack"].retro main h4 {
   color: #990000 !important;
   font-family: 'Arial Black', Impact, sans-serif !important;
   text-shadow: none !important;
 }
-html[data-retro-brand="radioshack"].retro p,
-html[data-retro-brand="radioshack"].retro li {
+html[data-retro-brand="radioshack"].retro main p,
+html[data-retro-brand="radioshack"].retro main li {
   color: #222222 !important;
   font-family: Arial, Helvetica, sans-serif !important;
+}
+html[data-retro-brand="radioshack"].retro main [class*="bg-clip-text"] {
+  background-image: linear-gradient(to right, #cc0000, #ff3300) !important;
+  -webkit-text-fill-color: transparent !important;
+}
+html[data-retro-brand="radioshack"].retro main a[class*="from-"],
+html[data-retro-brand="radioshack"].retro main button[class*="from-"] {
+  -webkit-text-fill-color: #ffffff !important;
 }
 html[data-retro-brand="radioshack"].retro main [class~="bg-white"],
 html[data-retro-brand="radioshack"].retro main [class*="bg-slate-50"],
@@ -3646,24 +3695,46 @@ html[data-retro-brand="radioshack"].retro main [class*="rounded-xl"] {
 html[data-retro-brand="neopets"].retro main {
   background: linear-gradient(180deg, #0055bb 0%, #0077dd 60%, #0088ff 100%) !important;
 }
-html[data-retro-brand="neopets"].retro h1,
-html[data-retro-brand="neopets"].retro h2 {
+html[data-retro-brand="neopets"].retro main h1,
+html[data-retro-brand="neopets"].retro main h2 {
   color: #ffdd00 !important;
   font-family: 'Comic Sans MS', 'Comic Sans', cursive !important;
   text-shadow: 2px 2px 0 #003366, -1px -1px 0 #003366 !important;
   letter-spacing: 0 !important;
   text-transform: none !important;
 }
-html[data-retro-brand="neopets"].retro h3,
-html[data-retro-brand="neopets"].retro h4 {
+html[data-retro-brand="neopets"].retro main h3,
+html[data-retro-brand="neopets"].retro main h4 {
   color: #ffffff !important;
   font-family: 'Comic Sans MS', 'Comic Sans', cursive !important;
   text-shadow: 1px 1px 0 #003366 !important;
 }
-html[data-retro-brand="neopets"].retro p,
-html[data-retro-brand="neopets"].retro li {
+html[data-retro-brand="neopets"].retro main p,
+html[data-retro-brand="neopets"].retro main li {
   color: #ffffff !important;
   font-family: 'Comic Sans MS', 'Comic Sans', cursive !important;
+}
+/* Dark bg: override bg-clip-text with yellow */
+html[data-retro-brand="neopets"].retro main [class*="bg-clip-text"] {
+  background-image: none !important;
+  -webkit-text-fill-color: #ffdd00 !important;
+  color: #ffdd00 !important;
+}
+/* Pulse dots and badges on blue bg */
+html[data-retro-brand="neopets"].retro main [class*="animate-pulse"][class*="rounded-full"] {
+  background-color: #ffdd00 !important;
+}
+html[data-retro-brand="neopets"].retro main [class*="bg-blue-1"],
+html[data-retro-brand="neopets"].retro main [class*="bg-violet-1"],
+html[data-retro-brand="neopets"].retro main [class*="bg-emerald-1"],
+html[data-retro-brand="neopets"].retro main [class*="bg-amber-1"] {
+  background-color: #ffdd00 !important;
+}
+html[data-retro-brand="neopets"].retro main [class*="text-blue-7"],
+html[data-retro-brand="neopets"].retro main [class*="text-violet-7"],
+html[data-retro-brand="neopets"].retro main [class*="text-emerald-7"],
+html[data-retro-brand="neopets"].retro main [class*="text-amber-7"] {
+  color: #003366 !important;
 }
 html[data-retro-brand="neopets"].retro main [class~="bg-white"],
 html[data-retro-brand="neopets"].retro main [class*="bg-slate-50"],
@@ -3705,6 +3776,7 @@ html[data-retro-brand="neopets"].retro main button[class*="from-"] {
   background: #ffdd00 !important;
   background-image: none !important;
   color: #003366 !important;
+  -webkit-text-fill-color: #003366 !important;
   border-radius: 20px !important;
   border: 2px solid #cc9900 !important;
   font-family: 'Comic Sans MS', cursive !important;
@@ -3720,24 +3792,32 @@ html[data-retro-brand="neopets"].retro main button[class*="from-"] {
 html[data-retro-brand="monster"].retro main {
   background: #f0eeff !important;
 }
-html[data-retro-brand="monster"].retro h1,
-html[data-retro-brand="monster"].retro h2 {
+html[data-retro-brand="monster"].retro main h1,
+html[data-retro-brand="monster"].retro main h2 {
   color: #5500bb !important;
   font-family: Arial, Helvetica, sans-serif !important;
   text-shadow: none !important;
   letter-spacing: -0.02em !important;
   text-transform: none !important;
 }
-html[data-retro-brand="monster"].retro h3,
-html[data-retro-brand="monster"].retro h4 {
+html[data-retro-brand="monster"].retro main h3,
+html[data-retro-brand="monster"].retro main h4 {
   color: #440099 !important;
   font-family: Arial, Helvetica, sans-serif !important;
   text-shadow: none !important;
 }
-html[data-retro-brand="monster"].retro p,
-html[data-retro-brand="monster"].retro li {
+html[data-retro-brand="monster"].retro main p,
+html[data-retro-brand="monster"].retro main li {
   color: #222222 !important;
   font-family: Arial, Helvetica, sans-serif !important;
+}
+html[data-retro-brand="monster"].retro main [class*="bg-clip-text"] {
+  background-image: linear-gradient(to right, #5500bb, #009933) !important;
+  -webkit-text-fill-color: transparent !important;
+}
+html[data-retro-brand="monster"].retro main a[class*="from-"],
+html[data-retro-brand="monster"].retro main button[class*="from-"] {
+  -webkit-text-fill-color: #ffffff !important;
 }
 html[data-retro-brand="monster"].retro main [class~="bg-white"],
 html[data-retro-brand="monster"].retro main [class*="bg-slate-50"],
@@ -3801,8 +3881,8 @@ html[data-retro-brand="xanga"].retro main {
     rgba(180,0,180,0.025) 6px, rgba(180,0,180,0.025) 12px
   ) !important;
 }
-html[data-retro-brand="xanga"].retro h1,
-html[data-retro-brand="xanga"].retro h2 {
+html[data-retro-brand="xanga"].retro main h1,
+html[data-retro-brand="xanga"].retro main h2 {
   color: #880088 !important;
   font-family: Georgia, 'Times New Roman', serif !important;
   font-style: italic !important;
@@ -3810,17 +3890,25 @@ html[data-retro-brand="xanga"].retro h2 {
   letter-spacing: 0 !important;
   text-transform: none !important;
 }
-html[data-retro-brand="xanga"].retro h3,
-html[data-retro-brand="xanga"].retro h4 {
+html[data-retro-brand="xanga"].retro main h3,
+html[data-retro-brand="xanga"].retro main h4 {
   color: #aa00aa !important;
   font-family: Georgia, 'Times New Roman', serif !important;
   font-style: italic !important;
   text-shadow: none !important;
 }
-html[data-retro-brand="xanga"].retro p,
-html[data-retro-brand="xanga"].retro li {
+html[data-retro-brand="xanga"].retro main p,
+html[data-retro-brand="xanga"].retro main li {
   color: #330033 !important;
   font-family: Georgia, 'Times New Roman', serif !important;
+}
+html[data-retro-brand="xanga"].retro main [class*="bg-clip-text"] {
+  background-image: linear-gradient(to right, #880088, #dd44dd) !important;
+  -webkit-text-fill-color: transparent !important;
+}
+html[data-retro-brand="xanga"].retro main a[class*="from-"],
+html[data-retro-brand="xanga"].retro main button[class*="from-"] {
+  -webkit-text-fill-color: #ffffff !important;
 }
 html[data-retro-brand="xanga"].retro main [class~="bg-white"],
 html[data-retro-brand="xanga"].retro main [class*="bg-slate-50"],
@@ -3874,24 +3962,32 @@ html[data-retro-brand="xanga"].retro main button[class*="from-"] {
 html[data-retro-brand="askjeeves"].retro main {
   background: #f5f0e0 !important;
 }
-html[data-retro-brand="askjeeves"].retro h1,
-html[data-retro-brand="askjeeves"].retro h2 {
+html[data-retro-brand="askjeeves"].retro main h1,
+html[data-retro-brand="askjeeves"].retro main h2 {
   color: #884400 !important;
   font-family: Georgia, 'Times New Roman', serif !important;
   text-shadow: none !important;
   letter-spacing: 0 !important;
   text-transform: none !important;
 }
-html[data-retro-brand="askjeeves"].retro h3,
-html[data-retro-brand="askjeeves"].retro h4 {
+html[data-retro-brand="askjeeves"].retro main h3,
+html[data-retro-brand="askjeeves"].retro main h4 {
   color: #aa5500 !important;
   font-family: Georgia, serif !important;
   text-shadow: none !important;
 }
-html[data-retro-brand="askjeeves"].retro p,
-html[data-retro-brand="askjeeves"].retro li {
+html[data-retro-brand="askjeeves"].retro main p,
+html[data-retro-brand="askjeeves"].retro main li {
   color: #333311 !important;
   font-family: Georgia, 'Times New Roman', serif !important;
+}
+html[data-retro-brand="askjeeves"].retro main [class*="bg-clip-text"] {
+  background-image: linear-gradient(to right, #884400, #ffaa00) !important;
+  -webkit-text-fill-color: transparent !important;
+}
+html[data-retro-brand="askjeeves"].retro main a[class*="from-"],
+html[data-retro-brand="askjeeves"].retro main button[class*="from-"] {
+  -webkit-text-fill-color: #ffffff !important;
 }
 html[data-retro-brand="askjeeves"].retro main [class~="bg-white"],
 html[data-retro-brand="askjeeves"].retro main [class*="bg-slate-50"],
@@ -3941,24 +4037,32 @@ html[data-retro-brand="askjeeves"].retro main button[class*="from-"] {
 html[data-retro-brand="hotmail"].retro main {
   background: #eef2ff !important;
 }
-html[data-retro-brand="hotmail"].retro h1,
-html[data-retro-brand="hotmail"].retro h2 {
+html[data-retro-brand="hotmail"].retro main h1,
+html[data-retro-brand="hotmail"].retro main h2 {
   color: #003399 !important;
   font-family: Arial, Helvetica, sans-serif !important;
   text-shadow: none !important;
   letter-spacing: 0 !important;
   text-transform: none !important;
 }
-html[data-retro-brand="hotmail"].retro h3,
-html[data-retro-brand="hotmail"].retro h4 {
+html[data-retro-brand="hotmail"].retro main h3,
+html[data-retro-brand="hotmail"].retro main h4 {
   color: #0044bb !important;
   font-family: Arial, Helvetica, sans-serif !important;
   text-shadow: none !important;
 }
-html[data-retro-brand="hotmail"].retro p,
-html[data-retro-brand="hotmail"].retro li {
+html[data-retro-brand="hotmail"].retro main p,
+html[data-retro-brand="hotmail"].retro main li {
   color: #222222 !important;
   font-family: Arial, Helvetica, sans-serif !important;
+}
+html[data-retro-brand="hotmail"].retro main [class*="bg-clip-text"] {
+  background-image: linear-gradient(to right, #003399, #ff6600) !important;
+  -webkit-text-fill-color: transparent !important;
+}
+html[data-retro-brand="hotmail"].retro main a[class*="from-"],
+html[data-retro-brand="hotmail"].retro main button[class*="from-"] {
+  -webkit-text-fill-color: #ffffff !important;
 }
 html[data-retro-brand="hotmail"].retro main [class~="bg-white"],
 html[data-retro-brand="hotmail"].retro main [class*="bg-slate-50"],
@@ -4021,22 +4125,30 @@ html[data-retro-brand="hotmail"].retro main textarea {
 html[data-retro-brand="webshots"].retro main {
   background: #f0fff8 !important;
 }
-html[data-retro-brand="webshots"].retro h1,
-html[data-retro-brand="webshots"].retro h2 {
+html[data-retro-brand="webshots"].retro main h1,
+html[data-retro-brand="webshots"].retro main h2 {
   color: #006633 !important;
   font-family: Arial, Helvetica, sans-serif !important;
   text-shadow: none !important;
   text-transform: none !important;
 }
-html[data-retro-brand="webshots"].retro h3,
-html[data-retro-brand="webshots"].retro h4 {
+html[data-retro-brand="webshots"].retro main h3,
+html[data-retro-brand="webshots"].retro main h4 {
   color: #008844 !important;
   text-shadow: none !important;
 }
-html[data-retro-brand="webshots"].retro p,
-html[data-retro-brand="webshots"].retro li {
+html[data-retro-brand="webshots"].retro main p,
+html[data-retro-brand="webshots"].retro main li {
   color: #224422 !important;
   font-family: Arial, Helvetica, sans-serif !important;
+}
+html[data-retro-brand="webshots"].retro main [class*="bg-clip-text"] {
+  background-image: linear-gradient(to right, #006633, #00aa55) !important;
+  -webkit-text-fill-color: transparent !important;
+}
+html[data-retro-brand="webshots"].retro main a[class*="from-"],
+html[data-retro-brand="webshots"].retro main button[class*="from-"] {
+  -webkit-text-fill-color: #ffffff !important;
 }
 html[data-retro-brand="webshots"].retro main [class~="bg-white"],
 html[data-retro-brand="webshots"].retro main [class*="bg-slate-50"],
@@ -4084,24 +4196,38 @@ html[data-retro-brand="norton"].retro main {
     rgba(200,0,0,0.06) 29px, rgba(200,0,0,0.06) 30px
   ) !important;
 }
-html[data-retro-brand="norton"].retro h1,
-html[data-retro-brand="norton"].retro h2 {
+html[data-retro-brand="norton"].retro main h1,
+html[data-retro-brand="norton"].retro main h2 {
   color: #ffdd00 !important;
   font-family: Arial, Helvetica, sans-serif !important;
   text-shadow: 0 0 12px rgba(255,221,0,0.5) !important;
   letter-spacing: 1px !important;
   text-transform: uppercase !important;
 }
-html[data-retro-brand="norton"].retro h3,
-html[data-retro-brand="norton"].retro h4 {
+html[data-retro-brand="norton"].retro main h3,
+html[data-retro-brand="norton"].retro main h4 {
   color: #ff6600 !important;
   font-family: Arial, Helvetica, sans-serif !important;
   text-shadow: none !important;
 }
-html[data-retro-brand="norton"].retro p,
-html[data-retro-brand="norton"].retro li {
+html[data-retro-brand="norton"].retro main p,
+html[data-retro-brand="norton"].retro main li {
   color: #ccbbbb !important;
   font-family: Arial, Helvetica, sans-serif !important;
+}
+/* Dark bg: override bg-clip-text with gold */
+html[data-retro-brand="norton"].retro main [class*="bg-clip-text"] {
+  background-image: none !important;
+  -webkit-text-fill-color: #ffdd00 !important;
+  color: #ffdd00 !important;
+}
+/* Pulse dots on dark bg */
+html[data-retro-brand="norton"].retro main [class*="animate-pulse"][class*="rounded-full"] {
+  background-color: #ff6600 !important;
+}
+html[data-retro-brand="norton"].retro main a[class*="from-"],
+html[data-retro-brand="norton"].retro main button[class*="from-"] {
+  -webkit-text-fill-color: #ffffff !important;
 }
 html[data-retro-brand="norton"].retro main [class~="bg-white"],
 html[data-retro-brand="norton"].retro main [class*="bg-slate-50"],
@@ -4164,23 +4290,31 @@ html[data-retro-brand="norton"].retro main [class*="rounded-xl"] {
 html[data-retro-brand="elance"].retro main {
   background: #fffaf4 !important;
 }
-html[data-retro-brand="elance"].retro h1,
-html[data-retro-brand="elance"].retro h2 {
+html[data-retro-brand="elance"].retro main h1,
+html[data-retro-brand="elance"].retro main h2 {
   color: #884400 !important;
   font-family: Arial, Helvetica, sans-serif !important;
   text-shadow: none !important;
   text-transform: none !important;
 }
-html[data-retro-brand="elance"].retro h3,
-html[data-retro-brand="elance"].retro h4 {
+html[data-retro-brand="elance"].retro main h3,
+html[data-retro-brand="elance"].retro main h4 {
   color: #aa5500 !important;
   font-family: Arial, Helvetica, sans-serif !important;
   text-shadow: none !important;
 }
-html[data-retro-brand="elance"].retro p,
-html[data-retro-brand="elance"].retro li {
+html[data-retro-brand="elance"].retro main p,
+html[data-retro-brand="elance"].retro main li {
   color: #332211 !important;
   font-family: Arial, Helvetica, sans-serif !important;
+}
+html[data-retro-brand="elance"].retro main [class*="bg-clip-text"] {
+  background-image: linear-gradient(to right, #884400, #ffaa33) !important;
+  -webkit-text-fill-color: transparent !important;
+}
+html[data-retro-brand="elance"].retro main a[class*="from-"],
+html[data-retro-brand="elance"].retro main button[class*="from-"] {
+  -webkit-text-fill-color: #ffffff !important;
 }
 html[data-retro-brand="elance"].retro main [class~="bg-white"],
 html[data-retro-brand="elance"].retro main [class*="bg-slate-50"],
