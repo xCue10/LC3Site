@@ -147,7 +147,11 @@ export default function TimeMachine() {
     setP('boot');
     playBootAudio();
 
-    schedule(() => { document.documentElement.classList.add('retro'); setP('flash'); }, 2800);
+    schedule(() => {
+      document.documentElement.classList.add('retro');
+      document.documentElement.classList.remove('dark');
+      setP('flash');
+    }, 2800);
     schedule(() => setOverlayOpacity(0), 3000);
     schedule(() => setP('idle'), 3800);
   }, []);
