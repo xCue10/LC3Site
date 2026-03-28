@@ -72,6 +72,9 @@ export default function RootLayout({
           <div id="site-wrapper" className="flex-1 flex flex-col">
             <AnnouncementBanner />
             <Navbar />
+            <div id="retro-marquee" aria-hidden="true">
+              <span>⭐ WELCOME TO THE LC3 CLUB HOMEPAGE ⭐ &nbsp; Please sign our Guestbook! &nbsp; ⭐ &nbsp; Best viewed at 800×600 in Internet Explorer 6.0 &nbsp; ⭐ &nbsp; Meetings every Tuesday @ 6pm Room B-101 &nbsp; ⭐ &nbsp; AIM: LC3ClubCSN &nbsp; ⭐ &nbsp; ICQ: #31337420 &nbsp; ⭐ &nbsp; 🚧 &nbsp; SITE UNDER CONSTRUCTION &nbsp; 🚧 &nbsp; ⭐ &nbsp; New members welcome! &nbsp; ⭐ &nbsp; Low-Code &amp; Cloud Computing Club &nbsp; ⭐ &nbsp; College of Southern Nevada &nbsp; ⭐ &nbsp; Email: lc3club@hotmail.com &nbsp; ⭐ &nbsp;</span>
+            </div>
             <main className="flex-1">{children}</main>
             <Footer />
           </div>

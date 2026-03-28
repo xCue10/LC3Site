@@ -1072,6 +1072,193 @@ body {
   color: #9ca3af !important;
 }
 
+/* ═══════════════════════════════════════════════════════════
+   GEOCITIES / FRONTPAGE 2001 — FULL PAGE LAYOUT OVERHAUL
+   ═══════════════════════════════════════════════════════════ */
+
+/* Gray Win98 desktop texture behind the page content */
+.retro #site-wrapper {
+  background-color: #808080 !important;
+  background-image: repeating-linear-gradient(
+    45deg,
+    transparent 0, transparent 2px,
+    rgba(0,0,0,0.07) 2px, rgba(0,0,0,0.07) 3px
+  ) !important;
+  box-shadow: inset 1px 1px 0 #c0c0c0, inset -1px -1px 0 #404040 !important;
+}
+
+/* White content page box — slight gray gutter on sides */
+.retro main {
+  background: #ffffff !important;
+  margin: 0 10px !important;
+  border-left: 2px solid #d4d0c8 !important;
+  border-right: 2px solid #808080 !important;
+  box-shadow: -1px 0 0 #ffffff, 2px 0 0 #404040 !important;
+}
+
+/* Scrolling marquee banner — hidden normally, shown in retro mode */
+#retro-marquee { display: none; }
+.retro #retro-marquee {
+  display: block !important;
+  overflow: hidden !important;
+  background: #000080 !important;
+  padding: 2px 0 !important;
+  border-bottom: 2px solid #4444ff !important;
+  margin: 0 10px !important;
+  white-space: nowrap !important;
+}
+.retro #retro-marquee span {
+  display: inline-block !important;
+  color: #ffff00 !important;
+  font-family: 'Tahoma', 'Arial', sans-serif !important;
+  font-size: 11px !important;
+  font-weight: bold !important;
+  padding-left: 100% !important;
+  white-space: nowrap !important;
+  animation: geo-marquee 40s linear infinite !important;
+}
+@keyframes geo-marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-100%); }
+}
+
+/* h1: Full-width navy page-title bar with yellow text */
+.retro h1 {
+  background: linear-gradient(180deg, #000099 0%, #000055 100%) !important;
+  color: #ffff00 !important;
+  padding: 10px 16px !important;
+  text-align: center !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.08em !important;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.7) !important;
+  border: none !important;
+  margin: 0 !important;
+  font-family: 'Impact', 'Arial Black', sans-serif !important;
+  font-size: clamp(1.2rem, 2.2vw, 1.8rem) !important;
+  line-height: 1.25 !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* h2: Navy section-header bar with yellow left accent + rainbow bottom strip */
+.retro h2 {
+  background:
+    linear-gradient(to right,
+      #ff0000 0%, #ff7700 16%, #ffff00 33%,
+      #00cc00 50%, #0000ff 66%, #8800ff 83%, #ff0066 100%
+    ) left bottom / 100% 3px no-repeat,
+    linear-gradient(180deg, #000080, #000066) !important;
+  color: #ffffff !important;
+  padding: 5px 12px 9px !important;
+  border: none !important;
+  border-left: 5px solid #ffff00 !important;
+  margin: 18px 0 12px !important;
+  font-family: 'Impact', 'Arial Black', sans-serif !important;
+  font-size: 0.95rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.06em !important;
+  line-height: 1.5 !important;
+  text-shadow: none !important;
+}
+
+/* h3: Bold with navy underline */
+.retro h3 {
+  color: #000080 !important;
+  font-family: 'Arial', 'Helvetica', sans-serif !important;
+  font-weight: bold !important;
+  font-size: 13px !important;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+  border-bottom: 2px solid #000080 !important;
+  padding-bottom: 2px !important;
+  margin: 14px 0 6px !important;
+  line-height: 1.4 !important;
+  text-shadow: none !important;
+}
+
+/* Body text: classic web serif */
+.retro main p,
+.retro main li {
+  font-family: 'Times New Roman', 'Georgia', serif !important;
+  font-size: 13px !important;
+  line-height: 1.65 !important;
+  color: #000000 !important;
+}
+
+/* Links: classic browser blue → red on hover */
+.retro main a {
+  color: #0000cc !important;
+  text-decoration: underline !important;
+}
+.retro main a:hover {
+  color: #ff0000 !important;
+}
+
+/* Cards / panels: sharp corners everywhere */
+.retro [class~="rounded-xl"],
+.retro [class~="rounded-2xl"],
+.retro [class~="rounded-lg"],
+.retro [class~="rounded-md"],
+.retro [class~="rounded-sm"],
+.retro [class~="rounded-full"] {
+  border-radius: 0 !important;
+}
+
+/* Bordered cards: Win98 raised-border look */
+.retro [class~="bg-white"][class~="border"],
+.retro [class~="bg-white"][class*="shadow"] {
+  border: 1px solid !important;
+  border-top-color: #ffffff !important;
+  border-left-color: #ffffff !important;
+  border-right-color: #808080 !important;
+  border-bottom-color: #808080 !important;
+  box-shadow: 1px 1px 0 #000000 !important;
+}
+
+/* HR: rainbow gradient divider */
+.retro hr {
+  border: none !important;
+  height: 3px !important;
+  background: linear-gradient(to right,
+    #ff0000, #ff7700, #ffff00, #00cc00, #0000ff, #8800ff
+  ) !important;
+  margin: 12px 0 !important;
+}
+
+/* Images: classic inset border */
+.retro main img {
+  border: 2px inset #c0c0c0 !important;
+}
+
+/* Footer: gray Win98 panel */
+.retro footer {
+  background: #c0c0c0 !important;
+  border-top: 2px groove #808080 !important;
+  color: #000000 !important;
+  margin: 0 10px !important;
+}
+.retro footer a {
+  color: #000080 !important;
+  text-decoration: none !important;
+}
+.retro footer a:hover {
+  color: #0000ff !important;
+  text-decoration: underline !important;
+}
+/* Visitor counter / "best viewed" disclaimer */
+.retro footer::after {
+  content: '🌐 You are visitor #00031337  ·  Best viewed at 800×600 in Internet Explorer 6.0  ·  © 2001 LC3 Club  ·  Built with Microsoft FrontPage 2000™' !important;
+  display: block !important;
+  text-align: center !important;
+  font-size: 10px !important;
+  font-family: 'Tahoma', 'Arial', sans-serif !important;
+  color: #555555 !important;
+  border-top: 1px solid #999999 !important;
+  padding: 5px 8px 8px !important;
+  background: #d4d0c8 !important;
+  line-height: 1.6 !important;
+}
+
 /* ── Windows Media Player ────────────────────── */
 .wmp-wrap {
   position: fixed;
