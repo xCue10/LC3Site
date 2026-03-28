@@ -108,9 +108,15 @@ export default function ProjectsPage() {
   const projects = readJSON<Project[]>('projects.json');
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-16">
-      {/* Header */}
-      <div className="grid md:grid-cols-2 gap-10 items-center mb-16">
+    <div>
+      {/* Full-width hero */}
+      <section className="relative overflow-hidden border-b border-slate-200 dark:border-[#1e2d45]">
+        <div className="absolute inset-0 bg-gradient-to-br from-violet-50/60 via-indigo-50/30 to-transparent dark:from-violet-950/20 dark:via-indigo-950/10 dark:to-transparent pointer-events-none" />
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-violet-400/40 to-transparent pointer-events-none" />
+        <div className="absolute -top-20 -left-20 w-64 h-64 bg-violet-300/8 dark:bg-violet-500/8 rounded-full blur-3xl pointer-events-none" style={{animation:'hero-float-b 12s ease-in-out infinite'}} />
+        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 py-14 sm:py-18">
+          {/* Header */}
+          <div className="grid md:grid-cols-2 gap-10 items-center">
         {/* Left: text */}
         <div>
           <p className="text-violet-600 dark:text-violet-400 text-sm font-medium mb-2">Built by our members</p>
@@ -202,8 +208,13 @@ export default function ProjectsPage() {
           <circle cx="26" cy="114" r="2" fill="#818cf8" opacity="0.6" style={{animation:'proj2-spark 2.2s ease-in-out infinite 1.4s'}}/>
           <circle cx="294" cy="114" r="2.5" fill="#0891b2" opacity="0.65" style={{animation:'proj2-spark 2.2s ease-in-out infinite 2.1s'}}/>
         </svg>
+          </div>
+          </div>
         </div>
-      </div>
+      </section>
+
+      {/* Projects grid */}
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-16">
 
       {projects.length === 0 ? (
         <div className="text-center py-20">
@@ -221,6 +232,8 @@ export default function ProjectsPage() {
           ))}
         </div>
       )}
+
+      </div>
     </div>
   );
 }

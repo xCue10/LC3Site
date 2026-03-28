@@ -27,12 +27,33 @@ export default function Footer() {
   const activeLinks = settings.socialLinksLive ? (settings.socialLinks ?? []).filter((l) => l.url) : [];
 
   return (
-    <footer className="border-t border-slate-200 bg-white mt-auto dark:border-[#1e2d45] dark:bg-[#0d1424]">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <footer className="relative mt-auto overflow-hidden bg-white dark:bg-[#080e1a]">
+      {/* Top gradient accent */}
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-violet-400/50 to-transparent" />
+      {/* Subtle background mesh */}
+      <div className="absolute inset-0 bg-gradient-to-br from-violet-50/30 via-transparent to-blue-50/20 dark:from-violet-950/20 dark:via-transparent dark:to-blue-950/10 pointer-events-none" />
+
+      <div className="relative max-w-6xl mx-auto px-4 sm:px-6">
+        {/* Join CTA strip */}
+        <div className="py-10 border-b border-slate-200 dark:border-[#1a2740] flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div>
+            <p className="text-slate-900 dark:text-white font-semibold">Ready to join LC3?</p>
+            <p className="text-slate-500 text-sm">Open to all CSN students — no experience needed.</p>
+          </div>
+          <Link
+            href="/contact"
+            className="flex-shrink-0 inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-violet-600 text-white text-sm font-semibold px-6 py-2.5 rounded-xl hover:opacity-90 hover:-translate-y-0.5 transition-all shadow-lg shadow-violet-500/20"
+          >
+            Apply to Join
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>
+          </Link>
+        </div>
+
+        {/* Columns */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 py-10">
           <div>
             <div className="flex items-center gap-2 mb-3">
-              <div className="w-7 h-7 rounded-md bg-gradient-to-br from-blue-500 to-violet-600 flex items-center justify-center text-white font-bold text-xs">
+              <div className="w-7 h-7 rounded-md bg-gradient-to-br from-blue-500 to-violet-600 flex items-center justify-center text-white font-bold text-xs shadow-sm">
                 LC3
               </div>
               <span className="font-semibold text-slate-900 dark:text-white">LC3 - Lowcode Cloud Club</span>
@@ -85,23 +106,26 @@ export default function Footer() {
 
           <div>
             <h3 className="text-slate-900 dark:text-white font-medium mb-3 text-sm">Get Involved</h3>
-            <p className="text-slate-500 text-sm mb-3">
-              Interested in joining? Fill out our interest form and we&apos;ll reach out!
+            <p className="text-slate-500 text-sm mb-4 leading-relaxed">
+              Interested in joining? Fill out our interest form and we&apos;ll reach out with meeting details.
             </p>
-            <Link
-              href="/contact"
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-violet-600 text-white text-sm font-medium px-4 py-2 rounded-lg hover:opacity-90 transition-opacity"
-            >
-              Apply to Join
-            </Link>
+            <div className="space-y-2">
+              <div className="flex items-center gap-2 text-sm text-slate-500">
+                <svg className="w-4 h-4 text-violet-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                College of Southern Nevada
+              </div>
+              <div className="flex items-center gap-2 text-sm text-slate-500">
+                <svg className="w-4 h-4 text-violet-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                Every Tuesday @ 6pm
+              </div>
+            </div>
           </div>
         </div>
 
-        <div className="border-t border-slate-200 dark:border-[#1e2d45] mt-8 pt-6 text-center text-slate-400 text-sm">
-          © {new Date().getFullYear()} LC3 - Lowcode Cloud Club · College of Southern Nevada. All rights reserved.
-          <Link href="/admin/login" className="ml-3 opacity-[0.15] hover:opacity-50 transition-opacity select-none" tabIndex={-1}>
-            ·
-          </Link>
+        {/* Bottom bar */}
+        <div className="border-t border-slate-200 dark:border-[#1a2740] py-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-slate-400 text-sm">
+          <span>© {new Date().getFullYear()} LC3 - Lowcode Cloud Club · College of Southern Nevada</span>
+          <Link href="/admin/login" className="opacity-[0.15] hover:opacity-50 transition-opacity select-none" tabIndex={-1}>·</Link>
         </div>
       </div>
     </footer>

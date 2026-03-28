@@ -280,9 +280,10 @@ export default function HomePage() {
       </section>
 
       {/* Stats */}
-      <section className="border-y border-slate-200 bg-white dark:border-[#1e2d45] dark:bg-[#0d1424]">
+      <section className="relative border-y border-slate-200 dark:border-[#1e2d45] overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-violet-50/40 via-white to-blue-50/40 dark:from-violet-950/15 dark:via-[#0d1424] dark:to-blue-950/15 pointer-events-none" />
         <ScrollReveal>
-        <StaggerReveal className="max-w-6xl mx-auto px-4 sm:px-6 py-12 grid grid-cols-2 md:grid-cols-4 gap-6 text-center" stagger={120}>
+        <StaggerReveal className="relative max-w-6xl mx-auto px-4 sm:px-6 py-12 grid grid-cols-2 md:grid-cols-4 gap-6 text-center" stagger={120}>
           {[
             { value: stats.activeMembers, label: 'Active Members' },
             { value: stats.eventsHosted, label: 'Events Hosted' },
@@ -451,9 +452,10 @@ export default function HomePage() {
 
       {/* Featured Projects */}
       {featuredProjects.length > 0 && (
-        <section className="py-20 bg-slate-50 border-t border-slate-200 dark:bg-[#0d1424] dark:border-[#1e2d45]">
+        <section className="py-20 relative overflow-hidden border-t border-slate-200 dark:border-[#1e2d45]">
+          <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-violet-50/20 to-slate-50 dark:from-[#0a101e] dark:via-[#0d1424] dark:to-[#0a101e] pointer-events-none" />
           <ScrollReveal>
-          <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="relative max-w-6xl mx-auto px-4 sm:px-6">
             <div className="flex items-end justify-between mb-10">
               <div>
                 <p className="text-violet-600 dark:text-violet-400 text-sm font-medium mb-1">{homeContent.projectsEyebrow}</p>
@@ -588,9 +590,10 @@ export default function HomePage() {
 
       {/* Past Work */}
       {caseStudiesConfig.live && caseStudiesConfig.caseStudies.length > 0 && (
-        <section className="py-20 bg-slate-50 border-t border-slate-200 dark:bg-[#0d1424] dark:border-[#1e2d45]">
+        <section className="py-20 relative overflow-hidden border-t border-slate-200 dark:border-[#1e2d45]">
+          <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-violet-50/20 to-slate-50 dark:from-[#0a101e] dark:via-[#0d1424] dark:to-[#0a101e] pointer-events-none" />
           <ScrollReveal>
-          <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="relative max-w-6xl mx-auto px-4 sm:px-6">
             <div className="flex items-end justify-between mb-10">
               <div>
                 <p className="text-emerald-600 dark:text-emerald-400 text-sm font-medium mb-1">What we&apos;ve delivered</p>

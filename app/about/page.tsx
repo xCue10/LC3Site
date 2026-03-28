@@ -78,10 +78,16 @@ export default function AboutPage() {
   const about = readJSON<AboutContent>('about.json', defaults);
 
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 py-16">
-
-      {/* Hero */}
-      <div className="flex flex-col md:flex-row items-center gap-10 md:gap-16 mb-20">
+    <div>
+      {/* Full-width hero section */}
+      <section className="relative overflow-hidden border-b border-slate-200 dark:border-[#1e2d45]">
+        {/* Background layers */}
+        <div className="absolute inset-0 bg-gradient-to-br from-violet-50/70 via-blue-50/40 to-transparent dark:from-violet-950/25 dark:via-blue-950/15 dark:to-transparent pointer-events-none" />
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-violet-400/40 to-transparent pointer-events-none" />
+        <div className="absolute -top-24 -right-24 w-72 h-72 bg-violet-300/8 dark:bg-violet-500/8 rounded-full blur-3xl pointer-events-none" style={{animation:'hero-float-a 10s ease-in-out infinite'}} />
+        <div className="absolute -bottom-16 -left-16 w-56 h-56 bg-blue-300/8 dark:bg-blue-500/8 rounded-full blur-3xl pointer-events-none" style={{animation:'hero-float-b 12s ease-in-out infinite 1s'}} />
+        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 py-16 sm:py-20">
+          <div className="flex flex-col md:flex-row items-center gap-10 md:gap-16">
         <div className="flex-1 text-center md:text-left">
           <p className="text-violet-600 dark:text-violet-400 text-sm font-medium mb-3">{about.heroTagline}</p>
           <h1 className="text-4xl sm:text-6xl font-bold text-slate-900 dark:text-white mb-4 leading-tight">
@@ -181,8 +187,13 @@ export default function AboutPage() {
             <path d="M20 268 L2 268 L2 250" fill="none" stroke="#6366f1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{animation:'about-corner 3s ease-in-out infinite 1.5s'}}/>
             <path d="M280 268 L298 268 L298 250" fill="none" stroke="#0891b2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{animation:'about-corner 3s ease-in-out infinite 2.25s'}}/>
           </svg>
+          </div>
         </div>
-      </div>
+        </div>
+      </section>
+
+      {/* Main content */}
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-16">
 
       {/* Mission */}
       <div className="bg-gradient-to-br from-blue-50 via-violet-50/50 to-transparent dark:from-blue-500/5 dark:via-violet-500/5 dark:to-transparent border border-blue-100 dark:border-violet-500/10 rounded-3xl p-10 mb-16">
@@ -353,6 +364,8 @@ export default function AboutPage() {
           </div>
 
         </div>
+      </div>
+
       </div>
     </div>
   );
