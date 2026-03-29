@@ -1137,9 +1137,10 @@ body {
 #retro-marquee { display: none; }
 .retro #retro-marquee {
   display: block !important;
+  position: relative !important;
   overflow: hidden !important;
   background: #000080 !important;
-  padding: 2px 0 !important;
+  padding: 3px 0 !important;
   border-bottom: 2px solid #4444ff !important;
   margin: 0 10px !important;
   white-space: nowrap !important;
@@ -1150,9 +1151,11 @@ body {
   font-family: 'Tahoma', 'Arial', sans-serif !important;
   font-size: 11px !important;
   font-weight: bold !important;
+  line-height: 1.4 !important;
   padding-left: 100% !important;
   white-space: nowrap !important;
   animation: geo-marquee 40s linear infinite !important;
+  will-change: transform !important;
 }
 @keyframes geo-marquee {
   from { transform: translateX(0); }
