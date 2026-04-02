@@ -4361,3 +4361,323 @@ html[data-retro-brand="elance"].retro main button[class*="from-"] {
   box-shadow: 1px 2px 4px rgba(100,40,0,0.3) !important;
   text-shadow: 0 1px 0 rgba(0,0,0,0.2) !important;
 }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   BRAND OVERRIDES — Part 2
+   Link colors, h1/h2/h3 backgrounds, dark-bg text fixes
+   High specificity so they win over base .retro rules.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* ── Link colors — light-bg brands ──────────────────────────────────── */
+html[data-retro-brand="aol"].retro main a       { color: #0000cc !important; }
+html[data-retro-brand="aol"].retro main a:hover { color: #cc0000 !important; }
+html[data-retro-brand="radioshack"].retro main a       { color: #990000 !important; }
+html[data-retro-brand="radioshack"].retro main a:hover { color: #cc0000 !important; }
+html[data-retro-brand="monster"].retro main a       { color: #5500bb !important; }
+html[data-retro-brand="monster"].retro main a:hover { color: #009933 !important; }
+html[data-retro-brand="xanga"].retro main a       { color: #880088 !important; }
+html[data-retro-brand="xanga"].retro main a:hover { color: #dd44dd !important; }
+html[data-retro-brand="askjeeves"].retro main a       { color: #884400 !important; }
+html[data-retro-brand="askjeeves"].retro main a:hover { color: #cc5500 !important; }
+html[data-retro-brand="hotmail"].retro main a       { color: #003399 !important; }
+html[data-retro-brand="hotmail"].retro main a:hover { color: #ff6600 !important; }
+html[data-retro-brand="webshots"].retro main a       { color: #006633 !important; }
+html[data-retro-brand="webshots"].retro main a:hover { color: #008844 !important; }
+html[data-retro-brand="elance"].retro main a       { color: #884400 !important; }
+html[data-retro-brand="elance"].retro main a:hover { color: #cc6600 !important; }
+
+/* ── Link colors — dark-bg brands (bright so they're visible) ────────── */
+html[data-retro-brand="geocities"].retro main a       { color: #66eeff !important; text-decoration: underline !important; }
+html[data-retro-brand="geocities"].retro main a:hover { color: #ffff00 !important; }
+html[data-retro-brand="blockbuster"].retro main a       { color: #FFD700 !important; }
+html[data-retro-brand="blockbuster"].retro main a:hover { color: #ffffff !important; }
+html[data-retro-brand="neopets"].retro main a       { color: #ffee66 !important; }
+html[data-retro-brand="neopets"].retro main a:hover { color: #ffffff !important; }
+html[data-retro-brand="norton"].retro main a       { color: #ff9900 !important; }
+html[data-retro-brand="norton"].retro main a:hover { color: #ffdd00 !important; }
+
+/* ── text-white fix — on dark backgrounds white text should stay white ── */
+html[data-retro-brand="geocities"].retro main [class~="text-white"] { color: #ffffff !important; }
+html[data-retro-brand="blockbuster"].retro main [class~="text-white"] { color: #ffffff !important; }
+html[data-retro-brand="neopets"].retro main [class~="text-white"] { color: #ffffff !important; }
+html[data-retro-brand="norton"].retro main [class~="text-white"] { color: #ccbbbb !important; }
+
+/* ── slate-300/400 text — lighten on dark backgrounds ────────────────── */
+html[data-retro-brand="geocities"].retro main [class~="text-slate-400"],
+html[data-retro-brand="geocities"].retro main [class~="text-slate-300"],
+html[data-retro-brand="geocities"].retro main [class~="text-slate-200"] { color: #99ccff !important; }
+html[data-retro-brand="blockbuster"].retro main [class~="text-slate-400"],
+html[data-retro-brand="blockbuster"].retro main [class~="text-slate-300"],
+html[data-retro-brand="blockbuster"].retro main [class~="text-slate-200"] { color: #8aa8cc !important; }
+html[data-retro-brand="neopets"].retro main [class~="text-slate-400"],
+html[data-retro-brand="neopets"].retro main [class~="text-slate-300"],
+html[data-retro-brand="neopets"].retro main [class~="text-slate-200"] { color: #aaddff !important; }
+html[data-retro-brand="norton"].retro main [class~="text-slate-400"],
+html[data-retro-brand="norton"].retro main [class~="text-slate-300"],
+html[data-retro-brand="norton"].retro main [class~="text-slate-200"] { color: #cc9999 !important; }
+
+/* ── h1 background per brand — override the default navy gradient ──────── */
+html[data-retro-brand="aol"].retro main h1 {
+  background: linear-gradient(180deg, #003399 0%, #0022aa 100%) !important;
+  color: #ffffff !important; text-shadow: none !important;
+}
+html[data-retro-brand="geocities"].retro main h1 {
+  background: #000022 !important;
+  border-bottom: 3px solid #00ccff !important;
+}
+html[data-retro-brand="blockbuster"].retro main h1 {
+  background: linear-gradient(180deg, #001a44 0%, #000d22 100%) !important;
+  border-bottom: 3px solid #FFD700 !important;
+}
+html[data-retro-brand="radioshack"].retro main h1 {
+  background: linear-gradient(180deg, #cc0000 0%, #990000 100%) !important;
+  color: #ffffff !important;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.5) !important;
+}
+html[data-retro-brand="neopets"].retro main h1 {
+  background: linear-gradient(180deg, #003377 0%, #002266 100%) !important;
+  border-bottom: 3px solid #ffcc00 !important;
+}
+html[data-retro-brand="monster"].retro main h1 {
+  background: linear-gradient(180deg, #3d0080 0%, #2d006e 100%) !important;
+  color: #ffffff !important; text-shadow: none !important;
+}
+html[data-retro-brand="xanga"].retro main h1 {
+  background: linear-gradient(180deg, #880088 0%, #660066 100%) !important;
+  color: #ffbbff !important;
+  font-style: italic !important;
+}
+html[data-retro-brand="askjeeves"].retro main h1 {
+  background: linear-gradient(180deg, #884400 0%, #664400 100%) !important;
+  color: #ffffff !important;
+  font-family: Georgia, serif !important;
+  text-transform: none !important;
+}
+html[data-retro-brand="hotmail"].retro main h1 {
+  background: linear-gradient(180deg, #003399 0%, #001f77 100%) !important;
+  color: #ffffff !important;
+}
+html[data-retro-brand="webshots"].retro main h1 {
+  background: linear-gradient(180deg, #006633 0%, #004422 100%) !important;
+  color: #ffffff !important;
+}
+html[data-retro-brand="norton"].retro main h1 {
+  background: linear-gradient(180deg, #330000 0%, #1a0000 100%) !important;
+  border-bottom: 2px solid #cc0000 !important;
+}
+html[data-retro-brand="elance"].retro main h1 {
+  background: linear-gradient(180deg, #884400 0%, #5a2e00 100%) !important;
+  color: #ffffff !important;
+}
+
+/* ── h2 background per brand ─────────────────────────────────────────── */
+html[data-retro-brand="aol"].retro main h2 {
+  background: linear-gradient(180deg, #003399 0%, #002288 100%) !important;
+  border-left-color: #ffcc00 !important;
+  color: #ffffff !important;
+}
+html[data-retro-brand="geocities"].retro main h2 {
+  background: #000044 !important;
+  border-left-color: #00ffff !important;
+  color: #ffff00 !important;
+}
+html[data-retro-brand="blockbuster"].retro main h2 {
+  background: linear-gradient(180deg, #00256b 0%, #001a44 100%) !important;
+  border-left-color: #FFD700 !important;
+  color: #ffffff !important;
+}
+html[data-retro-brand="radioshack"].retro main h2 {
+  background: linear-gradient(180deg, #aa0000 0%, #880000 100%) !important;
+  border-left-color: #ffdd00 !important;
+  color: #ffffff !important;
+}
+html[data-retro-brand="neopets"].retro main h2 {
+  background: linear-gradient(180deg, #004499 0%, #003377 100%) !important;
+  border-left-color: #ffdd00 !important;
+  color: #ffdd00 !important;
+}
+html[data-retro-brand="monster"].retro main h2 {
+  background: linear-gradient(180deg, #2d0060 0%, #1d0050 100%) !important;
+  border-left-color: #00cc44 !important;
+  color: #ffffff !important;
+}
+html[data-retro-brand="xanga"].retro main h2 {
+  background: linear-gradient(180deg, #660066 0%, #440044 100%) !important;
+  border-left-color: #ff88ff !important;
+  color: #ffccff !important;
+  font-style: italic !important;
+}
+html[data-retro-brand="askjeeves"].retro main h2 {
+  background: linear-gradient(180deg, #774400 0%, #553300 100%) !important;
+  border-left-color: #ffaa00 !important;
+  color: #ffffff !important;
+  font-family: Georgia, serif !important;
+  text-transform: none !important;
+}
+html[data-retro-brand="hotmail"].retro main h2 {
+  background: linear-gradient(180deg, #002288 0%, #001166 100%) !important;
+  border-left-color: #ff6600 !important;
+  color: #ffffff !important;
+}
+html[data-retro-brand="webshots"].retro main h2 {
+  background: linear-gradient(180deg, #005522 0%, #003311 100%) !important;
+  border-left-color: #66ffaa !important;
+  color: #ffffff !important;
+}
+html[data-retro-brand="norton"].retro main h2 {
+  background: linear-gradient(180deg, #220000 0%, #110000 100%) !important;
+  border-left-color: #ffdd00 !important;
+  color: #ffdd00 !important;
+}
+html[data-retro-brand="elance"].retro main h2 {
+  background: linear-gradient(180deg, #774400 0%, #4a2000 100%) !important;
+  border-left-color: #ffaa33 !important;
+  color: #ffffff !important;
+}
+
+/* ── h3 color fixes — dark-bg brands need light h3 ───────────────────── */
+html[data-retro-brand="geocities"].retro main h3 {
+  color: #ffff00 !important;
+  border-color: #00ccff !important;
+}
+html[data-retro-brand="blockbuster"].retro main h3 {
+  color: #FFD700 !important;
+  border-color: rgba(255,215,0,0.35) !important;
+}
+html[data-retro-brand="neopets"].retro main h3 {
+  color: #ffdd00 !important;
+  border-color: rgba(255,204,0,0.5) !important;
+}
+html[data-retro-brand="norton"].retro main h3 {
+  color: #ff6600 !important;
+  border-color: #cc2200 !important;
+}
+
+/* ── hr per dark-bg brand ────────────────────────────────────────────── */
+html[data-retro-brand="geocities"].retro main hr  { background: linear-gradient(to right,#00ffff,#ff00ff,#ffff00,#00ffff) !important; }
+html[data-retro-brand="blockbuster"].retro main hr { background: linear-gradient(to right,#FFD700,#ff8c00,#FFD700) !important; }
+html[data-retro-brand="neopets"].retro main hr     { background: linear-gradient(to right,#ffdd00,#ff66bb,#00ccff,#ffdd00) !important; }
+html[data-retro-brand="norton"].retro main hr      { background: linear-gradient(to right,#cc0000,#ff6600,#cc0000) !important; }
+
+/* ── Neopets — bubbly card borders ───────────────────────────────────── */
+html[data-retro-brand="neopets"].retro main [class~="bg-white"][class~="border"],
+html[data-retro-brand="neopets"].retro main [class~="bg-white"][class*="shadow"] {
+  border: 2px solid #ffdd00 !important;
+  border-radius: 12px !important;
+  box-shadow: 2px 2px 0 rgba(255,204,0,0.4) !important;
+}
+
+/* ── Norton — dark glowing card borders ─────────────────────────────── */
+html[data-retro-brand="norton"].retro main [class~="bg-white"][class~="border"],
+html[data-retro-brand="norton"].retro main [class~="bg-white"][class*="shadow"] {
+  border: 1px solid #cc2200 !important;
+  box-shadow: 0 0 8px rgba(200,0,0,0.25) !important;
+}
+
+/* ── GeoCities — scanline on cards ──────────────────────────────────── */
+html[data-retro-brand="geocities"].retro main [class~="bg-white"][class~="border"],
+html[data-retro-brand="geocities"].retro main [class~="bg-white"][class*="shadow"] {
+  background-color: #000066 !important;
+  border: 2px solid #00ccff !important;
+  box-shadow: 0 0 10px rgba(0,204,255,0.35) !important;
+}
+
+/* ── Xanga — diary entry card styling ───────────────────────────────── */
+html[data-retro-brand="xanga"].retro main [class~="bg-white"][class~="border"],
+html[data-retro-brand="xanga"].retro main [class~="bg-white"][class*="shadow"] {
+  background-color: #fff8ff !important;
+  border: 1px solid #cc66cc !important;
+  border-left: 4px solid #dd44dd !important;
+  box-shadow: 2px 2px 5px rgba(136,0,136,0.15) !important;
+}
+
+/* ── Xanga — italic body text for diary feel ─────────────────────────── */
+html[data-retro-brand="xanga"].retro main p { font-style: italic !important; }
+html[data-retro-brand="xanga"].retro main li { font-style: normal !important; }
+
+/* ── Monitor padding for Xanga 2-row header (104px brand + 76px chrome = 180px) ── */
+html[data-retro-brand="xanga"].retro #monitor-frame { padding-top: 152px !important; }
+
+/* ── Monitor padding for Neopets 2-row header ────────────────────────── */
+html[data-retro-brand="neopets"].retro #monitor-frame { padding-top: 152px !important; }
+
+/* ── Monitor padding for Norton 2-row header ─────────────────────────── */
+html[data-retro-brand="norton"].retro #monitor-frame { padding-top: 152px !important; }
+
+/* ── IE6-style scrollbar in content area ─────────────────────────────── */
+.retro #site-wrapper::-webkit-scrollbar { width: 17px; }
+.retro #site-wrapper::-webkit-scrollbar-track {
+  background: #f0f0f0;
+  border-left: 1px solid #cfcfcf;
+}
+.retro #site-wrapper::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #e8e8e8 0%, #c8c8c8 100%);
+  border: 1px solid;
+  border-top-color: #ffffff;
+  border-left-color: #ffffff;
+  border-right-color: #808080;
+  border-bottom-color: #808080;
+}
+.retro #site-wrapper::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, #d8d8d8 0%, #b8b8b8 100%); }
+.retro #site-wrapper::-webkit-scrollbar-button {
+  background: #d8d3cb;
+  height: 17px;
+  border: 1px solid;
+  border-top-color: #ffffff;
+  border-left-color: #ffffff;
+  border-right-color: #808080;
+  border-bottom-color: #808080;
+  display: block;
+}
+.retro #site-wrapper::-webkit-scrollbar-corner { background: #d8d3cb; }
+
+/* ── IE6 text selection color ─────────────────────────────────────────── */
+.retro ::selection { background: #316ac5 !important; color: #ffffff !important; }
+
+/* ── RadioShack — bold product-price style for stats/numbers ─────────── */
+html[data-retro-brand="radioshack"].retro main [class*="text-2xl"],
+html[data-retro-brand="radioshack"].retro main [class*="text-3xl"],
+html[data-retro-brand="radioshack"].retro main [class*="text-4xl"] {
+  color: #cc0000 !important;
+  font-family: 'Arial Black', sans-serif !important;
+}
+
+/* ── Monster.com — job-listing row hover feel ────────────────────────── */
+html[data-retro-brand="monster"].retro main [class~="bg-white"][class~="border"],
+html[data-retro-brand="monster"].retro main [class~="bg-white"][class*="shadow"] {
+  border-left: 3px solid #009933 !important;
+  border-radius: 2px !important;
+}
+
+/* ── Ask Jeeves — warm parchment card feel ───────────────────────────── */
+html[data-retro-brand="askjeeves"].retro main [class~="bg-white"][class~="border"],
+html[data-retro-brand="askjeeves"].retro main [class~="bg-white"][class*="shadow"] {
+  background-color: #fffef5 !important;
+  border-color: #cc8800 !important;
+  border-radius: 2px !important;
+  box-shadow: 1px 1px 3px rgba(100,50,0,0.12) !important;
+}
+
+/* ── Hotmail — email client sharp box styling ────────────────────────── */
+html[data-retro-brand="hotmail"].retro main [class~="bg-white"][class~="border"],
+html[data-retro-brand="hotmail"].retro main [class~="bg-white"][class*="shadow"] {
+  border: 1px solid #99aacc !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+/* ── Webshots — photo frame aesthetic ───────────────────────────────── */
+html[data-retro-brand="webshots"].retro main img {
+  border: 3px solid #ffffff !important;
+  outline: 1px solid #006633 !important;
+  box-shadow: 2px 2px 5px rgba(0,0,0,0.3) !important;
+}
+
+/* ── eLance — professional marketplace card styling ─────────────────── */
+html[data-retro-brand="elance"].retro main [class~="bg-white"][class~="border"],
+html[data-retro-brand="elance"].retro main [class~="bg-white"][class*="shadow"] {
+  border: 1px solid #ffaa33 !important;
+  border-top: 2px solid #884400 !important;
+  border-radius: 2px !important;
+  box-shadow: 1px 2px 4px rgba(80,30,0,0.12) !important;
+}

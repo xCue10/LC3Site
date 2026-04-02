@@ -428,9 +428,18 @@ function BrandHeader({ brand }: { brand: string }) {
         <div style={{ background: '#fff', borderBottom: '1px solid #bbb', pointerEvents: 'none' }}>
           <div style={{ background: 'linear-gradient(90deg,#003399,#0055dd)', padding: '0 8px', height: '22px', display: 'flex', alignItems: 'center', gap: '3px' }}>
             {['Mail','News','Sports','Finance','Entertainment','Shopping','Travel','Local'].map(l => navLink(l, l))}
-            <span style={{ marginLeft: 'auto', fontSize: '10px', fontFamily: f, color: '#ffee88' }}>Welcome, LC3Club!</span>
+            <span style={{ marginLeft: 'auto', fontSize: '10px', fontFamily: f, color: '#ffee88' }}>Welcome, LC3Club! &nbsp;|&nbsp; You&apos;ve Got Mail!</span>
           </div>
           <div style={{ padding: '4px 8px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            {/* AOL Running Man */}
+            <svg viewBox="0 0 18 28" width="18" height="28" aria-hidden="true" style={{ flexShrink: 0 }}>
+              <circle cx="9" cy="4" r="3.2" fill="#ffcc00"/>
+              <line x1="9" y1="7" x2="8" y2="16" stroke="#ffcc00" strokeWidth="2" strokeLinecap="round"/>
+              <line x1="8.5" y1="10" x2="2" y2="13.5" stroke="#ffcc00" strokeWidth="1.8" strokeLinecap="round"/>
+              <line x1="8.5" y1="10" x2="15" y2="7.5" stroke="#ffcc00" strokeWidth="1.8" strokeLinecap="round"/>
+              <line x1="8" y1="16" x2="3" y2="24" stroke="#ffcc00" strokeWidth="1.8" strokeLinecap="round"/>
+              <line x1="8" y1="16" x2="14" y2="22" stroke="#ffcc00" strokeWidth="1.8" strokeLinecap="round"/>
+            </svg>
             <span style={{ fontSize: '22px', fontWeight: 'bold', fontStyle: 'italic', fontFamily: 'Arial Black, sans-serif', color: '#003399', letterSpacing: '-1px' }}>
               <span style={{ color: '#cc0000' }}>A</span>
               <span style={{ color: '#ff9900' }}>O</span>
@@ -441,7 +450,7 @@ function BrandHeader({ brand }: { brand: string }) {
               <input readOnly style={{ flex: 1, fontSize: '11px', fontFamily: f, border: 'none', padding: '0 4px', outline: 'none', background: '#fff', color: '#000' }} defaultValue="lc3club" />
               <button style={{ background: '#0044cc', color: '#fff', border: 'none', padding: '0 6px', fontSize: '10px', fontFamily: f, cursor: 'default' }}>GO</button>
             </div>
-            <span style={{ fontSize: '10px', fontFamily: f, color: '#555', marginLeft: 'auto' }}>You have <strong style={{ color: '#cc0000' }}>3</strong> new messages</span>
+            <span style={{ fontSize: '10px', fontFamily: f, color: '#003399', fontWeight: 'bold', border: '1px solid #aabbdd', padding: '2px 6px', background: '#eef4ff', whiteSpace: 'nowrap' as const }}>📬 3 New Messages</span>
           </div>
         </div>
       );
@@ -457,10 +466,15 @@ function BrandHeader({ brand }: { brand: string }) {
               <div style={{ fontSize: '8px', fontFamily: f, color: '#ffdddd', marginTop: '-2px', letterSpacing: '1px' }}>FREE HOMEPAGES FOR EVERYONE</div>
             </div>
             <div style={{ width: '1px', height: '28px', background: 'rgba(255,255,255,0.3)' }} />
-            {['Neighborhoods','Build Your Page','Browse Pages','GeoSearch','Help'].map(l =>
-              <span key={l} style={{ padding: '0 8px', fontSize: '11px', fontFamily: f, color: '#ffeecc', cursor: 'default', whiteSpace: 'nowrap' as const }}>{l}</span>
-            )}
-            <span style={{ marginLeft: 'auto', background: '#ffff00', color: '#aa0000', fontSize: '10px', fontWeight: 'bold', fontFamily: f, padding: '2px 6px' }}>BUILD FREE!</span>
+            <div>
+              <div style={{ fontSize: '8px', fontFamily: f, color: '#ffddaa', letterSpacing: '0.5px' }}>📍 SiliconValley/Campus/LC3Club</div>
+              <div style={{ display: 'flex', gap: '0' }}>
+                {['Neighborhoods','Build Your Page','Browse Pages','GeoSearch','Chat'].map(l =>
+                  <span key={l} style={{ padding: '0 7px', fontSize: '11px', fontFamily: f, color: '#ffeecc', cursor: 'default', whiteSpace: 'nowrap' as const }}>{l}</span>
+                )}
+              </div>
+            </div>
+            <span style={{ marginLeft: 'auto', background: '#ffff00', color: '#aa0000', fontSize: '10px', fontWeight: 'bold', fontFamily: f, padding: '2px 6px', whiteSpace: 'nowrap' as const }}>🚧 BUILD FREE!</span>
           </div>
         </div>
       );
@@ -471,13 +485,16 @@ function BrandHeader({ brand }: { brand: string }) {
           <div style={{ padding: '5px 8px', display: 'flex', alignItems: 'center', gap: '10px' }}>
             <div>
               <div style={{ fontSize: '16px', fontWeight: 'bold', fontFamily: 'Impact, Arial Black, sans-serif', color: '#FFD700', letterSpacing: '2px' }}>BLOCKBUSTER</div>
-              <div style={{ fontSize: '8px', fontFamily: f, color: '#88aaff', marginTop: '-2px', letterSpacing: '3px' }}>ONLINE</div>
+              <div style={{ fontSize: '8px', fontFamily: f, color: '#88aaff', marginTop: '-2px', letterSpacing: '3px' }}>TOTAL ACCESS™ ONLINE</div>
             </div>
             <div style={{ width: '1px', height: '28px', background: 'rgba(255,215,0,0.4)' }} />
-            {['New Releases','Top 100','Coming Soon','Store Locator','My Account','Drop Box'].map(l =>
+            {['New Releases','Top 100','Coming Soon','My Queue','My Account','In-Store Exchange'].map(l =>
               <span key={l} style={{ padding: '0 9px', fontSize: '11px', fontFamily: f, color: '#fff', cursor: 'default', whiteSpace: 'nowrap' as const }}>{l}</span>
             )}
-            <div style={{ marginLeft: 'auto', background: '#FFD700', color: '#003087', fontSize: '10px', fontWeight: 'bold', fontFamily: f, padding: '3px 8px', whiteSpace: 'nowrap' as const }}>★ No Late Fees!</div>
+            <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '6px', flexShrink: 0 }}>
+              <span style={{ fontSize: '10px', fontFamily: f, color: '#aaccff', whiteSpace: 'nowrap' as const }}>📀 Queue: 3</span>
+              <div style={{ background: '#FFD700', color: '#003087', fontSize: '10px', fontWeight: 'bold', fontFamily: f, padding: '3px 8px', whiteSpace: 'nowrap' as const }}>★ No Late Fees!</div>
+            </div>
           </div>
         </div>
       );
@@ -494,29 +511,41 @@ function BrandHeader({ brand }: { brand: string }) {
               <div style={{ fontSize: '8px', fontFamily: f, color: '#ffeecc', marginTop: '-2px' }}>You&apos;ve Got Questions, We&apos;ve Got Answers</div>
             </div>
             <div style={{ width: '1px', height: '28px', background: 'rgba(255,255,255,0.3)' }} />
-            {['Electronics','Computers','Cell Phones','Audio','Batteries','Sale!'].map(l =>
-              <span key={l} style={{ padding: '0 8px', fontSize: '11px', fontFamily: f, color: '#fff', cursor: 'default', whiteSpace: 'nowrap' as const }}>{l}</span>
+            {['Electronics','Computers','Cell Phones','Digital Cameras','Audio/Video','Batteries','Sale!'].map(l =>
+              <span key={l} style={{ padding: '0 7px', fontSize: '11px', fontFamily: f, color: '#fff', cursor: 'default', whiteSpace: 'nowrap' as const }}>{l}</span>
             )}
-            <span style={{ marginLeft: 'auto', fontSize: '10px', fontFamily: f, color: '#ffeecc', whiteSpace: 'nowrap' as const }}>📍 Find a Store</span>
+            <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '6px', flexShrink: 0 }}>
+              <span style={{ fontSize: '9px', fontFamily: f, color: '#ffeecc', whiteSpace: 'nowrap' as const }}>1-800-843-7422</span>
+              <span style={{ background: '#ffdd00', color: '#880000', fontSize: '10px', fontWeight: 'bold', fontFamily: f, padding: '2px 6px', whiteSpace: 'nowrap' as const }}>📍 Find a Store</span>
+            </div>
           </div>
         </div>
       );
 
     case 'Neopets':
       return (
-        <div style={{ background: 'linear-gradient(90deg,#004499,#0066cc)', pointerEvents: 'none', borderBottom: '2px solid #ffcc00' }}>
-          <div style={{ padding: '5px 8px', display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <div>
-              <div style={{ fontSize: '18px', fontWeight: 'bold', fontFamily: 'Comic Sans MS, cursive', color: '#ffcc00', textShadow: '1px 1px 0 #000, -1px -1px 0 #000' }}>
-                Neo<span style={{ color: '#ff6600' }}>pets</span>
+        <div style={{ pointerEvents: 'none' }}>
+          <div style={{ background: 'linear-gradient(90deg,#004499,#0066cc)', borderBottom: '2px solid #ffcc00' }}>
+            <div style={{ padding: '5px 8px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <div>
+                <div style={{ fontSize: '18px', fontWeight: 'bold', fontFamily: 'Comic Sans MS, cursive', color: '#ffcc00', textShadow: '1px 1px 0 #000, -1px -1px 0 #000' }}>
+                  Neo<span style={{ color: '#ff6600' }}>pets</span>
+                </div>
+                <div style={{ fontSize: '8px', fontFamily: f, color: '#aaddff', marginTop: '-2px' }}>Explore. Play. Create.</div>
               </div>
-              <div style={{ fontSize: '8px', fontFamily: f, color: '#aaddff', marginTop: '-2px' }}>Explore. Play. Create.</div>
+              <div style={{ width: '1px', height: '28px', background: 'rgba(255,204,0,0.4)' }} />
+              {['Games','Explore Neopia','Create','Guilds','Shops','Battledome','Chat'].map(l =>
+                <span key={l} style={{ padding: '0 7px', fontSize: '11px', fontFamily: f, color: '#fff', cursor: 'default', whiteSpace: 'nowrap' as const }}>{l}</span>
+              )}
+              <span style={{ marginLeft: 'auto', background: '#ffcc00', color: '#003377', fontSize: '9px', fontWeight: 'bold', fontFamily: f, padding: '2px 6px', whiteSpace: 'nowrap' as const }}>LC3 Guild ★</span>
             </div>
-            <div style={{ width: '1px', height: '28px', background: 'rgba(255,204,0,0.4)' }} />
-            {['Games','Explore Neopia','Create','Guilds','Shops','Battledome','Chat'].map(l =>
-              <span key={l} style={{ padding: '0 7px', fontSize: '11px', fontFamily: f, color: '#fff', cursor: 'default', whiteSpace: 'nowrap' as const }}>{l}</span>
-            )}
-            <span style={{ marginLeft: 'auto', background: '#ffcc00', color: '#003377', fontSize: '9px', fontWeight: 'bold', fontFamily: f, padding: '2px 6px', whiteSpace: 'nowrap' as const }}>LC3 Guild ★</span>
+          </div>
+          {/* Account bar */}
+          <div style={{ background: '#003088', height: '34px', display: 'flex', alignItems: 'center', padding: '0 10px', gap: '14px', overflow: 'hidden' }}>
+            <span style={{ fontSize: '10px', fontFamily: 'Comic Sans MS, cursive', color: '#ffcc00', whiteSpace: 'nowrap' as const }}>♦ NP: 47,382</span>
+            <span style={{ width: '1px', height: '16px', background: 'rgba(255,204,0,0.3)', flexShrink: 0 }} />
+            <span style={{ fontSize: '10px', fontFamily: 'Comic Sans MS, cursive', color: '#aaddff', whiteSpace: 'nowrap' as const }}>🐾 Pets: Fluffybob, Zap, Cosmo, Pixel</span>
+            <span style={{ marginLeft: 'auto', fontSize: '10px', fontFamily: 'Comic Sans MS, cursive', color: '#ff99cc', whiteSpace: 'nowrap' as const }}>✉ 2 Neomail</span>
           </div>
         </div>
       );
@@ -525,21 +554,25 @@ function BrandHeader({ brand }: { brand: string }) {
       return (
         <div style={{ background: '#2d006e', pointerEvents: 'none', borderBottom: '2px solid #00cc44' }}>
           <div style={{ padding: '5px 8px', display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <div>
-              <div style={{ fontSize: '20px', fontWeight: 'bold', fontFamily: 'Arial Black, sans-serif', color: '#fff', letterSpacing: '-1px' }}>
-                <span style={{ color: '#00cc44' }}>m</span>onster
+            <div style={{ position: 'relative' as const }}>
+              <div style={{ fontSize: '20px', fontWeight: 'bold', fontFamily: 'Arial Black, sans-serif', color: '#fff', letterSpacing: '-1px', lineHeight: 1 }}>
+                <span style={{ color: '#00cc44', position: 'relative' as const }}>
+                  m
+                  {/* Monster claw marks */}
+                  <span style={{ position: 'absolute' as const, top: '-4px', left: '1px', fontSize: '8px', color: '#00aa33', lineHeight: 1, fontWeight: 'normal' }}>ᗒ</span>
+                </span>onster
                 <span style={{ fontSize: '9px', color: '#aaaaff', fontWeight: 'normal', letterSpacing: '0' }}>.com</span>
               </div>
-              <div style={{ fontSize: '8px', fontFamily: f, color: '#cc99ff', marginTop: '-2px' }}>Work. Better.</div>
+              <div style={{ fontSize: '8px', fontFamily: f, color: '#cc99ff', marginTop: '1px' }}>Work. Better. ™ — 1,000,000+ Jobs</div>
             </div>
-            <div style={{ display: 'flex', border: '1px solid #6600aa', background: '#fff', flex: 0 }}>
-              <input readOnly style={{ width: '120px', fontSize: '11px', fontFamily: f, border: 'none', padding: '0 4px', height: '20px', outline: 'none', color: '#999' }} defaultValue="Job Title" />
-              <div style={{ width: '1px', background: '#ccc', height: '20px' }} />
-              <input readOnly style={{ width: '80px', fontSize: '11px', fontFamily: f, border: 'none', padding: '0 4px', height: '20px', outline: 'none', color: '#999' }} defaultValue="City, State" />
-              <button style={{ background: '#00cc44', color: '#fff', border: 'none', padding: '0 8px', fontSize: '11px', fontWeight: 'bold', fontFamily: f, cursor: 'default', height: '20px' }}>FIND JOBS</button>
+            <div style={{ display: 'flex', border: '2px solid #00cc44', background: '#fff', flex: 0, borderRadius: '2px', overflow: 'hidden' }}>
+              <input readOnly style={{ width: '120px', fontSize: '11px', fontFamily: f, border: 'none', padding: '0 4px', height: '22px', outline: 'none', color: '#999' }} defaultValue="Job Title or Keywords" />
+              <div style={{ width: '1px', background: '#ccc', height: '22px' }} />
+              <input readOnly style={{ width: '80px', fontSize: '11px', fontFamily: f, border: 'none', padding: '0 4px', height: '22px', outline: 'none', color: '#999' }} defaultValue="City, State" />
+              <button style={{ background: '#00cc44', color: '#fff', border: 'none', padding: '0 10px', fontSize: '11px', fontWeight: 'bold', fontFamily: f, cursor: 'default', height: '22px' }}>SEARCH</button>
             </div>
-            {['Post a Job','Career Center','Salary Center','My Monster'].map(l =>
-              <span key={l} style={{ padding: '0 7px', fontSize: '11px', fontFamily: f, color: '#cc99ff', cursor: 'default', whiteSpace: 'nowrap' as const }}>{l}</span>
+            {['Post a Job','Career Center','Salary Center','Résumé Center','My Monster'].map(l =>
+              <span key={l} style={{ padding: '0 6px', fontSize: '11px', fontFamily: f, color: '#cc99ff', cursor: 'default', whiteSpace: 'nowrap' as const }}>{l}</span>
             )}
           </div>
         </div>
@@ -547,17 +580,26 @@ function BrandHeader({ brand }: { brand: string }) {
 
     case 'Xanga':
       return (
-        <div style={{ background: 'linear-gradient(90deg,#660066,#990099)', pointerEvents: 'none', borderBottom: '2px solid #ff66ff' }}>
-          <div style={{ padding: '5px 8px', display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <div>
-              <div style={{ fontSize: '20px', fontWeight: 'bold', fontFamily: 'Georgia, serif', color: '#ff99ff', fontStyle: 'italic' }}>xanga</div>
-              <div style={{ fontSize: '8px', fontFamily: f, color: '#ddaadd', marginTop: '-3px' }}>a blogging community</div>
+        <div style={{ pointerEvents: 'none' }}>
+          <div style={{ background: 'linear-gradient(90deg,#660066,#990099)', borderBottom: '1px solid rgba(255,102,255,0.3)' }}>
+            <div style={{ padding: '5px 8px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <div>
+                <div style={{ fontSize: '20px', fontWeight: 'bold', fontFamily: 'Georgia, serif', color: '#ff99ff', fontStyle: 'italic' }}>xanga</div>
+                <div style={{ fontSize: '8px', fontFamily: f, color: '#ddaadd', marginTop: '-3px' }}>a blogging community</div>
+              </div>
+              <div style={{ width: '1px', height: '28px', background: 'rgba(255,102,255,0.4)' }} />
+              {['Home','My Blog','eProps','Friends','Browse Blogs','Premium','Help'].map(l =>
+                <span key={l} style={{ padding: '0 8px', fontSize: '11px', fontFamily: f, color: '#ffccff', cursor: 'default', whiteSpace: 'nowrap' as const }}>{l}</span>
+              )}
+              <span style={{ marginLeft: 'auto', fontSize: '10px', fontFamily: f, color: '#ffaaff', whiteSpace: 'nowrap' as const }}>♥ eProps: 42</span>
             </div>
-            <div style={{ width: '1px', height: '28px', background: 'rgba(255,102,255,0.4)' }} />
-            {['Home','My Blog','eProps','Friends','Browse Blogs','Premium','Help'].map(l =>
-              <span key={l} style={{ padding: '0 8px', fontSize: '11px', fontFamily: f, color: '#ffccff', cursor: 'default', whiteSpace: 'nowrap' as const }}>{l}</span>
-            )}
-            <span style={{ marginLeft: 'auto', fontSize: '10px', fontFamily: f, color: '#ffaaff' }}>♥ eProps: 42</span>
+          </div>
+          {/* Current mood/music bar — iconic Xanga feature */}
+          <div style={{ background: '#550055', height: '34px', display: 'flex', alignItems: 'center', padding: '0 12px', gap: '12px', overflow: 'hidden' }}>
+            <span style={{ fontSize: '10px', fontFamily: 'Georgia, serif', fontStyle: 'italic', color: '#ffaaff', whiteSpace: 'nowrap' as const }}>Current Mood: <strong style={{ color: '#ffffff' }}>contemplative</strong> 😔</span>
+            <span style={{ width: '1px', height: '16px', background: 'rgba(255,102,255,0.35)', flexShrink: 0 }} />
+            <span style={{ fontSize: '10px', fontFamily: 'Georgia, serif', fontStyle: 'italic', color: '#ffaaff', whiteSpace: 'nowrap' as const }}>♪ Listening to: Dashboard Confessional — Vindicated</span>
+            <span style={{ marginLeft: 'auto', fontSize: '9px', fontFamily: f, color: '#cc88cc', whiteSpace: 'nowrap' as const }}>Last updated: 11:47 PM</span>
           </div>
         </div>
       );
@@ -567,18 +609,35 @@ function BrandHeader({ brand }: { brand: string }) {
         <div style={{ background: '#f5f0e0', pointerEvents: 'none', borderBottom: '2px solid #cc7700' }}>
           <div style={{ padding: '5px 8px', display: 'flex', alignItems: 'center', gap: '10px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <span style={{ fontSize: '24px' }}>🎩</span>
+              {/* Jeeves butler icon */}
+              <svg viewBox="0 0 28 36" width="28" height="36" aria-hidden="true" style={{ flexShrink: 0 }}>
+                {/* Top hat */}
+                <rect x="8" y="2" width="12" height="8" rx="1" fill="#222"/>
+                <rect x="5" y="9" width="18" height="2.5" rx="1" fill="#222"/>
+                {/* Head */}
+                <ellipse cx="14" cy="16" rx="6" ry="6.5" fill="#f5d5b0"/>
+                {/* Eyes */}
+                <circle cx="12" cy="15" r="1" fill="#442200"/>
+                <circle cx="16" cy="15" r="1" fill="#442200"/>
+                {/* Mustache */}
+                <path d="M11 18 Q14 20 17 18" fill="none" stroke="#884400" strokeWidth="1.2" strokeLinecap="round"/>
+                {/* Suit collar */}
+                <path d="M8 22 L14 26 L20 22 L20 36 L8 36 Z" fill="#111"/>
+                <path d="M11 22 L14 26 L17 22" fill="#fff"/>
+                {/* Bow tie */}
+                <polygon points="12,23 14,22 16,23 14,24" fill="#cc0000"/>
+              </svg>
               <div>
                 <div style={{ fontSize: '15px', fontWeight: 'bold', fontFamily: 'Georgia, serif', color: '#884400' }}>Ask <span style={{ color: '#cc5500' }}>Jeeves</span></div>
-                <div style={{ fontSize: '8px', fontFamily: f, color: '#885500', marginTop: '-2px' }}>The Web&apos;s Butler</div>
+                <div style={{ fontSize: '8px', fontFamily: f, color: '#885500', marginTop: '-2px' }}>Ask me anything in plain English!</div>
               </div>
             </div>
-            <div style={{ display: 'flex', border: '2px solid #cc7700', background: '#fff', flex: 1, maxWidth: '280px', height: '22px' }}>
-              <input readOnly style={{ flex: 1, fontSize: '12px', fontFamily: 'Georgia, serif', border: 'none', padding: '0 6px', outline: 'none', color: '#888', fontStyle: 'italic' }} defaultValue="Ask me anything..." />
-              <button style={{ background: 'linear-gradient(180deg,#ffaa00,#cc7700)', color: '#fff', border: 'none', borderLeft: '1px solid #cc7700', padding: '0 8px', fontSize: '11px', fontWeight: 'bold', fontFamily: f, cursor: 'default' }}>Ask!</button>
+            <div style={{ display: 'flex', border: '2px solid #cc7700', background: '#fff', flex: 1, maxWidth: '320px', height: '24px', borderRadius: '2px', overflow: 'hidden' }}>
+              <input readOnly style={{ flex: 1, fontSize: '12px', fontFamily: 'Georgia, serif', border: 'none', padding: '0 8px', outline: 'none', color: '#888', fontStyle: 'italic' }} defaultValue="What are good tech projects for students?" />
+              <button style={{ background: 'linear-gradient(180deg,#ffaa00,#cc7700)', color: '#fff', border: 'none', borderLeft: '1px solid #cc7700', padding: '0 10px', fontSize: '11px', fontWeight: 'bold', fontFamily: 'Georgia, serif', cursor: 'default' }}>Ask!</button>
             </div>
-            {['Web','News','Images','Shopping','Ask Kids'].map(l =>
-              <span key={l} style={{ padding: '0 7px', fontSize: '11px', fontFamily: f, color: '#884400', cursor: 'default' }}>{l}</span>
+            {['Web','News','Images','Shopping','Maps','Ask Kids'].map(l =>
+              <span key={l} style={{ padding: '0 6px', fontSize: '11px', fontFamily: f, color: '#884400', cursor: 'default', whiteSpace: 'nowrap' as const }}>{l}</span>
             )}
           </div>
         </div>
@@ -620,33 +679,45 @@ function BrandHeader({ brand }: { brand: string }) {
               <div style={{ fontSize: '8px', fontFamily: f, color: '#99ddbb', marginTop: '-2px' }}>Share Your World in Photos</div>
             </div>
             <div style={{ width: '1px', height: '28px', background: 'rgba(102,255,170,0.4)' }} />
-            {['My Photos','Community','Browse','Upload','Screensavers','Wallpaper','Pro'].map(l =>
+            {['My Photos','Community','Browse','Upload Photos','Screensavers','Wallpaper','Pro'].map(l =>
               <span key={l} style={{ padding: '0 8px', fontSize: '11px', fontFamily: f, color: '#ccffee', cursor: 'default', whiteSpace: 'nowrap' as const }}>{l}</span>
             )}
+            <span style={{ marginLeft: 'auto', fontSize: '9px', fontFamily: f, color: '#66ffaa', whiteSpace: 'nowrap' as const }}>📷 2,300,000+ Photos Shared</span>
           </div>
         </div>
       );
 
     case 'Norton AntiVirus':
       return (
-        <div style={{ background: 'linear-gradient(90deg,#1a0000,#330000)', pointerEvents: 'none', borderBottom: '2px solid #ffdd00' }}>
-          <div style={{ padding: '5px 8px', display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <span style={{ fontSize: '22px' }}>🛡</span>
-              <div>
-                <div style={{ fontSize: '13px', fontWeight: 'bold', fontFamily: 'Arial Black, sans-serif', color: '#ffdd00', letterSpacing: '1px' }}>NORTON ANTIVIRUS</div>
-                <div style={{ fontSize: '8px', fontFamily: f, color: '#ffaaaa', marginTop: '-2px' }}>by Symantec</div>
+        <div style={{ pointerEvents: 'none' }}>
+          <div style={{ background: 'linear-gradient(90deg,#1a0000,#330000)', borderBottom: '1px solid rgba(204,0,0,0.5)' }}>
+            <div style={{ padding: '5px 8px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <span style={{ fontSize: '22px' }}>🛡</span>
+                <div>
+                  <div style={{ fontSize: '13px', fontWeight: 'bold', fontFamily: 'Arial Black, sans-serif', color: '#ffdd00', letterSpacing: '1px' }}>NORTON ANTIVIRUS</div>
+                  <div style={{ fontSize: '8px', fontFamily: f, color: '#ffaaaa', marginTop: '-2px' }}>by Symantec — Internet Security 2004</div>
+                </div>
               </div>
+              <div style={{ width: '1px', height: '28px', background: 'rgba(255,221,0,0.4)' }} />
+              <div style={{ fontSize: '11px', fontFamily: f, display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <span style={{ color: '#00ff66', fontWeight: 'bold' }}>●</span>
+                <span style={{ color: '#aaffaa', fontWeight: 'bold' }}>PC PROTECTED</span>
+              </div>
+              {['Scan Now','LiveUpdate','Reports','Quarantine','Firewall','Settings'].map(l =>
+                <span key={l} style={{ padding: '0 7px', fontSize: '11px', fontFamily: f, color: '#ffcccc', cursor: 'default', whiteSpace: 'nowrap' as const }}>{l}</span>
+              )}
+              <span style={{ marginLeft: 'auto', fontSize: '9px', fontFamily: f, color: '#ffeeaa', whiteSpace: 'nowrap' as const }}>Last scan: Today 09:03 AM</span>
             </div>
-            <div style={{ width: '1px', height: '28px', background: 'rgba(255,221,0,0.4)' }} />
-            <div style={{ fontSize: '11px', fontFamily: f, display: 'flex', alignItems: 'center', gap: '4px' }}>
-              <span style={{ color: '#00ff66', fontWeight: 'bold' }}>●</span>
-              <span style={{ color: '#aaffaa' }}>Protected</span>
-            </div>
-            {['Scan Now','LiveUpdate','Reports','Quarantine','Settings','Help'].map(l =>
-              <span key={l} style={{ padding: '0 8px', fontSize: '11px', fontFamily: f, color: '#ffcccc', cursor: 'default', whiteSpace: 'nowrap' as const }}>{l}</span>
-            )}
-            <span style={{ marginLeft: 'auto', fontSize: '9px', fontFamily: f, color: '#ffeeaa', whiteSpace: 'nowrap' as const }}>Last scan: Today 9:03 AM</span>
+          </div>
+          {/* Status bar */}
+          <div style={{ background: '#0d0000', borderBottom: '2px solid #ffdd00', height: '34px', display: 'flex', alignItems: 'center', padding: '0 10px', gap: '14px', overflow: 'hidden' }}>
+            <span style={{ fontSize: '10px', fontFamily: f, color: '#aaffaa', whiteSpace: 'nowrap' as const }}>Virus Definitions: <strong style={{ color: '#00ff66' }}>Current</strong></span>
+            <span style={{ width: '1px', height: '16px', background: 'rgba(200,0,0,0.5)', flexShrink: 0 }} />
+            <span style={{ fontSize: '10px', fontFamily: f, color: '#ffaaaa', whiteSpace: 'nowrap' as const }}>Threats Blocked: <strong style={{ color: '#ffdd00' }}>1,337</strong></span>
+            <span style={{ width: '1px', height: '16px', background: 'rgba(200,0,0,0.5)', flexShrink: 0 }} />
+            <span style={{ fontSize: '10px', fontFamily: f, color: '#ffaaaa', whiteSpace: 'nowrap' as const }}>Spyware Scans: <strong style={{ color: '#ffdd00' }}>ON</strong></span>
+            <span style={{ marginLeft: 'auto', fontSize: '9px', fontFamily: f, color: '#ff8800', fontWeight: 'bold', whiteSpace: 'nowrap' as const }}>⚠ 14 Critical Windows Updates Pending</span>
           </div>
         </div>
       );
@@ -660,13 +731,16 @@ function BrandHeader({ brand }: { brand: string }) {
                 e<span style={{ color: '#fff' }}>Lance</span>
                 <span style={{ fontSize: '9px', color: '#ffddaa', fontWeight: 'normal' }}>.com</span>
               </div>
-              <div style={{ fontSize: '8px', fontFamily: f, color: '#ffddaa', marginTop: '-2px' }}>Hire Expert Freelancers Online</div>
+              <div style={{ fontSize: '8px', fontFamily: f, color: '#ffddaa', marginTop: '-2px' }}>Hire Expert Freelancers Online — Trusted Since 1999</div>
             </div>
             <div style={{ width: '1px', height: '28px', background: 'rgba(255,170,51,0.4)' }} />
-            {['Post a Job','Browse Freelancers','My Projects','Search Skills','How It Works'].map(l =>
-              <span key={l} style={{ padding: '0 8px', fontSize: '11px', fontFamily: f, color: '#ffeecc', cursor: 'default', whiteSpace: 'nowrap' as const }}>{l}</span>
+            {['Post a Job','Browse Freelancers','My Projects','Search Skills','How It Works','Escrow'].map(l =>
+              <span key={l} style={{ padding: '0 7px', fontSize: '11px', fontFamily: f, color: '#ffeecc', cursor: 'default', whiteSpace: 'nowrap' as const }}>{l}</span>
             )}
-            <span style={{ marginLeft: 'auto', background: '#ffaa33', color: '#5a2e00', fontSize: '10px', fontWeight: 'bold', fontFamily: f, padding: '2px 8px', whiteSpace: 'nowrap' as const }}>Register FREE</span>
+            <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '6px', flexShrink: 0 }}>
+              <span style={{ fontSize: '9px', fontFamily: f, color: '#ffddaa', whiteSpace: 'nowrap' as const }}>⭐ 50,000+ Freelancers</span>
+              <span style={{ background: '#ffaa33', color: '#5a2e00', fontSize: '10px', fontWeight: 'bold', fontFamily: f, padding: '2px 8px', whiteSpace: 'nowrap' as const }}>Register FREE</span>
+            </div>
           </div>
         </div>
       );
@@ -917,6 +991,9 @@ export default function RetroDesktop() {
           <button className="rd-br-tbtn" title="Stop">✕</button>
           <button className="rd-br-tbtn" title="Refresh">↻</button>
           <button className="rd-br-tbtn" title="Home">⌂</button>
+          <button className="rd-br-tbtn" title="Search">🔍 Search</button>
+          <button className="rd-br-tbtn" title="Favorites">★ Favorites</button>
+          <button className="rd-br-tbtn" title="History">🕐 History</button>
           <div className="rd-br-sep" />
           <span className="rd-br-addr-label">Address</span>
           <div className="rd-br-addr-bar">{theme.url}</div>
