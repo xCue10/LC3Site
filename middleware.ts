@@ -18,9 +18,16 @@ const PROTECTED_READ_PATHS = [
 
 function isAdminAuthed(request: NextRequest): boolean {
   const adminPassword = process.env.ADMIN_PASSWORD;
-  if (!adminPassword) return true; // not configured — open in dev
+  // SECURITY: Never default to 'true'. If password is not set, block access.
+  if (!adminPassword) return false; 
+  
   const token = request.cookies.get('lc3-admin')?.value;
-  return token === adminPassword;
+  
+  // We expect the token to be a simple hash/obfuscation of the password 
+  // to avoid storing the raw password in the browser.
+  // For this implementation, we'll use a basic comparison that matches the API logic.
+  const expectedToken = Buffer.from(adminPassword).toString('base64');
+  return token === expectedToken;
 }
 
 export function middleware(request: NextRequest) {
