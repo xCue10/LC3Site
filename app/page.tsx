@@ -1,12 +1,14 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { readJSON, Event, Project, Member, Stats, SiteSettings, Post, SponsorsConfig, CaseStudiesConfig, HomeContent, ProjectStatus } from '@/lib/data';
+import { getActivities } from '@/lib/activity';
 import ScrollReveal from './components/ScrollReveal';
 import HeroTyping from './components/HeroTyping';
 import AnimatedStat from './components/AnimatedStat';
 import StaggerReveal from './components/StaggerReveal';
 import ShieldDashboardPreview from './components/ShieldDashboardPreview';
 import CareersDashboardPreview from './components/CareersDashboardPreview';
+import ActivityHeatmap from './components/ActivityHeatmap';
 import { BannerCorners, MissionIcons, NavIcons } from './components/Icons';
 import type { Metadata } from 'next';
 
@@ -191,7 +193,7 @@ export default function HomePage() {
         </section>
       )}
       {/* Shield Preview */}
-      <section className="py-24 bg-slate-950 relative overflow-hidden">
+      <section className="py-24 bg-slate-50 dark:bg-slate-950 relative overflow-hidden transition-colors duration-300">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_-20%,#bef264,transparent_50%)] opacity-5" />
         <div className="max-w-6xl mx-auto px-4">
           <ShieldDashboardPreview />
@@ -199,7 +201,7 @@ export default function HomePage() {
       </section>
 
       {/* Projects */}
-      <section className="py-24 bg-white dark:bg-[#0a1020]">
+      <section className="py-24 bg-white dark:bg-[#0a1020] transition-colors duration-300">
         <div className="max-w-6xl mx-auto px-4">
           <div className="flex justify-between items-end mb-12">
             <div>
@@ -230,14 +232,21 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Club Activity Heatmap */}
+      <section className="py-20 bg-slate-50/50 dark:bg-white/[0.02] border-y border-slate-200 dark:border-white/5 transition-colors duration-300">
+        <div className="max-w-6xl mx-auto px-4">
+          <ActivityHeatmap activities={getActivities()} />
+        </div>
+      </section>
+
       {/* Final CTA */}
       <section className="py-24 px-4">
-        <div className="max-w-5xl mx-auto bg-slate-900 border border-white/10 rounded-[3.5rem] p-12 text-center text-white relative overflow-hidden shadow-2xl">
+        <div className="max-w-5xl mx-auto bg-slate-900 border border-slate-200 dark:border-white/10 rounded-[3.5rem] p-12 text-center text-white relative overflow-hidden shadow-2xl">
           <div className="absolute inset-0 bg-gradient-to-br from-violet-600/20 via-transparent to-blue-600/20" />
           <div className="relative z-10 max-w-2xl mx-auto">
             <h2 className="text-4xl sm:text-5xl font-black mb-6 tracking-tight">{homeContent.ctaHeading}</h2>
-            <p className="text-lg text-slate-400 mb-10 leading-relaxed">{homeContent.ctaDescription}</p>
-            <Link href="/contact" className="inline-block px-12 py-4 bg-cyber-lime text-black font-black uppercase tracking-tight rounded-2xl hover:scale-105 transition-transform shadow-xl shadow-cyber-lime/20">
+            <p className="text-lg text-slate-300 dark:text-slate-400 mb-10 leading-relaxed">{homeContent.ctaDescription}</p>
+            <Link href="/contact" className="inline-block px-12 py-4 bg-cyber-lime text-black font-black uppercase tracking-tight rounded-2xl hover:scale-105 active:scale-95 transition-transform shadow-xl shadow-cyber-lime/20">
               {homeContent.ctaButtonLabel}
             </Link>
           </div>

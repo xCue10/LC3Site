@@ -222,6 +222,13 @@ export interface CaseStudy {
   link?: string;
 }
 
+export interface Activity {
+  id: string;
+  type: 'project' | 'event' | 'blog' | 'member';
+  description: string;
+  timestamp: string;
+}
+
 export interface CaseStudiesConfig {
   live: boolean;
   sectionTitle: string;
