@@ -2,13 +2,15 @@
 
 import { useState, useEffect } from 'react';
 import { Member } from '@/lib/types';
-import { User, Github, Linkedin, Twitter, Globe, Save, LogOut, Loader2 } from 'lucide-react';
+import { User, Github, Linkedin, Twitter, Globe, Save, LogOut, Loader2, Search } from 'lucide-react';
 
 export default function MemberPortalDashboard() {
+  const [members, setMembers] = useState<Member[]>([]);
   const [member, setMember] = useState<Member | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
+  const [search, setSearch] = useState('');
 
   useEffect(() => {
     const key = localStorage.getItem('lc3-member-key');
@@ -17,9 +19,13 @@ export default function MemberPortalDashboard() {
       return;
     }
 
+    // First, verify the key and get all members so the user can pick theirs
     fetch(`/api/members/me?key=${key}`)
-      .then(res => res.ok ? res.json() : Promise.reject())
-      .then(data => { setMember(data); setLoading(false); })
+      .then(res => res.ok ? fetch('/api/members').then(r => r.json()) : Promise.reject())
+      .then(data => { 
+        setMembers(data); 
+        setLoading(false); 
+      })
       .catch(() => {
         localStorage.removeItem('lc3-member-key');
         window.location.href = '/members/portal';
@@ -50,6 +56,56 @@ export default function MemberPortalDashboard() {
     </div>
   );
 
+  // If authenticated but no member selected yet
+  if (!member) {
+    const filtered = members.filter(m => m.name.toLowerCase().includes(search.toLowerCase()));
+    return (
+      <div className="min-h-screen bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-200 p-8 grainy-bg transition-colors duration-300">
+        <div className="max-w-2xl mx-auto text-center space-y-8">
+          <h1 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight uppercase">Welcome to the Portal</h1>
+          <p className="text-slate-500 dark:text-slate-400">Please select your profile to begin editing.</p>
+          
+          <div className="relative max-w-sm mx-auto">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+            <input 
+              type="text" 
+              placeholder="Search your name..." 
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              className="w-full bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-2xl pl-10 pr-4 py-3 outline-none focus:border-violet-500 transition-all"
+            />
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {filtered.map(m => (
+              <button 
+                key={m.id} 
+                onClick={() => setMember(m)}
+                className="p-6 bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-3xl hover:border-violet-500/50 transition-all text-left group hover:scale-[1.02] active:scale-[0.98]"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-violet-500/10 overflow-hidden flex-shrink-0">
+                    {m.avatarUrl ? (
+                        <img src={m.avatarUrl} alt={m.name} className="w-full h-full object-cover" />
+                    ) : (
+                        <div className="w-full h-full flex items-center justify-center text-violet-500 font-bold">
+                            {m.name.charAt(0)}
+                        </div>
+                    )}
+                  </div>
+                  <div>
+                    <p className="font-bold text-slate-900 dark:text-white group-hover:text-violet-500 transition-colors">{m.name}</p>
+                    <p className="text-[10px] font-mono-tech text-slate-500 uppercase">{m.role}</p>
+                  </div>
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-200 p-4 md:p-8 grainy-bg transition-colors duration-300">
       <div className="max-w-4xl mx-auto space-y-8">
@@ -61,7 +117,10 @@ export default function MemberPortalDashboard() {
               <img src={member?.avatarUrl || '/avatar-placeholder.svg'} alt={member?.name} className="w-full h-full object-cover" />
             </div>
             <div>
-              <h1 className="text-2xl font-black text-slate-900 dark:text-white">{member?.name}</h1>
+              <div className="flex items-center gap-2">
+                <h1 className="text-2xl font-black text-slate-900 dark:text-white">{member?.name}</h1>
+                <button onClick={() => setMember(null)} className="text-[10px] font-mono-tech text-violet-500 hover:underline">SWITCH PROFILE</button>
+              </div>
               <p className="text-sm font-mono-tech text-violet-600 dark:text-violet-400 uppercase tracking-widest">{member?.role}</p>
             </div>
           </div>
