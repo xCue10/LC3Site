@@ -5,6 +5,32 @@
 @theme inline {
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --color-cyber-lime: #bef264;
+}
+
+@layer base {
+  .grainy-bg {
+    position: relative;
+  }
+  .grainy-bg::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.03;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    z-index: 1;
+  }
+}
+
+@layer utilities {
+  .font-mono-tech {
+    font-family: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+  }
 }
 
 body {
@@ -4680,4 +4706,42 @@ html[data-retro-brand="elance"].retro main [class~="bg-white"][class*="shadow"] 
   border-top: 2px solid #884400 !important;
   border-radius: 2px !important;
   box-shadow: 1px 2px 4px rgba(80,30,0,0.12) !important;
+}
+
+/* Global Animations & Utilities */
+@layer utilities {
+  @keyframes banner-glow { 0%,100%{opacity:0.25} 50%{opacity:0.6} }
+  @keyframes banner-corner { 0%,100%{opacity:0.4} 50%{opacity:0.9} }
+  @keyframes hero-blob-a { 0%,100%{transform:translate(-50%,-50%) scale(1);opacity:0.15} 50%{transform:translate(-50%,-50%) scale(1.18);opacity:0.22} }
+  @keyframes hero-blob-b { 0%,100%{transform:scale(1);opacity:0.15} 50%{transform:scale(1.25);opacity:0.24} }
+  @keyframes hero-blob-c { 0%,100%{transform:scale(1);opacity:0.1} 50%{transform:scale(1.2);opacity:0.18} }
+  @keyframes hero-light-shift { 0%,100%{opacity:1} 50%{opacity:0.65} }
+  @keyframes cursor-blink { 0%,100%{opacity:1} 50%{opacity:0} }
+  @keyframes btn-pulse { 0%,100%{box-shadow:0 8px 25px -4px rgba(139,92,246,0.35)} 50%{box-shadow:0 8px 38px 4px rgba(139,92,246,0.6)} }
+  @keyframes badge-pulse { 0%,100%{box-shadow:none;border-color:rgb(226,232,240)} 50%{box-shadow:0 0 8px 1px rgba(99,102,241,0.2);border-color:rgba(99,102,241,0.4)} }
+  @keyframes badge-pulse-dark { 0%,100%{box-shadow:none} 50%{box-shadow:0 0 10px 2px rgba(139,92,246,0.25)} }
+  @keyframes hero-float-a { 0%,100%{transform:translate(0,0)} 50%{transform:translate(10px,-20px)} }
+  @keyframes hero-float-b { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-15px,15px)} }
+
+  .animate-banner-glow { animation: banner-glow 3s ease-in-out infinite; }
+  .animate-banner-corner { animation: banner-corner 3s ease-in-out infinite; }
+  .animate-btn-pulse { animation: btn-pulse 2.8s ease-in-out infinite; }
+  .animate-hero-blob-a { animation: hero-blob-a 9s ease-in-out infinite; }
+  .animate-hero-blob-b { animation: hero-blob-b 11s ease-in-out infinite 1s; }
+  .animate-hero-blob-c { animation: hero-blob-c 13s ease-in-out infinite 2s; }
+}
+
+/* Page Specific Illustrations Keyframes */
+@layer utilities {
+  @keyframes ev2-dash { to { stroke-dashoffset: -22; } }
+  @keyframes ev2-spark { 0%,100%{opacity:0.3;transform:scale(0.9)} 50%{opacity:0.85;transform:scale(1.1)} }
+  @keyframes proj2-dash { to { stroke-dashoffset: -18; } }
+  @keyframes proj2-blink { 0%,49%{opacity:1} 50%,100%{opacity:0} }
+  @keyframes proj2-rocket { 0%,100%{transform:translate(0px,0px)} 50%{transform:translate(2px,-3px)} }
+  @keyframes blog-float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
+  @keyframes about-dash { to { stroke-dashoffset: -20; } }
+  @keyframes about-glow { 0%,100%{opacity:0.12} 50%{opacity:0.22} }
+  @keyframes about-dot { 0%,100%{opacity:0.3} 50%{opacity:0.85} }
+  @keyframes cta-dash { to { stroke-dashoffset: -16; } }
+  @keyframes cta-pulse { 0%,100%{opacity:0.35} 50%{opacity:0.9} }
 }

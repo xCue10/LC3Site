@@ -5,6 +5,9 @@ import ScrollReveal from './components/ScrollReveal';
 import HeroTyping from './components/HeroTyping';
 import AnimatedStat from './components/AnimatedStat';
 import StaggerReveal from './components/StaggerReveal';
+import ShieldDashboardPreview from './components/ShieldDashboardPreview';
+import CareersDashboardPreview from './components/CareersDashboardPreview';
+import { BannerCorners, MissionIcons, NavIcons } from './components/Icons';
 import type { Metadata } from 'next';
 
 export const revalidate = 30;
@@ -23,27 +26,21 @@ export const metadata: Metadata = {
 function HomeStatusBadge({ status }: { status: ProjectStatus }) {
   if (status === 'in-progress') {
     return (
-      <span className="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full bg-amber-50 border border-amber-200 text-amber-700 dark:bg-amber-500/10 dark:border-amber-500/20 dark:text-amber-400 shrink-0">
-        <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
+      <span className="inline-flex items-center gap-1.5 text-[10px] font-mono-tech px-2 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 shrink-0">
+        <span className="w-1 h-1 rounded-full bg-amber-500 animate-pulse" />
         In Progress
       </span>
     );
   }
   if (status === 'completed') {
     return (
-      <span className="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 dark:bg-emerald-500/10 dark:border-emerald-500/20 dark:text-emerald-400 shrink-0">
-        <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-        </svg>
+      <span className="inline-flex items-center gap-1.5 text-[10px] font-mono-tech px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 shrink-0">
         Completed
       </span>
     );
   }
   return (
-    <span className="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full bg-violet-50 border border-violet-200 text-violet-700 dark:bg-violet-500/10 dark:border-violet-500/20 dark:text-violet-400 shrink-0">
-      <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
-      </svg>
+    <span className="inline-flex items-center gap-1.5 text-[10px] font-mono-tech px-2 py-0.5 rounded-full bg-violet-500/10 border border-violet-500/20 text-violet-400 shrink-0">
       Open
     </span>
   );
@@ -55,10 +52,8 @@ export default function HomePage() {
   const members = readJSON<Member[]>('members.json');
   const statsOverrides = readJSON<Stats>('stats.json', { activeMembers: '', eventsHosted: '', projectsBuilt: '', yearsActive: '' });
   const settings = readJSON<SiteSettings>('settings.json', { recruitingBanner: '', meetingDay: '', meetingTime: '', meetingLocation: '' });
-  const upcomingEvents = events.filter((e) => e.type === 'upcoming').slice(0, 2);
   const latestPosts = readJSON<Post[]>('posts.json').filter((p) => p.published).slice(0, 3);
-  const sponsorsConfig = readJSON<SponsorsConfig>('sponsors.json', { live: false, sectionTitle: 'Supported By', sponsors: [] });
-  const caseStudiesConfig = readJSON<CaseStudiesConfig>('case-studies.json', { live: false, sectionTitle: 'Past Work', caseStudies: [] });
+  
   const homeDefaults: HomeContent = {
     primaryButtonLabel: 'Join the Club',
     secondaryButtonLabel: 'Meet the Team',
@@ -73,8 +68,8 @@ export default function HomePage() {
     ],
     aboutEyebrow: 'Who we are',
     aboutHeading: 'About LC3',
-    aboutBody1: 'LC3 — Lowcode Cloud Club — is a student-run tech organization focused on low-code platforms, cloud technologies, and modern software development. We partner with tools like Microsoft Power Platform and Azure to give members hands-on experience that directly translates to industry skills.',
-    aboutBody2: "Whether you're building your first app or already working in tech, LC3 is a place to grow. We believe the best way to learn is by shipping real things — together.",
+    aboutBody1: 'LC3 — Lowcode Cloud Club — is a student-run tech organization focused on low-code platforms, cloud technologies, and modern software development.',
+    aboutBody2: "Whether you're building your first app or already working in tech, LC3 is a place to grow.",
     projectsEyebrow: "What we're building",
     projectsHeading: 'Featured Projects',
     eventsEyebrow: 'Mark your calendar',
@@ -86,604 +81,167 @@ export default function HomePage() {
     ctaButtonLabel: 'Apply to Join LC3',
     shieldBadgeLabel: 'New Tool',
     shieldHeadingPrefix: 'Introducing',
-    shieldDescription: 'A hands-on cybersecurity scanner built for LC3 Club members and CSN students. Powered by Claude AI, Shield helps you analyze URLs, audit code, check SSL certificates, scan GitHub repos, and more — turning security knowledge into real practice.',
-    shieldFeatureTags: ['URL Scanner', 'Code Analysis', 'SSL/TLS', 'OWASP Top 10', 'GitHub Audit', 'JWT Analyzer'],
+    shieldDescription: 'A hands-on cybersecurity scanner built for LC3 members.',
+    shieldFeatureTags: ['URL Scanner', 'Code Analysis', 'SSL/TLS'],
     shieldCtaLabel: 'Explore LC3 Shield',
     shieldButtonLabel: 'LC3 Shield',
-    shieldFeatureCards: [
-      { icon: '🔍', title: 'Scan anything', desc: 'URLs, code, repos, SSL certs, DNS records' },
-      { icon: '🤖', title: 'AI-powered', desc: 'Claude AI explains every finding in plain English' },
-      { icon: '🏆', title: 'Earn badges', desc: 'Track your security skills with achievement badges' },
-      { icon: '📊', title: 'Track progress', desc: 'History, scores, and learning resources' },
-    ],
+    shieldFeatureCards: [],
   };
+  
   const home = readJSON<HomeContent>('home.json', homeDefaults);
   const homeContent: HomeContent = { ...homeDefaults, ...home };
 
-  const stats = {
-    activeMembers: statsOverrides.activeMembers || String(members.length),
-    eventsHosted: statsOverrides.eventsHosted || String(events.filter((e) => e.type === 'past').length),
-    projectsBuilt: statsOverrides.projectsBuilt || String(featuredProjects.length),
-    yearsActive: statsOverrides.yearsActive || '1',
-  };
-
-  const missionIcons = [
-    <svg key="code" className="w-5 h-5 text-violet-600 dark:text-violet-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>,
-    <svg key="book" className="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>,
-    <svg key="team" className="w-5 h-5 text-emerald-600 dark:text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" /></svg>,
-    <svg key="award" className="w-5 h-5 text-amber-600 dark:text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" /></svg>,
-  ];
+  const spotlightMember = members.length > 0 ? members[Math.floor(Math.random() * members.length)] : null;
 
   return (
-    <div>
+    <div className="overflow-x-hidden grainy-bg">
       {/* Hero */}
       <section className="relative overflow-hidden py-14 sm:py-20">
-        {/* Background */}
-        <div className="absolute inset-0 -z-10 overflow-hidden">
-          {/* Light mode: subtle animated gradient */}
-          <div className="absolute inset-0 bg-gradient-to-br from-violet-50 via-blue-50/40 to-transparent dark:hidden" style={{animation:'hero-light-shift 8s ease-in-out infinite'}} />
-          {/* Dark mode: animated glows */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[2px] bg-gradient-to-r from-transparent via-violet-500/40 to-transparent hidden dark:block" />
-          <div className="absolute top-1/2 left-1/2 w-[700px] h-[700px] bg-violet-600/15 rounded-full blur-3xl hidden dark:block" style={{animation:'hero-blob-a 9s ease-in-out infinite'}} />
-          <div className="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-blue-600/15 rounded-full blur-3xl hidden dark:block" style={{animation:'hero-blob-b 11s ease-in-out infinite 1s'}} />
-          <div className="absolute bottom-0 right-1/4 w-[300px] h-[300px] bg-purple-600/12 rounded-full blur-3xl hidden dark:block" style={{animation:'hero-blob-c 13s ease-in-out infinite 2s'}} />
-        </div>
-
         <div className="max-w-6xl mx-auto px-4 sm:px-6 text-center">
           {settings.recruitingBanner && (
-            <div className="inline-flex items-center gap-2 bg-violet-50 border border-violet-200 text-violet-700 text-sm px-4 py-1.5 rounded-full mb-8 dark:bg-violet-500/10 dark:border-violet-500/25 dark:text-violet-300">
-              <span className="w-2 h-2 bg-violet-500 rounded-full animate-pulse dark:bg-violet-400" />
+            <div className="inline-flex items-center gap-2 bg-white/5 border border-white/10 text-slate-300 font-mono-tech text-[10px] px-4 py-1.5 rounded-full mb-8">
+              <span className="w-1.5 h-1.5 bg-cyber-lime rounded-full animate-pulse" />
               {settings.recruitingBanner}
             </div>
           )}
 
-          {/* Banner — swaps with theme */}
-          <style>{`
-            @keyframes banner-glow { 0%,100%{opacity:0.25} 50%{opacity:0.6} }
-            @keyframes banner-corner { 0%,100%{opacity:0.4} 50%{opacity:0.9} }
-            @keyframes hero-blob-a { 0%,100%{transform:translate(-50%,-50%) scale(1);opacity:0.15} 50%{transform:translate(-50%,-50%) scale(1.18);opacity:0.22} }
-            @keyframes hero-blob-b { 0%,100%{transform:scale(1);opacity:0.15} 50%{transform:scale(1.25);opacity:0.24} }
-            @keyframes hero-blob-c { 0%,100%{transform:scale(1);opacity:0.1} 50%{transform:scale(1.2);opacity:0.18} }
-            @keyframes hero-light-shift { 0%,100%{opacity:1} 50%{opacity:0.65} }
-            @keyframes cursor-blink { 0%,100%{opacity:1} 50%{opacity:0} }
-            @keyframes btn-pulse { 0%,100%{box-shadow:0 8px 25px -4px rgba(139,92,246,0.35)} 50%{box-shadow:0 8px 38px 4px rgba(139,92,246,0.6)} }
-            @keyframes badge-pulse { 0%,100%{box-shadow:none;border-color:rgb(226,232,240)} 50%{box-shadow:0 0 8px 1px rgba(99,102,241,0.2);border-color:rgba(99,102,241,0.4)} }
-            @keyframes badge-pulse-dark { 0%,100%{box-shadow:none} 50%{box-shadow:0 0 10px 2px rgba(139,92,246,0.25)} }
-          `}</style>
-          <div className="relative w-full max-w-7xl mx-auto mb-10">
-            {/* Glow ring */}
-            <div className="absolute -inset-[4px] -z-10 rounded-[20px]" style={{background:'linear-gradient(135deg,rgba(99,102,241,0.45),rgba(8,145,178,0.3),rgba(99,102,241,0.45))',filter:'blur(10px)',animation:'banner-glow 3s ease-in-out infinite'}}/>
-            {/* Corner accents */}
-            <svg className="absolute -top-2 -left-2 w-8 h-8" viewBox="0 0 32 32" fill="none" style={{animation:'banner-corner 3s ease-in-out infinite'}}>
-              <path d="M16 2 L2 2 L2 16" stroke="#6366f1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-            <svg className="absolute -top-2 -right-2 w-8 h-8" viewBox="0 0 32 32" fill="none" style={{animation:'banner-corner 3s ease-in-out infinite 0.75s'}}>
-              <path d="M16 2 L30 2 L30 16" stroke="#0891b2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-            <svg className="absolute -bottom-2 -left-2 w-8 h-8" viewBox="0 0 32 32" fill="none" style={{animation:'banner-corner 3s ease-in-out infinite 1.5s'}}>
-              <path d="M16 30 L2 30 L2 16" stroke="#6366f1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-            <svg className="absolute -bottom-2 -right-2 w-8 h-8" viewBox="0 0 32 32" fill="none" style={{animation:'banner-corner 3s ease-in-out infinite 2.25s'}}>
-              <path d="M16 30 L30 30 L30 16" stroke="#0891b2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
+          <div className="relative w-full max-w-5xl mx-auto mb-10">
+            <div className="absolute -inset-[4px] -z-10 rounded-[20px] bg-gradient-to-r from-indigo-500/40 via-cyan-400/30 to-indigo-500/40 blur-lg animate-banner-glow" />
+            <BannerCorners />
             <div className="rounded-2xl overflow-hidden shadow-xl shadow-violet-500/10">
-              <img src="/banner-light.svg" alt="LC3 - Lowcode Cloud Club · College of Southern Nevada" className="w-full dark:hidden" />
-              <img src="/banner-dark.svg" alt="LC3 - Lowcode Cloud Club · College of Southern Nevada" className="w-full hidden dark:block" />
+              <Image src="/banner-light.svg" alt="LC3 Banner" width={1200} height={400} className="w-full dark:hidden" priority />
+              <Image src="/banner-dark.svg" alt="LC3 Banner" width={1200} height={400} className="w-full hidden dark:block" priority />
             </div>
           </div>
 
           <HeroTyping />
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/contact"
-              className="px-8 py-3.5 bg-gradient-to-r from-blue-600 to-violet-600 text-white font-semibold rounded-xl hover:from-blue-500 hover:to-violet-500 transition-all hover:-translate-y-0.5"
-              style={{animation:'btn-pulse 2.8s ease-in-out infinite'}}
-            >
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
+            <Link href="/contact" className="px-8 py-3.5 bg-cyber-lime text-black font-black uppercase tracking-tight rounded-xl hover:scale-105 active:scale-95 transition-all shadow-lg shadow-cyber-lime/20">
               {homeContent.primaryButtonLabel}
             </Link>
-            <Link
-              href="/members"
-              className="px-8 py-3.5 bg-white border border-slate-200 text-slate-700 font-semibold rounded-xl hover:bg-slate-50 hover:border-slate-300 transition-all hover:-translate-y-0.5 shadow-sm dark:bg-white/5 dark:border-white/15 dark:text-white dark:hover:bg-white/10 dark:hover:border-white/25"
-              style={{animation:'btn-pulse 2.8s ease-in-out infinite 1.4s'}}
-            >
+            <Link href="/members" className="px-8 py-3.5 bg-white/5 border border-white/10 text-white font-bold rounded-xl hover:bg-white/10 transition-all">
               {homeContent.secondaryButtonLabel}
             </Link>
-            <Link
-              href="/shield"
-              className="px-8 py-3.5 font-semibold rounded-xl transition-all hover:-translate-y-0.5 flex items-center justify-center gap-2"
-              style={{ background: 'linear-gradient(135deg, #ef4444, #b91c1c)', color: 'white', boxShadow: '0 4px 20px rgba(239,68,68,0.25)' }}
-            >
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
-              </svg>
-              {homeContent.shieldButtonLabel}
-            </Link>
-            <Link
-              href="/careers"
-              className="px-8 py-3.5 font-semibold rounded-xl transition-all hover:-translate-y-0.5 flex items-center justify-center gap-2"
-              style={{ background: 'linear-gradient(135deg, #3b82f6, #8b5cf6)', color: 'white', boxShadow: '0 4px 20px rgba(59,130,246,0.25)' }}
-            >
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-              </svg>
-              LC3 Careers
-            </Link>
           </div>
 
-          {/* Quick-nav cards */}
-          <div className="mt-10 grid grid-cols-3 sm:grid-cols-6 gap-3 w-full max-w-2xl mx-auto">
+          {/* Quick-nav */}
+          <div className="mt-12 grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-6 gap-4 w-full max-w-3xl mx-auto">
             {[
-              { href: '/events', label: 'Events', icon: (
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-              )},
-              { href: '/projects', label: 'Projects', icon: (
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>
-              )},
-              { href: '/gallery', label: 'Gallery', icon: (
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" /><path strokeLinecap="round" strokeLinejoin="round" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
-              )},
-              { href: '/blog', label: 'Blog', icon: (
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" /></svg>
-              )},
-              { href: '/members', label: 'Members', icon: (
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
-              )},
-              { href: '/about', label: 'About', icon: (
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-              )},
+              { href: '/events', label: 'Events', icon: <NavIcons.Events /> },
+              { href: '/projects', label: 'Projects', icon: <NavIcons.Projects /> },
+              { href: '/gallery', label: 'Gallery', icon: <NavIcons.Gallery /> },
+              { href: '/blog', label: 'Blog', icon: <NavIcons.Blog /> },
+              { href: '/members', label: 'Members', icon: <NavIcons.Members /> },
+              { href: '/about', label: 'About', icon: <NavIcons.About /> },
             ].map(({ href, label, icon }) => (
-              <Link
-                key={href}
-                href={href}
-                className="flex flex-col items-center gap-2 py-4 px-2 rounded-2xl bg-white border border-slate-200 hover:border-violet-300 hover:bg-violet-50/50 hover:-translate-y-0.5 shadow-sm transition-all duration-200 text-center group dark:bg-white/5 dark:border-white/10 dark:hover:border-violet-500/40 dark:hover:bg-violet-500/5"
-              >
-                <span className="text-slate-500 group-hover:text-violet-600 dark:text-slate-400 dark:group-hover:text-violet-400 transition-colors">
-                  {icon}
-                </span>
-                <span className="text-xs font-medium text-slate-600 group-hover:text-violet-700 dark:text-slate-400 dark:group-hover:text-violet-300 transition-colors">{label}</span>
+              <Link key={href} href={href} className="flex flex-col items-center gap-3 p-4 rounded-2xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-violet-400 hover:bg-violet-500/5 transition-all group">
+                <span className="text-slate-500 dark:text-slate-400 group-hover:text-violet-400 transition-colors">{icon}</span>
+                <span className="text-[10px] font-mono-tech text-slate-500 dark:text-slate-400 group-hover:text-violet-300">{label}</span>
               </Link>
             ))}
-          </div>
-
-          {/* Tech stack strip */}
-          <div className="mt-8 flex flex-wrap justify-center gap-2">
-            {homeContent.techStack.map((tech, i) => (
-              <span
-                key={tech}
-                className="text-xs text-slate-500 bg-white border px-3 py-1 rounded-full transition-all duration-200 hover:text-violet-600 hover:border-violet-300 hover:bg-violet-50 dark:bg-white/5 dark:border-white/10 dark:hover:text-violet-400 dark:hover:border-violet-500/40 dark:hover:bg-violet-500/10"
-                style={{animation:`badge-pulse 3.5s ease-in-out infinite ${i * 220}ms`}}
-              >
-                {tech}
-              </span>
-            ))}
-          </div>
-
-          {/* Company CTA */}
-          <div className="mt-8 inline-flex items-center gap-4 bg-white border border-slate-200 hover:border-blue-300 rounded-2xl px-6 py-4 transition-all group shadow-sm dark:bg-[#0d1424]/80 dark:border-[#1e2d45] dark:hover:border-blue-500/40">
-            <div className="w-10 h-10 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center flex-shrink-0 dark:bg-gradient-to-br dark:from-blue-500/20 dark:to-violet-500/20 dark:border-blue-500/20">
-              <svg className="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-              </svg>
-            </div>
-            <div className="text-left">
-              <p className="text-slate-900 text-sm font-medium dark:text-white">{homeContent.companyCtaTitle}</p>
-              <p className="text-slate-500 text-xs">{homeContent.companyCtaDesc}</p>
-            </div>
-            <Link
-              href="/hire"
-              className="flex-shrink-0 text-xs font-semibold text-blue-600 group-hover:text-blue-700 border border-blue-200 group-hover:border-blue-300 px-4 py-2 rounded-lg transition-all dark:text-blue-400 dark:group-hover:text-blue-300 dark:border-blue-500/30 dark:group-hover:border-blue-400/50"
-            >
-              Learn more →
-            </Link>
           </div>
         </div>
       </section>
 
       {/* Stats */}
-      <section className="relative border-y border-slate-200 dark:border-[#1e2d45] overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-violet-50/40 via-white to-blue-50/40 dark:from-violet-950/15 dark:via-[#0d1424] dark:to-blue-950/15 pointer-events-none" />
-        <ScrollReveal>
-        <StaggerReveal className="relative max-w-6xl mx-auto px-4 sm:px-6 py-12 grid grid-cols-2 md:grid-cols-4 gap-6 text-center" stagger={120}>
-          {[
-            { value: stats.activeMembers, label: 'Active Members' },
-            { value: stats.eventsHosted, label: 'Events Hosted' },
-            { value: stats.projectsBuilt, label: 'Projects Built' },
-            { value: stats.yearsActive, label: 'Years Active' },
-          ].map(({ value, label }) => (
-            <AnimatedStat key={label} value={value} label={label} />
-          ))}
+      <section className="border-y border-slate-200 dark:border-white/5 py-12 bg-slate-50/50 dark:bg-white/[0.02]">
+        <StaggerReveal className="max-w-6xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+          <AnimatedStat value={statsOverrides.activeMembers || String(members.length)} label="HACKERS" />
+          <AnimatedStat value={statsOverrides.eventsHosted || '12'} label="EVENTS" />
+          <AnimatedStat value={statsOverrides.projectsBuilt || '8'} label="SHIPPED" />
+          <AnimatedStat value={statsOverrides.yearsActive || '1'} label="YEARS" />
         </StaggerReveal>
-        </ScrollReveal>
       </section>
 
-      {/* About */}
-      <section className="py-20 max-w-6xl mx-auto px-4 sm:px-6">
-        <ScrollReveal>
-        <div className="grid md:grid-cols-2 gap-12 items-center">
-          <div>
-            <p className="text-violet-600 dark:text-violet-400 text-sm font-medium mb-2">{homeContent.aboutEyebrow}</p>
-            <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white mb-4">{homeContent.aboutHeading}</h2>
-            <p className="text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
-              {homeContent.aboutBody1}
-            </p>
-            <p className="text-slate-600 dark:text-slate-300 leading-relaxed mb-6">
-              {homeContent.aboutBody2}
-            </p>
-          </div>
-
-          <StaggerReveal className="grid grid-cols-1 sm:grid-cols-2 gap-4" stagger={100}>
-            {homeContent.missionItems.map(({ title, desc }, i) => (
-              <div
-                key={i}
-                className="bg-white border border-slate-200 rounded-xl p-5 hover:border-violet-200 hover:shadow-sm transition-all dark:bg-[#0d1424] dark:border-[#1e2d45] dark:hover:border-violet-500/30"
-              >
-                <div className="w-9 h-9 rounded-lg bg-slate-50 border border-slate-100 flex items-center justify-center mb-3 dark:bg-white/5 dark:border-transparent">
-                  {missionIcons[i % missionIcons.length]}
+      {/* Member Spotlight & Discord */}
+      {settings.showSpotlight && (
+        <section className="py-20 max-w-6xl mx-auto px-4">
+          <div className="grid md:grid-cols-3 gap-8">
+            {/* Discord Card */}
+            <div className="md:col-span-2 bg-gradient-to-br from-[#5865F2] to-[#4752c4] rounded-[2.5rem] p-8 text-white relative overflow-hidden group">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full translate-x-1/3 -translate-y-1/3 blur-3xl group-hover:scale-110 transition-transform duration-700" />
+              <div className="relative z-10">
+                <div className="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center mb-6">
+                  <svg className="w-7 h-7 fill-current" viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.7 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.07 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.086 2.157 2.419 0 1.334-.947 2.419-2.157 2.419zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.086 2.157 2.419 0 1.334-.946 2.419-2.157 2.419z"/></svg>
                 </div>
-                <div className="text-slate-900 dark:text-white font-medium text-sm mb-1">{title}</div>
-                <div className="text-slate-500 text-xs leading-relaxed">{desc}</div>
-              </div>
-            ))}
-          </StaggerReveal>
-        </div>
-        </ScrollReveal>
-      </section>
-
-      {/* LC3 Shield Feature Section */}
-      <section className="py-16 border-t border-slate-200 dark:border-[#1e2d45]">
-        <ScrollReveal>
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="relative rounded-3xl overflow-hidden border border-red-200/60 dark:border-red-500/15 bg-gradient-to-br from-red-50/60 via-white to-slate-50 dark:from-red-950/20 dark:via-[#0d1424] dark:to-[#0d1424] p-8 sm:p-10">
-            {/* Background glow */}
-            <div className="absolute -top-20 -right-20 w-64 h-64 bg-red-500/5 dark:bg-red-500/8 rounded-full blur-3xl pointer-events-none" />
-            <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-violet-500/5 dark:bg-violet-500/8 rounded-full blur-3xl pointer-events-none" />
-
-            <div className="relative grid md:grid-cols-2 gap-8 items-center">
-              <div>
-                {/* Badge */}
-                <div className="inline-flex items-center gap-2 text-xs font-semibold px-3 py-1.5 rounded-full bg-red-50 border border-red-200 text-red-600 dark:bg-red-500/10 dark:border-red-500/20 dark:text-red-400 mb-4">
-                  <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
-                  {homeContent.shieldBadgeLabel}
-                </div>
-                <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-3" style={{ letterSpacing: '-0.02em' }}>
-                  {homeContent.shieldHeadingPrefix}{' '}
-                  <span className="bg-gradient-to-r from-red-500 to-violet-600 bg-clip-text text-transparent">LC3 Shield</span>
-                </h2>
-                <p className="text-slate-600 dark:text-slate-400 leading-relaxed mb-6 text-sm">
-                  {homeContent.shieldDescription}
-                </p>
-                <div className="flex flex-wrap gap-2 mb-7">
-                  {(homeContent.shieldFeatureTags ?? []).map((f) => (
-                    <span key={f} className="text-xs px-2.5 py-1 rounded-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-400">
-                      {f}
-                    </span>
-                  ))}
-                </div>
-                <Link
-                  href="/shield"
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-white text-sm transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-red-500/20"
-                  style={{ background: 'linear-gradient(135deg, #ef4444, #b91c1c)' }}
-                >
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
-                  </svg>
-                  {homeContent.shieldCtaLabel}
-                </Link>
-              </div>
-
-              {/* Right side: mini feature list */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {(homeContent.shieldFeatureCards ?? []).map(({ icon, title, desc }) => (
-                  <div key={title} className="bg-white/60 dark:bg-white/[0.03] border border-slate-200/60 dark:border-white/[0.06] rounded-xl p-4">
-                    <div className="text-xl mb-2">{icon}</div>
-                    <div className="text-sm font-semibold text-slate-900 dark:text-white mb-1">{title}</div>
-                    <div className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">{desc}</div>
-                  </div>
-                ))}
+                <h3 className="text-3xl font-black mb-2">Join the Discord</h3>
+                <p className="text-blue-100 mb-8 max-w-sm">Chat with other members, get help with projects, and stay updated on meetings.</p>
+                <a href="https://discord.gg/your-link" target="_blank" rel="noopener" className="inline-block px-8 py-3 bg-white text-[#5865F2] font-black uppercase tracking-tight rounded-xl hover:bg-blue-50 transition-colors">Open Discord</a>
               </div>
             </div>
-          </div>
-        </div>
-        </ScrollReveal>
-      </section>
 
-      {/* LC3 Careers Feature Section */}
-      <section className="py-16 border-t border-slate-200 dark:border-[#1e2d45]">
-        <ScrollReveal>
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="relative rounded-3xl overflow-hidden border border-blue-200/60 dark:border-blue-500/15 bg-gradient-to-br from-blue-50/60 via-white to-slate-50 dark:from-blue-950/20 dark:via-[#0d1424] dark:to-[#0d1424] p-8 sm:p-10">
-            {/* Background glow */}
-            <div className="absolute -top-20 -right-20 w-64 h-64 bg-blue-500/5 dark:bg-blue-500/8 rounded-full blur-3xl pointer-events-none" />
-            <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-violet-500/5 dark:bg-violet-500/8 rounded-full blur-3xl pointer-events-none" />
-
-            <div className="relative grid md:grid-cols-2 gap-8 items-center">
-              <div>
-                {/* Badge */}
-                <div className="inline-flex items-center gap-2 text-xs font-semibold px-3 py-1.5 rounded-full bg-blue-50 border border-blue-200 text-blue-600 dark:bg-blue-500/10 dark:border-blue-500/20 dark:text-blue-400 mb-4">
-                  <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
-                  New Tool
-                </div>
-                <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-3" style={{ letterSpacing: '-0.02em' }}>
-                  Introducing{' '}
-                  <span className="bg-gradient-to-r from-blue-500 to-violet-600 bg-clip-text text-transparent">LC3 Careers</span>
-                </h2>
-                <p className="text-slate-600 dark:text-slate-400 leading-relaxed mb-6 text-sm">
-                  An AI-powered job board built exclusively for LC3 members. Powered by Claude AI, Careers matches you to real opportunities, generates personalized cover letters, analyzes your resume, and tracks every application — all in one place.
-                </p>
-                <div className="flex flex-wrap gap-2 mb-7">
-                  {['AI Match Scoring', 'Cover Letter Generator', 'Resume Analyzer', 'Skill Gap Analysis', 'Application Tracker', 'Market Insights'].map((f) => (
-                    <span key={f} className="text-xs px-2.5 py-1 rounded-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-400">
-                      {f}
-                    </span>
-                  ))}
-                </div>
-                <Link
-                  href="/careers"
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-white text-sm transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-blue-500/20"
-                  style={{ background: 'linear-gradient(135deg, #3b82f6, #8b5cf6)' }}
-                >
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                  </svg>
-                  Explore LC3 Careers
-                </Link>
-              </div>
-
-              {/* Right side: mini feature list */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {[
-                  { icon: '🎯', title: 'AI Match Scoring', desc: 'Jobs ranked by how well they fit your skills and goals' },
-                  { icon: '✉️', title: 'Cover Letter Gen', desc: 'Personalized cover letters in seconds with Claude AI' },
-                  { icon: '📊', title: 'Skill Gap Analysis', desc: 'Know exactly what to learn for your dream role' },
-                  { icon: '📋', title: 'App Tracker', desc: 'Track every application from saved to offer' },
-                ].map(({ icon, title, desc }) => (
-                  <div key={title} className="bg-white/60 dark:bg-white/[0.03] border border-slate-200/60 dark:border-white/[0.06] rounded-xl p-4">
-                    <div className="text-xl mb-2">{icon}</div>
-                    <div className="text-sm font-semibold text-slate-900 dark:text-white mb-1">{title}</div>
-                    <div className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">{desc}</div>
+            {/* Member Spotlight */}
+            <div className="bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-[2.5rem] p-8 flex flex-col items-center text-center">
+              <span className="font-mono-tech text-[10px] text-violet-500 mb-6 tracking-[0.2em]">Member Spotlight</span>
+              {spotlightMember ? (
+                <>
+                  <div className="w-24 h-24 rounded-full overflow-hidden mb-4 border-2 border-violet-500/30 p-1">
+                    <img src={spotlightMember.avatarUrl || '/avatar-placeholder.svg'} alt={spotlightMember.name} className="w-full h-full object-cover rounded-full" />
                   </div>
-                ))}
-              </div>
+                  <h4 className="text-xl font-bold text-slate-900 dark:text-white">{spotlightMember.name}</h4>
+                  <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">{spotlightMember.role}</p>
+                  <Link href="/members" className="text-xs font-bold text-violet-500 hover:underline underline-offset-4 tracking-widest">VIEW TEAM</Link>
+                </>
+              ) : (
+                <p className="text-slate-400 text-sm">Meet our community!</p>
+              )}
             </div>
           </div>
-        </div>
-        </ScrollReveal>
-      </section>
-
-      {/* Featured Projects */}
-      {featuredProjects.length > 0 && (
-        <section className="py-20 relative overflow-hidden border-t border-slate-200 dark:border-[#1e2d45]">
-          <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-violet-50/20 to-slate-50 dark:from-[#0a101e] dark:via-[#0d1424] dark:to-[#0a101e] pointer-events-none" />
-          <ScrollReveal>
-          <div className="relative max-w-6xl mx-auto px-4 sm:px-6">
-            <div className="flex items-end justify-between mb-10">
-              <div>
-                <p className="text-violet-600 dark:text-violet-400 text-sm font-medium mb-1">{homeContent.projectsEyebrow}</p>
-                <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white">{homeContent.projectsHeading}</h2>
-              </div>
-              <Link href="/projects" className="text-slate-500 hover:text-slate-700 dark:hover:text-white text-sm transition-colors hidden sm:block">
-                View all projects →
-              </Link>
-            </div>
-
-            <StaggerReveal className="grid md:grid-cols-3 gap-6">
-              {featuredProjects.map((project) => (
-                <div
-                  key={project.id}
-                  className="bg-white border border-slate-200 rounded-2xl overflow-hidden hover:border-violet-200 hover:shadow-md transition-all hover:-translate-y-0.5 dark:bg-[#111a2e] dark:border-[#1e2d45] dark:hover:border-violet-500/30 dark:hover:shadow-none"
-                >
-                  <div className={`h-1.5 bg-gradient-to-r ${project.gradient}`} />
-                  <div className="p-6">
-                    <div className="flex items-start justify-between gap-2 mb-2">
-                      <h3 className="text-slate-900 dark:text-white font-semibold text-lg">{project.name}</h3>
-                      {project.status && <HomeStatusBadge status={project.status} />}
-                    </div>
-                    <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-4">{project.description}</p>
-                    <div className="flex flex-wrap gap-2">
-                      {project.tags.map((tag) => (
-                        <span key={tag} className="text-xs bg-slate-100 border border-slate-200 text-slate-600 px-2.5 py-1 rounded-md dark:bg-white/5 dark:border-white/10 dark:text-slate-400">
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                    {project.github && (
-                      <a href={project.github} target="_blank" rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 mt-4 text-xs text-slate-400 hover:text-slate-700 dark:hover:text-white transition-colors">
-                        <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.385-1.335-1.755-1.335-1.755-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12" />
-                        </svg>
-                        GitHub
-                      </a>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </StaggerReveal>
-          </div>
-          </ScrollReveal>
         </section>
       )}
+      {/* Shield Preview */}
+      <section className="py-24 bg-slate-950 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_-20%,#bef264,transparent_50%)] opacity-5" />
+        <div className="max-w-6xl mx-auto px-4">
+          <ShieldDashboardPreview content={homeContent} />
+        </div>
+      </section>
 
-      {/* Upcoming Events Preview */}
-      {upcomingEvents.length > 0 && (
-        <section className="py-20 max-w-6xl mx-auto px-4 sm:px-6">
-          <ScrollReveal>
-          <div className="flex items-end justify-between mb-10">
+      {/* Projects */}
+      <section className="py-24 bg-white dark:bg-[#0a1020]">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="flex justify-between items-end mb-12">
             <div>
-              <p className="text-blue-600 dark:text-blue-400 text-sm font-medium mb-1">{homeContent.eventsEyebrow}</p>
-              <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white">{homeContent.eventsHeading}</h2>
+              <span className="font-mono-tech text-[10px] text-blue-500 tracking-[0.2em] mb-3 block">{homeContent.projectsEyebrow}</span>
+              <h2 className="text-4xl font-black text-slate-900 dark:text-white">Active Builds</h2>
             </div>
-            <Link href="/events" className="text-slate-500 hover:text-slate-700 dark:hover:text-white text-sm transition-colors hidden sm:block">
-              All events →
+            <Link href="/projects" className="text-sm font-bold text-slate-400 hover:text-blue-500 transition-colors">ALL PROJECTS →</Link>
+          </div>
+          <div className="grid md:grid-cols-3 gap-8">
+            {featuredProjects.slice(0, 3).map((project) => (
+              <div key={project.id} className="group bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-[2.5rem] overflow-hidden hover:border-blue-500/30 transition-all duration-500">
+                <div className={`h-2 bg-gradient-to-r ${project.gradient}`} />
+                <div className="p-8">
+                  <div className="flex justify-between items-start mb-4">
+                    <HomeStatusBadge status={project.status || 'open'} />
+                  </div>
+                  <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">{project.name}</h3>
+                  <p className="text-slate-500 text-sm mb-6 line-clamp-2">{project.description}</p>
+                  <div className="flex flex-wrap gap-2">
+                    {project.tags.map(tag => (
+                      <span key={tag} className="text-[10px] font-mono-tech text-slate-400 bg-slate-200 dark:bg-white/10 px-2 py-1 rounded-md">{tag}</span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Final CTA */}
+      <section className="py-24 px-4">
+        <div className="max-w-5xl mx-auto bg-slate-900 border border-white/10 rounded-[3.5rem] p-12 text-center text-white relative overflow-hidden shadow-2xl">
+          <div className="absolute inset-0 bg-gradient-to-br from-violet-600/20 via-transparent to-blue-600/20" />
+          <div className="relative z-10 max-w-2xl mx-auto">
+            <h2 className="text-4xl sm:text-5xl font-black mb-6 tracking-tight">{homeContent.ctaHeading}</h2>
+            <p className="text-lg text-slate-400 mb-10 leading-relaxed">{homeContent.ctaDescription}</p>
+            <Link href="/contact" className="inline-block px-12 py-4 bg-cyber-lime text-black font-black uppercase tracking-tight rounded-2xl hover:scale-105 transition-transform shadow-xl shadow-cyber-lime/20">
+              {homeContent.ctaButtonLabel}
             </Link>
           </div>
-
-          <StaggerReveal className="grid md:grid-cols-2 gap-6">
-            {upcomingEvents.map((event) => (
-              <div key={event.id} className="bg-white border border-slate-200 rounded-2xl p-6 hover:border-blue-200 hover:shadow-sm transition-all dark:bg-[#0d1424] dark:border-[#1e2d45] dark:hover:border-blue-500/30">
-                <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0 text-center bg-blue-50 border border-blue-100 rounded-xl px-3 py-2 min-w-[52px] dark:bg-blue-500/10 dark:border-blue-500/20">
-                    <div className="text-blue-600 dark:text-blue-400 text-xs font-medium">
-                      {new Date(event.date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short' }).toUpperCase()}
-                    </div>
-                    <div className="text-slate-900 dark:text-white text-2xl font-bold leading-none">
-                      {new Date(event.date + 'T00:00:00').getDate()}
-                    </div>
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h3 className="text-slate-900 dark:text-white font-semibold mb-1">{event.title}</h3>
-                    <p className="text-slate-600 dark:text-slate-400 text-sm mb-2 leading-relaxed line-clamp-2">{event.description}</p>
-                    <div className="flex items-center gap-1 text-slate-400 text-xs">
-                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                      </svg>
-                      {event.location}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </StaggerReveal>
-          </ScrollReveal>
-        </section>
-      )}
-
-      {/* Latest Posts */}
-      {latestPosts.length > 0 && (
-        <section className="py-20 max-w-6xl mx-auto px-4 sm:px-6">
-          <ScrollReveal>
-          <div className="flex items-end justify-between mb-10">
-            <div>
-              <p className="text-violet-600 dark:text-violet-400 text-sm font-medium mb-1">{homeContent.blogEyebrow}</p>
-              <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white">{homeContent.blogHeading}</h2>
-            </div>
-            <Link href="/blog" className="text-slate-500 hover:text-slate-700 dark:hover:text-white text-sm transition-colors hidden sm:block">
-              All posts →
-            </Link>
-          </div>
-          <StaggerReveal className="grid md:grid-cols-3 gap-6">
-            {latestPosts.map((post) => (
-              <Link
-                key={post.id}
-                href={`/blog/${post.slug}`}
-                className="block bg-white border border-slate-200 rounded-2xl overflow-hidden hover:border-violet-200 hover:shadow-sm transition-all group dark:bg-[#0d1424] dark:border-[#1e2d45] dark:hover:border-violet-500/30"
-              >
-                <div className="h-1.5 bg-gradient-to-r from-violet-500 to-blue-500" />
-                <div className="p-6">
-                  <p className="text-xs text-slate-400 mb-3">
-                    {new Date(post.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                  </p>
-                  <h3 className="font-semibold text-slate-900 dark:text-white mb-2 group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors line-clamp-2">
-                    {post.title}
-                  </h3>
-                  {post.excerpt && (
-                    <p className="text-slate-500 text-sm leading-relaxed line-clamp-2">{post.excerpt}</p>
-                  )}
-                </div>
-              </Link>
-            ))}
-          </StaggerReveal>
-          </ScrollReveal>
-        </section>
-      )}
-
-      {/* Past Work */}
-      {caseStudiesConfig.live && caseStudiesConfig.caseStudies.length > 0 && (
-        <section className="py-20 relative overflow-hidden border-t border-slate-200 dark:border-[#1e2d45]">
-          <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-violet-50/20 to-slate-50 dark:from-[#0a101e] dark:via-[#0d1424] dark:to-[#0a101e] pointer-events-none" />
-          <ScrollReveal>
-          <div className="relative max-w-6xl mx-auto px-4 sm:px-6">
-            <div className="flex items-end justify-between mb-10">
-              <div>
-                <p className="text-emerald-600 dark:text-emerald-400 text-sm font-medium mb-1">What we&apos;ve delivered</p>
-                <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white">{caseStudiesConfig.sectionTitle}</h2>
-              </div>
-            </div>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {caseStudiesConfig.caseStudies.map((cs) => (
-                <div key={cs.id} className="bg-white border border-slate-200 rounded-2xl overflow-hidden hover:border-emerald-200 hover:shadow-md transition-all hover:-translate-y-0.5 dark:bg-[#111a2e] dark:border-[#1e2d45] dark:hover:border-emerald-500/30 dark:hover:shadow-none">
-                  <div className="h-1.5 bg-gradient-to-r from-emerald-500 to-teal-500" />
-                  <div className="p-6">
-                    <p className="text-xs font-medium text-emerald-600 dark:text-emerald-400 mb-2">{cs.client}</p>
-                    <h3 className="text-slate-900 dark:text-white font-semibold text-lg mb-2">{cs.title}</h3>
-                    <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-4">{cs.description}</p>
-                    {cs.outcome && (
-                      <div className="bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-100 dark:border-emerald-500/20 rounded-xl px-3 py-2 mb-4">
-                        <p className="text-emerald-700 dark:text-emerald-400 text-xs font-medium">Outcome</p>
-                        <p className="text-emerald-800 dark:text-emerald-300 text-sm mt-0.5">{cs.outcome}</p>
-                      </div>
-                    )}
-                    <div className="flex flex-wrap gap-2">
-                      {cs.tags.map((tag) => (
-                        <span key={tag} className="text-xs bg-slate-100 border border-slate-200 text-slate-600 px-2.5 py-1 rounded-md dark:bg-white/5 dark:border-white/10 dark:text-slate-400">
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                    {cs.link && (
-                      <a href={cs.link} target="_blank" rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 mt-4 text-xs text-slate-400 hover:text-slate-700 dark:hover:text-white transition-colors">
-                        <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                        </svg>
-                        View project
-                      </a>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-          </ScrollReveal>
-        </section>
-      )}
-
-      {/* Sponsors */}
-      {sponsorsConfig.live && sponsorsConfig.sponsors.length > 0 && (
-        <section className="border-t border-slate-200 dark:border-[#1e2d45] py-14">
-          <ScrollReveal>
-          <div className="max-w-6xl mx-auto px-4 sm:px-6">
-            <p className="text-center text-xs font-medium text-slate-400 uppercase tracking-widest mb-10">
-              {sponsorsConfig.sectionTitle}
-            </p>
-            <div className="flex flex-wrap justify-center items-center gap-8">
-              {sponsorsConfig.sponsors.map((s) => (
-                s.logoUrl ? (
-                  <a key={s.id} href={s.website || undefined} target="_blank" rel="noopener noreferrer"
-                    className="opacity-60 hover:opacity-100 transition-opacity grayscale hover:grayscale-0">
-                    <Image src={s.logoUrl} alt={s.name} width={160} height={40} className="h-10 w-auto object-contain" />
-                  </a>
-                ) : (
-                  <a key={s.id} href={s.website || undefined} target="_blank" rel="noopener noreferrer"
-                    className="text-slate-400 hover:text-slate-700 dark:hover:text-white font-semibold text-lg transition-colors">
-                    {s.name}
-                  </a>
-                )
-              ))}
-            </div>
-          </div>
-          </ScrollReveal>
-        </section>
-      )}
-
-      {/* CTA */}
-      <section className="py-20 border-t border-slate-200 dark:border-[#1e2d45]">
-        <ScrollReveal>
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white mb-4">{homeContent.ctaHeading}</h2>
-          <p className="text-slate-600 dark:text-slate-300 mb-8">
-            {homeContent.ctaDescription}
-          </p>
-          <Link
-            href="/contact"
-            className="px-10 py-4 bg-gradient-to-r from-blue-600 to-violet-600 text-white font-semibold rounded-xl hover:opacity-90 transition-all shadow-lg shadow-violet-500/20 inline-block"
-          >
-            {homeContent.ctaButtonLabel}
-          </Link>
         </div>
-        </ScrollReveal>
       </section>
     </div>
   );

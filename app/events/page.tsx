@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import EventRSVPForm from './EventRSVPForm';
 import EventCountdown from '@/app/components/EventCountdown';
+import { EventTimeline } from '../components/Illustrations';
 
 export const revalidate = 30;
 
@@ -44,266 +45,80 @@ export default function EventsPage() {
   const past = events.filter((e) => e.type === 'past').sort((a, b) => b.date.localeCompare(a.date));
 
   return (
-    <div>
-      {/* Full-width hero */}
+    <div className="overflow-x-hidden">
+      {/* Hero */}
       <section className="relative overflow-hidden border-b border-slate-200 dark:border-[#1e2d45]">
         <div className="absolute inset-0 bg-gradient-to-br from-blue-50/60 via-violet-50/30 to-transparent dark:from-blue-950/20 dark:via-violet-950/10 dark:to-transparent pointer-events-none" />
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-400/40 to-transparent pointer-events-none" />
-        <div className="absolute -top-20 -right-20 w-64 h-64 bg-blue-300/8 dark:bg-blue-500/8 rounded-full blur-3xl pointer-events-none" style={{animation:'hero-float-a 10s ease-in-out infinite'}} />
-        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 py-14 sm:py-18">
-          {/* Header */}
-          <div className="grid md:grid-cols-2 gap-10 items-center">
-        {/* Left: text */}
-        <div>
-          <p className="text-blue-600 dark:text-blue-400 text-sm font-medium mb-2">Stay in the loop</p>
-          <h1 className="text-4xl sm:text-5xl font-bold text-slate-900 dark:text-white mb-4">Events</h1>
-          <p className="text-slate-500">
-            From workshops and hackathons to industry panels — there&apos;s always something going on.
-          </p>
-        </div>
-        {/* Right: SVG */}
-        <div className="flex justify-center md:justify-end overflow-hidden">
-        <svg width="320" height="140" viewBox="0 0 320 140" fill="none" className="opacity-90 dark:opacity-80" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <style>{`
-              @keyframes ev2-dash { to { stroke-dashoffset: -22; } }
-              @keyframes ev2-spark { 0%,100%{opacity:0.3;transform:scale(0.9)} 50%{opacity:0.85;transform:scale(1.1)} }
-              @keyframes ev2-corner { 0%,100%{opacity:0.35} 50%{opacity:0.8} }
-              @keyframes ev2-badge { 0%,100%{transform:scale(1)} 50%{transform:scale(1.08)} }
-              @keyframes ev2-node2 { 0%,100%{opacity:0.6} 50%{opacity:1} }
-              @keyframes ev2-notif { 0%,100%{transform:scale(1);opacity:0.85} 50%{transform:scale(1.15);opacity:1} }
-            `}</style>
-            <radialGradient id="ev2-g1" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.35"/>
-              <stop offset="100%" stopColor="#3b82f6" stopOpacity="0"/>
-            </radialGradient>
-            <radialGradient id="ev2-g2" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="#8b5cf6" stopOpacity="0.5"/>
-              <stop offset="100%" stopColor="#8b5cf6" stopOpacity="0"/>
-            </radialGradient>
-            <radialGradient id="ev2-g3" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="#06b6d4" stopOpacity="0.35"/>
-              <stop offset="100%" stopColor="#06b6d4" stopOpacity="0"/>
-            </radialGradient>
-          </defs>
-
-          {/* Corner brackets */}
-          <path d="M8 8 L8 22 M8 8 L22 8" stroke="rgba(99,102,241,0.4)" strokeWidth="1.5" strokeLinecap="round" style={{animation:'ev2-corner 3s ease-in-out infinite'}}/>
-          <path d="M312 8 L312 22 M312 8 L298 8" stroke="rgba(8,145,178,0.4)" strokeWidth="1.5" strokeLinecap="round" style={{animation:'ev2-corner 3s ease-in-out infinite 0.75s'}}/>
-          <path d="M8 132 L8 118 M8 132 L22 132" stroke="rgba(99,102,241,0.4)" strokeWidth="1.5" strokeLinecap="round" style={{animation:'ev2-corner 3s ease-in-out infinite 1.5s'}}/>
-          <path d="M312 132 L312 118 M312 132 L298 132" stroke="rgba(8,145,178,0.4)" strokeWidth="1.5" strokeLinecap="round" style={{animation:'ev2-corner 3s ease-in-out infinite 2.25s'}}/>
-
-          {/* Timeline baseline */}
-          <line x1="48" y1="70" x2="272" y2="70" stroke="rgba(99,102,241,0.12)" strokeWidth="2.5"/>
-          <line x1="48" y1="70" x2="272" y2="70" stroke="rgba(99,102,241,0.45)" strokeWidth="1.5" strokeDasharray="6 6" style={{animation:'ev2-dash 1s linear infinite'}}/>
-
-          {/* Node 1 — Workshop */}
-          <circle cx="80" cy="70" r="26" fill="url(#ev2-g1)"/>
-          <circle cx="80" cy="70" r="16" fill="rgba(59,130,246,0.1)" stroke="rgba(59,130,246,0.5)" strokeWidth="1.5"/>
-          <circle cx="80" cy="70" r="6" fill="#3b82f6" opacity="0.85"/>
-          <text x="80" y="40" textAnchor="middle" fill="rgba(99,102,241,0.7)" fontSize="8" fontFamily="monospace" fontWeight="600">MAR 15</text>
-          <rect x="57" y="94" width="46" height="14" rx="4" fill="rgba(59,130,246,0.08)" stroke="rgba(59,130,246,0.22)" strokeWidth="0.8"/>
-          <text x="80" y="104" textAnchor="middle" fill="rgba(59,130,246,0.75)" fontSize="7" fontFamily="monospace">WORKSHOP</text>
-
-          {/* Node 2 — Hackathon (featured) */}
-          <circle cx="160" cy="70" r="30" fill="url(#ev2-g2)">
-            <animate attributeName="r" values="28;34;28" dur="2.5s" repeatCount="indefinite"/>
-            <animate attributeName="opacity" values="1;0.55;1" dur="2.5s" repeatCount="indefinite"/>
-          </circle>
-          <circle cx="160" cy="70" r="19" fill="rgba(139,92,246,0.14)" stroke="rgba(139,92,246,0.65)" strokeWidth="2"/>
-          <circle cx="160" cy="70" r="7.5" fill="#8b5cf6" style={{animation:'ev2-node2 1.8s ease-in-out infinite'}}/>
-          <rect x="140" y="30" width="40" height="15" rx="7" fill="rgba(139,92,246,0.85)" style={{animation:'ev2-badge 2s ease-in-out infinite', transformOrigin:'160px 37px'}}>
-            <animate attributeName="opacity" values="0.8;1;0.8" dur="2s" repeatCount="indefinite"/>
-          </rect>
-          <text x="160" y="41" textAnchor="middle" fill="white" fontSize="7" fontFamily="monospace" fontWeight="700">NEXT UP</text>
-          <rect x="132" y="96" width="56" height="14" rx="4" fill="rgba(139,92,246,0.1)" stroke="rgba(139,92,246,0.32)" strokeWidth="0.8"/>
-          <text x="160" y="106" textAnchor="middle" fill="rgba(139,92,246,0.9)" fontSize="7" fontFamily="monospace">HACKATHON</text>
-
-          {/* Notification dot */}
-          <circle cx="176" cy="53" r="6" fill="#ef4444" style={{animation:'ev2-notif 1.4s ease-in-out infinite', transformOrigin:'176px 53px'}}>
-            <animate attributeName="opacity" values="0.8;1;0.8" dur="1.4s" repeatCount="indefinite"/>
-          </circle>
-          <text x="176" y="56.5" textAnchor="middle" fill="white" fontSize="6.5" fontWeight="700">!</text>
-
-          {/* Node 3 — Speaker */}
-          <circle cx="240" cy="70" r="26" fill="url(#ev2-g3)"/>
-          <circle cx="240" cy="70" r="16" fill="rgba(6,182,212,0.1)" stroke="rgba(6,182,212,0.42)" strokeWidth="1.5"/>
-          <circle cx="240" cy="70" r="6" fill="#06b6d4" opacity="0.78"/>
-          <text x="240" y="40" textAnchor="middle" fill="rgba(6,182,212,0.65)" fontSize="8" fontFamily="monospace" fontWeight="600">APR 22</text>
-          <rect x="218" y="94" width="44" height="14" rx="4" fill="rgba(6,182,212,0.07)" stroke="rgba(6,182,212,0.22)" strokeWidth="0.8"/>
-          <text x="240" y="104" textAnchor="middle" fill="rgba(6,182,212,0.72)" fontSize="7" fontFamily="monospace">SPEAKER</text>
-
-          {/* Sparkle dots */}
-          <circle cx="26" cy="26" r="2.5" fill="#6366f1" opacity="0.65" style={{animation:'ev2-spark 2.3s ease-in-out infinite'}}/>
-          <circle cx="293" cy="24" r="2" fill="#0891b2" opacity="0.6" style={{animation:'ev2-spark 2.3s ease-in-out infinite 0.7s'}}/>
-          <circle cx="26" cy="114" r="2" fill="#818cf8" opacity="0.6" style={{animation:'ev2-spark 2.3s ease-in-out infinite 1.4s'}}/>
-          <circle cx="293" cy="114" r="2.5" fill="#0891b2" opacity="0.65" style={{animation:'ev2-spark 2.3s ease-in-out infinite 2.1s'}}/>
-        </svg>
-          </div>
+        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 py-16 sm:py-20">
+          <div className="grid md:grid-cols-2 gap-12 items-center text-center md:text-left">
+            <div>
+              <p className="text-blue-600 dark:text-blue-400 text-sm font-bold uppercase tracking-widest mb-3">Stay in the loop</p>
+              <h1 className="text-4xl sm:text-6xl font-extrabold text-slate-900 dark:text-white mb-6 tracking-tight">Events</h1>
+              <p className="text-lg text-slate-600 dark:text-slate-400 leading-relaxed max-w-md">
+                From workshops and hackathons to industry panels — there&apos;s always something going on at LC3.
+              </p>
+            </div>
+            <div className="flex justify-center md:justify-end">
+              <EventTimeline />
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Content */}
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-16">
-
-      {/* Upcoming Events */}
-      <section className="mb-16">
-        <div className="flex items-center gap-3 mb-6">
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Upcoming</h2>
-          {upcoming.length > 0 && (
-            <span className="bg-blue-50 border border-blue-200 text-blue-600 text-xs font-medium px-2.5 py-1 rounded-full dark:bg-blue-500/10 dark:border-blue-500/20 dark:text-blue-400">
-              {upcoming.length} event{upcoming.length !== 1 ? 's' : ''}
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-16">
+        <section className="mb-24">
+          <div className="flex items-center gap-4 mb-8">
+            <h2 className="text-3xl font-bold text-slate-900 dark:text-white">Upcoming</h2>
+            <span className="bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg shadow-blue-500/20">
+              {upcoming.length} LIVE
             </span>
-          )}
-        </div>
+          </div>
 
-        <EventCountdown events={upcoming.map((e) => ({ id: e.id, title: e.title, date: e.date }))} />
+          <EventCountdown events={upcoming.map((e) => ({ id: e.id, title: e.title, date: e.date }))} />
 
-        {upcoming.length > 0 && (
-          <div className="space-y-4">
+          <div className="grid gap-6">
             {upcoming.map((event) => (
-              <div
-                key={event.id}
-                className="bg-white border border-slate-200 rounded-2xl p-6 hover:border-blue-200 hover:shadow-sm transition-all group dark:bg-[#0d1424] dark:border-[#1e2d45] dark:hover:border-blue-500/30 dark:hover:shadow-none"
-              >
-                <div className="flex flex-col sm:flex-row sm:items-start gap-4">
-                  {/* Date block */}
-                  <div className="flex-shrink-0 text-center bg-blue-50 border border-blue-100 rounded-xl px-4 py-3 sm:min-w-[64px] dark:bg-blue-500/10 dark:border-blue-500/20">
-                    <div className="text-blue-600 dark:text-blue-400 text-xs font-semibold uppercase tracking-wide">
-                      {new Date(event.date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short' })}
-                    </div>
-                    <div className="text-slate-900 dark:text-white text-3xl font-bold leading-tight">
-                      {new Date(event.date + 'T00:00:00').getDate()}
-                    </div>
-                    <div className="text-slate-400 text-xs">
-                      {new Date(event.date + 'T00:00:00').getFullYear()}
-                    </div>
+              <div key={event.id} className="bg-white border border-slate-200 rounded-3xl p-8 hover:border-blue-400/50 hover:shadow-2xl transition-all group dark:bg-white/5 dark:border-white/10">
+                <div className="flex flex-col sm:flex-row gap-8">
+                  <div className="flex-shrink-0 text-center bg-blue-600 rounded-2xl px-6 py-5 min-w-[100px] text-white shadow-xl shadow-blue-500/30 group-hover:scale-105 transition-transform">
+                    <div className="text-xs font-bold uppercase tracking-widest opacity-90">{new Date(event.date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short' })}</div>
+                    <div className="text-4xl font-black leading-none my-1">{new Date(event.date + 'T00:00:00').getDate()}</div>
+                    <div className="text-xs font-bold opacity-70">{new Date(event.date + 'T00:00:00').getFullYear()}</div>
                   </div>
-
-                  {/* Content */}
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className="w-2 h-2 bg-blue-500 rounded-full animate-pulse dark:bg-blue-400" />
-                      <span className="text-blue-600 dark:text-blue-400 text-xs font-medium uppercase tracking-wide">Upcoming</span>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-3">
+                      <span className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
+                      <span className="text-blue-600 text-xs font-bold uppercase tracking-wider">Registration Open</span>
                     </div>
-                    <Link href={`/events/${event.id}`} className="hover:underline underline-offset-2 decoration-blue-400">
-                      <h3 className="text-slate-900 dark:text-white text-xl font-semibold mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-300 transition-colors">
-                        {event.title}
-                      </h3>
-                    </Link>
-                    <p className="text-slate-600 dark:text-slate-400 leading-relaxed mb-4 line-clamp-2">{event.description}</p>
-                    <div className="flex flex-wrap gap-4 text-sm text-slate-400 mb-4">
-                      <span className="flex items-center gap-1.5">
-                        <CalendarIcon />
-                        {formatDate(event.date)}
-                      </span>
-                      <span className="flex items-center gap-1.5">
-                        <LocationIcon />
-                        {event.location}
-                      </span>
+                    <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-3 group-hover:text-blue-600 transition-colors">{event.title}</h3>
+                    <p className="text-slate-500 dark:text-slate-400 leading-relaxed mb-6">{event.description}</p>
+                    <div className="flex flex-wrap gap-6 text-sm font-medium text-slate-400 mb-8">
+                      <span className="flex items-center gap-2"><CalendarIcon /> {formatDate(event.date)}</span>
+                      <span className="flex items-center gap-2"><LocationIcon /> {event.location}</span>
                     </div>
-                    {event.rsvpUrl && (
-                      <div className="mb-4">
-                        <a
-                          href={event.rsvpUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-violet-600 text-white text-sm font-semibold px-5 py-2.5 rounded-xl hover:opacity-90 transition-opacity shadow-sm"
-                        >
-                          Sign Up
-                          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                          </svg>
-                        </a>
-                      </div>
-                    )}
-                    <div className="flex flex-wrap items-center gap-3">
+                    <div className="flex flex-wrap items-center gap-4 border-t border-slate-100 dark:border-white/5 pt-6">
                       <EventRSVPForm eventId={event.id} initialCount={rsvpCounts[event.id] ?? 0} />
-                      <a
-                        href={`/api/events/${event.id}/ics`}
-                        download
-                        className="flex items-center gap-1.5 text-xs text-slate-400 hover:text-violet-600 dark:hover:text-violet-400 transition-colors"
-                      >
-                        <CalendarIcon />
-                        Add to Calendar
-                      </a>
-                      <Link href={`/events/${event.id}`} className="text-xs text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors ml-auto">
-                        View Details →
-                      </Link>
+                      <Link href={`/events/${event.id}`} className="text-sm font-bold text-slate-400 hover:text-blue-600 transition-colors ml-auto">Details →</Link>
                     </div>
                   </div>
                 </div>
               </div>
             ))}
           </div>
-        )}
-      </section>
+        </section>
 
-      {/* Past Events */}
-      <section>
-        <div className="flex items-center gap-3 mb-6">
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Past Events</h2>
-          {past.length > 0 && (
-            <span className="bg-slate-100 border border-slate-200 text-slate-500 text-xs font-medium px-2.5 py-1 rounded-full dark:bg-slate-700/50 dark:border-slate-600/30 dark:text-slate-400">
-              {past.length} event{past.length !== 1 ? 's' : ''}
-            </span>
-          )}
-        </div>
-
-        {past.length === 0 ? (
-          <div className="bg-white border border-slate-200 rounded-2xl p-10 text-center text-slate-400 dark:bg-[#0d1424] dark:border-[#1e2d45] dark:text-slate-500">
-            No past events recorded yet.
-          </div>
-        ) : (
-          <div className="space-y-4">
+        <section>
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-8">Past Events</h2>
+          <div className="grid sm:grid-cols-2 gap-6">
             {past.map((event) => (
-              <div
-                key={event.id}
-                className="bg-white border border-slate-200 rounded-2xl p-6 opacity-80 hover:opacity-100 transition-all group dark:bg-[#0d1424] dark:border-[#1e2d45]"
-              >
-                <div className="flex flex-col sm:flex-row sm:items-start gap-4">
-                  {/* Date block */}
-                  <div className="flex-shrink-0 text-center bg-slate-100 border border-slate-200 rounded-xl px-4 py-3 sm:min-w-[64px] dark:bg-slate-700/20 dark:border-slate-700/30">
-                    <div className="text-slate-400 text-xs font-semibold uppercase tracking-wide">
-                      {new Date(event.date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short' })}
-                    </div>
-                    <div className="text-slate-600 dark:text-slate-300 text-3xl font-bold leading-tight">
-                      {new Date(event.date + 'T00:00:00').getDate()}
-                    </div>
-                    <div className="text-slate-400 dark:text-slate-600 text-xs">
-                      {new Date(event.date + 'T00:00:00').getFullYear()}
-                    </div>
-                  </div>
-
-                  {/* Content */}
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className="w-2 h-2 bg-slate-400 dark:bg-slate-600 rounded-full" />
-                      <span className="text-slate-400 dark:text-slate-500 text-xs font-medium uppercase tracking-wide">Past</span>
-                    </div>
-                    <Link href={`/events/${event.id}`} className="hover:underline underline-offset-2 decoration-slate-400">
-                      <h3 className="text-slate-700 dark:text-slate-300 text-xl font-semibold mb-2 hover:text-slate-900 dark:hover:text-white transition-colors">{event.title}</h3>
-                    </Link>
-                    <p className="text-slate-500 leading-relaxed mb-4 line-clamp-2">{event.description}</p>
-                    <div className="flex flex-wrap gap-4 text-sm text-slate-400">
-                      <span className="flex items-center gap-1.5">
-                        <CalendarIcon />
-                        {formatDate(event.date)}
-                      </span>
-                      <span className="flex items-center gap-1.5">
-                        <LocationIcon />
-                        {event.location}
-                      </span>
-                    </div>
-                  </div>
-                </div>
+              <div key={event.id} className="bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-2xl p-6 opacity-80 hover:opacity-100 transition-opacity">
+                <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">{formatDate(event.date)}</div>
+                <h3 className="text-xl font-bold text-slate-800 dark:text-slate-200 mb-2">{event.title}</h3>
+                <p className="text-sm text-slate-500 dark:text-slate-400 line-clamp-2">{event.description}</p>
               </div>
             ))}
           </div>
-        )}
-      </section>
-
+        </section>
       </div>
     </div>
   );
