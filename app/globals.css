@@ -4745,3 +4745,33 @@ html[data-retro-brand="elance"].retro main [class~="bg-white"][class*="shadow"] 
   @keyframes cta-dash { to { stroke-dashoffset: -16; } }
   @keyframes cta-pulse { 0%,100%{opacity:0.35} 50%{opacity:0.9} }
 }
+
+/* Retro Mode Enhancements */
+.retro {
+  cursor: url('https://res.cloudinary.com/lc3club/image/upload/v1/retro/cursor.cur'), default !important;
+}
+
+.retro #monitor-frame {
+  position: relative;
+  overflow: hidden;
+}
+
+.retro #monitor-frame::after {
+  content: ' ';
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+  z-index: 9999;
+  background-size: 100% 3px, 3px 100%;
+  pointer-events: none;
+  animation: retro-flicker 0.15s infinite;
+}
+
+@keyframes retro-flicker {
+  0% { opacity: 0.98; }
+  100% { opacity: 1.0; }
+} 
