@@ -194,7 +194,7 @@ export default function HomePage() {
       <section className="py-24 bg-slate-950 relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_-20%,#bef264,transparent_50%)] opacity-5" />
         <div className="max-w-6xl mx-auto px-4">
-          <ShieldDashboardPreview content={homeContent} />
+          <ShieldDashboardPreview />
         </div>
       </section>
 
