@@ -1,7 +1,6 @@
-import { readJSON, Event, RSVP } from '@/lib/data';
+import { readJSON, Event } from '@/lib/data';
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import EventRSVPForm from './EventRSVPForm';
 import EventCountdown from '@/app/components/EventCountdown';
 
 export const revalidate = 30;
@@ -35,11 +34,6 @@ function LocationIcon() {
 
 export default function EventsPage() {
   const events = readJSON<Event[]>('events.json');
-  const rsvps = readJSON<RSVP[]>('rsvps.json');
-  const rsvpCounts = rsvps.reduce<Record<string, number>>((acc, r) => {
-    acc[r.eventId] = (acc[r.eventId] ?? 0) + 1;
-    return acc;
-  }, {});
   const upcoming = events.filter((e) => e.type === 'upcoming').sort((a, b) => a.date.localeCompare(b.date));
   const past = events.filter((e) => e.type === 'past').sort((a, b) => b.date.localeCompare(a.date));
 
@@ -219,7 +213,12 @@ export default function EventsPage() {
                       </div>
                     )}
                     <div className="flex flex-wrap items-center gap-3">
-                      <EventRSVPForm eventId={event.id} initialCount={rsvpCounts[event.id] ?? 0} />
+                      <Link
+                        href={`/events/${event.id}`}
+                        className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-blue-600 to-violet-600 text-white text-sm font-semibold rounded-xl hover:opacity-90 transition-opacity"
+                      >
+                        Sign Up
+                      </Link>
                       <a
                         href={`/api/events/${event.id}/ics`}
                         download
@@ -228,9 +227,6 @@ export default function EventsPage() {
                         <CalendarIcon />
                         Add to Calendar
                       </a>
-                      <Link href={`/events/${event.id}`} className="text-xs text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors ml-auto">
-                        View Details →
-                      </Link>
                     </div>
                   </div>
                 </div>

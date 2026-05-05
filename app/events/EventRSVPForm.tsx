@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 
-export default function EventRSVPForm({ eventId, initialCount }: { eventId: string; initialCount: number }) {
-  const [open, setOpen] = useState(false);
+export default function EventRSVPForm({ eventId, initialCount, defaultOpen }: { eventId: string; initialCount: number; defaultOpen?: boolean }) {
+  const [open, setOpen] = useState(defaultOpen ?? false);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'duplicate' | 'error'>('idle');

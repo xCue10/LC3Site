@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { readJSON, writeJSON, Event } from '@/lib/data';
 
 export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
@@ -17,6 +18,8 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     rsvpUrl: body.rsvpUrl ?? events[index].rsvpUrl,
   };
   writeJSON('events.json', events);
+  revalidatePath('/events');
+  revalidatePath('/');
   return NextResponse.json(events[index]);
 }
 
@@ -26,5 +29,7 @@ export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ 
   const filtered = events.filter((e) => e.id !== id);
   if (filtered.length === events.length) return NextResponse.json({ error: 'Not found' }, { status: 404 });
   writeJSON('events.json', filtered);
+  revalidatePath('/events');
+  revalidatePath('/');
   return NextResponse.json({ success: true });
 }

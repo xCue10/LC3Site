@@ -109,7 +109,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
             <div className="bg-slate-50 dark:bg-[#111a2e] rounded-xl p-5 border border-slate-200 dark:border-[#1e2d45] mb-4">
               <h2 className="text-slate-900 dark:text-white font-semibold mb-1">RSVP for this event</h2>
               <p className="text-slate-500 text-sm mb-4">Let us know you&apos;re coming so we can plan accordingly.</p>
-              <EventRSVPForm eventId={event.id} initialCount={rsvpCount} />
+              <EventRSVPForm eventId={event.id} initialCount={rsvpCount} defaultOpen />
             </div>
           )}
 

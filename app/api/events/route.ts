@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { readJSON, writeJSON, Event } from '@/lib/data';
 
 export async function GET() {
@@ -30,6 +31,8 @@ export async function POST(req: NextRequest) {
   };
   events.push(newEvent);
   writeJSON('events.json', events);
+  revalidatePath('/events');
+  revalidatePath('/');
 
   const webhookUrl = process.env.DISCORD_EVENT_WEBHOOK_URL;
   if (webhookUrl) {
@@ -55,7 +58,11 @@ export async function POST(req: NextRequest) {
           footer: { text: 'LC3 Admin · Event created' },
         }],
       }),
-    }).catch(() => {});
+    }).catch((err) => {
+      console.error('[discord] Webhook POST failed:', err);
+    });
+  } else {
+    console.warn('[discord] DISCORD_EVENT_WEBHOOK_URL is not set — skipping notification');
   }
 
   return NextResponse.json(newEvent, { status: 201 });
