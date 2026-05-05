@@ -1,7 +1,37 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Vulnerability, ScanResult, BadgeId } from '@/lib/shield-types';
 import { calculateGrade } from '@/lib/shield-storage';
+import dns from 'dns/promises';
+
 function makeId() { return crypto.randomUUID(); }
+
+/**
+ * Basic SSRF Protection: Check if a hostname resolves to a private IP range
+ */
+async function isPrivateIP(urlStr: string): Promise<boolean> {
+  try {
+    const url = new URL(urlStr);
+    const hostname = url.hostname;
+    
+    // Direct check for common localhost patterns
+    if (['localhost', '127.0.0.1', '0.0.0.0', '::1'].includes(hostname)) return true;
+    
+    const address = await dns.lookup(hostname);
+    const ip = address.address;
+    
+    // RFC1918 Private Ranges + Loopback + Link-Local
+    const parts = ip.split('.').map(Number);
+    if (parts[0] === 127) return true; // 127.0.0.0/8
+    if (parts[0] === 10) return true;  // 10.0.0.0/8
+    if (parts[0] === 172 && parts[1] >= 16 && parts[1] <= 31) return true; // 172.16.0.0/12
+    if (parts[0] === 192 && parts[1] === 168) return true; // 192.168.0.0/16
+    if (parts[0] === 169 && parts[1] === 254) return true; // 169.254.0.0/16
+    
+    return false;
+  } catch {
+    return true; // If we can't resolve it, don't fetch it
+  }
+}
 
 export async function POST(req: NextRequest) {
   const { url, mode } = await req.json();
@@ -11,6 +41,11 @@ export async function POST(req: NextRequest) {
 
   let targetUrl = url;
   if (!targetUrl.startsWith('http')) targetUrl = 'https://' + targetUrl;
+
+  // SSRF Protection
+  if (await isPrivateIP(targetUrl)) {
+    return NextResponse.json({ error: 'Scanning internal or private IP addresses is not allowed.' }, { status: 403 });
+  }
 
   const vulnerabilities: Vulnerability[] = [];
   const logs: string[] = [];

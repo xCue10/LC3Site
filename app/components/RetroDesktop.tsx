@@ -750,6 +750,12 @@ function BrandHeader({ brand }: { brand: string }) {
   }
 }
 
+import dynamic from 'next/dynamic';
+const LimeWire = dynamic(() => import('./retro/LimeWire'), { ssr: false });
+const Notepad = dynamic(() => import('./retro/Notepad'), { ssr: false });
+const RecycleBin = dynamic(() => import('./retro/RecycleBin'), { ssr: false });
+const SparkNotes = dynamic(() => import('./retro/SparkNotes'), { ssr: false });
+
 export default function RetroDesktop() {
   const [isRetro, setIsRetro] = useState(false);
   const [time, setTime] = useState('');
@@ -1078,77 +1084,7 @@ export default function RetroDesktop() {
       })}
 
       {/* LimeWire easter egg window */}
-      {showLimeWire && (
-        <div className="lw-wrap">
-          <div className="lw-titlebar">
-            <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-              <span className="lw-logo-dot" />
-              <span className="lw-title-text">LimeWire 4.18.8</span>
-            </div>
-            <div className="aim-winbtns">
-              <button className="aim-wbtn aim-wbtn-min">_</button>
-              <button className="aim-wbtn aim-wbtn-close" onClick={closeLimeWire}>×</button>
-            </div>
-          </div>
-
-          {/* Search bar */}
-          <div className="lw-searchbar">
-            <input className="lw-search-input" defaultValue="Eminem Lose Yourself" readOnly />
-            <button className="lw-search-btn">Search</button>
-          </div>
-
-          {/* Results */}
-          <div className="lw-results-header">
-            <span>Filename</span><span>Size</span><span>Sources</span>
-          </div>
-          <div className="lw-results">
-            <div className="lw-result lw-result-selected">
-              <span>🎵 Eminem - Lose Youself (REAL NOT FAKE).mp3</span>
-              <span>4.3 MB</span>
-              <span className="lw-sources">47</span>
-            </div>
-            <div className="lw-result">
-              <span>🎵 Eminem_Lose_Yourself_FULL_VERSION.mp3<span className="lw-exe-ext">.exe</span></span>
-              <span>6.7 MB</span>
-              <span className="lw-sources">31</span>
-            </div>
-            <div className="lw-result">
-              <span>🎵 eminem lose yourself (CLEAN RADIO NO VIRUS).mp3</span>
-              <span>47.2 MB</span>
-              <span className="lw-sources">8</span>
-            </div>
-            <div className="lw-result">
-              <span>🎵 EMINEM LOSE YOURSELF FREE FULL ALBUM.mp3</span>
-              <span>0.0 KB</span>
-              <span className="lw-sources">2</span>
-            </div>
-            <div className="lw-result">
-              <span>🎵 Eminem - Lose Yourself [HQ 128kbps].exe</span>
-              <span>2.1 MB</span>
-              <span className="lw-sources">19</span>
-            </div>
-          </div>
-
-          {/* Progress / status */}
-          <div className="lw-status-row">
-            {lwStage === 'idle' && (
-              <button className="lw-dl-btn" onClick={startLwDownload}>▼ Download</button>
-            )}
-            {lwStage === 'downloading' && (
-              <div className="lw-progress-wrap">
-                <span className="lw-progress-label">Downloading... {lwProgress}%</span>
-                <div className="lw-progress-track">
-                  <div className="lw-progress-fill" style={{ width: `${lwProgress}%` }} />
-                </div>
-              </div>
-            )}
-            {lwStage === 'done' && (
-              <span className="lw-done-text">✓ Download complete!</span>
-            )}
-          </div>
-
-        </div>
-      )}
+      {showLimeWire && <LimeWire onClose={closeLimeWire} />}
 
       {/* Browser hijack popup */}
       {showHijack && (

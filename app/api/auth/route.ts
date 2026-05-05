@@ -9,7 +9,10 @@ export async function POST(req: NextRequest) {
   }
 
   const response = NextResponse.json({ ok: true });
-  response.cookies.set('lc3-admin', password, {
+  // Store a Base64 encoded version of the password instead of the raw password
+  const token = Buffer.from(password).toString('base64');
+  
+  response.cookies.set('lc3-admin', token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
